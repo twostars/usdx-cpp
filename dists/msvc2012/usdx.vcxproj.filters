@@ -55,6 +55,9 @@
     <Filter Include="lib\portaudio">
       <UniqueIdentifier>{0b3f038a-756c-4d2a-95aa-adbba0b183e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\shared">
+      <UniqueIdentifier>{617c570d-b887-4a1a-a790-80f9e616cef0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\base\Main.cpp">
@@ -196,12 +199,6 @@
       <Filter>src\base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\base\Lyrics.cpp">
-      <Filter>src\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\base\MainWindows.cpp">
-      <Filter>src\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\base\MainOther.cpp">
       <Filter>src\base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\screens\ScreenPartyOptions.cpp">
@@ -426,6 +423,12 @@
     <ClCompile Include="..\..\src\lua\LuaCore.cpp">
       <Filter>src\lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shared\stdafx.cpp">
+      <Filter>src\shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\RelativeTimer.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lib\bass\c\bass.h">
@@ -445,6 +448,42 @@
     </ClInclude>
     <ClInclude Include="..\..\src\lib\portmixer\portmixer.h">
       <Filter>lib\portmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\Platform.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\Config.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\Common.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lua\LuaCore.h">
+      <Filter>src\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\Time.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\stdafx.h">
+      <Filter>src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\types.h">
+      <Filter>src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\Singleton.h">
+      <Filter>src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\RelativeTimer.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\CommandLine.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\unicode.h">
+      <Filter>src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\string_utils.h">
+      <Filter>src\shared</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
