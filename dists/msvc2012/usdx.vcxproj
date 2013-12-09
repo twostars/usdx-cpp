@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\base\BeatTimer.cpp" />
+    <ClCompile Include="..\..\src\base\CatCovers.cpp" />
+    <ClCompile Include="..\..\src\base\CommandLine.cpp" />
+    <ClCompile Include="..\..\src\base\Common.cpp" />
+    <ClCompile Include="..\..\src\base\Config.cpp" />
+    <ClCompile Include="..\..\src\base\Covers.cpp" />
+    <ClCompile Include="..\..\src\base\Database.cpp" />
+    <ClCompile Include="..\..\src\base\Draw.cpp" />
+    <ClCompile Include="..\..\src\base\EditorLyrics.cpp" />
+    <ClCompile Include="..\..\src\base\Files.cpp" />
+    <ClCompile Include="..\..\src\base\Filesystem.cpp" />
+    <ClCompile Include="..\..\src\base\Font.cpp" />
+    <ClCompile Include="..\..\src\base\Graphic.cpp" />
+    <ClCompile Include="..\..\src\base\GraphicClasses.cpp" />
+    <ClCompile Include="..\..\src\base\Image.cpp" />
+    <ClCompile Include="..\..\src\base\Ini.cpp" />
+    <ClCompile Include="..\..\src\base\Joystick.cpp" />
+    <ClCompile Include="..\..\src\base\Language.cpp" />
+    <ClCompile Include="..\..\src\base\Log.cpp" />
+    <ClCompile Include="..\..\src\base\Lyrics.cpp" />
+    <ClCompile Include="..\..\src\base\Main.cpp" />
+    <ClCompile Include="..\..\src\base\MainOther.cpp" />
+    <ClCompile Include="..\..\src\base\MainWindows.cpp" />
+    <ClCompile Include="..\..\src\base\Music.cpp" />
+    <ClCompile Include="..\..\src\base\Note.cpp" />
+    <ClCompile Include="..\..\src\base\Party.cpp" />
+    <ClCompile Include="..\..\src\base\Path.cpp" />
+    <ClCompile Include="..\..\src\base\PathUtils.cpp" />
+    <ClCompile Include="..\..\src\base\Platform.cpp" />
+    <ClCompile Include="..\..\src\base\PlatformLinux.cpp" />
+    <ClCompile Include="..\..\src\base\PlatformMacOSX.cpp" />
+    <ClCompile Include="..\..\src\base\PlatformWindows.cpp" />
+    <ClCompile Include="..\..\src\base\Playlist.cpp" />
+    <ClCompile Include="..\..\src\base\Record.cpp" />
+    <ClCompile Include="..\..\src\base\RingBuffer.cpp" />
+    <ClCompile Include="..\..\src\base\SingNotes.cpp" />
+    <ClCompile Include="..\..\src\base\SingScores.cpp" />
+    <ClCompile Include="..\..\src\base\Skins.cpp" />
+    <ClCompile Include="..\..\src\base\Song.cpp" />
+    <ClCompile Include="..\..\src\base\Songs.cpp" />
+    <ClCompile Include="..\..\src\base\TextEncoding.cpp" />
+    <ClCompile Include="..\..\src\base\TextGL.cpp" />
+    <ClCompile Include="..\..\src\base\Texture.cpp" />
+    <ClCompile Include="..\..\src\base\Themes.cpp" />
+    <ClCompile Include="..\..\src\base\Time.cpp" />
+    <ClCompile Include="..\..\src\base\UnicodeUtils.cpp" />
+    <ClCompile Include="..\..\src\base\XMLSong.cpp" />
+    <ClCompile Include="..\..\src\lib\fft\FFT.cpp" />
+    <ClCompile Include="..\..\src\lib\other\DirWatch.cpp" />
+    <ClCompile Include="..\..\src\lua\HookableEvent.cpp" />
+    <ClCompile Include="..\..\src\lua\LuaCore.cpp" />
+    <ClCompile Include="..\..\src\lua\LuaGl.cpp" />
+    <ClCompile Include="..\..\src\lua\LuaLog.cpp" />
+    <ClCompile Include="..\..\src\lua\LuaParty.cpp" />
+    <ClCompile Include="..\..\src\lua\LuaScreenSing.cpp" />
+    <ClCompile Include="..\..\src\lua\LuaTextGL.cpp" />
+    <ClCompile Include="..\..\src\lua\LuaTexture.cpp" />
+    <ClCompile Include="..\..\src\lua\LuaUsdx.cpp" />
+    <ClCompile Include="..\..\src\lua\LuaUtils.cpp" />
+    <ClCompile Include="..\..\src\media\AudioConverter.cpp" />
+    <ClCompile Include="..\..\src\media\AudioCorePortaudio.cpp" />
+    <ClCompile Include="..\..\src\media\AudioCore_Bass.cpp" />
+    <ClCompile Include="..\..\src\media\AudioDecoder_Bass.cpp" />
+    <ClCompile Include="..\..\src\media\AudioDecoder_FFmpeg.cpp" />
+    <ClCompile Include="..\..\src\media\AudioInput_Bass.cpp" />
+    <ClCompile Include="..\..\src\media\AudioInput_Portaudio.cpp" />
+    <ClCompile Include="..\..\src\media\AudioPlaybackBase.cpp" />
+    <ClCompile Include="..\..\src\media\AudioPlayback_Bass.cpp" />
+    <ClCompile Include="..\..\src\media\AudioPlayback_SDL.cpp" />
+    <ClCompile Include="..\..\src\media\AudioPlayback_SoftMixer.cpp" />
+    <ClCompile Include="..\..\src\media\MediaCore_FFmpeg.cpp" />
+    <ClCompile Include="..\..\src\media\MediaCore_SDL.cpp" />
+    <ClCompile Include="..\..\src\media\Media_dummy.cpp" />
+    <ClCompile Include="..\..\src\media\Video.cpp" />
+    <ClCompile Include="..\..\src\media\Visualizer.cpp" />
+    <ClCompile Include="..\..\src\menu\Display.cpp" />
+    <ClCompile Include="..\..\src\menu\DrawTexture.cpp" />
+    <ClCompile Include="..\..\src\menu\Menu.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuBackground.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuBackgroundColor.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuBackgroundFade.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuBackgroundNone.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuBackgroundTexture.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuBackgroundVideo.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuButton.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuButtonCollection.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuEqualizer.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuInteract.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuSelectSlide.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuStatic.cpp" />
+    <ClCompile Include="..\..\src\menu\MenuText.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenCredits.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenEdit.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenEditConvert.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenEditHeader.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenEditSub.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenLevel.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenLoading.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenMain.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenName.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenOpen.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenOptions.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenOptionsAdvanced.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenOptionsGraphics.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenOptionsLyrics.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenOptionsRecord.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenOptionsSound.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenOptionsThemes.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenPartyNewRound.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenPartyOptions.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenPartyPlayer.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenPartyRounds.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenPartyScore.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenPartyWin.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenPopup.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenScore.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenSing.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenSong.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenSongJumpto.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenSongMenu.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenStatDetail.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenStatMain.cpp" />
+    <ClCompile Include="..\..\src\screens\ScreenTop5.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\base\Main.h" />
+    <ClInclude Include="..\..\src\lib\bass\c\bass.h" />
+    <ClInclude Include="..\..\src\lib\FreeImage\FreeBitmap.h" />
+    <ClInclude Include="..\..\src\lib\FreeImage\FreeImage.h" />
+    <ClInclude Include="..\..\src\lib\freetype\freetype.h" />
+    <ClInclude Include="..\..\src\lib\portmixer\portmixer.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{82A899DA-591E-4A3F-997C-0B276628766F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>usdx</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

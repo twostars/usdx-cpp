@@ -1,0 +1,21 @@
+[submodule "src/lib/libsdl"]
+	path = src/lib/libsdl
+	url = https://github.com/spurious/SDL-mirror
+[submodule "src/lib/Lua/Lua"]
+	path = src/lib/Lua/Lua
+	url = https://github.com/twostars/Lua
+[submodule "src/lib/ffmpeg"]
+	path = src/lib/ffmpeg
+	url = https://github.com/FFmpeg/FFmpeg
+[submodule "src/lib/libpcre"]
+	path = src/lib/libpcre
+	url = https://github.com/twostars/libpcre
+[submodule "src/lib/libpng"]
+	path = src/lib/libpng
+	url = git://git.code.sf.net/p/libpng/code
+[submodule "src/lib/projectM"]
+	path = src/lib/projectM
+	url = http://git.code.sf.net/p/projectm/code
+[submodule "src/lib/sqlite"]
+	path = src/lib/sqlite
+	url = http://repo.or.cz/r/sqlite.git

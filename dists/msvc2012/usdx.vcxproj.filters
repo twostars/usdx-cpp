@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{b49c2133-d4ec-49e5-a96b-7e0a15b470e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\base">
+      <UniqueIdentifier>{e1438f96-d2cc-4bee-97cf-897f744c569a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\encoding">
+      <UniqueIdentifier>{a9362d48-c1fc-4d3f-b070-1d53ce94f7c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lua">
+      <UniqueIdentifier>{95d68329-3261-458e-b8f1-d5743f4d6950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\media">
+      <UniqueIdentifier>{7df4063e-da81-4810-9ca3-49ee25254d25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\menu">
+      <UniqueIdentifier>{a383838c-cf6f-4109-a41f-a50770f2852f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\screens">
+      <UniqueIdentifier>{c0d9f35a-8201-4988-8fd7-ba5ae2a09bb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{677cd5c2-86d7-4b0d-942d-114345144129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\bass">
+      <UniqueIdentifier>{8b647093-d7e0-453d-aa22-e9a195107eea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\fft">
+      <UniqueIdentifier>{f1a02e19-738d-4036-857c-c7b473954832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\FreeImage">
+      <UniqueIdentifier>{77d71dc0-e1f7-475e-ba58-d832c9e89fdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\FreeType">
+      <UniqueIdentifier>{43b8e142-85f3-450b-8dd9-f60bae4917fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\libsdl">
+      <UniqueIdentifier>{b5163dbf-0663-41d4-8847-2823f0ee661b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\OpenGL">
+      <UniqueIdentifier>{133fc5b8-baf0-4e8b-b3b9-a3f636e5a0e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\midi">
+      <UniqueIdentifier>{c05bd3c5-9d8b-4162-a358-1aeba4d7144b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\other">
+      <UniqueIdentifier>{ee860f94-115e-4196-bd8f-e923cf0845b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\portmixer">
+      <UniqueIdentifier>{2fb9ff18-f78b-4875-be8c-e92e1bf844bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\portaudio">
+      <UniqueIdentifier>{0b3f038a-756c-4d2a-95aa-adbba0b183e6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\base\Main.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lib\fft\FFT.cpp">
+      <Filter>lib\fft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lib\other\DirWatch.cpp">
+      <Filter>lib\other</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Music.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Note.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Party.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Path.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\PathUtils.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Platform.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\PlatformLinux.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\PlatformMacOSX.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\PlatformWindows.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Playlist.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Record.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\RingBuffer.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\SingNotes.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\SingScores.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Skins.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Song.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Songs.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\TextEncoding.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\TextGL.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Texture.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Themes.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Time.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\UnicodeUtils.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\XMLSong.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\BeatTimer.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\CatCovers.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\CommandLine.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Common.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Config.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Covers.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Database.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Draw.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\EditorLyrics.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Files.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Filesystem.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Font.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Graphic.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\GraphicClasses.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Image.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Ini.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Joystick.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Language.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Log.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\Lyrics.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\MainWindows.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\base\MainOther.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenPartyOptions.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenPartyPlayer.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenPartyRounds.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenPartyScore.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenPartyWin.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenPopup.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenScore.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenSing.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenSong.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenSongJumpto.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenSongMenu.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenStatDetail.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenStatMain.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenTop5.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenCredits.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenEdit.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenEditConvert.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenEditHeader.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenEditSub.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenLevel.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenLoading.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenMain.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenName.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenOpen.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenOptions.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenOptionsAdvanced.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenOptionsGraphics.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenOptionsLyrics.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenOptionsRecord.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenOptionsSound.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenOptionsThemes.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenPartyNewRound.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuBackgroundTexture.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuBackgroundVideo.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuButton.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuButtonCollection.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuEqualizer.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuInteract.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuSelectSlide.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuStatic.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuText.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\Display.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\DrawTexture.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\Menu.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuBackground.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuBackgroundColor.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuBackgroundFade.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\menu\MenuBackgroundNone.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioDecoder_Bass.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioDecoder_FFmpeg.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioInput_Bass.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioInput_Portaudio.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioPlayback_Bass.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioPlayback_SDL.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioPlayback_SoftMixer.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioPlaybackBase.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\Media_dummy.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\MediaCore_FFmpeg.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\MediaCore_SDL.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\Video.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\Visualizer.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioConverter.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioCore_Bass.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\media\AudioCorePortaudio.cpp">
+      <Filter>src\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\LuaGl.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\LuaLog.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\LuaParty.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\LuaScreenSing.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\LuaTextGL.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\LuaTexture.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\LuaUsdx.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\LuaUtils.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\HookableEvent.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lua\LuaCore.cpp">
+      <Filter>src\lua</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\lib\bass\c\bass.h">
+      <Filter>lib\bass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lib\FreeImage\FreeBitmap.h">
+      <Filter>lib\FreeImage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lib\FreeImage\FreeImage.h">
+      <Filter>lib\FreeImage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lib\freetype\freetype.h">
+      <Filter>lib\FreeType</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\Main.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lib\portmixer\portmixer.h">
+      <Filter>lib\portmixer</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
