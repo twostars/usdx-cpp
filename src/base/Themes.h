@@ -24,6 +24,11 @@
 #define _THEMES_H
 #pragma once
 
+struct ThemePlaylist
+{
+	tstring CatText;
+};
+
 struct ThemeEntry
 {
 	tstring Path;
@@ -67,7 +72,7 @@ public:
 	DECL_THEME(ErrorPopup);
 	DECL_THEME(CheckPopup);
 	DECL_THEME(SongMenu);
-	DECL_THEME(SongJumpto);
+	DECL_THEME(SongJumpTo);
 	DECL_THEME(PartyNewRound);
 	DECL_THEME(PartyWin);
 	DECL_THEME(PartyScore);

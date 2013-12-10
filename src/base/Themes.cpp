@@ -26,6 +26,7 @@
 #include "Themes.h"
 #include "Log.h"
 #include "Skins.h"
+#include "ThemeDefines.h"
 
 #include "../lib/simpleini/SimpleIni.h"
 
@@ -41,36 +42,35 @@ Themes::Themes()
 {
 	#define LOAD_THEME(name) name = new Theme ## name()
 
-//	LOAD_THEME(Loading);
-//	LOAD_THEME(Main);
-//	LOAD_THEME(Name);
-//	LOAD_THEME(Level);
-//	LOAD_THEME(Song);
-//	LOAD_THEME(Sing);
-//	LOAD_THEME(Score);
-//	LOAD_THEME(Top5);
-//	LOAD_THEME(Options);
-//	LOAD_THEME(OptionsGame);
-//	LOAD_THEME(OptionsGraphics);
-//	LOAD_THEME(OptionsSound);
-//	LOAD_THEME(OptionsLyrics);
-//	LOAD_THEME(OptionsThemes);
-//	LOAD_THEME(OptionsRecord);
-//	LOAD_THEME(OptionsAdvanced);
-//	LOAD_THEME(Edit);
-//	LOAD_THEME(ErrorPopup);
-//	LOAD_THEME(CheckPopup);
-//	LOAD_THEME(SongMenu);
-//	LOAD_THEME(SongJumpto);
-//	LOAD_THEME(PartyNewRound);
-//	LOAD_THEME(PartyWin);
-//	LOAD_THEME(PartyScore);
-//	LOAD_THEME(PartyOptions);
-//	LOAD_THEME(PartyPlayer);
-//	LOAD_THEME(PartyRounds);
-//	LOAD_THEME(StatMain);
-//	LOAD_THEME(StatDetail);
-
+	LOAD_THEME(Loading);
+	LOAD_THEME(Main);
+	LOAD_THEME(Name);
+	LOAD_THEME(Level);
+	LOAD_THEME(Song);
+	LOAD_THEME(Sing);
+	LOAD_THEME(Score);
+	LOAD_THEME(Top5);
+	LOAD_THEME(Options);
+	LOAD_THEME(OptionsGame);
+	LOAD_THEME(OptionsGraphics);
+	LOAD_THEME(OptionsSound);
+	LOAD_THEME(OptionsLyrics);
+	LOAD_THEME(OptionsThemes);
+	LOAD_THEME(OptionsRecord);
+	LOAD_THEME(OptionsAdvanced);
+	LOAD_THEME(Edit);
+	LOAD_THEME(ErrorPopup);
+	LOAD_THEME(CheckPopup);
+	LOAD_THEME(SongMenu);
+	LOAD_THEME(SongJumpTo);
+	LOAD_THEME(PartyNewRound);
+	LOAD_THEME(PartyWin);
+	LOAD_THEME(PartyScore);
+	LOAD_THEME(PartyOptions);
+	LOAD_THEME(PartyPlayer);
+	LOAD_THEME(PartyRounds);
+	LOAD_THEME(StatMain);
+	LOAD_THEME(StatDetail);
 	#undef LOAD_THEME
 
 	LoadList();
@@ -84,35 +84,35 @@ void Themes::RecreateThemeObjects()
 	#define LOAD_THEME(name) delete name; \
 	name = new Theme ## name()
 
-//	LOAD_THEME(Loading);
-//	LOAD_THEME(Main);
-//	LOAD_THEME(Name);
-//	LOAD_THEME(Level);
-//	LOAD_THEME(Song);
-//	LOAD_THEME(Sing);
-//	LOAD_THEME(Score);
-//	LOAD_THEME(Top5);
-//	LOAD_THEME(Options);
-//	LOAD_THEME(OptionsGame);
-//	LOAD_THEME(OptionsGraphics);
-//	LOAD_THEME(OptionsSound);
-//	LOAD_THEME(OptionsLyrics);
-//	LOAD_THEME(OptionsThemes);
-//	LOAD_THEME(OptionsRecord);
-//	LOAD_THEME(OptionsAdvanced);
-//	LOAD_THEME(Edit);
-//	LOAD_THEME(ErrorPopup);
-//	LOAD_THEME(CheckPopup);
-//	LOAD_THEME(SongMenu);
-//	LOAD_THEME(SongJumpto);
-//	LOAD_THEME(PartyNewRound);
-//	LOAD_THEME(PartyWin);
-//	LOAD_THEME(PartyScore);
-//	LOAD_THEME(PartyOptions);
-//	LOAD_THEME(PartyPlayer);
-//	LOAD_THEME(PartyRounds);
-//	LOAD_THEME(StatMain);
-//	LOAD_THEME(StatDetail);
+	LOAD_THEME(Loading);
+	LOAD_THEME(Main);
+	LOAD_THEME(Name);
+	LOAD_THEME(Level);
+	LOAD_THEME(Song);
+	LOAD_THEME(Sing);
+	LOAD_THEME(Score);
+	LOAD_THEME(Top5);
+	LOAD_THEME(Options);
+	LOAD_THEME(OptionsGame);
+	LOAD_THEME(OptionsGraphics);
+	LOAD_THEME(OptionsSound);
+	LOAD_THEME(OptionsLyrics);
+	LOAD_THEME(OptionsThemes);
+	LOAD_THEME(OptionsRecord);
+	LOAD_THEME(OptionsAdvanced);
+	LOAD_THEME(Edit);
+	LOAD_THEME(ErrorPopup);
+	LOAD_THEME(CheckPopup);
+	LOAD_THEME(SongMenu);
+	LOAD_THEME(SongJumpTo);
+	LOAD_THEME(PartyNewRound);
+	LOAD_THEME(PartyWin);
+	LOAD_THEME(PartyScore);
+	LOAD_THEME(PartyOptions);
+	LOAD_THEME(PartyPlayer);
+	LOAD_THEME(PartyRounds);
+	LOAD_THEME(StatMain);
+	LOAD_THEME(StatDetail);
 
 	#undef LOAD_THEME
 }
@@ -227,35 +227,35 @@ Themes::~Themes()
 {
 	#define FREE_THEME(name) delete name
 
-//	FREE_THEME(Loading);
-//	FREE_THEME(Main);
-//	FREE_THEME(Name);
-//	FREE_THEME(Level);
-//	FREE_THEME(Song);
-//	FREE_THEME(Sing);
-//	FREE_THEME(Score);
-//	FREE_THEME(Top5);
-//	FREE_THEME(Options);
-//	FREE_THEME(OptionsGame);
-//	FREE_THEME(OptionsGraphics);
-//	FREE_THEME(OptionsSound);
-//	FREE_THEME(OptionsLyrics);
-//	FREE_THEME(OptionsThemes);
-//	FREE_THEME(OptionsRecord);
-//	FREE_THEME(OptionsAdvanced);
-//	FREE_THEME(Edit);
-//	FREE_THEME(ErrorPopup);
-//	FREE_THEME(CheckPopup);
-//	FREE_THEME(SongMenu);
-//	FREE_THEME(SongJumpto);
-//	FREE_THEME(PartyNewRound);
-//	FREE_THEME(PartyWin);
-//	FREE_THEME(PartyScore);
-//	FREE_THEME(PartyOptions);
-//	FREE_THEME(PartyPlayer);
-//	FREE_THEME(PartyRounds);
-//	FREE_THEME(StatMain);
-//	FREE_THEME(StatDetail);
+	FREE_THEME(Loading);
+	FREE_THEME(Main);
+	FREE_THEME(Name);
+	FREE_THEME(Level);
+	FREE_THEME(Song);
+	FREE_THEME(Sing);
+	FREE_THEME(Score);
+	FREE_THEME(Top5);
+	FREE_THEME(Options);
+	FREE_THEME(OptionsGame);
+	FREE_THEME(OptionsGraphics);
+	FREE_THEME(OptionsSound);
+	FREE_THEME(OptionsLyrics);
+	FREE_THEME(OptionsThemes);
+	FREE_THEME(OptionsRecord);
+	FREE_THEME(OptionsAdvanced);
+	FREE_THEME(Edit);
+	FREE_THEME(ErrorPopup);
+	FREE_THEME(CheckPopup);
+	FREE_THEME(SongMenu);
+	FREE_THEME(SongJumpTo);
+	FREE_THEME(PartyNewRound);
+	FREE_THEME(PartyWin);
+	FREE_THEME(PartyScore);
+	FREE_THEME(PartyOptions);
+	FREE_THEME(PartyPlayer);
+	FREE_THEME(PartyRounds);
+	FREE_THEME(StatMain);
+	FREE_THEME(StatDetail);
 
 	#undef FREE_THEME
 }

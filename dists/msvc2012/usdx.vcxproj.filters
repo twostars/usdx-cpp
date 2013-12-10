@@ -509,5 +509,14 @@
     <ClInclude Include="..\..\src\base\Themes.h">
       <Filter>src\base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\base\Texture.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\ThemeDefines.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\ThemeTypes.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
