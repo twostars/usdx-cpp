@@ -21,7 +21,6 @@
     <ClCompile Include="..\..\src\base\Draw.cpp" />
     <ClCompile Include="..\..\src\base\EditorLyrics.cpp" />
     <ClCompile Include="..\..\src\base\Files.cpp" />
-    <ClCompile Include="..\..\src\base\Filesystem.cpp" />
     <ClCompile Include="..\..\src\base\Font.cpp" />
     <ClCompile Include="..\..\src\base\Graphic.cpp" />
     <ClCompile Include="..\..\src\base\GraphicClasses.cpp" />
@@ -35,12 +34,11 @@
     <ClCompile Include="..\..\src\base\Music.cpp" />
     <ClCompile Include="..\..\src\base\Note.cpp" />
     <ClCompile Include="..\..\src\base\Party.cpp" />
-    <ClCompile Include="..\..\src\base\Path.cpp" />
     <ClCompile Include="..\..\src\base\PathUtils.cpp" />
     <ClCompile Include="..\..\src\base\Platform.cpp" />
     <ClCompile Include="..\..\src\base\PlatformLinux.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\src\base\PlatformMacOSX.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -65,6 +63,10 @@
     <ClCompile Include="..\..\src\base\XMLSong.cpp" />
     <ClCompile Include="..\..\src\lib\fft\FFT.cpp" />
     <ClCompile Include="..\..\src\lib\other\DirWatch.cpp" />
+    <ClCompile Include="..\..\src\lib\simpleini\ConvertUTF.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\..\src\lua\HookableEvent.cpp" />
     <ClCompile Include="..\..\src\lua\LuaCore.cpp" />
     <ClCompile Include="..\..\src\lua\LuaGl.cpp" />
@@ -148,7 +150,10 @@
     <ClInclude Include="..\..\src\base\CommandLine.h" />
     <ClInclude Include="..\..\src\base\Common.h" />
     <ClInclude Include="..\..\src\base\Config.h" />
+    <ClInclude Include="..\..\src\base\Language.h" />
+    <ClInclude Include="..\..\src\base\Log.h" />
     <ClInclude Include="..\..\src\base\Main.h" />
+    <ClInclude Include="..\..\src\base\PathUtils.h" />
     <ClInclude Include="..\..\src\base\Platform.h" />
     <ClInclude Include="..\..\src\base\RelativeTimer.h" />
     <ClInclude Include="..\..\src\base\Time.h" />
@@ -157,7 +162,10 @@
     <ClInclude Include="..\..\src\lib\FreeImage\FreeImage.h" />
     <ClInclude Include="..\..\src\lib\freetype\freetype.h" />
     <ClInclude Include="..\..\src\lib\portmixer\portmixer.h" />
+    <ClInclude Include="..\..\src\lib\simpleini\ConvertUTF.h" />
+    <ClInclude Include="..\..\src\lib\simpleini\SimpleIni.h" />
     <ClInclude Include="..\..\src\lua\LuaCore.h" />
+    <ClInclude Include="..\..\src\shared\CriticalException.h" />
     <ClInclude Include="..\..\src\shared\Singleton.h" />
     <ClInclude Include="..\..\src\shared\stdafx.h" />
     <ClInclude Include="..\..\src\shared\string_utils.h" />
@@ -196,15 +204,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>ultrastardeluxe</TargetName>
-    <IncludePath>$(SolutionDir)..\..\src\shared;$(SolutionDir)..\..\src\lib\libsdl\include;$(SolutionDir)..\..\src\lib\Lua;$(SolutionDir)..\..\src\lib\Lua\Lua\src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\..\src\lib\libsdl\VisualC\SDL\Win32\$(Configuration);$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(Boost_Root);$(SolutionDir)..\..\src\shared;$(SolutionDir)..\..\src\lib\libsdl\include;$(SolutionDir)..\..\src\lib\Lua;$(SolutionDir)..\..\src\lib\Lua\Lua\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(Boost_Root)\lib;$(SolutionDir)..\..\src\lib\libsdl\VisualC\SDL\Win32\$(Configuration);$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\..\game\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>ultrastardeluxe</TargetName>
-    <IncludePath>$(SolutionDir)..\..\src\shared;$(SolutionDir)..\..\src\lib\libsdl\include;$(SolutionDir)..\..\src\lib\Lua;$(SolutionDir)..\..\src\lib\Lua\Lua\src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\..\src\lib\libsdl\VisualC\SDL\Win32\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(Boost_Root);$(SolutionDir)..\..\src\shared;$(SolutionDir)..\..\src\lib\libsdl\include;$(SolutionDir)..\..\src\lib\Lua;$(SolutionDir)..\..\src\lib\Lua\Lua\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(Boost_Root)\lib;$(SolutionDir)..\..\src\lib\libsdl\VisualC\SDL\Win32\$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\..\game\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

@@ -18,6 +18,33 @@
  * along with this program; see the file COPYING. If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
- */
+ */           
 
-#include "stdafx.h"
+#ifndef _PATHUTILS_H
+#define _PATHUTILS_H
+#pragma once
+
+#define VISUAL_DIR		_T("visuals")
+#define THEME_DIR		_T("themes")
+#define SKINS_DIR		_T("skins")
+#define SOUND_DIR		_T("sounds")
+#define SONG_DIR		_T("songs")
+#define RESOURCE_DIR	_T("resources")
+#define PLUGIN_DIR		_T("plugins")
+#define LANG_DIR		_T("languages")
+#define FONT_DIR		_T("fonts")
+#define COVER_DIR		_T("covers")
+#define PLAYLIST_DIR    _T("playlists")
+#define SCREENSHOT_DIR  _T("screenshots")
+#define LOG_DIR			_T("logs")
+
+#define CONFIG_FILE		_T("config.ini")
+
+// Forward declare path class
+namespace boost { namespace filesystem { class path; } }
+
+typedef std::set<boost::filesystem::path> PathSet;
+
+void InitializePaths();
+
+#endif

@@ -44,10 +44,20 @@
 #	define tstring		std::string
 #	define _tprintf		printf
 #	define _ttoi		atoi
+#	define _tfopen		fopen
+#	define _ftprintf	fprintf
+#	define _snprintf	snprintf
+#	define _sntprintf	_snprintf
 
 #endif
 
 #define TSTR(str) _T(#str)
 #define TSTRINGIFY(str) TSTR(str)
+
+#ifdef UNICODE
+#	define tstring_ci	wstring_ci
+#else
+#	define tstring_ci	string_ci
+#endif
 
 #endif

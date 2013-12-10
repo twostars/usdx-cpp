@@ -58,6 +58,9 @@
     <Filter Include="src\shared">
       <UniqueIdentifier>{617c570d-b887-4a1a-a790-80f9e616cef0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lib\simpleini">
+      <UniqueIdentifier>{54b19038-866e-4385-b153-a9e939599f23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\base\Main.cpp">
@@ -76,9 +79,6 @@
       <Filter>src\base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\base\Party.cpp">
-      <Filter>src\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\base\Path.cpp">
       <Filter>src\base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\base\PathUtils.cpp">
@@ -169,9 +169,6 @@
       <Filter>src\base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\base\Files.cpp">
-      <Filter>src\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\base\Filesystem.cpp">
       <Filter>src\base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\base\Font.cpp">
@@ -429,6 +426,9 @@
     <ClCompile Include="..\..\src\base\RelativeTimer.cpp">
       <Filter>src\base</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lib\simpleini\ConvertUTF.c">
+      <Filter>lib\simpleini</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lib\bass\c\bass.h">
@@ -484,6 +484,24 @@
     </ClInclude>
     <ClInclude Include="..\..\src\shared\string_utils.h">
       <Filter>src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\Log.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\Language.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lib\simpleini\ConvertUTF.h">
+      <Filter>lib\simpleini</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lib\simpleini\SimpleIni.h">
+      <Filter>lib\simpleini</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\CriticalException.h">
+      <Filter>src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\PathUtils.h">
+      <Filter>src\base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -20,9 +20,73 @@
  * Boston, MA 02110-1301, USA.
  */           
 
+#include "stdafx.h"
 #include "Platform.h"
 
-bool Platform::TerminateIfAlreadyRunning(const wchar_t * windowTitle)
+bool Platform::TerminateIfAlreadyRunning(const TCHAR * windowTitle)
 {
 	return false;
+}
+
+void Platform::ShowMessage(const TCHAR * message, MessageType messageType)
+{
+	_tprintf(_T("%s\n"), message);
+}
+
+void Platform::DetectLocalExecution()
+{
+}
+
+void Platform::GetUserHomeDir(path * outPath)
+{
+	char * homeDir = getenv("HOME");
+	if (homeDir != NULL)
+	{
+		*outPath = homeDir;
+		return;
+    }
+ 
+	uid_t uid = getuid();
+	struct passwd *pw = getpwuid(uid);
+ 
+	if (pw == NULL)
+		throw CriticalException(_T("Failed to identify user's home directory."));
+
+	*outPath = pw->pw_dir;
+}
+
+void Platform::GetLogPath(path * outPath)
+{
+	GetUserHomeDir(outPath);
+	*outPath /= _T("Library/Logs/UltraStar Deluxe");
+}
+
+void Platform::GetGameSharedPath(path * outPath)
+{
+	if (s_useLocalDirs)
+		return GetExecutionDir(outPath);
+
+	*outPath = INSTALL_DATADIR;
+}
+
+void Platform::GetGameUserPath(path * outPath)
+{
+	if (s_useLocalDirs)
+		return GetExecutionDir(outPath);
+
+	GetUserHomeDir(outPath);
+	*outPath /= HOME_DIR;
+}
+
+void Platform::GetMusicPath(path * outPath)
+{
+	GetUserHomeDir(outPath);
+	*outPath /= _T("Music/UltraStar Deluxe");
+}
+
+bool Platform::IsPathReadonly(const path * requestedPath)
+{
+	file_status s = status(*requestedPath);
+	perms p = s.permissions();
+	return (p & others_write) != others_write;
 }

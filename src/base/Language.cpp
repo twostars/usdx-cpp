@@ -21,3 +21,86 @@
  */
 
 #include "stdafx.h"
+#include "Language.h"
+#include "PathUtils.h"
+#include "Log.h"
+
+#include "../lib/simpleini/SimpleIni.h"
+
+#include <boost/filesystem.hpp>
+
+using namespace boost::filesystem;
+
+initialiseSingleton(Language);
+
+extern path LanguagesPath;
+
+Language::Language()
+{
+	LoadList();
+}
+
+void Language::LoadList()
+{
+	directory_iterator end;
+	try
+	{
+		for (directory_iterator itr(LanguagesPath); itr != end; ++itr)
+		{
+			const path& p = itr->path();
+			if (is_directory(p)
+				|| !p.has_extension()
+				|| p.extension() != _T(".ini"))
+				continue;
+
+			tstring languageName = p.filename().stem().c_str();
+
+			// insert the new language name to the set
+			_langSet.insert(languageName);
+		}
+	}
+	catch (filesystem_error)
+	{
+		// TODO: Provide path it's trying to access (LanguagesPath)
+		sLog.Critical(_T("Could not access language directory."));
+	}
+
+	if (_langSet.empty())
+		sLog.Critical(_T("Could not load any language file."));
+
+	LanguageSet::const_iterator itr = _langSet.find(DEFAULT_LANGUAGE);
+	if (itr == _langSet.end())
+		sLog.Critical(_T("Default language (") DEFAULT_LANGUAGE _T(") does not exist."));
+
+	ChangeLanguage(DEFAULT_LANGUAGE);
+}
+
+void Language::ChangeLanguage(const tstring& language)
+{
+	const TCHAR * sectionName = _T("Text");
+
+	CSimpleIni ini(true);
+	path iniPath(LanguagesPath);
+	iniPath /= language;
+	iniPath.replace_extension(_T(".ini"));
+
+	SI_Error result = ini.LoadFile(iniPath.native().c_str());
+
+	// TODO: Provide the language name.
+	if (result != SI_OK)
+		sLog.Critical(_T("Change language"), _T("Failed to change language."));
+
+	CSimpleIni::TNamesDepend keys;
+	ini.GetAllKeys(sectionName, keys);
+	for (CSimpleIni::TNamesDepend::const_iterator itr = keys.begin(); itr != keys.end(); ++itr)
+		_langEntryMap[itr->pItem] = ini.GetValue(sectionName, itr->pItem);
+}
+
+void Language::AddConst(const tstring& id, const tstring& text)
+{
+	_langConstEntryMap[id] = text;
+}
+
+Language::~Language()
+{
+}

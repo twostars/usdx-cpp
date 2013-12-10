@@ -24,7 +24,21 @@
 #include "Platform.h"
 #include "Main.h"
 
+#include <boost/filesystem.hpp>
+
+bool Platform::s_useLocalDirs = false;
+
 int main(int argc, TCHAR ** argv)
 {
 	return usdxMain(argc, argv);
+}
+
+void Platform::Init()
+{
+	DetectLocalExecution();
+}
+
+void Platform::GetExecutionDir(boost::filesystem::path * path)
+{
+	*path = boost::filesystem::current_path();
 }

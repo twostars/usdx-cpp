@@ -33,6 +33,8 @@
 #include "Time.h"
 #include "RelativeTimer.h"
 #include "CommandLine.h"
+#include "Log.h"
+#include "Language.h"
 
 /* globals */
 // TODO: Clean these up
@@ -43,26 +45,56 @@ CMDParams Params;
 
 int usdxMain(int argc, TCHAR ** argv)
 {
-	const TCHAR * windowTitle = USDXVersionStr();
+	try
+	{
+		const TCHAR * windowTitle = USDXVersionStr();
 
-	if (Platform::TerminateIfAlreadyRunning(windowTitle))
-		return 1;
+		if (Platform::TerminateIfAlreadyRunning(windowTitle))
+			return 1;
 
-	// fix the locale for string-to-float parsing in C-libs
-	Common::SetDefaultNumericLocale();
+		// fix the locale for string-to-float parsing in C-libs
+		Common::SetDefaultNumericLocale();
 
-	// initialize SDL
-	// without SDL_INIT_TIMER SDL_GetTicks() might return strange values
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
+		// initialize SDL
+		// without SDL_INIT_TIMER SDL_GetTicks() might return strange values
+		SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
 
-	// create LuaCore first so other classes can register their events
-	new LuaCore();
+		// create LuaCore first so other classes can register their events
+		new LuaCore();
 
-	// load the command-line arguments
-	Params.Load(argc, argv);
+		// load the command-line arguments
+		Params.Load(argc, argv);
 
-	// free LuaCore
+		// Setup the logger/benchmarker
+		new Log();
+		sLog.BenchmarkStart(0);
+
+		// Language
+		sLog.BenchmarkStart(1);
+		sLog.Status(_T("Initialize Paths"), _T("Initialization"));
+		InitializePaths();
+		sLog.Status(_T("Load Language"), _T("Initialization"));
+		new Language();
+
+		// Add const values
+		sLanguage.AddConst(_T("US_VERSION"), USDXVersionStr());
+		sLog.BenchmarkEnd(1);
+		sLog.Benchmark(1, _T("Loading Language"));
+	}
+	catch (CriticalException& e)
+	{
+		_tprintf(_T("Critical exception occurred: %s\n"), e.twhat());
+	}
+	catch (...)
+	{
+		_tprintf(_T("Unhandled exception occurred\n"));
+	}
+
+	delete Language::getSingletonPtr();
+	delete Log::getSingletonPtr();
 	delete LuaCore::getSingletonPtr();
+
+	SDL_Quit();
 
 	return 0;
 }

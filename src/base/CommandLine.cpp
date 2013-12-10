@@ -22,8 +22,17 @@
 
 #include "stdafx.h"
 #include "CommandLine.h"
+
 #include "../lib/simpleopt/SimpleOpt.h"
 #include "../lib/simpleopt/SimpleGlob.h"
+
+#include <boost/filesystem/path.hpp>
+
+using namespace boost::filesystem;
+
+extern path	SongPath;
+extern path	ConfigFile;
+extern path	ScoreFile;
 
 enum
 {
@@ -197,4 +206,3 @@ void CMDParams::ShowUsage()
 		_T("\n")
 	);
 }
-

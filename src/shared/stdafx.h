@@ -29,13 +29,18 @@
 #	define _CRT_SECURE_NO_WARNINGS
 #endif
 
+#include <exception>
 #include <string>
 #include <iostream>
+#include <cassert>
+#include <map>
+#include <set>
 
 #include "unicode.h"
 #include "types.h"
 #include "string_utils.h"
 
+#include "CriticalException.h"
 #include "Singleton.h"
 
 #endif

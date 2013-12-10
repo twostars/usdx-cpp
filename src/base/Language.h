@@ -18,6 +18,32 @@
  * along with this program; see the file COPYING. If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
- */
+ */           
 
-#include "stdafx.h"
+#ifndef _LANGUAGE_H
+#define _LANGUAGE_H
+#pragma once
+
+#define DEFAULT_LANGUAGE _T("English")
+
+class Language : public Singleton<Language>
+{
+public:
+	Language();
+	void LoadList();
+	void ChangeLanguage(const tstring& language);
+	void AddConst(const tstring& id, const tstring& text);
+	~Language();
+
+private:
+	typedef std::set<tstring, tstring_ci> LanguageSet;
+	typedef std::map<tstring, tstring> LanguageEntryMap;
+
+	LanguageSet _langSet;
+	LanguageEntryMap _langEntryMap;
+	LanguageEntryMap _langConstEntryMap;
+};
+
+#define sLanguage (Language::getSingleton())
+
+#endif

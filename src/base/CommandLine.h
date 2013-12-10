@@ -52,11 +52,6 @@ public:
 	// TODO: Store properly (i.e. without string)
 	tstring		Language;
 	tstring		Resolution;
-
-	// TODO: Use Path class
-	tstring		SongPath;
-	tstring		ConfigFile;
-	tstring		ScoreFile;
 };
 
 #endif

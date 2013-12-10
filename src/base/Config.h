@@ -36,6 +36,7 @@ const int VERSION_RELEASE = 1;
 #define	  USDX_VERSION_MINOR     1
 #define   USDX_VERSION_RELEASE   0
 #define   USDX_VERSION_STATE     _T("")
+#define   USDX_IDENTIFIER        _T("ultrastardx")
 #define   USDX_STRING            _T("UltraStar Deluxe")
 
 #ifdef HAVE_FFMPEG
@@ -83,4 +84,5 @@ const int VERSION_RELEASE = 1;
 								TSTRINGIFY(USDX_VERSION_MINOR) _T(".") \
 								TSTRINGIFY(USDX_VERSION_RELEASE) \
 								USDX_VERSION_STATE)
+
 #endif

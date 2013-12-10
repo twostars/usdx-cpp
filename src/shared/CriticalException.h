@@ -20,52 +20,25 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef _STRING_UTILS_H
-#define _STRING_UTILS_H
+#ifndef _CRITICALEXCEPTION_H
+#define _CRITICALEXCEPTION_H
 #pragma once
 
-#include <algorithm>
-
-#if defined(WIN32)
-#	define STRCASECMP	_stricmp
-#	define WSTRCASECMP	_wcsicmp
-#else
-#	define STRCASECMP strcasecmp
-#	define WSTRCASECMP	wcscasecmp
-#endif
-
-struct string_ci
+class CriticalException : public std::exception
 {
-	bool operator() (const std::string& str1, const std::string& str2) const {
-		return STRCASECMP(str1.c_str(), str2.c_str()) < 0;
+public:
+	CriticalException(tstring message)
+		: _message(message)
+	{
 	}
-};
 
-struct wstring_ci
-{
-	bool operator() (const std::wstring& str1, const std::wstring& str2) const {
-		return WSTRCASECMP(str1.c_str(), str2.c_str()) < 0;
+	const TCHAR * twhat() const
+	{
+		return _message.c_str();
 	}
+
+private:
+	tstring _message;
 };
-
-INLINE void strtolower(std::string& str)
-{
-	std::transform(str.begin(), str.end(), str.begin(), tolower);
-}
-
-INLINE void strtolower(std::wstring& str)
-{
-	std::transform(str.begin(), str.end(), str.begin(), towlower);
-}
-
-INLINE void strtoupper(std::string& str)
-{
-	std::transform(str.begin(), str.end(), str.begin(), toupper);
-}
-
-INLINE void strtoupper(std::wstring& str)
-{
-	std::transform(str.begin(), str.end(), str.begin(), towupper);
-}
 
 #endif

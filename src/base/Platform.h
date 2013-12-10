@@ -24,10 +24,30 @@
 #define _PLATFORM_H
 #pragma once
 
+#include "PathUtils.h"
+
+enum MessageType { mtInfo, mtError };
+
 class Platform
 {
 public:
-	static bool TerminateIfAlreadyRunning(const wchar_t * windowTitle);
+	static void Init();
+
+	static bool TerminateIfAlreadyRunning(const TCHAR * windowTitle);
+	static void ShowMessage(const TCHAR * message, MessageType messageType);
+
+	static void DetectLocalExecution();
+	static void GetExecutionDir(boost::filesystem::path * outPath);
+	static void GetSpecialPath(int csidl, boost::filesystem::path * outPath); /* NOTE: Windows only */
+	static void GetUserHomeDir(boost::filesystem::path * outPath);
+	static void GetLogPath(boost::filesystem::path * outPath);
+	static void GetGameSharedPath(boost::filesystem::path * outPath);
+	static void GetGameUserPath(boost::filesystem::path * outPath);
+	static void GetMusicPath(boost::filesystem::path * outPath);
+
+	static bool IsPathReadonly(const boost::filesystem::path * requestedPath);
+
+	static bool s_useLocalDirs;
 };
 
 #endif
