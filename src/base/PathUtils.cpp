@@ -25,8 +25,6 @@
 #include "Log.h"
 #include "CommandLine.h"
 
-#include <boost/filesystem.hpp>
-
 using namespace boost::filesystem;
 
 extern CMDParams Params;
@@ -53,6 +51,11 @@ path ScreenshotsPath;
 
 PathSet SongPaths;
 PathSet CoverPaths;
+
+INLINE const TCHAR * GetPath(path& path) { return path.native().c_str(); }
+
+const TCHAR * GetConfigFile()  { return GetPath(ConfigFile); }
+const TCHAR * GetScoreFile()   { return GetPath(ScoreFile); }
 
 bool FindPath(path& resultPath, const path& requestedPath, bool needsWritePermission)
 {
@@ -119,4 +122,8 @@ void InitializePaths()
 	// Add category cover paths
 	CoverPaths.insert(SharedPath / COVER_DIR);
 	CoverPaths.insert(UserPath / COVER_DIR);
+
+	// Set config file if not already set by commandline.
+	if (ConfigFile.empty())
+		ConfigFile = UserPath / CONFIG_FILE;
 }

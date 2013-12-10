@@ -40,6 +40,7 @@ const int VERSION_RELEASE = 1;
 #define   USDX_STRING            _T("UltraStar Deluxe")
 #define   USDX_THEME_VERSION     _T("USD 110")
 
+#define   MAX_PROFILE_NAMES      12
 #define   MAX_PLAYERS            6
 #define   MAX_PLAYERS_PER_TEAM   4
 #define   MAX_ROUNDS             7

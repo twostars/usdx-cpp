@@ -22,3 +22,6 @@
 [submodule "src/lib/simpleini"]
 	path = src/lib/simpleini
 	url = https://github.com/brofield/simpleini
+[submodule "src/lib/ImprovedEnum"]
+	path = src/lib/ImprovedEnum
+	url = https://github.com/twostars/ImprovedEnum

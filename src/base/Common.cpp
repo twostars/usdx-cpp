@@ -22,7 +22,6 @@
 
 #include "stdafx.h"
 #include <clocale>
-#include "Common.h"
 
 char * Common::s_previousNumLocale;
 

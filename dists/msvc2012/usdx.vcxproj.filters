@@ -61,6 +61,9 @@
     <Filter Include="lib\simpleini">
       <UniqueIdentifier>{54b19038-866e-4385-b153-a9e939599f23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lib\ImprovedEnum">
+      <UniqueIdentifier>{83321a67-fe5d-4e86-9fd3-398c6fa95ba7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\base\Main.cpp">
@@ -517,6 +520,18 @@
     </ClInclude>
     <ClInclude Include="..\..\src\base\ThemeTypes.h">
       <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\Ini.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\TextEncoding.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lib\ImprovedEnum\Include\DefineImprovedEnum.h">
+      <Filter>lib\ImprovedEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\enumerations.h">
+      <Filter>src\shared</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

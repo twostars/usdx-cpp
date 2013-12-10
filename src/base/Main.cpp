@@ -26,8 +26,6 @@
 
 #include "Main.h"
 #include "Platform.h"
-#include "Config.h"
-#include "Common.h"
 
 #include "../lua/LuaCore.h"
 #include "Time.h"
@@ -37,6 +35,7 @@
 #include "Language.h"
 #include "Skins.h"
 #include "Themes.h"
+#include "Ini.h"
 
 /* globals */
 // TODO: Clean these up
@@ -96,6 +95,19 @@ int usdxMain(int argc, TCHAR ** argv)
 		new Themes();
 		sLog.BenchmarkEnd(1);
 		sLog.Benchmark(1, _T("Loading Theme List"));
+
+		// INI file
+		sLog.BenchmarkStart(1);
+		sLog.Status(_T("Loading INI"), _T("Initialization"));
+		new Ini();
+		sIni.Load();
+
+		// It is possible that this is the first run, so create an .ini file if necessary.
+		sLog.Status(_T("Writing INI"), _T("Initialization"));
+		sIni.Save();
+
+		sLog.BenchmarkEnd(1);
+		sLog.Benchmark(1, _T("Loading INI"));
 	}
 	catch (CriticalException& e)
 	{

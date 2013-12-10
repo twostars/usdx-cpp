@@ -40,10 +40,10 @@
 
 #define CONFIG_FILE		_T("config.ini")
 
-// Forward declare path class
-namespace boost { namespace filesystem { class path; } }
-
 typedef std::set<boost::filesystem::path> PathSet;
+
+const TCHAR * GetConfigFile();
+const TCHAR * GetScoreFile();
 
 void InitializePaths();
 

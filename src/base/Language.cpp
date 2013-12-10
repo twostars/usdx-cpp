@@ -27,8 +27,6 @@
 
 #include "../lib/simpleini/SimpleIni.h"
 
-#include <boost/filesystem.hpp>
-
 using namespace boost::filesystem;
 
 initialiseSingleton(Language);

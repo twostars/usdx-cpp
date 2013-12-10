@@ -31,7 +31,7 @@ struct SkinEntry
 	tstring Theme;
 	tstring Name;
 	tstring Creator;
-	uint32  DefaultColor;
+	eColor  DefaultColor;
 };
 
 class Skins : public Singleton<Skins>

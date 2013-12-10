@@ -21,7 +21,6 @@
  */
 
 #include "stdafx.h"
-#include "Config.h"
 #include "PathUtils.h"
 #include "Themes.h"
 #include "Log.h"
@@ -29,8 +28,6 @@
 #include "ThemeDefines.h"
 
 #include "../lib/simpleini/SimpleIni.h"
-
-#include <boost/filesystem.hpp>
 
 using namespace boost::filesystem;
 

@@ -24,8 +24,6 @@
 #include "Platform.h"
 #include "Main.h"
 
-#include <boost/filesystem.hpp>
-
 bool Platform::s_useLocalDirs = false;
 
 int main(int argc, TCHAR ** argv)

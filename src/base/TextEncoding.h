@@ -18,6 +18,20 @@
  * along with this program; see the file COPYING. If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
- */           
+ */
 
-#include "stdafx.h"
+#ifndef _TEXT_ENCODING_H
+#define _TEXT_ENCODING_H
+#pragma once
+
+#define IMPROVED_ENUM_NAME  Encoding
+#define IMPROVED_ENUM_LIST  \
+	ENUMITEM(Locale) /* current locale */                                               \
+    ENUMITEM(UTF8)   /* UTF-8 */                                                        \
+    ENUMITEM(CP1250) /* Windows-1250 Central/Eastern Europe (used by UltraStar) */      \
+    ENUMITEM(CP1252) /* Windows-1252 Western Europe (used by UltraStar Deluxe < 1.1) */ \
+    ENUMITEM(Auto)   /* try to match the w3c regex and decode as unicode on match and as fallback if not */
+
+#include <DefineImprovedEnum.h>
+
+#endif

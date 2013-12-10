@@ -11,6 +11,7 @@ src/macosx/build
 src/menu/*.dcu
 src/paths.inc
 src/screens/*.dcu
+game/config.ini
 
 # Compiled Object files
 *.slo
@@ -43,3 +44,6 @@ src/screens/*.dcu
 *.log
 *.sdf
 *.opensdf
+*.suo
+*.pch
+*.ipch

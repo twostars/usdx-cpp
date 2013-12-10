@@ -37,11 +37,19 @@
 #include <vector>
 #include <cstdarg>
 
+#include <boost/filesystem.hpp>
+
 #include "unicode.h"
 #include "types.h"
 #include "string_utils.h"
 
 #include "CriticalException.h"
 #include "Singleton.h"
+
+#include "enumerations.h"
+
+#include "../base/Config.h"
+#include "../base/TextEncoding.h"
+#include "../base/Common.h"
 
 #endif

@@ -26,8 +26,6 @@
 #include "../lib/simpleopt/SimpleOpt.h"
 #include "../lib/simpleopt/SimpleGlob.h"
 
-#include <boost/filesystem/path.hpp>
-
 using namespace boost::filesystem;
 
 extern path	SongPath;

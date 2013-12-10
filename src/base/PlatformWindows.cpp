@@ -32,9 +32,6 @@
 
 #include "Platform.h"
 #include "Main.h"
-#include "Config.h"
-
-#include <boost/filesystem.hpp>
 
 using namespace boost::filesystem;
 

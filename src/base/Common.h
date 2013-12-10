@@ -34,4 +34,18 @@ private:
 	static char * s_previousNumLocale;
 };
 
+#define GET_INDEX(arr, value) GetArrayIndex(arr, sizeof(arr) / sizeof(arr[0]), value)
+#define GET_INDEX_SIZE(arr, value, size) GetArrayIndex(arr, size, value)
+
+template <typename T, typename T2>
+int GetArrayIndex(T arr, int length, T2 value)
+{
+	for (int i = 0; i < length; i++)
+	{
+		if (arr[i] == value)
+			return i;
+	}
+	return -1;
+}
+
 #endif

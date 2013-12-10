@@ -24,10 +24,9 @@
 #include "PathUtils.h"
 #include "Skins.h"
 #include "Log.h"
+#include "Ini.h"
 
 #include "../lib/simpleini/SimpleIni.h"
-
-#include <boost/filesystem.hpp>
 
 using namespace boost::filesystem;
 
@@ -109,9 +108,8 @@ void Skins::LoadHeader(const path * iniFile)
 
 	skin.Creator		= creator;
 
-	// TODO: Implement parser for color names (stored as, for example, "Blue")
-	// skin.DefaultColor	= ini.GetValue(_T("Skin"), _T("Color"), _T(""));
-
+	// Parse color names (stored as, for example, "Blue")
+	skin.DefaultColor	= LOOKUP_ENUM_VALUE(Color, _T("Skin"), _T("Color"), Color::Blue);
 	_skins.insert(std::make_pair(skin.Theme, skin));
 }
 
