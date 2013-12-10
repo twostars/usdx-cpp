@@ -83,11 +83,8 @@ void InitializePaths()
 	{
 		Params.NoLog = true;
 
-		// TODO: Clean this up
-		tstring message = _T("Log directory (");
-		message += LogPath.native();
-		message += _T(") is not available."); 
-		sLog.Warn(_T("InitializePaths"), message.c_str());
+		sLog.Warn(_T("InitializePaths"), _T("Log directory (%s) is not available."), 
+			LogPath.native().c_str());
 	}
 
 	Platform::GetGameSharedPath(&SharedPath);
@@ -108,11 +105,8 @@ void InitializePaths()
 	// Screenshot directory (must be writable)
 	if (!FindPath(ScreenshotsPath, UserPath / SCREENSHOT_DIR, true))
 	{
-		// TODO: Clean this up
-		tstring message = _T("Screenshot directory (");
-		message += ScreenshotsPath.native();
-		message += _T(") is not available."); 
-		sLog.Warn(_T("InitializePaths"), message.c_str());
+		sLog.Warn(_T("InitializePaths"), _T("Screenshot directory (%s) is not available."),
+			ScreenshotsPath.native().c_str());
 	}
 
 	// Add song paths

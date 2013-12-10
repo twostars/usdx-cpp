@@ -43,7 +43,6 @@ Skins::Skins()
 void Skins::LoadList()
 {
 	directory_iterator end;
-	tstring message; // TODO: Clean this up
 
 	try
 	{
@@ -63,9 +62,8 @@ void Skins::LoadList()
 	}
 	catch (filesystem_error)
 	{
-		message = _T("Could not access ");
-		message += SkinsPath.native();
-		sLog.Critical(message.c_str());
+		sLog.Critical(_T("Skins::LoadList"), _T("Could not access skin directory %s."), 
+			SkinsPath.native().c_str());
 	}
 }
 
@@ -90,9 +88,8 @@ void Skins::LoadHeader(const path * iniFile)
 	SI_Error result = ini.LoadFile(iniFile->native().c_str());
 	if (result != SI_OK)
 	{
-		// TODO: Include filename of INI
-		sLog.Warn(_T("Skins::LoadHeader"), _T("Failed to load INI"));
-		return;
+		return sLog.Warn(_T("Skins::LoadHeader"), _T("Failed to load INI (%s)."), 
+			iniFile->native().c_str());
 	}
 
 	SkinEntry skin;

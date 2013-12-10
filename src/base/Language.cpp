@@ -43,7 +43,6 @@ Language::Language()
 void Language::LoadList()
 {
 	directory_iterator end;
-	tstring message; // TODO: Clean this up
 
 	try
 	{
@@ -63,9 +62,8 @@ void Language::LoadList()
 	}
 	catch (filesystem_error)
 	{
-		message = _T("Could not access ");
-		message += LanguagesPath.native();
-		sLog.Critical(message.c_str());
+		sLog.Critical(_T("Language::LoadList"), _T("Could not access %s"), 
+			LanguagesPath.native().c_str());
 	}
 
 	if (_langSet.empty())
@@ -89,9 +87,8 @@ void Language::ChangeLanguage(const tstring& language)
 
 	SI_Error result = ini.LoadFile(iniPath.native().c_str());
 
-	// TODO: Provide the language name.
 	if (result != SI_OK)
-		sLog.Critical(_T("Change language"), _T("Failed to change language."));
+		sLog.Critical(_T("Change language"), _T("Failed to set language to %s."), language.c_str());
 
 	CSimpleIni::TNamesDepend keys;
 	ini.GetAllKeys(sectionName, keys);

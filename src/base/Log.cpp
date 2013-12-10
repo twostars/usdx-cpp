@@ -33,6 +33,13 @@ extern CMDParams Params;
 
 initialiseSingleton(Log);
 
+#define BUILD_VA_BUFFER(formatArg, buffer, bufferSize) \
+	TCHAR buffer[bufferSize]; \
+	va_list ap; \
+	va_start(ap, formatArg); \
+	_vsntprintf(buffer, bufferSize, message, ap); \
+	va_end(ap)
+
 Log::Log() :
 	_logFile(NULL), _benchmarkFile(NULL),
 	_logLevel(LOG_LEVEL_DEFAULT), _logFileLevel(LOG_FILE_LEVEL_DEFAULT)
@@ -99,24 +106,28 @@ void Log::Msg(int level, const TCHAR * context, const TCHAR * message)
 	Msg(level, buffer);
 }
 
-void Log::Debug(const TCHAR * context, const TCHAR * message)
+void Log::Debug(const TCHAR * context, const TCHAR * message, ...)
 {
-	Msg(LOG_LEVEL_DEBUG, context, message);
+	BUILD_VA_BUFFER(message, buffer, 1024);
+	Msg(LOG_LEVEL_DEBUG, context, buffer);
 }
 
-void Log::Info(const TCHAR * context, const TCHAR * message)
+void Log::Info(const TCHAR * context, const TCHAR * message, ...)
 {
-	Msg(LOG_LEVEL_INFO, context, message);
+	BUILD_VA_BUFFER(message, buffer, 1024);
+	Msg(LOG_LEVEL_INFO, context, buffer);
 }
 
-void Log::Status(const TCHAR * context, const TCHAR * message)
+void Log::Status(const TCHAR * context, const TCHAR * message, ...)
 {
-	Msg(LOG_LEVEL_STATUS, context, message);
+	BUILD_VA_BUFFER(message, buffer, 1024);
+	Msg(LOG_LEVEL_STATUS, context, buffer);
 }
 
-void Log::Warn(const TCHAR * context, const TCHAR * message)
+void Log::Warn(const TCHAR * context, const TCHAR * message, ...)
 {
-	Msg(LOG_LEVEL_WARN, context, message);
+	BUILD_VA_BUFFER(message, buffer, 1024);
+	Msg(LOG_LEVEL_WARN, context, buffer);
 }
 
 void Log::Error(const TCHAR * message)
@@ -124,9 +135,10 @@ void Log::Error(const TCHAR * message)
 	Msg(LOG_LEVEL_ERROR, message);
 }
 
-void Log::Error(const TCHAR * context, const TCHAR * message)
+void Log::Error(const TCHAR * context, const TCHAR * message, ...)
 {
-	Msg(LOG_LEVEL_ERROR, context, message);
+	BUILD_VA_BUFFER(message, buffer, 1024);
+	Msg(LOG_LEVEL_ERROR, context, buffer);
 }
 
 void Log::Critical(const TCHAR * message)
@@ -134,9 +146,10 @@ void Log::Critical(const TCHAR * message)
 	Msg(LOG_LEVEL_CRITICAL, message);
 }
 
-void Log::Critical(const TCHAR * context, const TCHAR * message)
+void Log::Critical(const TCHAR * context, const TCHAR * message, ...)
 {
-	Msg(LOG_LEVEL_CRITICAL, context, message);
+	BUILD_VA_BUFFER(message, buffer, 1024);
+	Msg(LOG_LEVEL_CRITICAL, context, buffer);
 }
 
 void Log::Voice(int soundNo)

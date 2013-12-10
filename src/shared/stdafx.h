@@ -35,6 +35,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <cstdarg>
 
 #include "unicode.h"
 #include "types.h"

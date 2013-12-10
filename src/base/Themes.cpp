@@ -120,14 +120,11 @@ void Themes::RecreateThemeObjects()
 void Themes::LoadList()
 {
 	directory_iterator end;
-	tstring message; // TODO: Clean this up
 
 	try
 	{
-		message = _T("Searching for Theme: ");
-		message += ThemePath.native();
-
-		sLog.Status(_T("Themes::LoadList"), message.c_str());
+		sLog.Status(_T("Themes::LoadList"), _T("Searching for themes in directory: %s"),
+			ThemePath.native().c_str());
 
 		// Clear the existing themes list.
 		_themes.clear();
@@ -140,17 +137,16 @@ void Themes::LoadList()
 				|| p.filename() == _T(".."))
 				continue;
 
-			message = _T("Found theme ");
-			message += p.filename().native();
-			sLog.Status(_T("Themes::LoadList"), message.c_str());
+			sLog.Status(_T("Themes::LoadList"), _T("Found theme %s"),
+				p.filename().native().c_str());
+
 			ParseDir(&p);
 		}
 	}
 	catch (filesystem_error)
 	{
-		message = _T("Could not access ");
-		message += ThemePath.native();
-		sLog.Critical(message.c_str());
+		sLog.Critical(_T("Themes::LoadList"), _T("Could not access themes directory (%s)"), 
+			ThemePath.native().c_str());
 	}
 }
 
@@ -175,49 +171,53 @@ void Themes::LoadHeader(const path * iniFile)
 	SI_Error result = ini.LoadFile(iniFile->native().c_str());
 	if (result != SI_OK)
 	{
-		// TODO: Include filename of INI
-		sLog.Warn(_T("Themes::LoadHeader"), _T("Failed to load INI"));
-		return;
+		return sLog.Warn(_T("Themes::LoadHeader"), _T("Failed to load INI (%s)"),
+			iniFile->native().c_str());
 	}
+
+	const TCHAR * sectionTheme = _T("Theme");
+	const TCHAR * sectionSkin = _T("Skin"); // legacy
+	const TCHAR * section;
+
+	// Attempt to identify section name; in older (or just wrong?) configs, 
+	// they use "Skin". USDX, however, looks for "Theme".
+	// So, to support both, if "Theme" does not exist, we'll attempt 
+	// falling back to "Skin".
+	if (ini.GetSectionSize(sectionTheme) > 0)
+		section = sectionTheme;
+	else if (ini.GetSectionSize(sectionSkin) > 0)
+		section = sectionSkin;
+	else
+		return sLog.Warn(_T("Themes::LoadHeader"), _T("%s is missing essential settings."), iniFile->native().c_str());
 
 	ThemeEntry theme;
 	const TCHAR * themeVersion;
 	const TCHAR * creator;
 
 	theme.FileName = iniFile->filename().native();
-	theme.Name = ini.GetValue(_T("Theme"), _T("Name"), _T(""));
-	themeVersion = ini.GetValue(_T("Theme"), _T("US_Version"), _T("no version tag"));
+	theme.Name = ini.GetValue(section, _T("Name"), _T("(no name)"));
+	themeVersion = ini.GetValue(section, _T("US_Version"), _T("no version"));
 
 	// Attempt to lookup theme's creator.
 	// NOTE: Current USDX loads "Creator", but older themes use "Author".
 	// Attempt to fallback to "Author" if "Creator" isn't found.
-	creator				= ini.GetValue(_T("Theme"), _T("Creator"));
+	creator				= ini.GetValue(section, _T("Creator"));
 	if (creator == NULL)
-		creator			= ini.GetValue(_T("Theme"), _T("Author"), _T(""));
+		creator			= ini.GetValue(section, _T("Author"), _T(""));
 
 	theme.Creator		= creator;
 
 	if (themeVersion != USDX_THEME_VERSION)
 	{
-		// TODO: Clean this up
-		tstring message = _T("Wrong version (");
-		message += themeVersion;
-		message += _T(") for theme ");
-		message += theme.Name;
-
-		sLog.Warn(_T("Theme::LoadHeader"), message.c_str());
-		return;
+		return sLog.Warn(_T("Theme::LoadHeader"), _T("Wrong version (%s) for theme %s."),
+			themeVersion, theme.Name.c_str());
 	}
 
 	theme.DefaultSkin = sSkins.LookupSkinForTheme(theme.Name);
 	if (theme.DefaultSkin == NULL)
 	{
-		// TODO: Clean this up
-		tstring message = _T("Skin does not exist for theme ");
-		message += theme.Name;
-
-		sLog.Warn(_T("Theme::LoadHeader"), message.c_str());
-		return;
+		return sLog.Warn(_T("Theme::LoadHeader"), _T("Skin does not exist for theme %s."),
+			theme.Name.c_str());
 	}
 
 	_themes.push_back(theme);

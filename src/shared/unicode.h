@@ -48,6 +48,7 @@
 #	define _ftprintf	fprintf
 #	define _snprintf	snprintf
 #	define _sntprintf	_snprintf
+#	define _vsntprintf  vsnprintf
 
 #endif
 
