@@ -35,6 +35,8 @@
 #include "CommandLine.h"
 #include "Log.h"
 #include "Language.h"
+#include "Skins.h"
+#include "Themes.h"
 
 /* globals */
 // TODO: Clean these up
@@ -80,6 +82,20 @@ int usdxMain(int argc, TCHAR ** argv)
 		sLanguage.AddConst(_T("US_VERSION"), USDXVersionStr());
 		sLog.BenchmarkEnd(1);
 		sLog.Benchmark(1, _T("Loading Language"));
+
+		// Skins
+		sLog.BenchmarkStart(1);
+		sLog.Status(_T("Loading Skin List"), _T("Initialization"));
+		new Skins();
+		sLog.BenchmarkEnd(1);
+		sLog.Benchmark(1, _T("Loading Skin List"));
+
+		// Themes
+		sLog.BenchmarkStart(1);
+		sLog.Status(_T("Loading Theme List"), _T("Initialization"));
+		new Themes();
+		sLog.BenchmarkEnd(1);
+		sLog.Benchmark(1, _T("Loading Theme List"));
 	}
 	catch (CriticalException& e)
 	{
@@ -90,6 +106,7 @@ int usdxMain(int argc, TCHAR ** argv)
 		_tprintf(_T("Unhandled exception occurred\n"));
 	}
 
+	delete Skins::getSingletonPtr();
 	delete Language::getSingletonPtr();
 	delete Log::getSingletonPtr();
 	delete LuaCore::getSingletonPtr();

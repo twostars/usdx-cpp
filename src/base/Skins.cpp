@@ -21,3 +21,109 @@
  */
 
 #include "stdafx.h"
+#include "PathUtils.h"
+#include "Skins.h"
+#include "Log.h"
+
+#include "../lib/simpleini/SimpleIni.h"
+
+#include <boost/filesystem.hpp>
+
+using namespace boost::filesystem;
+
+initialiseSingleton(Skins);
+
+extern path SkinsPath;
+
+Skins::Skins()
+{
+	LoadList();
+}
+
+void Skins::LoadList()
+{
+	directory_iterator end;
+	tstring message; // TODO: Clean this up
+
+	try
+	{
+		// Clear the existing skins list.
+		_skins.clear();
+
+		for (directory_iterator itr(SkinsPath); itr != end; ++itr)
+		{
+			const path& p = itr->path();
+			if (!is_directory(p)
+				|| p.filename() == _T(".")
+				|| p.filename() == _T(".."))
+				continue;
+
+			ParseDir(&p);
+		}
+	}
+	catch (filesystem_error)
+	{
+		message = _T("Could not access ");
+		message += SkinsPath.native();
+		sLog.Critical(message.c_str());
+	}
+}
+
+void Skins::ParseDir(const path * dir)
+{
+	directory_iterator end;
+	for (directory_iterator itr(*dir); itr != end; ++itr)
+	{
+		const path& p = itr->path();
+		if (is_directory(p)
+			|| !p.has_extension()
+			|| p.extension() != _T(".ini"))
+			continue;
+
+		LoadHeader(&p);
+	}
+}
+
+void Skins::LoadHeader(const path * iniFile)
+{
+	CSimpleIni ini(true);
+	SI_Error result = ini.LoadFile(iniFile->native().c_str());
+	if (result != SI_OK)
+	{
+		// TODO: Include filename of INI
+		sLog.Warn(_T("Skins::LoadHeader"), _T("Failed to load INI"));
+		return;
+	}
+
+	SkinEntry skin;
+	const TCHAR * creator;
+
+	skin.Path			= iniFile->branch_path().native();
+	skin.FileName		= iniFile->filename().native();
+	skin.Theme			= ini.GetValue(_T("Skin"), _T("Theme"), _T(""));
+	skin.Name			= ini.GetValue(_T("Skin"), _T("Name"), _T(""));
+
+	// Attempt to lookup skin's creator.
+	// NOTE: Current USDX loads "Creator", but older skins use "Author".
+	// Attempt to fallback to "Author" if "Creator" isn't found.
+	creator				= ini.GetValue(_T("Skin"), _T("Creator"));
+	if (creator == NULL)
+		creator			= ini.GetValue(_T("Skin"), _T("Author"), _T(""));
+
+	skin.Creator		= creator;
+
+	// TODO: Implement parser for color names (stored as, for example, "Blue")
+	// skin.DefaultColor	= ini.GetValue(_T("Skin"), _T("Color"), _T(""));
+
+	_skins.insert(std::make_pair(skin.Theme, skin));
+}
+
+SkinEntry* Skins::LookupSkinForTheme(const tstring& themeName)
+{
+	SkinEntryMap::const_iterator itr = _skins.find(themeName);
+	return (itr == _skins.end() ? NULL : (SkinEntry *)&itr->second);
+}
+
+Skins::~Skins()
+{
+}

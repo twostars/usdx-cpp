@@ -45,7 +45,7 @@ enum LogLevel
 	LOG_LEVEL_NONE         = -1,
 
 	// define level that Log(File)Level is initialized with
-	LOG_LEVEL_DEFAULT      = LOG_LEVEL_WARN,
+	LOG_LEVEL_DEFAULT      = LOG_LEVEL_MAX, // TODO: Revert this back to LOG_LEVEL_WARN once the initial port's done
 	LOG_FILE_LEVEL_DEFAULT = LOG_LEVEL_ERROR
 };
 

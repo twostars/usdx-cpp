@@ -156,6 +156,8 @@
     <ClInclude Include="..\..\src\base\PathUtils.h" />
     <ClInclude Include="..\..\src\base\Platform.h" />
     <ClInclude Include="..\..\src\base\RelativeTimer.h" />
+    <ClInclude Include="..\..\src\base\Skins.h" />
+    <ClInclude Include="..\..\src\base\Themes.h" />
     <ClInclude Include="..\..\src\base\Time.h" />
     <ClInclude Include="..\..\src\lib\bass\c\bass.h" />
     <ClInclude Include="..\..\src\lib\FreeImage\FreeBitmap.h" />

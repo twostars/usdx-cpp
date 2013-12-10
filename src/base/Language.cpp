@@ -43,6 +43,8 @@ Language::Language()
 void Language::LoadList()
 {
 	directory_iterator end;
+	tstring message; // TODO: Clean this up
+
 	try
 	{
 		for (directory_iterator itr(LanguagesPath); itr != end; ++itr)
@@ -61,8 +63,9 @@ void Language::LoadList()
 	}
 	catch (filesystem_error)
 	{
-		// TODO: Provide path it's trying to access (LanguagesPath)
-		sLog.Critical(_T("Could not access language directory."));
+		message = _T("Could not access ");
+		message += LanguagesPath.native();
+		sLog.Critical(message.c_str());
 	}
 
 	if (_langSet.empty())

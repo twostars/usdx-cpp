@@ -20,27 +20,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef _STDAFX_H
-#define _STDAFX_H
+#ifndef _SKINS_H
+#define _SKINS_H
 #pragma once
 
-#if defined(_MSC_VER) && defined(_DEBUG)
-#	define _CRT_SECURE_NO_WARNINGS
-#endif
+struct SkinEntry
+{
+	tstring Path;
+	tstring FileName;
+	tstring Theme;
+	tstring Name;
+	tstring Creator;
+	uint32  DefaultColor;
+};
 
-#include <exception>
-#include <string>
-#include <iostream>
-#include <cassert>
-#include <map>
-#include <set>
-#include <vector>
+class Skins : public Singleton<Skins>
+{
+public:
+	Skins();
+	void LoadList();
+	void ParseDir(const boost::filesystem::path * dir);
+	void LoadHeader(const boost::filesystem::path * iniFile);
+	SkinEntry* LookupSkinForTheme(const tstring& themeName);
+	~Skins();
 
-#include "unicode.h"
-#include "types.h"
-#include "string_utils.h"
+private:
+	typedef std::map<tstring, SkinEntry, tstring_ci> SkinEntryMap;
+	SkinEntryMap _skins;
+};
 
-#include "CriticalException.h"
-#include "Singleton.h"
+#define sSkins (Skins::getSingleton())
 
 #endif

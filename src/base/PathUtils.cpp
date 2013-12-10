@@ -58,15 +58,11 @@ bool FindPath(path& resultPath, const path& requestedPath, bool needsWritePermis
 {
 	try
 	{
-		if (requestedPath.empty()
-			|| (!exists(requestedPath) 
-				&& !create_directory(requestedPath)))
-			return false;
-
 		resultPath = requestedPath;
 
-		if (needsWritePermission
-			&& Platform::IsPathReadonly(&requestedPath))
+		if (requestedPath.empty()
+			|| (!exists(requestedPath) && !create_directory(requestedPath))
+			|| (needsWritePermission && Platform::IsPathReadonly(&requestedPath)))
 			return false;
 
 		return true;
@@ -87,8 +83,11 @@ void InitializePaths()
 	{
 		Params.NoLog = true;
 
-		// TODO: Provide path.
-		sLog.Warn(_T("InitializePaths"), _T("Log directory is not available."));
+		// TODO: Clean this up
+		tstring message = _T("Log directory (");
+		message += LogPath.native();
+		message += _T(") is not available."); 
+		sLog.Warn(_T("InitializePaths"), message.c_str());
 	}
 
 	Platform::GetGameSharedPath(&SharedPath);
@@ -109,8 +108,11 @@ void InitializePaths()
 	// Screenshot directory (must be writable)
 	if (!FindPath(ScreenshotsPath, UserPath / SCREENSHOT_DIR, true))
 	{
-		// TODO: Provide path.
-		sLog.Warn(_T("InitializePaths"), _T("Screenshot directory is not available."));
+		// TODO: Clean this up
+		tstring message = _T("Screenshot directory (");
+		message += ScreenshotsPath.native();
+		message += _T(") is not available."); 
+		sLog.Warn(_T("InitializePaths"), message.c_str());
 	}
 
 	// Add song paths

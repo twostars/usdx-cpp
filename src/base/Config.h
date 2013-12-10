@@ -38,6 +38,7 @@ const int VERSION_RELEASE = 1;
 #define   USDX_VERSION_STATE     _T("")
 #define   USDX_IDENTIFIER        _T("ultrastardx")
 #define   USDX_STRING            _T("UltraStar Deluxe")
+#define   USDX_THEME_VERSION     _T("USD 110")
 
 #ifdef HAVE_FFMPEG
 #define LIBAVCODEC_VERSION		(LIBAVCODEC_VERSION_MAJOR * VERSION_MAJOR) + \

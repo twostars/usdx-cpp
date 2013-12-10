@@ -503,5 +503,11 @@
     <ClInclude Include="..\..\src\base\PathUtils.h">
       <Filter>src\base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\base\Skins.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\Themes.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
