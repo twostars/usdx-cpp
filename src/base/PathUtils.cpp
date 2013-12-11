@@ -39,7 +39,6 @@ path ScoreFile;
 
 path SoundPath;
 path ThemePath;
-path SkinsPath;
 path LanguagesPath;
 path PluginPath;
 path VisualsPath;
@@ -98,7 +97,6 @@ void InitializePaths()
 
 	FindPath(SoundPath,     SharedPath / SOUND_DIR,    false);
 	FindPath(ThemePath,     SharedPath / THEME_DIR,    false);
-	FindPath(SkinsPath,     SharedPath / SKINS_DIR,    false);
 	FindPath(LanguagesPath, SharedPath / LANG_DIR,     false);
 	FindPath(PluginPath,    SharedPath / PLUGIN_DIR,   false);
 	FindPath(VisualsPath,   SharedPath / VISUAL_DIR,   false);

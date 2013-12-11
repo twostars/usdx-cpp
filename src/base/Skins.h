@@ -39,18 +39,18 @@ class Skins : public Singleton<Skins>
 public:
 	Skins();
 	void LoadList();
-	void ParseDir(const boost::filesystem::path * dir);
-	void LoadHeader(const boost::filesystem::path * iniFile);
-	SkinEntry* LookupSkin(const tstring& skinName);
+	void ParseDir(const boost::filesystem::path& dir);
+	void LoadHeader(const boost::filesystem::path& iniFile);
 	SkinEntry* LookupSkinForTheme(const tstring& themeName);
+	SkinEntry* LookupSkinForTheme(const tstring& skinName, const tstring& themeName);
 	~Skins();
 
 private:
-	typedef std::map<tstring, SkinEntry, tstring_ci> SkinEntryMap;
+	typedef std::multimap<tstring, SkinEntry, tstring_ci> SkinEntryMap;
 	typedef std::map<tstring, tstring, tstring_ci> SkinThemeMap;
 
 	SkinEntryMap _skins;
-	SkinThemeMap _skinThemes;
+	SkinThemeMap _skinThemeMap;
 };
 
 #define sSkins (Skins::getSingleton())

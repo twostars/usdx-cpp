@@ -30,7 +30,7 @@ using namespace boost::filesystem;
 
 initialiseSingleton(Skins);
 
-extern path SkinsPath;
+extern path ThemePath;
 
 Skins::Skins()
 {
@@ -45,9 +45,9 @@ void Skins::LoadList()
 	{
 		// Clear the existing skins list.
 		_skins.clear();
-		_skinThemes.clear();
+		_skinThemeMap.clear();
 
-		for (directory_iterator itr(SkinsPath); itr != end; ++itr)
+		for (directory_iterator itr(ThemePath); itr != end; ++itr)
 		{
 			const path& p = itr->path();
 			if (!is_directory(p)
@@ -55,20 +55,20 @@ void Skins::LoadList()
 				|| p.filename() == _T(".."))
 				continue;
 
-			ParseDir(&p);
+			ParseDir(p);
 		}
 	}
 	catch (filesystem_error)
 	{
-		sLog.Critical(_T("Skins::LoadList"), _T("Could not access skin directory %s."), 
-			SkinsPath.native().c_str());
+		sLog.Critical(_T("Skins::LoadList"), _T("Could not access themes directory %s."), 
+			ThemePath.native().c_str());
 	}
 }
 
-void Skins::ParseDir(const path * dir)
+void Skins::ParseDir(const path& dir)
 {
 	directory_iterator end;
-	for (directory_iterator itr(*dir); itr != end; ++itr)
+	for (directory_iterator itr(dir); itr != end; ++itr)
 	{
 		const path& p = itr->path();
 		if (is_directory(p)
@@ -76,25 +76,25 @@ void Skins::ParseDir(const path * dir)
 			|| p.extension() != _T(".ini"))
 			continue;
 
-		LoadHeader(&p);
+		LoadHeader(p);
 	}
 }
 
-void Skins::LoadHeader(const path * iniFile)
+void Skins::LoadHeader(const path& iniFile)
 {
 	CSimpleIni ini(true);
-	SI_Error result = ini.LoadFile(iniFile->native().c_str());
+	SI_Error result = ini.LoadFile(iniFile.native().c_str());
 	if (result != SI_OK)
 	{
 		return sLog.Warn(_T("Skins::LoadHeader"), _T("Failed to load INI (%s)."), 
-			iniFile->native().c_str());
+			iniFile.native().c_str());
 	}
 
 	SkinEntry skin;
 	const TCHAR * creator;
 
-	skin.Path			= iniFile->branch_path().native();
-	skin.FileName		= iniFile->filename().native();
+	skin.Path			= iniFile.branch_path().native();
+	skin.FileName		= iniFile.filename().native();
 	skin.Theme			= ini.GetValue(_T("Skin"), _T("Theme"), _T(""));
 	skin.Name			= ini.GetValue(_T("Skin"), _T("Name"), _T(""));
 
@@ -109,19 +109,33 @@ void Skins::LoadHeader(const path * iniFile)
 
 	// Parse color names (stored as, for example, "Blue")
 	skin.DefaultColor	= LOOKUP_ENUM_VALUE(Color, _T("Skin"), _T("Color"), Color::Blue);
-	_skins.insert(std::make_pair(skin.Name, skin));
-}
 
-SkinEntry* Skins::LookupSkin(const tstring& skinName)
-{
-	SkinEntryMap::const_iterator itr = _skins.find(skinName);
-	return (itr == _skins.end() ? NULL : (SkinEntry *)&itr->second);
+	_skins.insert(std::make_pair(skin.Name, skin));
+	if (!skin.Theme.empty())
+		_skinThemeMap.insert(std::make_pair(skin.Theme, skin.Name));
 }
 
 SkinEntry* Skins::LookupSkinForTheme(const tstring& themeName)
 {
-	SkinThemeMap::const_iterator itr = _skinThemes.find(themeName);
-	return (itr == _skinThemes.end() ? NULL : LookupSkin(itr->second));
+	SkinThemeMap::const_iterator itr = _skinThemeMap.find(themeName);
+	if (itr == _skinThemeMap.end())
+		return NULL;
+
+	return LookupSkinForTheme(itr->second, themeName);
+}
+
+SkinEntry* Skins::LookupSkinForTheme(const tstring& skinName, const tstring& themeName)
+{
+	std::pair<SkinEntryMap::iterator, SkinEntryMap::iterator> range
+		= _skins.equal_range(skinName);
+
+	for (SkinEntryMap::const_iterator itr = range.first; itr != range.second; ++itr)
+	{
+		if (itr->second.Theme == themeName)
+			return (SkinEntry *)&itr->second;
+	}
+
+	return NULL;
 }
 
 Skins::~Skins()

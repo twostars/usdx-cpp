@@ -127,15 +127,15 @@ void Themes::LoadList()
 		for (directory_iterator itr(ThemePath); itr != end; ++itr)
 		{
 			const path& p = itr->path();
-			if (!is_directory(p)
-				|| p.filename() == _T(".")
-				|| p.filename() == _T(".."))
+			if (is_directory(p)
+				|| !p.has_extension()
+				|| p.extension() != _T(".ini"))
 				continue;
 
 			sLog.Status(_T("Themes::LoadList"), _T("Found theme %s"),
-				p.filename().native().c_str());
+				p.stem().native().c_str());
 
-			ParseDir(&p);
+			LoadHeader(p);
 		}
 	}
 	catch (filesystem_error)
@@ -145,51 +145,23 @@ void Themes::LoadList()
 	}
 }
 
-void Themes::ParseDir(const path * dir)
-{
-	directory_iterator end;
-	for (directory_iterator itr(*dir); itr != end; ++itr)
-	{
-		const path& p = itr->path();
-		if (is_directory(p)
-			|| !p.has_extension()
-			|| p.extension() != _T(".ini"))
-			continue;
-
-		LoadHeader(&p);
-	}
-}
-
-void Themes::LoadHeader(const path * iniFile)
+void Themes::LoadHeader(const path& iniFile)
 {
 	CSimpleIni ini(true);
-	SI_Error result = ini.LoadFile(iniFile->native().c_str());
+	SI_Error result = ini.LoadFile(iniFile.native().c_str());
 	if (result != SI_OK)
 	{
 		return sLog.Warn(_T("Themes::LoadHeader"), _T("Failed to load INI (%s)"),
-			iniFile->native().c_str());
+			iniFile.native().c_str());
 	}
 
-	const TCHAR * sectionTheme = _T("Theme");
-	const TCHAR * sectionSkin = _T("Skin"); // legacy
-	const TCHAR * section;
-
-	// Attempt to identify section name; in older (or just wrong?) configs, 
-	// they use "Skin". USDX, however, looks for "Theme".
-	// So, to support both, if "Theme" does not exist, we'll attempt 
-	// falling back to "Skin".
-	if (ini.GetSectionSize(sectionTheme) > 0)
-		section = sectionTheme;
-	else if (ini.GetSectionSize(sectionSkin) > 0)
-		section = sectionSkin;
-	else
-		return sLog.Warn(_T("Themes::LoadHeader"), _T("%s is missing essential settings."), iniFile->native().c_str());
+	const TCHAR * section = _T("Theme");
 
 	ThemeEntry theme;
-	const TCHAR * themeVersion;
+	tstring themeVersion;
 	const TCHAR * creator;
 
-	theme.FileName = iniFile->filename().native();
+	theme.FileName = iniFile.filename().native();
 	theme.Name = ini.GetValue(section, _T("Name"), _T("(no name)"));
 	themeVersion = ini.GetValue(section, _T("US_Version"), _T("no version"));
 
@@ -205,7 +177,7 @@ void Themes::LoadHeader(const path * iniFile)
 	if (themeVersion != USDX_THEME_VERSION)
 	{
 		return sLog.Warn(_T("Theme::LoadHeader"), _T("Wrong version (%s) for theme %s."),
-			themeVersion, theme.Name.c_str());
+			themeVersion.c_str(), theme.Name.c_str());
 	}
 
 	theme.DefaultSkin = sSkins.LookupSkinForTheme(theme.Name);

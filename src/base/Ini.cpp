@@ -427,7 +427,7 @@ void Ini::LoadThemes(CSimpleIni& ini)
 	// sSkins.OnThemeChange();
 	
 	tstring skinName = ini.GetValue(section, _T("Skin"), Theme->DefaultSkin->Name.c_str());
-	Skin = sSkins.LookupSkin(skinName);
+	Skin = sSkins.LookupSkinForTheme(skinName, Theme->Name);
 	if (Skin == NULL)
 		Skin = Theme->DefaultSkin; // NOTE: Checked earlier
 
@@ -437,6 +437,9 @@ void Ini::LoadThemes(CSimpleIni& ini)
 void Ini::LoadPaths(CSimpleIni& ini)
 {
 	const CSimpleIni::TKeyVal * section = ini.GetSection(_T("Directories"));
+	if (section == NULL)
+		return;
+
 	for (CSimpleIni::TKeyVal::const_iterator itr = section->begin(); itr != section->end(); ++itr)
 		AddSongPath(boost::filesystem::path(itr->second));
 }

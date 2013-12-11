@@ -50,8 +50,7 @@ public:
 
 	void RecreateThemeObjects();
 	void LoadList();
-	void ParseDir(const boost::filesystem::path * dir);
-	void LoadHeader(const boost::filesystem::path * iniFile);
+	void LoadHeader(const boost::filesystem::path& iniFile);
 
 	ThemeEntry * LookupTheme(tstring themeName);
 	ThemeEntry * LookupThemeDefault(tstring themeName, tstring defaultTheme);

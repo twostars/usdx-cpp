@@ -26,7 +26,6 @@
 
 #define VISUAL_DIR		_T("visuals")
 #define THEME_DIR		_T("themes")
-#define SKINS_DIR		_T("skins")
 #define SOUND_DIR		_T("sounds")
 #define SONG_DIR		_T("songs")
 #define RESOURCE_DIR	_T("resources")
