@@ -33,6 +33,7 @@ initialiseSingleton(Skins);
 extern path ThemePath;
 
 Skins::Skins()
+	: SkinColor(Color::Blue)
 {
 	LoadList();
 }
@@ -93,8 +94,8 @@ void Skins::LoadHeader(const path& iniFile)
 	SkinEntry skin;
 	const TCHAR * creator;
 
-	skin.Path			= iniFile.branch_path().native();
-	skin.FileName		= iniFile.filename().native();
+	skin.Path			= iniFile.branch_path();
+	skin.FileName		= iniFile;
 	skin.Theme			= ini.GetValue(_T("Skin"), _T("Theme"), _T(""));
 	skin.Name			= ini.GetValue(_T("Skin"), _T("Name"), _T(""));
 
@@ -113,6 +114,30 @@ void Skins::LoadHeader(const path& iniFile)
 	_skins.insert(std::make_pair(skin.Name, skin));
 	if (!skin.Theme.empty())
 		_skinThemeMap.insert(std::make_pair(skin.Theme, skin.Name));
+}
+
+void Skins::LoadSkin(SkinEntry * skin, eColor color)
+{
+	CSimpleIni ini(true);
+
+	SI_Error result = ini.LoadFile(skin->FileName.native().c_str());
+	if (result != SI_OK)
+	{
+		return sLog.Warn(_T("Skins::LoadSkin"), _T("Failed to load INI (%s)."), 
+			skin->FileName.c_str());
+	}
+
+	const TCHAR * section = _T("Textures");
+	
+	SkinColor = color;
+	SkinPath = skin->Path;
+
+	const CSimpleIni::TKeyVal * sectionKeys = ini.GetSection(section);
+	if (sectionKeys == NULL)
+		return;
+
+	for (CSimpleIni::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
+		SkinTextures.insert(std::make_pair(itr->first.pItem, path(itr->second)));
 }
 
 SkinEntry* Skins::LookupSkinForTheme(const tstring& themeName)

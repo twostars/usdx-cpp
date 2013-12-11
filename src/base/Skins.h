@@ -26,8 +26,8 @@
 
 struct SkinEntry
 {
-	tstring Path;
-	tstring FileName;
+	boost::filesystem::path Path;
+	boost::filesystem::path FileName;
 	tstring Theme;
 	tstring Name;
 	tstring Creator;
@@ -41,6 +41,7 @@ public:
 	void LoadList();
 	void ParseDir(const boost::filesystem::path& dir);
 	void LoadHeader(const boost::filesystem::path& iniFile);
+	void LoadSkin(SkinEntry * skin, eColor color);
 	SkinEntry* LookupSkinForTheme(const tstring& themeName);
 	SkinEntry* LookupSkinForTheme(const tstring& skinName, const tstring& themeName);
 	~Skins();
@@ -51,6 +52,14 @@ private:
 
 	SkinEntryMap _skins;
 	SkinThemeMap _skinThemeMap;
+
+public: 
+	// Skin specific config
+	boost::filesystem::path SkinPath;
+	eColor SkinColor;
+
+	typedef std::map<tstring, boost::filesystem::path, tstring_ci> SkinTextureMap;
+	SkinTextureMap SkinTextures;
 };
 
 #define sSkins (Skins::getSingleton())

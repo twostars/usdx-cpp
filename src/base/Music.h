@@ -18,12 +18,12 @@
  * along with this program; see the file COPYING. If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
- */
+ */           
 
-#include "stdafx.h"
-#include "Music.h"
+#ifndef _MUSIC_H
+#define _MUSIC_H
+#pragma once
 
-void InitializeSound()
-{
-	// TODO
-}
+void InitializeSound();
+
+#endif

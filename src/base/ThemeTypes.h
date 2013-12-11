@@ -61,7 +61,7 @@ struct ThemeStatic
 	std::string Color;
 	RGB ColRGB;
 	tstring Tex;
-	TextureType Type;
+	eTextureType Type;
 	float TexX1, TexY1;
 	float TexX2, TextY2;
 
@@ -103,7 +103,7 @@ struct ThemeButton
 	RGB DColRGB;
 	float DInt; // intensity
 	tstring Tex;
-	TextureType Type;
+	eTextureType Type;
 
 	bool Visible;
 
@@ -130,12 +130,14 @@ struct ThemeButtonCollection
 	uint8 FirstChild; // number of child whose interaction position the button should be
 };
 
+typedef std::vector<ThemeButtonCollection> AThemeButtonCollection;
+
 struct ThemeSelectSlide
 {
 	tstring Tex;
-	TextureType Type;
+	eTextureType Type;
 	tstring TexSBG;
-	TextureType TypeSBG;
+	eTextureType TypeSBG;
 	int X, Y, W, H;
 	float Z;
 	int SBGW;

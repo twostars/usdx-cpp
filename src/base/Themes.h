@@ -24,15 +24,13 @@
 #define _THEMES_H
 #pragma once
 
-struct ThemePlaylist
-{
-	tstring CatText;
-};
+// TODO: Clean up access to these
+#include "ThemeDefines.h"
 
 struct ThemeEntry
 {
-	tstring Path;
-	tstring FileName;
+	boost::filesystem::path Path;
+	boost::filesystem::path FileName;
 	tstring Theme;
 	tstring Name;
 	tstring Creator;
@@ -48,9 +46,23 @@ public:
 
 	INLINE size_t GetThemeCount() { return _themes.size(); }
 
-	void RecreateThemeObjects();
+	void CreateThemeObjects();
 	void LoadList();
 	void LoadHeader(const boost::filesystem::path& iniFile);
+	void LoadTheme(ThemeEntry * theme, eColor color);
+	void LoadColors();
+
+	void LoadThemeBasic(ThemeBasic * theme, const tstring& name);
+	void LoadThemeBackground(ThemeBackground& themeBackground, const tstring& name);
+	void LoadThemeText(ThemeText& themeText, const tstring& name);
+	void LoadThemeTexts(AThemeText& themeTextCollection, const tstring& name);
+	void LoadThemeStatic(ThemeStatic& themeStatic, const tstring& name);
+	void LoadThemeStatics(AThemeStatic& themeStaticCollection, const tstring& name);
+	void LoadThemeButton(ThemeButton& themeButton, const tstring& name);
+	void LoadThemeButtonCollection(ThemeButtonCollection& themeButtonCollection, const tstring& name);
+	void LoadThemeButtonCollections(AThemeButtonCollection& themeButtonCollection, const tstring& name);
+	void LoadThemeSelectSlide(ThemeSelectSlide& themeSelectSlide, const tstring& name);
+	void LoadThemeEqualizer(ThemeEqualizer& themeEqualizer, const tstring& name);
 
 	ThemeEntry * LookupTheme(tstring themeName);
 	ThemeEntry * LookupThemeDefault(tstring themeName, tstring defaultTheme);
@@ -66,6 +78,7 @@ public:
 	DECL_THEME(Level);
 	DECL_THEME(Song);
 	DECL_THEME(Sing);
+	DECL_THEME(LyricBar);
 	DECL_THEME(Score);
 	DECL_THEME(Top5);
 	DECL_THEME(Options);
@@ -89,12 +102,17 @@ public:
 	DECL_THEME(PartyRounds);
 	DECL_THEME(StatMain);
 	DECL_THEME(StatDetail);
+	DECL_THEME(Playlist);
 
 	#undef DECL_THEME
 
 private:
 	typedef std::map<tstring, ThemeEntry, tstring_ci> ThemeEntryMap;
+	typedef std::map<tstring, RGB, tstring_ci> ColorMap;
+
 	ThemeEntryMap _themes;
+	ColorMap _colors;
+	CSimpleIni ini;
 };
 
 #define sThemes (Themes::getSingleton())

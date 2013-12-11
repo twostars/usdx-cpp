@@ -32,7 +32,7 @@ public:
 	ThemeBackground Background;
 	AThemeText      Text;
 	AThemeStatic    Static;
-	ThemeButtonCollection ButtonCollection;
+	AThemeButtonCollection ButtonCollection;
 
 	ThemeBasic() {}
 	virtual ~ThemeBasic() {}
@@ -92,13 +92,13 @@ public:
 	ThemeText    TextCat;
 	ThemeStatic  StaticCat;
 
-	struct Cover
+	struct
 	{
 		bool Reflections;
 		int X, Y, Z;
 		int W, H;
 		int Style;
-	};
+	} Cover;
 
 	ThemeEqualizer Equalizer;
 
@@ -109,9 +109,7 @@ public:
 	AThemeText   TextNonParty;
 
 	// Party mode
-	ThemeStatic   StaticTeam1Joker[5];
-	ThemeStatic   StaticTeam2Joker[5];
-	ThemeStatic   StaticTeam3Joker[5];
+	ThemeStatic   StaticTeamJoker[MAX_TEAMS][MAX_JOKERS];
 };
 
 class ThemeSing : public ThemeBasic
@@ -158,7 +156,7 @@ public:
 	ThemeText   TextP2M;
 	ThemeText   TextP2MScore;
 
-	ThemeStatic Static3R;
+	ThemeStatic StaticP3R;
 	ThemeStatic StaticP3RScoreBG;
 	ThemeText   TextP3R;
 	ThemeText   TextP3RScore;
@@ -172,8 +170,9 @@ public:
 	ThemeStatic PausePopup;
 };
 
-struct ThemeLyricBar
+class ThemeLyricBar /* not a proper theme */
 {
+public:
 	int IndicatorYOffset;
 	int UpperX, UpperW, UpperY, UpperH;
 	int LowerX, LowerW, LowerY, LowerH;
@@ -205,7 +204,7 @@ public:
 	ThemeStatic   StaticBoxLight      [MAX_PLAYERS];
 	ThemeStatic   StaticBoxDark       [MAX_PLAYERS];
 
-	ThemeStatic   StaticBoxRatings    [MAX_PLAYERS];
+	ThemeStatic   StaticRatings       [MAX_PLAYERS];
 
 	ThemeStatic   StaticBackLevel     [MAX_PLAYERS];
 	ThemeStatic   StaticBackLevelRound[MAX_PLAYERS];
@@ -390,7 +389,7 @@ public:
 
 	struct Team
 	{
-		ThemeText    TextPlayer;
+		ThemeText    TextNextPlayer;
 		ThemeText    TextScore;
 		ThemeText    TextName;
 		ThemeText    TextPlayers;
@@ -421,8 +420,8 @@ public:
 		bool           ChangeTextures;
 
 		tstring        Texture [MAX_TEAMS];
-		TextureType    Type    [MAX_TEAMS];
-		std::string    Color   [MAX_TEAMS];
+		eTextureType   Type    [MAX_TEAMS];
+		tstring        Color   [MAX_TEAMS];
 	} DecoTextures;
 };
 
@@ -454,8 +453,10 @@ class ThemePartyPlayer : public ThemeBasic
 {
 public:
 	ThemeSelectSlide     SelectTeams;
+
 	struct Team
 	{
+		ThemeButton      TeamName;
 		ThemeSelectSlide SelectPlayers;
 		ThemeButton      PlayerName[MAX_PLAYERS_PER_TEAM];
 	};
@@ -499,5 +500,12 @@ public:
 	tstring              FormatStr   [MAX_PLAYERS_PER_TEAM];
 	tstring              PageStr;
 };
+
+class ThemePlaylist /* not a proper theme */
+{
+public:
+	tstring CatText;
+};
+
 
 #endif

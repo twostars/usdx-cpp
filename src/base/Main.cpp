@@ -34,6 +34,7 @@
 #include "Skins.h"
 #include "Themes.h"
 #include "Ini.h"
+#include "Music.h"
 
 /* globals */
 // TODO: Clean these up
@@ -113,6 +114,23 @@ int usdxMain(int argc, TCHAR ** argv)
 
 		sLog.BenchmarkEnd(1);
 		sLog.Benchmark(1, _T("Loading INI"));
+
+		// Sound
+		sLog.BenchmarkStart(1);
+		sLog.Status(_T("Initialize Sound"), _T("Initialization"));
+		InitializeSound(); // TODO
+		sLog.BenchmarkEnd(1);
+		sLog.Benchmark(1, _T("Initializing Sound"));
+
+		// Lyrics engine with media reference timer
+		// new LyricsState();
+		
+		// Theme
+		sLog.BenchmarkStart(1);
+		sLog.Status(_T("Load Theme"), _T("Initialization"));
+		sThemes.LoadTheme(sIni.Theme, sIni.ThemeColor);
+		sLog.BenchmarkEnd(1);
+		sLog.Benchmark(1, _T("Loading Theme"));
 	}
 	catch (CriticalException& e)
 	{

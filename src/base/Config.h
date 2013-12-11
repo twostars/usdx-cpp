@@ -45,6 +45,7 @@ const int VERSION_RELEASE = 1;
 #define   MAX_PLAYERS_PER_TEAM   4
 #define   MAX_ROUNDS             7
 #define   MAX_TEAMS              3
+#define   MAX_JOKERS             5
 
 #ifdef HAVE_FFMPEG
 #define LIBAVCODEC_VERSION		(LIBAVCODEC_VERSION_MAJOR * VERSION_MAJOR) + \

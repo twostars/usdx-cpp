@@ -44,6 +44,11 @@ typedef uint8_t uint8;
 struct RGB
 {
 	float R, G, B;
+	void Load(const TCHAR * source);
+	void Sqrt(const RGB& rhs);
+
+	void Set(uint8 r, uint8 g, uint8 b);
+	static float Transform(uint8 val);
 };
 
 struct RGBA

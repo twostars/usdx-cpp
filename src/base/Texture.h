@@ -42,11 +42,11 @@ struct Texture
 	tstring Name; // experimental for handling cache images. maybe it's useful for dynamic skins
 };
 
-enum TextureType
-{
-	TEXTURE_TYPE_PLAIN,        // Plain (alpha = 1)
-	TEXTURE_TYPE_TRANSPARENT,  // Alpha is used
-	TEXTURE_TYPE_COLORIZED     // Alpha is used; Hue of the HSV color-model will be replaced by a new value
-};
+
+#define IMPROVED_ENUM_NAME  TextureType
+#define IMPROVED_ENUM_LIST  ENUMITEM(Plain)        /* Plain (alpha = 1) */  \
+							ENUMITEM(Transparent)  /* Alpha is used */      \
+							ENUMITEM(Colorized)    /* Alpha is used; hue of the HSV color-model will be replaced by a new value */
+#include <DefineImprovedEnum.h>
 
 #endif
