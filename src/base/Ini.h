@@ -37,11 +37,12 @@ struct InputDeviceConfig
      * to any player (the channel is off).
      */
 	std::map<int, int> ChannelToPlayerMap;
-
-	// Constants for InputDeviceConfig
-	static const int CHANNEL_OFF = 0;         // for field ChannelToPlayerMap
-	static const int LATENCY_AUTODETECT = -1; // for field Latency
 };
+
+
+// Constants for InputDeviceConfig
+static const int CHANNEL_OFF = 0;         // for field ChannelToPlayerMap
+static const int LATENCY_AUTODETECT = -1; // for field Latency
 
 #define LOOKUP_ENUM_VALUE(type, section, key, defaultValue) \
 	type::String2Enum(ini.GetValue(section, key, type::Enum2String(defaultValue).c_str()))
@@ -137,7 +138,7 @@ public:
 	eSwitch BackgroundMusic;
 
 	// Record
-	std::vector<InputDeviceConfig> InputDeviceConfigList;
+	std::map<int, InputDeviceConfig> InputDeviceConfigMap;
 
 	// Advanced
 	eSwitch LoadAnimation;

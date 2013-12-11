@@ -43,6 +43,7 @@
 #	define _T(x)		x
 #	define tstring		std::string
 #	define _tprintf		printf
+#	define _stscanf		sscanf
 #	define _ttoi		atoi
 #	define _tfopen		fopen
 #	define _ftprintf	fprintf

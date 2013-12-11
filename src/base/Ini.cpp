@@ -404,7 +404,49 @@ void Ini::LoadControllerSettings(CSimpleIni& ini)
 
 void Ini::LoadInputDeviceConfig(CSimpleIni& ini)
 {
-	// TODO
+	static const tstring deviceNameKey(_T("DeviceName"));
+
+	const TCHAR * section = _T("Record");
+
+	// Clear the device map
+	InputDeviceConfigMap.clear();
+
+	const CSimpleIni::TKeyVal * sectionKeys = ini.GetSection(section);
+	if (sectionKeys == NULL)
+		return;
+
+	for (CSimpleIni::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
+	{
+		tstring key = itr->first.pItem;
+		if (key.length() < deviceNameKey.length()
+			|| key.substr(0, deviceNameKey.length()) != deviceNameKey)
+			continue;
+
+		TCHAR buff[20];
+		int deviceNo;
+		_stscanf(key.c_str(), _T("%10s[%d]"), buff, &deviceNo);
+
+		InputDeviceConfig device;
+		device.Name = itr->second;
+
+		_sntprintf(buff, 20, _T("Input[%d]"), deviceNo);
+		device.Input = ini.GetLongValue(section, buff, 0);
+
+		_sntprintf(buff, 20, _T("Latency[%d]"), deviceNo);
+		device.Latency = ini.GetLongValue(section, buff, LATENCY_AUTODETECT);
+
+		for (int channelIndex = 0; ; channelIndex++)
+		{
+			_sntprintf(buff, 20, _T("Channel%d[%d]"), channelIndex + 1, deviceNo);
+			int channelPlayer = ini.GetLongValue(section, buff, -1);
+			if (channelPlayer < 0)
+				break;
+
+			device.ChannelToPlayerMap[channelIndex] = channelPlayer;
+		}
+
+		InputDeviceConfigMap.insert(std::make_pair(deviceNo, device));
+	}
 }
 
 void Ini::LoadThemes(CSimpleIni& ini)
@@ -415,7 +457,7 @@ void Ini::LoadThemes(CSimpleIni& ini)
 	static const TCHAR * section = _T("Themes");
 
 	// TODO: Clean this up. It would be preferable to only store the theme & skin names here.
-	tstring themeName = ini.GetValue(section, _T("Theme"), _T("DELUXE"));
+	tstring themeName = ini.GetValue(section, _T("Theme"), DEFAULT_THEME);
 
 	Theme = sThemes.LookupThemeDefault(themeName, DEFAULT_THEME);
 	if (Theme == NULL)
@@ -424,8 +466,6 @@ void Ini::LoadThemes(CSimpleIni& ini)
 	if (Theme->DefaultSkin == NULL)
 		return sLog.Critical(_T("Specified theme doesn't have a default skin."));
 
-	// sSkins.OnThemeChange();
-	
 	tstring skinName = ini.GetValue(section, _T("Skin"), Theme->DefaultSkin->Name.c_str());
 	Skin = sSkins.LookupSkinForTheme(skinName, Theme->Name);
 	if (Skin == NULL)
@@ -436,11 +476,12 @@ void Ini::LoadThemes(CSimpleIni& ini)
 
 void Ini::LoadPaths(CSimpleIni& ini)
 {
-	const CSimpleIni::TKeyVal * section = ini.GetSection(_T("Directories"));
-	if (section == NULL)
+	const TCHAR * section = _T("Directories");
+	const CSimpleIni::TKeyVal * sectionKeys = ini.GetSection(section);
+	if (sectionKeys == NULL)
 		return;
 
-	for (CSimpleIni::TKeyVal::const_iterator itr = section->begin(); itr != section->end(); ++itr)
+	for (CSimpleIni::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
 		AddSongPath(boost::filesystem::path(itr->second));
 }
 
