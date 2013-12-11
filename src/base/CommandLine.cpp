@@ -159,7 +159,7 @@ void CMDParams::Load(int argc, TCHAR ** argv)
 			break;
 
 		case OPT_LANGUAGE:
-			Language = args.OptionArg();
+			LanguageName = args.OptionArg();
 			break;
 
 		case OPT_RESOLUTION:

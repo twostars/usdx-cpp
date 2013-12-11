@@ -41,12 +41,16 @@ public:
 	void LoadList();
 	void ParseDir(const boost::filesystem::path * dir);
 	void LoadHeader(const boost::filesystem::path * iniFile);
+	SkinEntry* LookupSkin(const tstring& skinName);
 	SkinEntry* LookupSkinForTheme(const tstring& themeName);
 	~Skins();
 
 private:
 	typedef std::map<tstring, SkinEntry, tstring_ci> SkinEntryMap;
+	typedef std::map<tstring, tstring, tstring_ci> SkinThemeMap;
+
 	SkinEntryMap _skins;
+	SkinThemeMap _skinThemes;
 };
 
 #define sSkins (Skins::getSingleton())

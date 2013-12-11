@@ -49,8 +49,7 @@ public:
 	int			Depth;
 	int			Screens;
 
-	// TODO: Store properly (i.e. without string)
-	tstring		Language;
+	tstring		LanguageName;
 	tstring		Resolution;
 };
 

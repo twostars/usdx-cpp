@@ -22,8 +22,6 @@
 
 #include "stdafx.h"
 
-#include <SDL.h>
-
 #include "Main.h"
 #include "Platform.h"
 
@@ -102,6 +100,13 @@ int usdxMain(int argc, TCHAR ** argv)
 		new Ini();
 		sIni.Load();
 
+		// Set the language.
+		// NOTE: Command-line takes precedence.
+		if (!Params.LanguageName.empty())
+			sLanguage.ChangeLanguage(Params.LanguageName);
+		else
+			sLanguage.ChangeLanguage(sIni.LanguageName);
+		
 		// It is possible that this is the first run, so create an .ini file if necessary.
 		sLog.Status(_T("Writing INI"), _T("Initialization"));
 		sIni.Save();

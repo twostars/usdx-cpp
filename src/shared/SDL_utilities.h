@@ -18,36 +18,27 @@
  * along with this program; see the file COPYING. If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
- */           
+ */
 
-#ifndef _LANGUAGE_H
-#define _LANGUAGE_H
+#ifndef _SDL_UTILITIES_H
+#define _SDL_UTILITIES_H
 #pragma once
 
-#define DEFAULT_LANGUAGE _T("English")
+/**
+ *  \name Surface flags
+ */
+/*@{*/
+#define SDL_SRCALPHA        0x00010000
+#define SDL_SRCCOLORKEY     0x00020000
+#define SDL_ANYFORMAT       0x00100000
+#define SDL_HWPALETTE       0x00200000
+#define SDL_DOUBLEBUF       0x00400000
+#define SDL_FULLSCREEN      0x00800000
+#define SDL_RESIZABLE       0x01000000
+#define SDL_NOFRAME         0x02000000
+#define SDL_OPENGL          0x04000000
+/*@}*//*Surface flags*/
 
-class Language : public Singleton<Language>
-{
-public:
-	Language();
-	void LoadList();
-	void ChangeLanguage(const tstring& language);
-	void AddConst(const tstring& id, const tstring& text);
-	const tstring Translate(const tstring& id);
-	void TranslateOptionValues();
-	~Language();
-
-private:
-	typedef std::set<tstring, tstring_ci> LanguageSet;
-	typedef std::map<tstring, tstring> LanguageEntryMap;
-
-	LanguageSet _langSet;
-	LanguageEntryMap _translatedLanguageNames;
-
-	LanguageEntryMap _langEntryMap;
-	LanguageEntryMap _langConstEntryMap;
-};
-
-#define sLanguage (Language::getSingleton())
+SDL_Rect ** SDL_ListModes(int displayIndex);
 
 #endif

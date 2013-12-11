@@ -49,12 +49,34 @@ struct InputDeviceConfig
 #define LOOKUP_ARRAY_INDEX(arr, section, key, defaultOffset) \
 	GET_INDEX(arr, ini.GetValue(section, key, arr[defaultOffset].c_str()))
 
+
+typedef std::pair<int, int> ResolutionWH;
+typedef std::map<ResolutionWH, tstring> ResolutionMap;
+typedef std::map<tstring, ResolutionWH, tstring_ci> ReverseResolutionMap;
+
 // User configuration
 class Ini : public Singleton<Ini>
 {
 public:
 	Ini();
 	void Load();
+
+private:
+	void LoadProfileSettings(CSimpleIni& ini);
+	void LoadGameSettings(CSimpleIni& ini);
+	void LoadGraphicsSettings(CSimpleIni& ini);
+	void LoadScreenModes(CSimpleIni& ini);
+	void LoadSoundSettings(CSimpleIni& ini);
+	void LoadLyricsSettings(CSimpleIni& ini);
+	void LoadAdvancedSettings(CSimpleIni& ini);
+	void LoadControllerSettings(CSimpleIni& ini);
+	void LoadInputDeviceConfig(CSimpleIni& ini);
+	void LoadThemes(CSimpleIni& ini);
+	void LoadPaths(CSimpleIni& ini);
+
+	void AddResolution(int width, int height);
+
+public:
 	void Save();
 	~Ini();
 
@@ -68,7 +90,7 @@ public:
 	// Game
 	int Players;
 	eDifficultyType Difficulty;
-	tstring Language;
+	tstring LanguageName;
 	eSwitch Tabs;
 	eSwitch TabsAtStartup;
 	eSortingType Sorting;
@@ -76,7 +98,7 @@ public:
 
 	// Graphics
 	int Screens;
-	int Resolution;
+	ResolutionWH Resolution;
 	int Depth;
 	eVisualizerOption VisualizerOption;
 	eSwitch FullScreen;
@@ -109,9 +131,9 @@ public:
 	eSwitch NoteLines;
 
 	// Themes
-	int Theme;
-	int SkinNo;
-	eColor Color;
+	struct ThemeEntry * Theme;
+	struct SkinEntry  * Skin;
+	eColor ThemeColor;
 	eSwitch BackgroundMusic;
 
 	// Record
@@ -132,6 +154,9 @@ public:
 
 	// Default encoding for texts (lyrics, song name, ...)
 	eEncoding DefaultEncoding;
+
+	ResolutionMap        LoadedResolutions;
+	ReverseResolutionMap ResolutionNameMap;
 };
 
 #define sIni (Ini::getSingleton())

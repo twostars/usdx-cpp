@@ -45,6 +45,9 @@ typedef std::set<boost::filesystem::path> PathSet;
 const TCHAR * GetConfigFile();
 const TCHAR * GetScoreFile();
 
+void AddSongPath(boost::filesystem::path& path);
+void AddCoverPath(boost::filesystem::path& path);
+
 void InitializePaths();
 
 #endif

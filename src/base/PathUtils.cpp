@@ -57,6 +57,9 @@ INLINE const TCHAR * GetPath(path& path) { return path.native().c_str(); }
 const TCHAR * GetConfigFile()  { return GetPath(ConfigFile); }
 const TCHAR * GetScoreFile()   { return GetPath(ScoreFile); }
 
+void AddSongPath(path& path) { SongPaths.insert(path); }
+void AddCoverPath(path& path) { CoverPaths.insert(path); }
+
 bool FindPath(path& resultPath, const path& requestedPath, bool needsWritePermission)
 {
 	try
@@ -115,13 +118,13 @@ void InitializePaths()
 	// Add song paths
 	Platform::GetMusicPath(&userMusicDir);
 
-	SongPaths.insert(SongPath);
-	SongPaths.insert(userMusicDir);
-	SongPaths.insert(UserPath / SONG_DIR);
+	AddSongPath(SongPath);
+	AddSongPath(userMusicDir);
+	AddSongPath(UserPath / SONG_DIR);
 
 	// Add category cover paths
-	CoverPaths.insert(SharedPath / COVER_DIR);
-	CoverPaths.insert(UserPath / COVER_DIR);
+	AddCoverPath(SharedPath / COVER_DIR);
+	AddCoverPath(UserPath / COVER_DIR);
 
 	// Set config file if not already set by commandline.
 	if (ConfigFile.empty())

@@ -39,14 +39,23 @@ struct ThemeEntry
 	struct SkinEntry * DefaultSkin;
 };
 
+#define DEFAULT_THEME _T("DELUXE")
+
 class Themes : public Singleton<Themes>
 {
 public:
 	Themes();
+
+	INLINE size_t GetThemeCount() { return _themes.size(); }
+
 	void RecreateThemeObjects();
 	void LoadList();
 	void ParseDir(const boost::filesystem::path * dir);
 	void LoadHeader(const boost::filesystem::path * iniFile);
+
+	ThemeEntry * LookupTheme(tstring themeName);
+	ThemeEntry * LookupThemeDefault(tstring themeName, tstring defaultTheme);
+
 	~Themes();
 
 public:
@@ -85,8 +94,8 @@ public:
 	#undef DECL_THEME
 
 private:
-	typedef std::vector<ThemeEntry> ThemeEntrySet;
-	ThemeEntrySet _themes;
+	typedef std::map<tstring, ThemeEntry, tstring_ci> ThemeEntryMap;
+	ThemeEntryMap _themes;
 };
 
 #define sThemes (Themes::getSingleton())

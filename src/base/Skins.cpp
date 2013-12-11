@@ -26,8 +26,6 @@
 #include "Log.h"
 #include "Ini.h"
 
-#include "../lib/simpleini/SimpleIni.h"
-
 using namespace boost::filesystem;
 
 initialiseSingleton(Skins);
@@ -47,6 +45,7 @@ void Skins::LoadList()
 	{
 		// Clear the existing skins list.
 		_skins.clear();
+		_skinThemes.clear();
 
 		for (directory_iterator itr(SkinsPath); itr != end; ++itr)
 		{
@@ -110,13 +109,19 @@ void Skins::LoadHeader(const path * iniFile)
 
 	// Parse color names (stored as, for example, "Blue")
 	skin.DefaultColor	= LOOKUP_ENUM_VALUE(Color, _T("Skin"), _T("Color"), Color::Blue);
-	_skins.insert(std::make_pair(skin.Theme, skin));
+	_skins.insert(std::make_pair(skin.Name, skin));
+}
+
+SkinEntry* Skins::LookupSkin(const tstring& skinName)
+{
+	SkinEntryMap::const_iterator itr = _skins.find(skinName);
+	return (itr == _skins.end() ? NULL : (SkinEntry *)&itr->second);
 }
 
 SkinEntry* Skins::LookupSkinForTheme(const tstring& themeName)
 {
-	SkinEntryMap::const_iterator itr = _skins.find(themeName);
-	return (itr == _skins.end() ? NULL : (SkinEntry *)&itr->second);
+	SkinThemeMap::const_iterator itr = _skinThemes.find(themeName);
+	return (itr == _skinThemes.end() ? NULL : LookupSkin(itr->second));
 }
 
 Skins::~Skins()

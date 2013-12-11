@@ -26,8 +26,8 @@
 #include "Log.h"
 #include "CommandLine.h"
 #include "Language.h"
-
-#include "../lib/simpleini/SimpleIni.h"
+#include "Themes.h"
+#include "Skins.h"
 
 initialiseSingleton(Ini);
 
@@ -85,87 +85,15 @@ const tstring IMouse[]            = { _T("Off"), _T("Hardware Cursor"), _T("Soft
 const tstring IChannelPlayer[]    = { _T("Off"), _T("1"), _T("2"), _T("3"), _T("4"), _T("5"), _T("6") };
 const tstring IMicBoost[]         = { _T("Off"), _T("+6dB"), _T("+12dB"), _T("+18dB") };
 
-std::vector<tstring> IResolution;
-
-/*
- * Translated options
- */
-
-// TODO: Replace
-std::vector<tstring> ILanguageTranslated;
-
-tstring IDifficultyTranslated[]       = { _T("Easy"), _T("Medium"), _T("Hard") };
-tstring ITabsTranslated[]             = { _T("Off"), _T("On") };
-
-tstring ISortingTranslated[]          = { _T("Edition"), _T("Genre"), _T("Language"), _T("Folder"), _T("Title"), _T("Artist"), _T("Artist2") };
-
-tstring IDebugTranslated[]            = { _T("Off"), _T("On") }; 
-
-tstring IFullScreenTranslated[]       = { _T("Off"), _T("On") };
-tstring IVisualizerTranslated[]       = { _T("Off"), _T("WhenNoVideo"), _T("On") };
-
-tstring IBackgroundMusicTranslated[]  = { _T("Off"), _T("On") };
-tstring ISingWindowTranslated[]       = { _T("Small"), _T("Big") };
-
-tstring IOscilloscopeTranslated[]     = { _T("Off"), _T("On") };
-
-tstring ISpectrumTranslated[]         = { _T("Off"), _T("On") };
-tstring ISpectrographTranslated[]     = { _T("Off"), _T("On") };
-tstring IMovieSizeTranslated[]        = { _T("Half"), _T("Full [Vid]"), _T("Full [BG+Vid]") };
-tstring IVideoPreviewTranslated[]     = { _T("Off"), _T("On") };
-tstring IVideoEnabledTranslated[]     = { _T("Off"), _T("On") };
-
-tstring IClickAssistTranslated[]      = { _T("Off"), _T("On") };
-tstring IBeatClickTranslated[]        = { _T("Off"), _T("On") };
-tstring ISavePlaybackTranslated[]     = { _T("Off"), _T("On") };
-
-tstring IVoicePassthroughTranslated[] = { _T("Off"), _T("On") };
-
-tstring ISyncToTranslated[]           = { _T("Music"), _T("Lyrics"), _T("Off") };
-
-tstring 
-	IAudioOutputBufferSizeTranslated[] = { _T("Auto"), _T("256"),  _T("512"),   _T("1024"),  _T("2048"), 
-	                                       _T("4096"), _T("8192"), _T("16384"), _T("32768"), _T("65536") };
-
-tstring
-	IAudioInputBufferSizeTranslated[] = { _T("Auto"), _T("256"),  _T("512"),   _T("1024"),  _T("2048"), 
-                                           _T("4096"), _T("8192"), _T("16384"), _T("32768"), _T("65536") };
-
-tstring IPreviewVolumeTranslated[]    = { _T("Off"), _T("10%"), _T("20%"), _T("30%"), _T("40%"), _T("50%"), 
-	                                      _T("60%"), _T("70%"), _T("80%"), _T("90%"), _T("100%") };
-
-tstring IPreviewFadingTranslated[]    = { _T("Off"), _T("1 Sec"), _T("2 Secs"), _T("3 Secs"), _T("4 Secs"), _T("5 Secs") };
-
-tstring ILyricsFontTranslated[]       = { _T("Plain"), _T("OLine1"), _T("OLine2") };
-tstring ILyricsEffectTranslated[]     = { _T("Simple"), _T("Zoom"), _T("Slide"), _T("Ball"), _T("Shift") };
-tstring INoteLinesTranslated[]        = { _T("Off"), _T("On") };
-
-tstring IColorTranslated[]            = { _T("Blue"), _T("Green"), _T("Pink"), _T("Red"), _T("Violet"), 
-	                                      _T("Orange"), _T("Yellow"), _T("Brown"), _T("Black") };
-
-// Advanced
-tstring ILoadAnimationTranslated[]    = { _T("Off"), _T("On") };
-tstring IEffectSingTranslated[]       = { _T("Off"), _T("On") };
-tstring IScreenFadeTranslated[]       = { _T("Off"), _T("On") };
-tstring IAskbeforeDelTranslated[]     = { _T("Off"), _T("On") };
-tstring IOnSongClickTranslated[]      = { _T("Sing"), _T("Select Players"), _T("Open Menu") };
-
-tstring ILineBonusTranslated[]        = { _T("Off"), _T("On") };
-tstring IPartyPopupTranslated[]       = { _T("Off"), _T("On") };
-
-tstring IJoypadTranslated[]           = { _T("Off"), _T("On") };
-tstring IMouseTranslated[]            = { _T("Off"), _T("Hardware Cursor"), _T("Software Cursor") };
-
-// Recording options
-tstring IChannelPlayerTranslated[]    = { _T("Off"), _T("1"), _T("2"), _T("3"), _T("4"), _T("5"), _T("6") };
-tstring IMicBoostTranslated[]         = { _T("Off"), _T("+6dB"), _T("+12dB"), _T("+18dB") };
+const ResolutionWH DefaultResolution(800, 600);
+const TCHAR *      DefaultResolutionName = _T("800x600");
 
 Ini::Ini()
 {
 	// Game
 	Players = 0;
 	Difficulty = DifficultyType::Easy;
-	Language = DEFAULT_LANGUAGE;
+	LanguageName = DEFAULT_LANGUAGE;
 	Tabs = Switch::Off;
 	TabsAtStartup = Tabs;
 	Sorting = SortingType::Edition;
@@ -173,7 +101,7 @@ Ini::Ini()
 
 	// Graphics
 	Screens = 1;
-	Resolution = 0;
+	Resolution = DefaultResolution;
 	Depth = 32;
 	VisualizerOption = VisualizerOption::Off;
 	FullScreen = Switch::On;
@@ -206,9 +134,9 @@ Ini::Ini()
 	NoteLines = Switch::On;
 
 	// Themes
-	Theme = 0;
-	SkinNo = 0;
-	Color = Color::Blue;
+	Theme = NULL;
+	Skin  = NULL;
+	ThemeColor = Color::Blue;
 	BackgroundMusic = Switch::On;
 
 	// Advanced
@@ -239,6 +167,20 @@ void Ini::Load()
 	if (result != SI_OK)
 		return sLog.Debug(_T("Ini::Load"), _T("Failed to load config."));
 
+	LoadProfileSettings(ini);
+	LoadGameSettings(ini);
+	LoadGraphicsSettings(ini);
+	LoadSoundSettings(ini);
+	LoadLyricsSettings(ini);
+	LoadControllerSettings(ini);
+	LoadAdvancedSettings(ini);
+
+	LoadThemes(ini);
+	LoadPaths(ini);
+}
+
+void Ini::LoadProfileSettings(CSimpleIni& ini)
+{
 	// Load profile names/templates
 	for (int i = 0; i < MAX_PROFILE_NAMES; i++)
 	{
@@ -265,70 +207,238 @@ void Ini::Load()
 
 		NameTeam[i] =  ini.GetValue(_T("NameTeam"), key, defaultName);
 	}
+}
 
-	Players       = LOOKUP_ARRAY_INDEX(IPlayers,    _T("Game"), _T("Players"), 0);
-	Difficulty    = LOOKUP_ENUM_VALUE(DifficultyType, _T("Game"), _T("Difficulty"), DifficultyType::Easy);
-	Language      = ini.GetValue(_T("Game"), _T("Language"), DEFAULT_LANGUAGE);
+void Ini::LoadGameSettings(CSimpleIni& ini)
+{
+	static const TCHAR * section = _T("Game");
 
-	Tabs          = LOOKUP_ENUM_VALUE(Switch,        _T("Game"), _T("Tabs"), Switch::Off);
+	Players       = LOOKUP_ARRAY_INDEX(IPlayers,        section, _T("Players"), 0);
+	Difficulty    = LOOKUP_ENUM_VALUE(DifficultyType,   section, _T("Difficulty"), DifficultyType::Easy);
+	LanguageName  = ini.GetValue(section, _T("Language"), DEFAULT_LANGUAGE);
+
+	Tabs          = LOOKUP_ENUM_VALUE(Switch,            section, _T("Tabs"), Switch::Off);
 	TabsAtStartup = Tabs;
 
-	Sorting       = LOOKUP_ENUM_VALUE(SortingType,   _T("Game"), _T("Sorting"), SortingType::Edition);
-	Debug         = LOOKUP_ENUM_VALUE(Switch,       _T("Game"), _T("Debug"), Switch::Off);
+	Sorting       = LOOKUP_ENUM_VALUE(SortingType,       section, _T("Sorting"), SortingType::Edition);
+	Debug         = LOOKUP_ENUM_VALUE(Switch,            section, _T("Debug"), Switch::Off);
+}
 
-	// TODO
-	// LoadScreenModes();
+void Ini::LoadGraphicsSettings(CSimpleIni& ini)
+{
+	static const TCHAR * section = _T("Graphics");
+
+	Screens       = LOOKUP_ARRAY_INDEX(IScreens,        section, _T("Screens"), 0 /* 1 */);
+	FullScreen    = LOOKUP_ENUM_VALUE(Switch,           section, _T("FullScreen"), Params.ScreenMode == scmWindowed ? Switch::Off : Switch::On);
+	Depth         = LOOKUP_ARRAY_INDEX(IDepth,          section, _T("Depth"), 1 /* 32-bit */);
 
 	// TextureSize (aka CachedCoverSize)
-	TextureSize   = LOOKUP_ARRAY_INDEX(ITextureSize,  _T("Graphics"), _T("TextureSize"), 0);
-	SingWindow    = LOOKUP_ENUM_VALUE(SingWindowType, _T("Graphics"), _T("SingWindow"), SingWindowType::Big);
-	Oscilloscope  = LOOKUP_ENUM_VALUE(Switch, _T("Graphics"), _T("Oscilloscope"), Switch::Off);
-	Spectrum      = LOOKUP_ENUM_VALUE(Switch, _T("Graphics"), _T("Spectrum"), Switch::Off);
-	Spectrograph  = LOOKUP_ENUM_VALUE(Switch, _T("Graphics"), _T("Spectrograph"), Switch::Off);
-	MovieSize     = LOOKUP_ARRAY_INDEX(IMovieSize, _T("Graphics"), _T("MovieSize"), 2);
-	VideoPreview  = LOOKUP_ENUM_VALUE(Switch, _T("Graphics"), _T("VideoPreview"), Switch::On);
-	VideoEnabled  = LOOKUP_ENUM_VALUE(Switch, _T("Graphics"), _T("VideoEnabled"), Switch::On);
+	TextureSize   = LOOKUP_ARRAY_INDEX(ITextureSize,    section, _T("TextureSize"), 0);
+	SingWindow    = LOOKUP_ENUM_VALUE(SingWindowType,   section, _T("SingWindow"), SingWindowType::Big);
+	Oscilloscope  = LOOKUP_ENUM_VALUE(Switch,           section, _T("Oscilloscope"), Switch::Off);
+	Spectrum      = LOOKUP_ENUM_VALUE(Switch,           section, _T("Spectrum"), Switch::Off);
+	Spectrograph  = LOOKUP_ENUM_VALUE(Switch,           section, _T("Spectrograph"), Switch::Off);
+	MovieSize     = LOOKUP_ARRAY_INDEX(IMovieSize,      section, _T("MovieSize"), 2);
+	VideoPreview  = LOOKUP_ENUM_VALUE(Switch,           section, _T("VideoPreview"), Switch::On);
+	VideoEnabled  = LOOKUP_ENUM_VALUE(Switch,           section, _T("VideoEnabled"), Switch::On);
 	VisualizerOption
-                  = LOOKUP_ENUM_VALUE(VisualizerOption, _T("Graphics"), _T("Visualization"), VisualizerOption::Off);
+                  = LOOKUP_ENUM_VALUE(VisualizerOption, section, _T("Visualization"), VisualizerOption::Off);
 
-	ClickAssist   = LOOKUP_ENUM_VALUE(Switch, _T("Sound"), _T("ClickAssist"), Switch::Off);
-	BeatClick     = LOOKUP_ENUM_VALUE(Switch, _T("Sound"), _T("BeatClick"), Switch::Off);
-	SavePlayback  = LOOKUP_ENUM_VALUE(Switch, _T("Sound"), _T("SavePlayback"), Switch::Off);
-	PreviewVolume = LOOKUP_ARRAY_INDEX(IPreviewVolume, _T("Sound"), _T("PreviewVolume"), 7 /* 100% */);
-	PreviewFading = LOOKUP_ARRAY_INDEX(IPreviewFading, _T("Sound"), _T("PreviewFading"), 3 /* 3 sec */);
+	LoadScreenModes(ini);
+
+	tstring resName = ini.GetValue(section, _T("Resolution"), DefaultResolutionName);
+
+	ReverseResolutionMap::const_iterator itr = ResolutionNameMap.find(resName);
+	if (itr != ResolutionNameMap.end())
+	{
+		Resolution = itr->second;
+	}
+	else // not found, use default resolution.
+	{
+		Resolution = DefaultResolution;
+		sLog.Warn(_T("Video"), _T("Invalid resolution specified (%s)."),
+			resName.c_str());
+
+		// Don't use fullscreen in this case.
+		FullScreen = Switch::Off;
+	}
+
+	sLog.Status(_T("Video"), _T("Using resolution: %u x %u."), 
+		Resolution.first, Resolution.second);
+}
+
+void Ini::LoadScreenModes(CSimpleIni& ini)
+{
+	SDL_Rect ** modes = SDL_ListModes(0);
+
+	// Clear existing resolutions
+	LoadedResolutions.clear();
+	ResolutionNameMap.clear();
+
+	// Load resolutions for this display device
+	if (modes != NULL)
+	{
+		for (int i = 0; modes[i] != 0; i++)
+		{
+			SDL_Rect * mode = modes[i];
+			AddResolution(mode->w, mode->h);
+			SDL_free(modes[i]);
+		}
+		SDL_free(modes);
+	}
+
+	// No resolutions found, use default list.
+	if (LoadedResolutions.empty())
+	{
+		AddResolution(640, 480);
+		AddResolution(800, 600);
+		AddResolution(1024, 768);
+		AddResolution(1152, 666);
+		AddResolution(1152, 864);
+		AddResolution(1280, 800);
+		AddResolution(1280, 960);
+		AddResolution(1280, 1024);
+		AddResolution(1366, 768);
+		AddResolution(1400, 1050);
+		AddResolution(1440, 900);
+		AddResolution(1600, 900);
+		AddResolution(1600, 1200);
+		AddResolution(1680, 1050);
+		AddResolution(1920, 1080);
+		AddResolution(1920, 1200);
+		AddResolution(2048, 1152);
+		AddResolution(2560, 1600);
+	}
+
+	for (ResolutionMap::iterator itr = LoadedResolutions.begin(); 
+		itr != LoadedResolutions.end();)
+	{
+		ResolutionMap::iterator itr2 = itr++;
+
+		ResolutionWH resolution = itr2->first;
+		tstring      resolutionName = itr2->second;
+
+		// Handle width adjustment for multiple displays setup horizontally.
+		if (Screens != 0)
+		{
+			// Remove old entry
+			LoadedResolutions.erase(resolution);
+			ResolutionNameMap.erase(resolutionName);
+
+			// Adjust width (assume all screens are laid out horizontally)...
+			resolution.first /= (Screens + 1);
+
+			// Re-add new resolution
+			AddResolution(resolution.first, resolution.second);
+		}
+
+		sLog.Status(_T("Video"), _T("Loaded resolution: %d x %d"), resolution.first, resolution.second);
+	}
+
+	sLog.Status(_T("Video"), _T("Loaded resolutions: %u"), LoadedResolutions.size());
+}
+
+void Ini::AddResolution(int width, int height)
+{
+	ResolutionWH resolution(width, height);
+	TCHAR buffer[32];
+
+	_sntprintf(buffer, 32, _T("%ux%u"), width, height);
+
+	LoadedResolutions.insert(std::make_pair(resolution, buffer));
+	ResolutionNameMap.insert(std::make_pair(buffer, resolution));
+}
+
+void Ini::LoadSoundSettings(CSimpleIni& ini)
+{
+	static const TCHAR * section = _T("Sound");
+
+	ClickAssist   = LOOKUP_ENUM_VALUE(Switch,            section, _T("ClickAssist"), Switch::Off);
+	BeatClick     = LOOKUP_ENUM_VALUE(Switch,            section, _T("BeatClick"), Switch::Off);
+	SavePlayback  = LOOKUP_ENUM_VALUE(Switch,            section, _T("SavePlayback"), Switch::Off);
+	PreviewVolume = LOOKUP_ARRAY_INDEX(IPreviewVolume,   section, _T("PreviewVolume"), 7 /* 100% */);
+	PreviewFading = LOOKUP_ARRAY_INDEX(IPreviewFading,   section, _T("PreviewFading"), 3 /* 3 sec */);
 	BackgroundMusic
-	              = LOOKUP_ENUM_VALUE(Switch, _T("Sound"), _T("BackgroundMusic"), Switch::On);
+	              = LOOKUP_ENUM_VALUE(Switch,            section, _T("BackgroundMusic"), Switch::On);
 	AudioOutputBufferSizeIndex
-	              = LOOKUP_ARRAY_INDEX(IAudioOutputBufferSize, _T("Sound"), _T("AudioOutputBufferSize"), 0);
+	              = LOOKUP_ARRAY_INDEX(IAudioOutputBufferSize, section, _T("AudioOutputBufferSize"), 0);
 	VoicePassthrough 
-	         	  = LOOKUP_ENUM_VALUE(Switch, _T("Sound"), _T("VoicePassthrough"), Switch::Off);
+	         	  = LOOKUP_ENUM_VALUE(Switch,            section, _T("VoicePassthrough"), Switch::Off);
+}
 
-	LyricsFont    = LOOKUP_ENUM_VALUE(LyricsFontType, _T("Lyrics"), _T("LyricsFont"), LyricsFontType::Plain);
-	LyricsEffect  = LOOKUP_ENUM_VALUE(LyricsEffectType, _T("Lyrics"), _T("LyricsEffect"), LyricsEffectType::Shift);
-	NoteLines     = LOOKUP_ENUM_VALUE(Switch, _T("Lyrics"), _T("NoteLines"), Switch::On);
+void Ini::LoadLyricsSettings(CSimpleIni& ini)
+{
+	static const TCHAR * section = _T("Lyrics");
+
+	LyricsFont    = LOOKUP_ENUM_VALUE(LyricsFontType,    section, _T("LyricsFont"), LyricsFontType::Plain);
+	LyricsEffect  = LOOKUP_ENUM_VALUE(LyricsEffectType,  section, _T("LyricsEffect"), LyricsEffectType::Shift);
+	NoteLines     = LOOKUP_ENUM_VALUE(Switch,            section, _T("NoteLines"), Switch::On);
 
 	DefaultEncoding
-	              = LOOKUP_ENUM_VALUE(Encoding, _T("Lyrics"), _T("Encoding"), Encoding::Auto);
+	              = LOOKUP_ENUM_VALUE(Encoding,          section, _T("Encoding"), Encoding::Auto);
+}
 
-	// TODO
-	// LoadThemes();
-	// LoadInputDeviceCfg(ini);
+void Ini::LoadAdvancedSettings(CSimpleIni& ini)
+{
+	static const TCHAR * section = _T("Advanced");
 
-	LoadAnimation = LOOKUP_ENUM_VALUE(Switch, _T("Advanced"), _T("LoadAnimation"), Switch::On);
-	ScreenFade    = LOOKUP_ENUM_VALUE(Switch, _T("Advanced"), _T("ScreenFade"), Switch::On);
+	LoadAnimation = LOOKUP_ENUM_VALUE(Switch,            section, _T("LoadAnimation"), Switch::On);
+	ScreenFade    = LOOKUP_ENUM_VALUE(Switch,            section, _T("ScreenFade"), Switch::On);
 	AskBeforeDel
-	              = LOOKUP_ENUM_VALUE(Switch, _T("Advanced"), _T("AskbeforeDel"), Switch::On);
-	OnSongClick   = LOOKUP_ENUM_VALUE(SongClickType, _T("Advanced"), _T("OnSongClick"), SongClickType::Sing);
-	LineBonus     = LOOKUP_ENUM_VALUE(Switch, _T("Advanced"), _T("LineBonus"), Switch::On);
-	PartyPopup    = LOOKUP_ENUM_VALUE(Switch, _T("Advanced"), _T("PartyPopup"), Switch::On);
-	SyncTo        = LOOKUP_ENUM_VALUE(SyncToType, _T("Advanced"), _T("SyncTo"), SyncToType::Music);
+	              = LOOKUP_ENUM_VALUE(Switch,            section, _T("AskbeforeDel"), Switch::On);
+	OnSongClick   = LOOKUP_ENUM_VALUE(SongClickType,     section, _T("OnSongClick"), SongClickType::Sing);
+	LineBonus     = LOOKUP_ENUM_VALUE(Switch,            section, _T("LineBonus"), Switch::On);
+	PartyPopup    = LOOKUP_ENUM_VALUE(Switch,            section, _T("PartyPopup"), Switch::On);
+	SyncTo        = LOOKUP_ENUM_VALUE(SyncToType,        section, _T("SyncTo"), SyncToType::Music);
+}
 
-	Joypad        = LOOKUP_ENUM_VALUE(Switch, _T("Controller"), _T("Joypad"), Params.Joypad ? Switch::On : Switch::Off);
-	Mouse         = LOOKUP_ARRAY_INDEX(IMouse, _T("Controller"), _T("Mouse"), Params.Joypad ? 0 /* off */ : 2 /* software cursor */);
+void Ini::LoadControllerSettings(CSimpleIni& ini)
+{
+	static const TCHAR * section = _T("Controller");
 
+	Joypad        = LOOKUP_ENUM_VALUE(Switch,            section, _T("Joypad"), Params.Joypad ? Switch::On : Switch::Off);
+	Mouse         = LOOKUP_ARRAY_INDEX(IMouse,           section, _T("Mouse"), Params.Joypad ? 0 /* off */ : 2 /* software cursor */);
+
+	LoadInputDeviceConfig(ini);
+}
+
+void Ini::LoadInputDeviceConfig(CSimpleIni& ini)
+{
 	// TODO
-	// LoadPaths();
-	// TranslateOptionValues();
+}
+
+void Ini::LoadThemes(CSimpleIni& ini)
+{
+	if (sThemes.GetThemeCount() == 0)
+		return sLog.Critical(_T("No themes are loaded."));
+
+	static const TCHAR * section = _T("Themes");
+
+	// TODO: Clean this up. It would be preferable to only store the theme & skin names here.
+	tstring themeName = ini.GetValue(section, _T("Theme"), _T("DELUXE"));
+
+	Theme = sThemes.LookupThemeDefault(themeName, DEFAULT_THEME);
+	if (Theme == NULL)
+		return sLog.Critical(_T("Theme not found, and default theme does not exist."));
+
+	if (Theme->DefaultSkin == NULL)
+		return sLog.Critical(_T("Specified theme doesn't have a default skin."));
+
+	// sSkins.OnThemeChange();
+	
+	tstring skinName = ini.GetValue(section, _T("Skin"), Theme->DefaultSkin->Name.c_str());
+	Skin = sSkins.LookupSkin(skinName);
+	if (Skin == NULL)
+		Skin = Theme->DefaultSkin; // NOTE: Checked earlier
+
+	ThemeColor = LOOKUP_ENUM_VALUE(Color, section, _T("Color"), Skin->DefaultColor);
+}
+
+void Ini::LoadPaths(CSimpleIni& ini)
+{
+	const CSimpleIni::TKeyVal * section = ini.GetSection(_T("Directories"));
+	for (CSimpleIni::TKeyVal::const_iterator itr = section->begin(); itr != section->end(); ++itr)
+		AddSongPath(boost::filesystem::path(itr->second));
 }
 
 void Ini::Save()

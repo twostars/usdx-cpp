@@ -27,8 +27,6 @@
 #include "Skins.h"
 #include "ThemeDefines.h"
 
-#include "../lib/simpleini/SimpleIni.h"
-
 using namespace boost::filesystem;
 
 initialiseSingleton(Themes);
@@ -217,7 +215,42 @@ void Themes::LoadHeader(const path * iniFile)
 			theme.Name.c_str());
 	}
 
-	_themes.push_back(theme);
+	_themes.insert(std::make_pair(theme.Name, theme));
+}
+
+/**
+ * Looks up a given theme by its name.
+ *
+ * @param	themeName	Name of the theme to lookup.
+ *
+ * @return	NULL if it fails, else a pointer to the associated ThemeEntry.
+ */
+
+ThemeEntry * Themes::LookupTheme(tstring themeName)
+{
+	ThemeEntryMap::const_iterator itr = _themes.find(themeName);
+	return (itr == _themes.end() ? NULL : (ThemeEntry *)&itr->second);
+}
+
+/**
+ * Looks up a given theme by its name.
+ * If the given theme was not found, attempt to fallback to the
+ * specified default them.
+ *
+ * @param	themeName   	Name of the theme to lookup.
+ * @param	defaultTheme	The theme to default to, in the event
+ * 							the initial theme wasn't found.
+ *
+ * @return	NULL if it fails, else a pointer to the associated ThemeEntry.
+ */
+
+ThemeEntry * Themes::LookupThemeDefault(tstring themeName, tstring defaultTheme)
+{
+	ThemeEntry * result = LookupTheme(themeName);
+	if (result != NULL)
+		return result;
+
+	return LookupTheme(defaultTheme);
 }
 
 Themes::~Themes()

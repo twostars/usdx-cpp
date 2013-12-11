@@ -432,6 +432,9 @@
     <ClCompile Include="..\..\src\lib\simpleini\ConvertUTF.c">
       <Filter>lib\simpleini</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shared\SDL_utilities.cpp">
+      <Filter>src\shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lib\bass\c\bass.h">
@@ -531,6 +534,9 @@
       <Filter>lib\ImprovedEnum</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\shared\enumerations.h">
+      <Filter>src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\SDL_utilities.h">
       <Filter>src\shared</Filter>
     </ClInclude>
   </ItemGroup>
