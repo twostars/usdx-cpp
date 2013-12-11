@@ -24,6 +24,7 @@
 #include "Language.h"
 #include "PathUtils.h"
 #include "Log.h"
+#include "Ini.h"
 
 using namespace boost::filesystem;
 
@@ -158,6 +159,9 @@ void Language::ChangeLanguage(const tstring& language)
 	ini.GetAllKeys(sectionName, keys);
 	for (CSimpleIni::TNamesDepend::const_iterator itr = keys.begin(); itr != keys.end(); ++itr)
 		_langEntryMap[itr->pItem] = ini.GetValue(sectionName, itr->pItem);
+
+	// Update language name for config
+	sIni.LanguageName = language;
 
 	// Translate & cache option values so we can avoid
 	// looking them up on-demand.

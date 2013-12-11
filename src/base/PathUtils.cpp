@@ -56,8 +56,8 @@ INLINE const TCHAR * GetPath(path& path) { return path.native().c_str(); }
 const TCHAR * GetConfigFile()  { return GetPath(ConfigFile); }
 const TCHAR * GetScoreFile()   { return GetPath(ScoreFile); }
 
-void AddSongPath(path& path) { SongPaths.insert(path); }
-void AddCoverPath(path& path) { CoverPaths.insert(path); }
+void AddSongPath(path& path) { if (!path.empty()) SongPaths.insert(path); }
+void AddCoverPath(path& path) { if (!path.empty()) CoverPaths.insert(path); }
 
 bool FindPath(path& resultPath, const path& requestedPath, bool needsWritePermission)
 {

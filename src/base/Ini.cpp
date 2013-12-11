@@ -32,6 +32,7 @@
 initialiseSingleton(Ini);
 
 extern CMDParams Params;
+extern PathSet SongPaths;
 
 /*
  * Options
@@ -89,6 +90,7 @@ const ResolutionWH DefaultResolution(800, 600);
 const TCHAR *      DefaultResolutionName = _T("800x600");
 
 Ini::Ini()
+	: ini(true)
 {
 	// Game
 	Players = 0;
@@ -159,7 +161,6 @@ Ini::Ini()
 void Ini::Load()
 {
 	const TCHAR * iniPath = GetConfigFile();
-	CSimpleIni ini(true);
 
 	sLog.Status(_T("Ini::Load"), _T("Using config: %s"), iniPath);
 
@@ -167,19 +168,45 @@ void Ini::Load()
 	if (result != SI_OK)
 		return sLog.Debug(_T("Ini::Load"), _T("Failed to load config."));
 
-	LoadProfileSettings(ini);
-	LoadGameSettings(ini);
-	LoadGraphicsSettings(ini);
-	LoadSoundSettings(ini);
-	LoadLyricsSettings(ini);
-	LoadControllerSettings(ini);
-	LoadAdvancedSettings(ini);
+	LoadProfileSettings();
+	LoadGameSettings();
+	LoadGraphicsSettings();
+	LoadSoundSettings();
+	LoadLyricsSettings();
+	LoadAdvancedSettings();
+	LoadControllerSettings();
+	LoadInputDeviceConfig();
 
-	LoadThemes(ini);
-	LoadPaths(ini);
+	LoadThemes();
+	LoadPaths();
+
+	sLog.Status(_T("Ini::Load"), _T("Loaded config."));
 }
 
-void Ini::LoadProfileSettings(CSimpleIni& ini)
+void Ini::Save()
+{
+	const TCHAR * iniFile = GetConfigFile();
+
+	SaveProfileSettings();
+	SaveGameSettings();
+	SaveGraphicsSettings();
+	SaveSoundSettings();
+	SaveLyricsSettings();
+	SaveAdvancedSettings();
+	SaveControllerSettings();
+	SaveInputDeviceConfig();
+
+	SaveThemes();
+	SavePaths();
+
+	SI_Error result = ini.SaveFile(iniFile);
+	if (result != SI_OK)
+		sLog.Error(_T("Ini::Save"), _T("Failed to save config to file: %s"), iniFile);
+	else
+		sLog.Status(_T("Ini::Save"), _T("Saved config to file: %s"), iniFile);
+}
+
+void Ini::LoadProfileSettings()
 {
 	// Load profile names/templates
 	for (int i = 0; i < MAX_PROFILE_NAMES; i++)
@@ -209,7 +236,31 @@ void Ini::LoadProfileSettings(CSimpleIni& ini)
 	}
 }
 
-void Ini::LoadGameSettings(CSimpleIni& ini)
+void Ini::SaveProfileSettings()
+{
+	// Save profile names/templates
+	for (int i = 0; i < MAX_PROFILE_NAMES; i++)
+	{
+		TCHAR key[8];
+
+		_sntprintf(key, 8, _T("P%d"), i + 1);
+		ini.SetValue(_T("Name"), key, Name[i].c_str());
+
+		_sntprintf(key, 8, _T("Name%d"), i + 1);
+		ini.SetValue(_T("NameTemplate"), key, NameTemplate[i].c_str());
+	}
+
+	// Save team name templates
+	for (int i = 0; i < MAX_TEAMS; i++)
+	{
+		TCHAR key[4];
+
+		_sntprintf(key, 4, _T("T%d"), i + 1);
+		ini.SetValue(_T("NameTeam"), key, NameTeam[i].c_str());
+	}
+}
+
+void Ini::LoadGameSettings()
 {
 	static const TCHAR * section = _T("Game");
 
@@ -224,7 +275,20 @@ void Ini::LoadGameSettings(CSimpleIni& ini)
 	Debug         = LOOKUP_ENUM_VALUE(Switch,            section, _T("Debug"), Switch::Off);
 }
 
-void Ini::LoadGraphicsSettings(CSimpleIni& ini)
+void Ini::SaveGameSettings()
+{
+	static const TCHAR * section = _T("Game");
+
+	ini.SetValue(section, _T("Players"), IPlayers[Players].c_str());
+	ini.SetValue(section, _T("Difficulty"), Enum2String(Difficulty).c_str());
+	ini.SetValue(section, _T("Language"), LanguageName.c_str());
+
+	SAVE_ENUM_VALUE(section, _T("Tabs"), Tabs);
+	SAVE_ENUM_VALUE(section, _T("Sorting"), Sorting);
+	SAVE_ENUM_VALUE(section, _T("Debug"), Debug);
+}
+
+void Ini::LoadGraphicsSettings()
 {
 	static const TCHAR * section = _T("Graphics");
 
@@ -244,7 +308,7 @@ void Ini::LoadGraphicsSettings(CSimpleIni& ini)
 	VisualizerOption
                   = LOOKUP_ENUM_VALUE(VisualizerOption, section, _T("Visualization"), VisualizerOption::Off);
 
-	LoadScreenModes(ini);
+	LoadScreenModes();
 
 	tstring resName = ini.GetValue(section, _T("Resolution"), DefaultResolutionName);
 
@@ -267,7 +331,37 @@ void Ini::LoadGraphicsSettings(CSimpleIni& ini)
 		Resolution.first, Resolution.second);
 }
 
-void Ini::LoadScreenModes(CSimpleIni& ini)
+void Ini::SaveGraphicsSettings()
+{
+	static const TCHAR * section = _T("Graphics");
+
+	ini.SetValue(section, _T("Screens"), IScreens[Screens].c_str());
+	SAVE_ENUM_VALUE(section, _T("FullScreen"), FullScreen);
+	ini.SetValue(section, _T("Depth"), IDepth[Depth].c_str());
+
+	// TextureSize (aka CachedCoverSize)
+	ini.SetValue(section, _T("TextureSize"), ITextureSize[TextureSize].c_str());
+	SAVE_ENUM_VALUE(section, _T("SingWindow"), SingWindow);
+	SAVE_ENUM_VALUE(section, _T("Oscilloscope"), Oscilloscope);
+	SAVE_ENUM_VALUE(section, _T("Spectrum"), Spectrum);
+	SAVE_ENUM_VALUE(section, _T("Spectrograph"), Spectrograph);
+	ini.SetValue(section, _T("MovieSize"), IMovieSize[MovieSize].c_str());
+	SAVE_ENUM_VALUE(section, _T("VideoPreview"), VideoPreview);
+	SAVE_ENUM_VALUE(section, _T("VideoEnabled"), VideoEnabled);
+
+	SAVE_ENUM_VALUE(section, _T("Visualization"), VisualizerOption);
+
+	ResolutionMap::iterator itr = LoadedResolutions.find(Resolution);
+	tstring resName;
+	if (itr != LoadedResolutions.end())
+		resName = itr->second;
+	else
+		resName = DefaultResolutionName;
+
+	ini.SetValue(section, _T("Resolution"), resName.c_str());
+}
+
+void Ini::LoadScreenModes()
 {
 	SDL_Rect ** modes = SDL_ListModes(0);
 
@@ -349,7 +443,7 @@ void Ini::AddResolution(int width, int height)
 	ResolutionNameMap.insert(std::make_pair(buffer, resolution));
 }
 
-void Ini::LoadSoundSettings(CSimpleIni& ini)
+void Ini::LoadSoundSettings()
 {
 	static const TCHAR * section = _T("Sound");
 
@@ -366,7 +460,21 @@ void Ini::LoadSoundSettings(CSimpleIni& ini)
 	         	  = LOOKUP_ENUM_VALUE(Switch,            section, _T("VoicePassthrough"), Switch::Off);
 }
 
-void Ini::LoadLyricsSettings(CSimpleIni& ini)
+void Ini::SaveSoundSettings()
+{
+	static const TCHAR * section = _T("Sound");
+
+	SAVE_ENUM_VALUE(section, _T("ClickAssist"), ClickAssist);
+	SAVE_ENUM_VALUE(section, _T("BeatClick"), BeatClick);
+	SAVE_ENUM_VALUE(section, _T("SavePlayback"), SavePlayback);
+	ini.SetValue(section, _T("PreviewVolume"), IPreviewVolume[PreviewVolume].c_str());
+	ini.SetValue(section, _T("PreviewFading"), IPreviewFading[PreviewFading].c_str());
+	SAVE_ENUM_VALUE(section, _T("BackgroundMusic"), BackgroundMusic);
+	ini.SetValue(section, _T("AudioOutputBufferSize"), IAudioOutputBufferSize[AudioOutputBufferSizeIndex].c_str());
+	SAVE_ENUM_VALUE(section, _T("VoicePassthrough"), VoicePassthrough);
+}
+
+void Ini::LoadLyricsSettings()
 {
 	static const TCHAR * section = _T("Lyrics");
 
@@ -378,38 +486,67 @@ void Ini::LoadLyricsSettings(CSimpleIni& ini)
 	              = LOOKUP_ENUM_VALUE(Encoding,          section, _T("Encoding"), Encoding::Auto);
 }
 
-void Ini::LoadAdvancedSettings(CSimpleIni& ini)
+void Ini::SaveLyricsSettings()
+{
+	static const TCHAR * section = _T("Lyrics");
+
+	SAVE_ENUM_VALUE(section, _T("LyricsFont"), LyricsFont);
+	SAVE_ENUM_VALUE(section, _T("LyricsEffect"), LyricsEffect);
+	SAVE_ENUM_VALUE(section, _T("NoteLines"), NoteLines);
+	SAVE_ENUM_VALUE(section, _T("DefaultEncoding"), DefaultEncoding);
+}
+
+void Ini::LoadAdvancedSettings()
 {
 	static const TCHAR * section = _T("Advanced");
 
 	LoadAnimation = LOOKUP_ENUM_VALUE(Switch,            section, _T("LoadAnimation"), Switch::On);
 	ScreenFade    = LOOKUP_ENUM_VALUE(Switch,            section, _T("ScreenFade"), Switch::On);
 	AskBeforeDel
-	              = LOOKUP_ENUM_VALUE(Switch,            section, _T("AskbeforeDel"), Switch::On);
+	              = LOOKUP_ENUM_VALUE(Switch,            section, _T("AskBeforeDel"), Switch::On);
 	OnSongClick   = LOOKUP_ENUM_VALUE(SongClickType,     section, _T("OnSongClick"), SongClickType::Sing);
 	LineBonus     = LOOKUP_ENUM_VALUE(Switch,            section, _T("LineBonus"), Switch::On);
 	PartyPopup    = LOOKUP_ENUM_VALUE(Switch,            section, _T("PartyPopup"), Switch::On);
 	SyncTo        = LOOKUP_ENUM_VALUE(SyncToType,        section, _T("SyncTo"), SyncToType::Music);
 }
 
-void Ini::LoadControllerSettings(CSimpleIni& ini)
+void Ini::SaveAdvancedSettings()
+{
+	static const TCHAR * section = _T("Advanced");
+
+	SAVE_ENUM_VALUE(section, _T("LoadAnimation"), LoadAnimation);
+	SAVE_ENUM_VALUE(section, _T("ScreenFade"), ScreenFade);
+	SAVE_ENUM_VALUE(section, _T("AskBeforeDel"), AskBeforeDel);
+
+	SAVE_ENUM_VALUE(section, _T("OnSongClick"), OnSongClick);
+	SAVE_ENUM_VALUE(section, _T("LineBonus"), LineBonus);
+	SAVE_ENUM_VALUE(section, _T("PartyPopup"), PartyPopup);
+	SAVE_ENUM_VALUE(section, _T("SyncTo"), SyncTo);
+}
+
+void Ini::LoadControllerSettings()
 {
 	static const TCHAR * section = _T("Controller");
 
 	Joypad        = LOOKUP_ENUM_VALUE(Switch,            section, _T("Joypad"), Params.Joypad ? Switch::On : Switch::Off);
 	Mouse         = LOOKUP_ARRAY_INDEX(IMouse,           section, _T("Mouse"), Params.Joypad ? 0 /* off */ : 2 /* software cursor */);
-
-	LoadInputDeviceConfig(ini);
 }
 
-void Ini::LoadInputDeviceConfig(CSimpleIni& ini)
+void Ini::SaveControllerSettings()
+{
+	static const TCHAR * section = _T("Controller");
+
+	SAVE_ENUM_VALUE(section, _T("Joypad"), Joypad);
+	ini.SetValue(section, _T("Mouse"), IMouse[Mouse].c_str());
+}
+
+void Ini::LoadInputDeviceConfig()
 {
 	static const tstring deviceNameKey(_T("DeviceName"));
-
 	const TCHAR * section = _T("Record");
 
 	// Clear the device map
-	InputDeviceConfigMap.clear();
+	InputDevices.clear();
 
 	const CSimpleIni::TKeyVal * sectionKeys = ini.GetSection(section);
 	if (sectionKeys == NULL)
@@ -442,14 +579,51 @@ void Ini::LoadInputDeviceConfig(CSimpleIni& ini)
 			if (channelPlayer < 0)
 				break;
 
-			device.ChannelToPlayerMap[channelIndex] = channelPlayer;
+			device.ChannelMap[channelIndex] = channelPlayer;
 		}
 
-		InputDeviceConfigMap.insert(std::make_pair(deviceNo, device));
+		InputDevices.insert(std::make_pair(deviceNo, device));
 	}
 }
 
-void Ini::LoadThemes(CSimpleIni& ini)
+void Ini::SaveInputDeviceConfig()
+{
+	const TCHAR * section = _T("Record");
+
+	// Remove entire recording device section.
+	// As we still have the config file loaded in memory,
+	// we still have old device config which may need to be removed.
+	// Removing the entire section & replacing it ensures there's no lingering data.
+	ini.Delete(section, NULL, true);
+
+	for (InputDeviceConfigMap::const_iterator itr = InputDevices.begin();
+		itr != InputDevices.end();
+		++itr)
+	{
+		TCHAR buff[20];
+		const InputDeviceConfig& device = itr->second;
+		int deviceNo = itr->first;
+
+		_sntprintf(buff, 20, _T("DeviceName[%d]"), deviceNo);
+		ini.SetValue(section, buff, device.Name.c_str());
+
+		_sntprintf(buff, 20, _T("Input[%d]"), deviceNo);
+		ini.SetLongValue(section, buff, device.Input);
+
+		_sntprintf(buff, 20, _T("Latency[%d]"), deviceNo);
+		ini.SetLongValue(section, buff, device.Latency);
+
+		for (ChannelToPlayerMap::const_iterator channelItr = device.ChannelMap.begin();
+			channelItr != device.ChannelMap.end();
+			++channelItr)
+		{
+			_sntprintf(buff, 20, _T("Channel%d[%d]"), channelItr->first, deviceNo);
+			ini.SetLongValue(section, buff, channelItr->second);
+		}
+	}
+}
+
+void Ini::LoadThemes()
 {
 	if (sThemes.GetThemeCount() == 0)
 		return sLog.Critical(_T("No themes are loaded."));
@@ -474,7 +648,17 @@ void Ini::LoadThemes(CSimpleIni& ini)
 	ThemeColor = LOOKUP_ENUM_VALUE(Color, section, _T("Color"), Skin->DefaultColor);
 }
 
-void Ini::LoadPaths(CSimpleIni& ini)
+void Ini::SaveThemes()
+{
+	static const TCHAR * section = _T("Themes");
+
+	// TODO: Clean this up. It would be preferable to only store the theme & skin names here.
+	ini.SetValue(section, _T("Theme"), Theme->Name.c_str());
+	ini.SetValue(section, _T("Skin"), Theme->DefaultSkin->Name.c_str());
+	SAVE_ENUM_VALUE(section, _T("Color"), Theme->DefaultSkin->DefaultColor);
+}
+
+void Ini::LoadPaths()
 {
 	const TCHAR * section = _T("Directories");
 	const CSimpleIni::TKeyVal * sectionKeys = ini.GetSection(section);
@@ -485,8 +669,23 @@ void Ini::LoadPaths(CSimpleIni& ini)
 		AddSongPath(boost::filesystem::path(itr->second));
 }
 
-void Ini::Save()
+void Ini::SavePaths()
 {
+	const TCHAR * section = _T("Directories");
+
+	// Remove entire directories section.
+	// As we still have the config file loaded in memory,
+	// we still have old directories which may need to be removed.
+	// Removing the entire section & replacing it ensures there's no lingering data.
+	ini.Delete(section, NULL, true);
+
+	int n = 1;
+	for (PathSet::const_iterator itr = SongPaths.begin(); itr != SongPaths.end(); ++itr)
+	{
+		TCHAR buff[20];
+		_sntprintf(buff, 20, _T("SongDir%d"), n++);
+		ini.SetValue(section, buff, itr->native().c_str());
+	}
 }
 
 Ini::~Ini()

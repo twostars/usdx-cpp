@@ -72,7 +72,7 @@ public:
 	void Critical(const TCHAR * context, const TCHAR * message, ...);
 
 	void Voice(int soundNo);
-	void Buffer(const TCHAR * buffer, const size_t length, const TCHAR * filename); // TODO: Use Path class here
+	void Buffer(const TCHAR * buffer, const size_t length, const boost::filesystem::path& filename);
 
 	void LogToFile(const TCHAR * message);
 

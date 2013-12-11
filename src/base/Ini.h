@@ -24,6 +24,7 @@
 #define _INI_H
 #pragma once
 
+typedef std::map<int, int> ChannelToPlayerMap;
 struct InputDeviceConfig
 {
 	tstring Name;    // Name of the input device.
@@ -36,7 +37,7 @@ struct InputDeviceConfig
      * A player index of 0 (CHANNEL_OFF) means that the channel is not assigned
      * to any player (the channel is off).
      */
-	std::map<int, int> ChannelToPlayerMap;
+	ChannelToPlayerMap ChannelMap;
 };
 
 
@@ -50,6 +51,8 @@ static const int LATENCY_AUTODETECT = -1; // for field Latency
 #define LOOKUP_ARRAY_INDEX(arr, section, key, defaultOffset) \
 	GET_INDEX(arr, ini.GetValue(section, key, arr[defaultOffset].c_str()))
 
+#define SAVE_ENUM_VALUE(section, key, value) \
+	ini.SetValue(section, key, Enum2String(value).c_str())
 
 typedef std::pair<int, int> ResolutionWH;
 typedef std::map<ResolutionWH, tstring> ResolutionMap;
@@ -61,24 +64,33 @@ class Ini : public Singleton<Ini>
 public:
 	Ini();
 	void Load();
+	void Save();
 
 private:
-	void LoadProfileSettings(CSimpleIni& ini);
-	void LoadGameSettings(CSimpleIni& ini);
-	void LoadGraphicsSettings(CSimpleIni& ini);
-	void LoadScreenModes(CSimpleIni& ini);
-	void LoadSoundSettings(CSimpleIni& ini);
-	void LoadLyricsSettings(CSimpleIni& ini);
-	void LoadAdvancedSettings(CSimpleIni& ini);
-	void LoadControllerSettings(CSimpleIni& ini);
-	void LoadInputDeviceConfig(CSimpleIni& ini);
-	void LoadThemes(CSimpleIni& ini);
-	void LoadPaths(CSimpleIni& ini);
+	void LoadProfileSettings();
+	void SaveProfileSettings();
+	void LoadGameSettings();
+	void SaveGameSettings();
+	void LoadGraphicsSettings();
+	void SaveGraphicsSettings();
+	void LoadScreenModes();
+	void LoadSoundSettings();
+	void SaveSoundSettings();
+	void LoadLyricsSettings();
+	void SaveLyricsSettings();
+	void LoadAdvancedSettings();
+	void SaveAdvancedSettings();
+	void LoadControllerSettings();
+	void SaveControllerSettings();
+	void LoadInputDeviceConfig();
+	void SaveInputDeviceConfig();
+	void LoadThemes();
+	void SaveThemes();
+	void LoadPaths();
+	void SavePaths();
 
 	void AddResolution(int width, int height);
 
-public:
-	void Save();
 	~Ini();
 
 public:
@@ -138,7 +150,8 @@ public:
 	eSwitch BackgroundMusic;
 
 	// Record
-	std::map<int, InputDeviceConfig> InputDeviceConfigMap;
+	typedef std::map<int, InputDeviceConfig> InputDeviceConfigMap;
+	std::map<int, InputDeviceConfig> InputDevices;
 
 	// Advanced
 	eSwitch LoadAnimation;
@@ -158,6 +171,9 @@ public:
 
 	ResolutionMap        LoadedResolutions;
 	ReverseResolutionMap ResolutionNameMap;
+
+private:
+	CSimpleIni ini;
 };
 
 #define sIni (Ini::getSingleton())
