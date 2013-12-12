@@ -26,19 +26,9 @@
 
 #include "Texture.h"
 
-enum BackgroundType
-{
-	bgtNone, bgtColor, bgtTexture, bgtVideo, bgtFade, bgtAuto
-};
-
-const tstring BGT_Names[] = 
-{
-	_T("none"), _T("color"), _T("texture"), _T("video"), _T("fade"), _T("audio") 
-};
-
 struct ThemeBackground
 {
-	BackgroundType BGType;
+	eBackgroundType BGType;
 	RGB Color;
 	tstring Tex;
 	float Alpha;
@@ -47,7 +37,7 @@ struct ThemeBackground
 // Default background for screens without a theme
 const ThemeBackground DEFAULT_BACKGROUND =
 {
-	/* BGType: */ bgtColor, 
+	/* BGType: */ BackgroundType::Color, 
 	/* Color : */ { 1.0f, 1.0f, 1.0f }, 
 	/* Tex   : */ _T(""), 
 	/* Alpha : */ 1.0f
@@ -58,12 +48,12 @@ struct ThemeStatic
 	int X, Y;
 	float Z;
 	int W, H;
-	std::string Color;
+	tstring Color;
 	RGB ColRGB;
 	tstring Tex;
 	eTextureType Type;
 	float TexX1, TexY1;
-	float TexX2, TextY2;
+	float TexX2, TexY2;
 
 	// Reflection
 	bool Reflection;
@@ -76,7 +66,7 @@ struct ThemeText
 {
 	int X, Y, W;
 	float Z;
-	std::string Color;
+	tstring Color;
 	RGB ColRGB;
 	int Font;
 	int Size;
@@ -96,10 +86,10 @@ struct ThemeButton
 	int X, Y;
 	float Z;
 	int W, H;
-	std::string Color;
+	tstring Color;
 	RGB ColRGB;
 	float Int; // intensity
-	std::string DColor;
+	tstring DColor;
 	RGB DColRGB;
 	float DInt; // intensity
 	tstring Tex;

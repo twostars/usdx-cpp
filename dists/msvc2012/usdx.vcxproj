@@ -164,6 +164,7 @@
     <ClInclude Include="..\..\src\base\RelativeTimer.h" />
     <ClInclude Include="..\..\src\base\Skins.h" />
     <ClInclude Include="..\..\src\base\TextEncoding.h" />
+    <ClInclude Include="..\..\src\base\TextGL.h" />
     <ClInclude Include="..\..\src\base\Texture.h" />
     <ClInclude Include="..\..\src\base\ThemeDefines.h" />
     <ClInclude Include="..\..\src\base\Themes.h" />

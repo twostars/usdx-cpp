@@ -24,6 +24,8 @@
 #define _THEME_DEFINES_H
 #pragma once
 
+#define MAX_CHILDREN 256
+
 #include "ThemeTypes.h"
 
 class ThemeBasic

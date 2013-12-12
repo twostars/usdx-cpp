@@ -97,4 +97,16 @@
 							ENUMITEM(Off)
 #include <DefineImprovedEnum.h>
 
+#define IMPROVED_ENUM_NAME	BackgroundType
+#define IMPROVED_ENUM_LIST	ENUMITEM(None) \
+							ENUMITEM(Color) \
+							ENUMITEM(Texture) \
+							ENUMITEM(Video) \
+							ENUMITEM(Fade) \
+							ENUMITEM(Auto)
+
+/* case insensitive comparison */
+#define IMPROVED_ENUM_COMPARATOR TSTRCASECMP
+#include <DefineImprovedEnum.h>
+
 #endif

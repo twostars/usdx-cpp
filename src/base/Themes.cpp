@@ -28,6 +28,7 @@
 #include "ThemeDefines.h"
 #include "Ini.h"
 #include "Language.h"
+#include "TextGL.h"
 
 #include "../shared/color_utils.h"
 
@@ -39,6 +40,7 @@ extern path ThemePath;
 
 Themes::Themes()
 	: ini(true)
+	, _lastThemeBasic(NULL)
 {
 	#define INIT_THEME(name) name = NULL
 
@@ -826,62 +828,301 @@ void Themes::LoadColors()
 	}
 }
 
+void Themes::LoadColor(RGB& rgb, tstring color)
+{
+	ColorMap::iterator itr = _colors.find(color);
+	if (itr != _colors.end())
+		rgb = itr->second;
+	else
+		rgb.R = rgb.G = rgb.B = 0.0f;
+}
+
 void Themes::LoadThemeBasic(ThemeBasic * theme, const tstring& name)
 {
 	LoadThemeBackground(theme->Background, name);
 	LoadThemeTexts(theme->Text, name + _T("Text"));
 	LoadThemeStatics(theme->Static, name + _T("Statics"));
 	LoadThemeButtonCollections(theme->ButtonCollection, name + _T("ButtonCollection"));
+
+	_lastThemeBasic = theme;
 }
 
 void Themes::LoadThemeBackground(ThemeBackground& themeBackground, const tstring& name)
 {
-	// TODO
+	const TCHAR * section = (name + _T("Background")).c_str();
+
+	themeBackground.BGType  = LOOKUP_ENUM_VALUE(BackgroundType, section, _T("Type"), BackgroundType::Auto);
+	themeBackground.Tex     = ini.GetValue(section, _T("Tex"), _T(""));
+	themeBackground.Color.R = (float) ini.GetDoubleValue(section, _T("ColR"), 1.0);
+	themeBackground.Color.G = (float) ini.GetDoubleValue(section, _T("ColG"), 1.0);
+	themeBackground.Color.B = (float) ini.GetDoubleValue(section, _T("ColB"), 1.0);
+	themeBackground.Alpha   = (float) ini.GetDoubleValue(section, _T("Alpha"), 1.0);
 }
 
 void Themes::LoadThemeText(ThemeText& themeText, const tstring& name)
 {
-	// TODO
+	const TCHAR * section = name.c_str();
+
+	themeText.X = ini.GetLongValue(section, _T("X"));
+	themeText.Y = ini.GetLongValue(section, _T("Y"));
+	themeText.W = ini.GetLongValue(section, _T("W"));
+	themeText.Z = (float) ini.GetDoubleValue(section, _T("Z"));
+
+	themeText.ColRGB.R 
+		= (float) ini.GetDoubleValue(section, _T("ColR"));
+
+	themeText.ColRGB.G 
+		= (float) ini.GetDoubleValue(section, _T("ColG"));
+
+	themeText.ColRGB.B
+		= (float) ini.GetDoubleValue(section, _T("ColB"));
+
+	themeText.Font = ini.GetLongValue(section, _T("Font"), ftNormal); 
+	themeText.Size = ini.GetLongValue(section, _T("Size"));
+	themeText.Align = ini.GetLongValue(section, _T("Align"));
+
+	themeText.Text = sLanguage.Translate(ini.GetValue(section, _T("Text"), _T("")));
+	themeText.Color = ini.GetValue(section, _T("Color"), _T(""));
+
+	// Reflection
+	themeText.Reflection = ini.GetBoolValue(section, _T("Reflection"), false);
+	themeText.ReflectionSpacing
+		= (float) ini.GetDoubleValue(section, _T("ReflectionSpacing"), 15.0);
+
+	LoadColor(themeText.ColRGB, themeText.Color);
 }
 
 void Themes::LoadThemeTexts(AThemeText& themeTextCollection, const tstring& name)
 {
-	// TODO
+	int sectionNo = 1;
+	tstring tempName;
+	while (ini.GetSectionSize((tempName 
+		= (name + boost::lexical_cast<tstring>(sectionNo))).c_str()) > 0)
+	{
+		LoadThemeText(themeTextCollection[sectionNo - 1], tempName);
+		++sectionNo;
+	}
 }
 
 void Themes::LoadThemeStatic(ThemeStatic& themeStatic, const tstring& name)
 {
-	// TODO
+	const TCHAR * section = name.c_str();
+
+	themeStatic.X = ini.GetLongValue(section, _T("X"));
+	themeStatic.Y = ini.GetLongValue(section, _T("Y"));
+	themeStatic.Z = (float) ini.GetDoubleValue(section, _T("Z"));
+
+	themeStatic.W = ini.GetLongValue(section, _T("W"));
+	themeStatic.H = ini.GetLongValue(section, _T("H"));
+
+	themeStatic.Type = LOOKUP_ENUM_VALUE(TextureType, section, _T("Type"), TextureType::Plain);
+	themeStatic.Color = ini.GetValue(section, _T("Color"), _T(""));
+
+	// Reflection
+	themeStatic.Reflection = ini.GetBoolValue(section, _T("Reflection"), false);
+	themeStatic.ReflectionSpacing
+		= (float) ini.GetDoubleValue(section, _T("ReflectionSpacing"), 15.0);
+
+	themeStatic.TexX1 = (float) ini.GetDoubleValue(section, _T("TexX1"), 0.0);
+	themeStatic.TexY1 = (float) ini.GetDoubleValue(section, _T("TexY1"), 0.0);
+	themeStatic.TexX2 = (float) ini.GetDoubleValue(section, _T("TexX2"), .0);
+	themeStatic.TexY2 = (float) ini.GetDoubleValue(section, _T("TexX2"), 1.0);
+
+	LoadColor(themeStatic.ColRGB, themeStatic.Color);
 }
 
 void Themes::LoadThemeStatics(AThemeStatic& themeStaticCollection, const tstring& name)
 {
-	// TODO
+	int sectionNo = 1;
+	tstring tempName;
+	while (ini.GetSectionSize((tempName 
+		= (name + boost::lexical_cast<tstring>(sectionNo))).c_str()) > 0)
+	{
+		LoadThemeStatic(themeStaticCollection[sectionNo - 1], tempName);
+		++sectionNo;
+	}
 }
 
-void Themes::LoadThemeButton(ThemeButton& themeButton, const tstring& name)
+void Themes::LoadThemeButton(ThemeButton& themeButton, const tstring& name, AThemeButtonCollection* themeButtonCollection /*= NULL*/)
 {
-	// TODO
+	if (ini.GetSectionSize(name.c_str()) == 0)
+	{
+		themeButton.Visible = false;
+		return;
+	}
+
+	const TCHAR * section = name.c_str();
+
+	themeButton.Visible = ini.GetBoolValue(section, _T("Visible"), true);
+
+	themeButton.Tex = ini.GetValue(section, _T("Tex"), _T(""));
+	themeButton.X = ini.GetLongValue(section, _T("X"));
+	themeButton.Y = ini.GetLongValue(section, _T("Y"));
+	themeButton.Z = (float) ini.GetDoubleValue(section, _T("Z"));
+	themeButton.W = ini.GetLongValue(section, _T("W"));
+	themeButton.H = ini.GetLongValue(section, _T("H"));
+	themeButton.Type = LOOKUP_ENUM_VALUE(TextureType, section, _T("Type"), TextureType::Plain);
+
+	// Reflection
+	themeButton.Reflection = ini.GetBoolValue(section, _T("Reflection"), false);
+	themeButton.ReflectionSpacing
+		= (float) ini.GetDoubleValue(section, _T("ReflectionSpacing"), 15.0);
+
+	themeButton.ColRGB.R  = (float) ini.GetDoubleValue(section, _T("ColR"),  1.0);
+	themeButton.ColRGB.G  = (float) ini.GetDoubleValue(section, _T("ColG"),  1.0);
+	themeButton.ColRGB.B  = (float) ini.GetDoubleValue(section, _T("ColB"),  1.0);
+	themeButton.Int       = (float) ini.GetDoubleValue(section, _T("Int"),   1.0);
+	themeButton.DColRGB.R = (float) ini.GetDoubleValue(section, _T("DColR"), 1.0);
+	themeButton.DColRGB.G = (float) ini.GetDoubleValue(section, _T("DColG"), 1.0);
+	themeButton.DColRGB.B = (float) ini.GetDoubleValue(section, _T("DColB"), 1.0);
+	themeButton.DInt      = (float) ini.GetDoubleValue(section, _T("DInt"), 1.0);
+
+	themeButton.Color = ini.GetValue(section, _T("Color"), _T(""));
+	themeButton.DColor = ini.GetValue(section, _T("DColor"), _T(""));
+
+	LoadColor(themeButton.ColRGB, themeButton.Color);
+	LoadColor(themeButton.DColRGB, themeButton.DColor);
+
+	// Fade
+	themeButton.SelectH    = ini.GetLongValue(section, _T("SelectH"), themeButton.H);
+	themeButton.SelectW    = ini.GetLongValue(section, _T("SelectW"), themeButton.W);
+	themeButton.DeselectReflectionSpacing
+		= (float) ini.GetDoubleValue(section, _T("DeSelectReflectionSpacing"), themeButton.ReflectionSpacing);
+	themeButton.Fade       = ini.GetBoolValue(section, _T("Fade"), false);
+	themeButton.FadeText   = ini.GetBoolValue(section, _T("FadeText"), false);
+	themeButton.FadeTex    = ini.GetValue(section, _T("FadeTex"), _T(""));
+	themeButton.FadeTexPos = ini.GetLongValue(section, _T("FadeTexPos"), 0);
+
+	if (themeButton.FadeTexPos > 4)      themeButton.FadeTexPos = 4;
+	else if (themeButton.FadeTexPos < 0) themeButton.FadeTexPos = 0;
+
+	// Button collection
+	size_t parent = ini.GetLongValue(section, _T("Parent"), 0);
+
+	AThemeButtonCollection * collection;
+
+	// Set collection to last basic collection if no valid value
+	if (themeButtonCollection == NULL)
+		collection = &_lastThemeBasic->ButtonCollection;
+	else
+		collection = themeButtonCollection;
+
+	if (collection == NULL
+		|| parent <= 0
+		|| parent > collection->size())
+	{
+		themeButton.Parent = 0;
+	}
+	else
+	{
+		++(*collection)[parent - 1].ChildCount;
+		themeButton.Parent = parent;
+	}
+
+	// Read button texts
+	int len = ini.GetLongValue(section, _T("Texts"), 0);
+	for (int i = 1; i < len; i++)
+		LoadThemeText(themeButton.Text[i - 1], _T("Text") + boost::lexical_cast<tstring>(i));
 }
 
 void Themes::LoadThemeButtonCollection(ThemeButtonCollection& themeButtonCollection, const tstring& name)
 {
-	// TODO
+	// Default child count to 0
+	themeButtonCollection.ChildCount = 0;
+
+	// Load collection style
+	LoadThemeButton(themeButtonCollection.Style, name);
+
+	// Load other attributes
+	int firstChild = ini.GetLongValue(name.c_str(), _T("FirstChild"), 0);
+	if (firstChild <= 0 || firstChild >= MAX_CHILDREN)
+		themeButtonCollection.FirstChild = 0;
+	else
+		themeButtonCollection.FirstChild = firstChild;
 }
 
 void Themes::LoadThemeButtonCollections(AThemeButtonCollection& themeButtonCollection, const tstring& name)
 {
-	// TODO
+	int sectionNo = 1;
+	tstring tempName;
+	while (ini.GetSectionSize((tempName 
+		= (name + boost::lexical_cast<tstring>(sectionNo))).c_str()) > 0)
+	{
+		LoadThemeButtonCollection(themeButtonCollection[sectionNo - 1], tempName);
+		++sectionNo;
+	}
 }
 
 void Themes::LoadThemeSelectSlide(ThemeSelectSlide& themeSelectSlide, const tstring& name)
 {
-	// TODO
+	const TCHAR * section = name.c_str();
+
+	themeSelectSlide.Text = sLanguage.Translate(ini.GetValue(section, _T("Text"), _T("")));
+
+	themeSelectSlide.Tex = ini.GetValue(section, _T("Tex"), _T(""));
+	themeSelectSlide.Type = LOOKUP_ENUM_VALUE(TextureType, section, _T("Type"), TextureType::Plain);
+
+	themeSelectSlide.TexSBG = ini.GetValue(section, _T("TexSBG"), _T(""));
+	themeSelectSlide.TypeSBG = LOOKUP_ENUM_VALUE(TextureType, section, _T("TypeSBG"), TextureType::Plain);
+
+	themeSelectSlide.X = ini.GetLongValue(section, _T("X"), 0);
+	themeSelectSlide.Y = ini.GetLongValue(section, _T("Y"), 0);
+	themeSelectSlide.Z = (float) ini.GetDoubleValue(section, _T("Z"), 0.0);
+	themeSelectSlide.W = ini.GetLongValue(section, _T("W"), 0);
+	themeSelectSlide.H = ini.GetLongValue(section, _T("H"), 0);
+
+	themeSelectSlide.TextSize = ini.GetLongValue(section, _T("TextSize"), 30);
+	themeSelectSlide.SkipX = ini.GetLongValue(section, _T("SkipX"), 0);
+	themeSelectSlide.SBGW = ini.GetLongValue(section, _T("SBGW"), 400);
+
+	LoadColor(themeSelectSlide.ColRGB, ini.GetValue(section, _T("Color"), _T("")));
+	themeSelectSlide.Int = (float) ini.GetDoubleValue(section, _T("Int"), 1.0);
+
+	LoadColor(themeSelectSlide.DColRGB, ini.GetValue(section, _T("DColor"), _T("")));
+	themeSelectSlide.DInt = (float) ini.GetDoubleValue(section, _T("DInt"), 1.0);
+
+	LoadColor(themeSelectSlide.TColRGB, ini.GetValue(section, _T("TColor"), _T("")));
+	themeSelectSlide.TInt = (float) ini.GetDoubleValue(section, _T("TInt"), 1.0);
+
+	LoadColor(themeSelectSlide.TDColRGB, ini.GetValue(section, _T("TDColor"), _T("")));
+	themeSelectSlide.TDInt = (float) ini.GetDoubleValue(section, _T("TDInt"), 1.0);
+
+	LoadColor(themeSelectSlide.SBGColRGB, ini.GetValue(section, _T("SBGColor"), _T("")));
+	themeSelectSlide.SBGInt = (float) ini.GetDoubleValue(section, _T("SBGInt"), 1.0);
+
+	LoadColor(themeSelectSlide.SBGDColRGB, ini.GetValue(section, _T("SBGDColor"), _T("")));
+	themeSelectSlide.SBGDInt = (float) ini.GetDoubleValue(section, _T("SBGDInt"), 1.0);
+
+	LoadColor(themeSelectSlide.STColRGB, ini.GetValue(section, _T("STColor"), _T("")));
+	themeSelectSlide.STInt = (float) ini.GetDoubleValue(section, _T("STInt"), 1.0);
+
+	LoadColor(themeSelectSlide.STDColRGB, ini.GetValue(section, _T("STDColor"), _T("")));
+	themeSelectSlide.STDInt = (float) ini.GetDoubleValue(section, _T("STDInt"), 1.0);
+
+	themeSelectSlide.ShowArrows = ini.GetBoolValue(section, _T("ShowArrays"), 0);
+	themeSelectSlide.OneTimeOnly = ini.GetBoolValue(section, _T("OneItemOnly"), 0);
 }
 
 void Themes::LoadThemeEqualizer(ThemeEqualizer& themeEqualizer, const tstring& name)
 {
-	// TODO
+	const TCHAR * section = name.c_str();
+
+	themeEqualizer.Visible = ini.GetBoolValue(section, _T("Visible"), false);
+	themeEqualizer.Direction = ini.GetBoolValue(section, _T("Direction"), false);
+	themeEqualizer.Alpha = (float) ini.GetDoubleValue(section, _T("Alpha"), 1.0);
+	themeEqualizer.Space = ini.GetLongValue(section, _T("Space"), 1);
+	themeEqualizer.X = ini.GetLongValue(section, _T("X"), 0);
+	themeEqualizer.Y = ini.GetLongValue(section, _T("Y"), 0);
+	themeEqualizer.Z = (float) ini.GetDoubleValue(section, _T("Z"), 1.0);
+	themeEqualizer.W = ini.GetLongValue(section, _T("PieceW"), 8);
+	themeEqualizer.H = ini.GetLongValue(section, _T("PieceH"), 8);
+	themeEqualizer.Bands = ini.GetLongValue(section, _T("Bands"), 5);
+	themeEqualizer.Length = ini.GetLongValue(section, _T("Length"), 12);
+	themeEqualizer.Reflection = ini.GetBoolValue(section, _T("Reflection"), false);
+	themeEqualizer.ReflectionSpacing
+		= (float) ini.GetDoubleValue(section, _T("ReflectionSpacing"), 15.0);
+
+	LoadColor(themeEqualizer.ColRGB, ini.GetValue(section, _T("Color"), _T("Black")));
 }
 
 /**

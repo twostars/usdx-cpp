@@ -38,6 +38,8 @@
 #include <cstdarg>
 
 #include <boost/filesystem.hpp>
+#include <boost/lexical_cast.hpp>
+
 #include <SDL.h>
 #include "SDL_utilities.h"
 #include "../lib/simpleini/SimpleIni.h"

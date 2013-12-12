@@ -30,10 +30,10 @@
 #	include <tchar.h>
 
 // Use the preprocessor instead of typedefing to avoid strict type-checks
-#	ifdef _UNICODE
+#	ifdef UNICODE
 #		define tstring		std::wstring
 #	else
-		define tstring		std::string
+#		define tstring		std::string
 #	endif
 
 // Other operating systems don't have the header, so define everything for ANSI.
@@ -58,8 +58,10 @@
 
 #ifdef UNICODE
 #	define tstring_ci	wstring_ci
+#	define TSTRCASECMP	WSTRCASECMP
 #else
 #	define tstring_ci	string_ci
+#	define TSTRCASECMP	STRCASECMP
 #endif
 
 #endif

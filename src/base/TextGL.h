@@ -20,41 +20,17 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef _TYPES_H
-#define _TYPES_H
+#ifndef _TEXTGL_H
+#define _TEXTGL_H
 #pragma once
 
-#include <cstdint>
-
-#ifdef _WIN32
-#	define INLINE __forceinline
-#else
-#	define INLINE inline
-#endif
-
-typedef int64_t int64;
-typedef int32_t int32;
-typedef int16_t int16;
-typedef int8_t int8;
-typedef uint64_t uint64;
-typedef uint32_t uint32;
-typedef uint16_t uint16;
-typedef uint8_t uint8;
-
-struct RGB
+enum FontType 
 {
-	float R, G, B;
-
-	void Load(const TCHAR * source);
-	void Sqrt(const RGB& rhs);
-
-	void Set(uint8 r, uint8 g, uint8 b);
-	static float Transform(uint8 val);
-};
-
-struct RGBA
-{
-	float R, G, B, A;
+	ftNormal   = 0, 
+	ftBold     = 1,
+	ftOutline1 = 2,
+	ftOutline2 = 3,
+	ftBoldHighRes = 4
 };
 
 #endif

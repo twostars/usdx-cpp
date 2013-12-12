@@ -51,6 +51,7 @@ public:
 	void LoadHeader(const boost::filesystem::path& iniFile);
 	void LoadTheme(ThemeEntry * theme, eColor color);
 	void LoadColors();
+	void LoadColor(RGB& rgb, tstring color);
 
 	void LoadThemeBasic(ThemeBasic * theme, const tstring& name);
 	void LoadThemeBackground(ThemeBackground& themeBackground, const tstring& name);
@@ -58,7 +59,7 @@ public:
 	void LoadThemeTexts(AThemeText& themeTextCollection, const tstring& name);
 	void LoadThemeStatic(ThemeStatic& themeStatic, const tstring& name);
 	void LoadThemeStatics(AThemeStatic& themeStaticCollection, const tstring& name);
-	void LoadThemeButton(ThemeButton& themeButton, const tstring& name);
+	void LoadThemeButton(ThemeButton& themeButton, const tstring& name, AThemeButtonCollection* themeButtonCollection = NULL);
 	void LoadThemeButtonCollection(ThemeButtonCollection& themeButtonCollection, const tstring& name);
 	void LoadThemeButtonCollections(AThemeButtonCollection& themeButtonCollection, const tstring& name);
 	void LoadThemeSelectSlide(ThemeSelectSlide& themeSelectSlide, const tstring& name);
@@ -113,6 +114,8 @@ private:
 	ThemeEntryMap _themes;
 	ColorMap _colors;
 	CSimpleIni ini;
+
+	ThemeBasic * _lastThemeBasic;
 };
 
 #define sThemes (Themes::getSingleton())
