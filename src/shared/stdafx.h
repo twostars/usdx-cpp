@@ -24,10 +24,6 @@
 #define _STDAFX_H
 #pragma once
 
-#if defined(_MSC_VER) && defined(_DEBUG)
-#	define _CRT_SECURE_NO_WARNINGS
-#endif
-
 #include <exception>
 #include <string>
 #include <iostream>

@@ -18,36 +18,14 @@
  * along with this program; see the file COPYING. If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
- */           
+ */
 
-#ifndef _PATHUTILS_H
-#define _PATHUTILS_H
+#ifndef _GRAPHIC_H
+#define _GRAPHIC_H
 #pragma once
 
-#define VISUAL_DIR		_T("visuals")
-#define THEME_DIR		_T("themes")
-#define SOUND_DIR		_T("sounds")
-#define SONG_DIR		_T("songs")
-#define RESOURCE_DIR	_T("resources")
-#define PLUGIN_DIR		_T("plugins")
-#define LANG_DIR		_T("languages")
-#define FONT_DIR		_T("fonts")
-#define COVER_DIR		_T("covers")
-#define PLAYLIST_DIR    _T("playlists")
-#define SCREENSHOT_DIR  _T("screenshots")
-#define LOG_DIR			_T("logs")
-#define ICONS_DIR		_T("icons")
-
-#define CONFIG_FILE		_T("config.ini")
-
-typedef std::set<boost::filesystem::path> PathSet;
-
-const TCHAR * GetConfigFile();
-const TCHAR * GetScoreFile();
-
-void AddSongPath(boost::filesystem::path& path);
-void AddCoverPath(boost::filesystem::path& path);
-
-void InitializePaths();
+void Initialize3D(const TCHAR * windowTitle);
+SDL_Surface * LoadSurfaceFromFile(const boost::filesystem::path& filename);
+void FreeGfxResources();
 
 #endif

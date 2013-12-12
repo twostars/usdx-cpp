@@ -35,6 +35,7 @@
 #include "Themes.h"
 #include "Ini.h"
 #include "Music.h"
+#include "Graphic.h"
 
 extern boost::filesystem::path ScoreFile;
 
@@ -160,7 +161,7 @@ int usdxMain(int argc, TCHAR ** argv)
 		// Graphics
 		sLog.BenchmarkStart(1);
 		sLog.Status(_T("Initialize 3D"), _T("Initialization"));
-		// Initialize3D(windowTitle);
+		Initialize3D(windowTitle);
 		sLog.BenchmarkEnd(1);
 		sLog.Benchmark(1, _T("Initializing 3D"));
 
@@ -274,6 +275,7 @@ int usdxMain(int argc, TCHAR ** argv)
 	delete Log::getSingletonPtr();
 	delete LuaCore::getSingletonPtr();
 
+	FreeGfxResources();
 	SDL_Quit();
 
 	return 0;

@@ -22,6 +22,18 @@
 [submodule "src/lib/simpleini"]
 	path = src/lib/simpleini
 	url = https://github.com/brofield/simpleini
+[submodule "src/lib/simpleopt"]
+	path = src/lib/simpleopt
+	url = https://github.com/twostars/simpleopt
 [submodule "src/lib/ImprovedEnum"]
 	path = src/lib/ImprovedEnum
 	url = https://github.com/twostars/ImprovedEnum
+[submodule "src/lib/SDL_image"]
+	path = src/lib/SDL_image
+	url = https://github.com/twostars/SDL_image
+[submodule "src/lib/zlib"]
+	path = src/lib/zlib
+	url = https://github.com/twostars/zlib
+[submodule "src/lib/sqlite"]
+	path = src/lib/sqlite
+	url = http://repo.or.cz/r/sqlite.git

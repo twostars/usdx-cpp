@@ -47,3 +47,9 @@ game/config.ini
 *.suo
 *.pch
 *.ipch
+*.res
+*.exp
+*.unsuccessfulbuild
+*.vcxproj.user
+*.sbr
+*.map

@@ -64,6 +64,9 @@
     <Filter Include="lib\ImprovedEnum">
       <UniqueIdentifier>{83321a67-fe5d-4e86-9fd3-398c6fa95ba7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{05b9152e-e70e-4517-b5ed-9450315b11ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\base\Main.cpp">
@@ -548,5 +551,13 @@
     <ClInclude Include="..\..\src\base\TextGL.h">
       <Filter>src\base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\base\Graphic.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\res\ultrastardx.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

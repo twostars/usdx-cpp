@@ -189,7 +189,9 @@ void Log::LogToFile(const TCHAR * message)
 		tm localTime = *localtime(&unixTime);
 
 		_ftprintf(_logFile, _T("Logging started\n"));
-		_ftprintf(_logFile, _T("Date: %02u/%02u/%04u Time: %02u:%02u\n"));
+		_ftprintf(_logFile, _T("Date: %02u/%02u/%04u Time: %02u:%02u\n"),
+			localTime.tm_mday, localTime.tm_mon + 1, 1900 + localTime.tm_year,
+			localTime.tm_hour, localTime.tm_min);
 		_ftprintf(_logFile, _T("-------------------\n"));
 	}
 
