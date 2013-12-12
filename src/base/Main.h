@@ -25,5 +25,6 @@
 #pragma once
 
 int usdxMain(int argc, TCHAR ** argv);
+void usdxMainLoop();
 
 #endif

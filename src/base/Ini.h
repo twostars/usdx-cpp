@@ -65,6 +65,7 @@ public:
 	Ini();
 	void Load();
 	void Save();
+	~Ini();
 
 private:
 	void LoadProfileSettings();
@@ -90,8 +91,6 @@ private:
 	void SavePaths();
 
 	void AddResolution(int width, int height);
-
-	~Ini();
 
 public:
 	tstring Name[MAX_PROFILE_NAMES];

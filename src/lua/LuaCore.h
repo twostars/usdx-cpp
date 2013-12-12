@@ -42,10 +42,13 @@ public:
 	void LoadPlugins();
 
 	// searches for files with extension .usdx in the specified dir and tries to load them with lua
-	void BrowseDir(wchar_t * directory);
+	void BrowseDir(TCHAR * directory);
 
 	// tries to load filename with lua and creates the default usdx lua environment for the plugin's state
-	void LoadPlugin(wchar_t * filename);
+	void LoadPlugin(TCHAR * filename);
+
+	// prints plugin runtime information with Log.Status()
+	void DumpPlugins();
 
 	LuaPlugin * GetPluginById(int id);
 
@@ -53,7 +56,7 @@ public:
        moduleName is the name the script needs to write in its require()
        functionList is an array of lua calling compatible functions.
 	 */
-	 void RegisterModule(const wchar_t * moduleName, luaL_Reg * functionList);
+	 void RegisterModule(const TCHAR * moduleName, luaL_Reg * functionList);
 
 	~LuaCore();
 };
