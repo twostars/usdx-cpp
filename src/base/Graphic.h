@@ -25,6 +25,7 @@
 #pragma once
 
 void Initialize3D(const TCHAR * windowTitle);
+void LoadOpenGLExtensions();
 void SwapBuffers();
 
 SDL_Surface * LoadSurfaceFromFile(const boost::filesystem::path& filename);

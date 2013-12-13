@@ -54,6 +54,11 @@ int Screens;
 
 bool Fullscreen;
 
+PFNGLCOPYTEXSUBIMAGE3DPROC	glCopyTexSubImage3D;
+PFNGLDRAWRANGEELEMENTSPROC	glDrawRangeElements;
+PFNGLTEXIMAGE3DPROC			glTexImage3D;
+PFNGLTEXSUBIMAGE3DPROC		glTexSubImage3D;
+
 void Initialize3D(const TCHAR * windowTitle)
 {
 	char * utf8Title;
@@ -67,9 +72,9 @@ void Initialize3D(const TCHAR * windowTitle)
 
 	// Set screen/display count
 	if (Params.Screens > 0)
-		Screens = Params.Screens + 1;
+		Screens = Params.Screens;
 	else
-		Screens = sIni.Screens;
+		Screens = sIni.Screens + 1;
 
 	// Load resolution
 	ResolutionWH resolution;
@@ -78,7 +83,7 @@ void Initialize3D(const TCHAR * windowTitle)
 		resolution = sIni.Resolution;
 
 	// Handle width adjustment for multiple displays setup horizontally.
-	if (Screens > 0)
+	if (Screens > 1)
 		resolution.first *= Screens; /* assume they're spread out horizontally... */
 
 	// Specify fullscreen mode
@@ -121,9 +126,11 @@ void Initialize3D(const TCHAR * windowTitle)
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,    16); // Z-Buffer depth
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,  1);
 
-
 	// Hide cursor
 	SDL_ShowCursor(0);
+
+	// Load extensions
+	LoadOpenGLExtensions();
 
 	ScreenW = resolution.first;
 	ScreenH = resolution.second;
@@ -133,11 +140,36 @@ void Initialize3D(const TCHAR * windowTitle)
 	glClear(GL_COLOR_BUFFER_BIT);
 	SwapBuffers();
 
-	// Note: do not initialize video modules earlier. They might depend on some
-	// SDL video functions or OpenGL extensions initialized in InitializeScreen()
-	// InitializeVideo();
-
 	// TODO
+}
+
+class OpenGL12
+{
+public:
+	static bool Load()
+	{
+		sLog.Status(_T("OpenGL"), _T("Loading OpenGL 1.2 extensions..."));
+
+		glCopyTexSubImage3D = (PFNGLCOPYTEXSUBIMAGE3DPROC) SDL_GL_GetProcAddress("glCopyTexSubImage3D");
+		glDrawRangeElements = (PFNGLDRAWRANGEELEMENTSPROC) SDL_GL_GetProcAddress("glDrawRangeElements");
+		glTexImage3D        = (PFNGLTEXIMAGE3DPROC       ) SDL_GL_GetProcAddress("glTexImage3D");
+		glTexSubImage3D     = (PFNGLTEXSUBIMAGE3DPROC    ) SDL_GL_GetProcAddress("glTexSubImage3D");
+
+		if (glCopyTexSubImage3D == NULL
+			|| glDrawRangeElements == NULL
+			|| glTexImage3D == NULL
+			|| glTexSubImage3D == NULL)
+			return false;
+
+		sLog.Status(_T("OpenGL"), _T("Loaded OpenGL 1.2 extensions."));
+		return true;
+	}
+};
+
+void LoadOpenGLExtensions()
+{
+	if (!OpenGL12::Load())
+		return sLog.Critical(_T("LoadOpenGLExtensions"), _T("Unable to load OpenGL 1.2"));
 }
 
 void SwapBuffers()
