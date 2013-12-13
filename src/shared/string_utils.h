@@ -30,7 +30,7 @@
 #	define STRCASECMP	_stricmp
 #	define WSTRCASECMP	_wcsicmp
 #else
-#	define STRCASECMP strcasecmp
+#	define STRCASECMP	strcasecmp
 #	define WSTRCASECMP	wcscasecmp
 #endif
 
@@ -76,5 +76,8 @@ INLINE void strtoupper(std::wstring& str)
 #define StringToUTF8(S) SDL_iconv_string("UTF-8", "ASCII", (char *)(S), (SDL_strlen(S)+1))
 #define UTF8ToString(S) SDL_iconv_string("ASCII", "UTF-8", (char *)(S), SDL_strlen(S)+1)
 #endif
+
+// Extracts resolution dimensions in the standard format (e.g. 1920x1080) from a string.
+bool ExtractResolution(const tstring& str, int* w, int* h);
 
 #endif

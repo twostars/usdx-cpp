@@ -24,19 +24,35 @@
 #include "Graphic.h"
 #include "PathUtils.h"
 #include "Log.h"
-
-#include <SDL_image.h>
+#include "CommandLine.h"
+#include "Ini.h"
 
 #define WINDOW_ICON _T("ultrastardx-icon.png")
 
 using namespace boost::filesystem;
 
 extern path ResourcesPath;
+extern CMDParams Params;
 
 typedef std::set<SDL_Surface *> SurfaceCollection;
 
-SDL_Window * g_window = NULL;
+// TODO: Replace these globals...
+SDL_Window  * Screen = NULL;
+SDL_GLContext GLContext;
+
 SurfaceCollection g_surfaces;
+SDL_Thread  * LoadingThread = NULL;
+
+// Virtual screen size
+int RenderW = 800, RenderH = 600;
+
+// Actual display size
+int ScreenW, ScreenH;
+
+// Display count
+int Screens;
+
+bool Fullscreen;
 
 void Initialize3D(const TCHAR * windowTitle)
 {
@@ -49,28 +65,88 @@ void Initialize3D(const TCHAR * windowTitle)
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
 		return sLog.Critical(_T("Initialize3D"), _T("SDL_InitSubSystem() failed."));
 
+	// Set screen/display count
+	if (Params.Screens > 0)
+		Screens = Params.Screens + 1;
+	else
+		Screens = sIni.Screens;
+
+	// Load resolution
+	ResolutionWH resolution;
+	if (Params.Resolution.empty()
+		|| !ExtractResolution(Params.Resolution, &resolution.first, &resolution.second))
+		resolution = sIni.Resolution;
+
+	// Handle width adjustment for multiple displays setup horizontally.
+	if (Screens > 0)
+		resolution.first *= Screens; /* assume they're spread out horizontally... */
+
+	// Specify fullscreen mode
+	Fullscreen = (Params.ScreenMode != scmWindowed) || (sIni.FullScreen == Switch::On);
+
+	sLog.Status(_T("Initialize3D"), _T("SDL_CreateWindow (%s)"), Fullscreen ? _T("fullscreen") : _T("windowed"));
+	uint32 flags = SDL_WINDOW_OPENGL;
+	if (Fullscreen)
+		flags |= SDL_WINDOW_FULLSCREEN;
+	else
+		flags |= SDL_WINDOW_RESIZABLE;
+
 	utf8Title = StringToUTF8(windowTitle);
-	g_window = SDL_CreateWindow(utf8Title, 
+	Screen = SDL_CreateWindow(utf8Title, 
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		0, 0, 
-		0
+		flags
 	);
-	free(utf8Title);
+	SDL_free(utf8Title);
 
-	if (g_window == NULL)
+	if (Screen == NULL)
 		return sLog.Critical(_T("Initialize3D"), _T("SDL_CreateWindow() failed."));
 
 	icon = LoadSurfaceFromFile(ResourcesPath / ICONS_DIR / WINDOW_ICON);
-	SDL_SetWindowIcon(g_window, icon);
+	SDL_SetWindowIcon(Screen, icon);
 
-	// InitializeScreen();
+	// Create an OpenGL context
+	GLContext = SDL_GL_CreateContext(Screen);
+
+	// Set minimum color component sizes
+	// Note: do not request an alpha plane with SDL_GL_ALPHA_SIZE here as
+	// some cards/implementations do not support them (SDL_SetVideoMode fails).
+	// We do not the alpha plane anymore since offscreen rendering in back-buffer
+	// was removed.
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,      5);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,    5);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,     5);
+
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,    16); // Z-Buffer depth
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,  1);
+
+
+	// Hide cursor
+	SDL_ShowCursor(0);
+
+	ScreenW = resolution.first;
+	ScreenH = resolution.second;
+
+	// Clear screen once window is shown
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	SwapBuffers();
 
 	// Note: do not initialize video modules earlier. They might depend on some
 	// SDL video functions or OpenGL extensions initialized in InitializeScreen()
 	// InitializeVideo();
 
 	// TODO
+}
+
+void SwapBuffers()
+{
+	SDL_GL_SwapWindow(Screen);
+	glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0, RenderW, RenderH, 0, -1, 100);
+	glMatrixMode(GL_MODELVIEW);
 }
 
 SDL_Surface * LoadSurfaceFromFile(const path& filename)
@@ -104,5 +180,9 @@ void FreeGfxResources()
 	for (SurfaceCollection::const_iterator itr = g_surfaces.begin(); itr != g_surfaces.end(); ++itr)
 		SDL_FreeSurface(*itr);
 
-	SDL_DestroyWindow(g_window);
+	if (Screen != NULL)
+	{
+		SDL_DestroyWindow(Screen);
+		SDL_GL_DeleteContext(GLContext);
+	}
 }

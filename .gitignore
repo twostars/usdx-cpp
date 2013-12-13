@@ -53,3 +53,4 @@ game/config.ini
 *.vcxproj.user
 *.sbr
 *.map
+*.cod

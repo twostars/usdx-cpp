@@ -22,12 +22,7 @@
 
 #include "stdafx.h"
 
-#define WIN32_LEAN_AND_MEAN
-#define VC_EXTRALEAN
-
-#include <Windows.h>
 #include <ShlObj.h>
-
 #pragma comment(lib, "Shell32.lib")
 
 #include "Platform.h"

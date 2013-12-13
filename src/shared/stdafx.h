@@ -37,7 +37,18 @@
 #include <boost/lexical_cast.hpp>
 
 #include <SDL.h>
+#include <SDL_image.h>
 #include "SDL_utilities.h"
+
+// OpenGL requires Windows.h to be included first.
+#if defined(WIN32)
+#	define WIN32_LEAN_AND_MEAN
+#	define VC_EXTRALEAN
+#	include <Windows.h>
+#endif
+
+#include <GL/gl.h>
+
 #include "../lib/simpleini/SimpleIni.h"
 
 #include "unicode.h"

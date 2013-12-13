@@ -438,6 +438,9 @@
     <ClCompile Include="..\..\src\shared\SDL_utilities.cpp">
       <Filter>src\shared</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shared\string_utils.cpp">
+      <Filter>src\shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lib\bass\c\bass.h">

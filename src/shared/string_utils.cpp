@@ -20,14 +20,31 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef _GRAPHIC_H
-#define _GRAPHIC_H
-#pragma once
+#include "stdafx.h"
 
-void Initialize3D(const TCHAR * windowTitle);
-void SwapBuffers();
+// Extracts resolution dimensions in the standard format (e.g. 1920x1080) from a string.
+bool ExtractResolution(const tstring& str, int* w, int* h)
+{
+	const TCHAR separator = _T('x');
 
-SDL_Surface * LoadSurfaceFromFile(const boost::filesystem::path& filename);
-void FreeGfxResources();
+	assert(w != NULL && h != NULL);
 
-#endif
+	// Make a lowercase copy of the string to check against.
+	tstring strCopy = str;
+	strtolower(strCopy);
+
+	// Search the lowercase string for the resolution separator.
+	size_t pos = strCopy.find(separator);
+	if (pos == tstring::npos)
+		return false;
+
+	// Read from the start until the first non-character digit (i.e. x)
+	*w = _ttoi(str.c_str());
+
+	// Read from the separator to the next non-character digit (e.g. null-terminator).
+	// Note that it ignores preleading spaces.
+	*h = _ttoi(str.c_str() + pos + 1);
+
+	return true;
+}
+

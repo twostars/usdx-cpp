@@ -404,31 +404,6 @@ void Ini::LoadScreenModes()
 		AddResolution(2560, 1600);
 	}
 
-	for (ResolutionMap::iterator itr = LoadedResolutions.begin(); 
-		itr != LoadedResolutions.end();)
-	{
-		ResolutionMap::iterator itr2 = itr++;
-
-		ResolutionWH resolution = itr2->first;
-		tstring      resolutionName = itr2->second;
-
-		// Handle width adjustment for multiple displays setup horizontally.
-		if (Screens != 0)
-		{
-			// Remove old entry
-			LoadedResolutions.erase(resolution);
-			ResolutionNameMap.erase(resolutionName);
-
-			// Adjust width (assume all screens are laid out horizontally)...
-			resolution.first /= (Screens + 1);
-
-			// Re-add new resolution
-			AddResolution(resolution.first, resolution.second);
-		}
-
-		sLog.Status(_T("Video"), _T("Loaded resolution: %d x %d"), resolution.first, resolution.second);
-	}
-
 	sLog.Status(_T("Video"), _T("Loaded resolutions: %u"), LoadedResolutions.size());
 }
 
@@ -441,6 +416,8 @@ void Ini::AddResolution(int width, int height)
 
 	LoadedResolutions.insert(std::make_pair(resolution, buffer));
 	ResolutionNameMap.insert(std::make_pair(buffer, resolution));
+
+	sLog.Status(_T("Video"), _T("Loaded resolution: %d x %d"), width, height);
 }
 
 void Ini::LoadSoundSettings()
