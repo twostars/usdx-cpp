@@ -21,3 +21,103 @@
  */
 
 #include "stdafx.h"
+#include "TextGL.h"
+
+// Build all fonts
+void BuildFonts()
+{
+}
+
+// Deletes all fonts
+void KillFonts()
+{
+}
+
+// Returns text width
+float glTextWidth(const tstring& text)
+{
+	/*
+	BoundsDbl bounds = Fonts[ActiveFont].Font.BBox(text, true);
+	return bounds.Right - bounds.Left;
+	*/
+	return 0.0f;
+}
+
+// Custom OpenGL print routine
+void glPrint(const tstring& text, ...)
+{
+	if (text.empty())
+		return;
+
+	/*
+	GLFont& font = Fonts[ActiveFont];
+	glPushMatrix();
+		// Set font position
+		glTranslatef(font.X, font.Y + font.Ascender, font.Z);
+
+		// Draw string
+		// font.Font.Print(text);
+	glPopMatrix();
+	*/
+}
+
+// Reset settings for active font
+void ResetFont()
+{
+	SetFontPos(0.0f, 0.0f);
+	SetFontZ(0.0f);
+	SetFontItalic(false);
+	SetFontReflection(false, 0.0f);
+}
+
+// Sets X, Y position of font
+void SetFontPos(float X, float Y)
+{
+	/*
+	Fonts[ActiveFont].X = X;
+	Fonts[ActiveFont].Y = Y;
+	*/
+}
+
+// Sets Z position of float
+void SetFontZ(float Z)
+{
+	// Fonts[ActiveFont].Z = Z;
+}
+
+// Sets font size
+void SetFontSize(float height)
+{
+	// Fonts[ActiveFont].Font.Height = height;
+}
+
+// Sets active font style (normal, bold, etc)
+void SetFontStyle(uint32 style)
+{
+	// ActiveFont = style;
+}
+
+// Enables/disables italics.
+void SetFontItalic(bool enable)
+{
+	// GLFont& font = Fonts[ActiveFont];
+	// if (enable)
+	//	font.Font.Style += *Italic;
+	// else
+	//	font.Font.Stle -= *Italic;
+}
+
+// Enables/disables text reflection.
+void SetFontReflection(bool enable, float spacing)
+{
+	/*
+	GLFont& font = Fonts[ActiveFont];
+
+	if (enable)
+		font.Font.Style += *Reflect;
+	else
+		font.Font.Style -= *Reflect;
+
+	font.Font.ReflectionSpacing = spacing + font.Font.Descender;
+	*/
+}

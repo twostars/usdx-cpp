@@ -181,9 +181,11 @@
     <ClInclude Include="..\..\src\lib\simpleini\ConvertUTF.h" />
     <ClInclude Include="..\..\src\lib\simpleini\SimpleIni.h" />
     <ClInclude Include="..\..\src\lua\LuaCore.h" />
+    <ClInclude Include="..\..\src\menu\Display.h" />
     <ClInclude Include="..\..\src\shared\color_utils.h" />
     <ClInclude Include="..\..\src\shared\CriticalException.h" />
     <ClInclude Include="..\..\src\shared\enumerations.h" />
+    <ClInclude Include="..\..\src\shared\math_utils.h" />
     <ClInclude Include="..\..\src\shared\SDL_utilities.h" />
     <ClInclude Include="..\..\src\shared\Singleton.h" />
     <ClInclude Include="..\..\src\shared\stdafx.h" />

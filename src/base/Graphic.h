@@ -31,4 +31,24 @@ void SwapBuffers();
 SDL_Surface * LoadSurfaceFromFile(const boost::filesystem::path& filename);
 void FreeGfxResources();
 
+/* TODO: Clean up these globals */
+
+typedef std::set<SDL_Surface *> SurfaceCollection;
+
+extern SDL_Window  * Screen;
+extern SDL_GLContext GLContext;
+
+extern SurfaceCollection g_surfaces;
+
+extern int RenderW, RenderH;
+extern int ScreenW, ScreenH;
+extern int Screens, ScreenAct, ScreenX;
+
+extern bool Fullscreen;
+
+extern PFNGLCOPYTEXSUBIMAGE3DPROC	glCopyTexSubImage3D;
+extern PFNGLDRAWRANGEELEMENTSPROC	glDrawRangeElements;
+extern PFNGLTEXIMAGE3DPROC			glTexImage3D;
+extern PFNGLTEXSUBIMAGE3DPROC		glTexSubImage3D;
+
 #endif

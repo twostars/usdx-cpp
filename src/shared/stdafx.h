@@ -51,6 +51,7 @@
 #include "unicode.h"
 #include "types.h"
 #include "string_utils.h"
+#include "math_utils.h"
 
 #include "CriticalException.h"
 #include "Singleton.h"

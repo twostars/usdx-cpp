@@ -33,6 +33,8 @@ public:
 
 static const int SDLCorrectionRatio = 1000;
 
+
+float GetTimeMid();
 void CountSkipTimeSet();
 void CountSkipTime();
 void CountMidTime();

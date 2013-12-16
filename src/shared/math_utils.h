@@ -18,46 +18,14 @@
  * along with this program; see the file COPYING. If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
- */           
+ */
 
-#include "stdafx.h"
+#ifndef _MATH_UTILS_H
+#define _MATH_UTILS_H
+#pragma once
 
-#include <SDL.h>
-#include "Time.h"
+// Squares the specified number. 
+template <typename T>
+T sqr(T val) { return val * val; }
 
-static uint32	s_timeOld = 0, s_timeNew = 0;
-static float	s_timeSkip = 0.0f, s_timeMid = 0.0f;
-static int64	s_timeMidTemp = 0;
-
-Time::Time()
-{
-	CountSkipTimeSet();
-}
-
-float GetTimeMid()
-{
-	return s_timeMid;
-}
-
-void CountSkipTimeSet()
-{
-	s_timeNew = SDL_GetTicks();
-}
-
-void CountSkipTime()
-{
-	s_timeOld = s_timeNew;
-	CountSkipTimeSet();
-	s_timeSkip = (s_timeNew - s_timeOld) / (float) SDLCorrectionRatio;
-}
-
-void CountMidTime()
-{
-	s_timeMidTemp = SDL_GetTicks();
-	s_timeMid = (s_timeMidTemp - s_timeNew) / (float) SDLCorrectionRatio;
-}
-
-float Time::GetTime()
-{
-	return SDL_GetTicks() / (float) SDLCorrectionRatio;
-}
+#endif

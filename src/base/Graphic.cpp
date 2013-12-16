@@ -27,6 +27,8 @@
 #include "CommandLine.h"
 #include "Ini.h"
 
+#include "../menu/Display.h"
+
 #define WINDOW_ICON _T("ultrastardx-icon.png")
 
 using namespace boost::filesystem;
@@ -34,14 +36,11 @@ using namespace boost::filesystem;
 extern path ResourcesPath;
 extern CMDParams Params;
 
-typedef std::set<SDL_Surface *> SurfaceCollection;
-
 // TODO: Replace these globals...
 SDL_Window  * Screen = NULL;
 SDL_GLContext GLContext;
 
 SurfaceCollection g_surfaces;
-SDL_Thread  * LoadingThread = NULL;
 
 // Virtual screen size
 int RenderW = 800, RenderH = 600;
@@ -50,7 +49,7 @@ int RenderW = 800, RenderH = 600;
 int ScreenW, ScreenH;
 
 // Display count
-int Screens;
+int Screens, ScreenAct, ScreenX;
 
 bool Fullscreen;
 
@@ -140,6 +139,8 @@ void Initialize3D(const TCHAR * windowTitle)
 	glClear(GL_COLOR_BUFFER_BIT);
 	SwapBuffers();
 
+	new Display();
+
 	// TODO
 }
 
@@ -217,4 +218,6 @@ void FreeGfxResources()
 		SDL_DestroyWindow(Screen);
 		SDL_GL_DeleteContext(GLContext);
 	}
+
+	delete Display::getSingletonPtr();
 }

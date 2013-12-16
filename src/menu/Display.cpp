@@ -21,3 +21,310 @@
  */
 
 #include "stdafx.h"
+#include "Display.h"
+
+#include "../base/Log.h"
+#include "../base/Time.h"
+#include "../base/Ini.h"
+#include "../base/CommandLine.h"
+#include "../base/Graphic.h"
+#include "../base/TextGL.h"
+
+initialiseSingleton(Display);
+
+extern CMDParams Params;
+
+// constants for screen transition
+// time in milliseconds
+const float FADE_DURATION = 400.0f;
+
+// constants for software cursor effects
+// time in milliseconds
+const int CURSOR_FADE_IN_TIME = 500;      // seconds the fade in effect lasts
+const int CURSOR_FADE_OUT_TIME = 2000;    // seconds the fade out effect lasts
+const int CURSOR_AUTOHIDE_TIME = 5000;   // seconds until auto fade out starts if there is no mouse movement
+
+Display::Display()
+// create events for plugins
+//	: ePreDraw("Display.PreDraw"), eDraw("Display.Draw")
+{
+	// init popup
+	CheckOK             = false;
+	NextScreen          = NULL;
+	NextScreenWithCheck = NULL;
+	BlackScreen         = false;
+
+	// init fade
+	FadeStartTime = 0;
+	FadeEnabled = (sIni.ScreenFade == Switch::On);
+	FadeFailed  = false;
+	DoneOnShow  = false;
+
+	NextFPSSwap = 0;
+
+	glGenTextures(2, FadeTex);
+	InitFadeTextures();
+
+	// set LastError for OSD to No Error
+	OSD_LastError = _T("No Errors");
+
+	// software cursor default values
+	CursorLastMove = 0;
+	CursorVisible  = false;
+	CursorPressed  = false;
+	CursorX        = -1;
+	CursorY        = -1;
+	CursorFade     = false;
+	CursorHiddenByScreen = true;
+}
+
+void Display::InitFadeTextures()
+{
+}
+
+bool Display::Draw()
+{
+	for (int screen = 1; screen <= Screens; screen++)
+	{
+		ScreenAct = screen;
+		ScreenX = 0;
+
+		glViewport((screen - 1) * ScreenW / Screens, 0, ScreenW / Screens, ScreenH);
+
+		// OK was pressed on the popup...
+		if (CheckOK)
+		{
+			CheckOK = false;
+
+			// If there's a screen to go to, move to it.
+			if (NextScreenWithCheck != NULL)
+			{
+				NextScreen = NextScreenWithCheck;
+				NextScreenWithCheck = NULL;
+			}
+			// On the end of the game, fade to black before exit.
+			else
+			{
+				BlackScreen = true;
+			}
+		}
+
+		// No next screen, and not fading to black...
+		// Draw the current screen.
+		if (NextScreen == NULL
+			&& !BlackScreen)
+		{
+			// ePreDraw.CallHookChain(false);
+			// CurrentScreen->Draw();
+			
+			FadeStartTime = 0;
+			FadeEnabled = (sIni.ScreenFade == Switch::On && !FadeFailed);
+
+			// eDraw.CallHookChain(false);
+		}
+		else
+		{
+			// Disable fading if initialization failed
+			if (FadeEnabled && FadeFailed)
+				FadeEnabled = false;
+
+			// Can we fade now?
+			if (FadeEnabled && !FadeFailed)
+			{
+				// Create fading texture if we're just starting
+				if (FadeStartTime == 0)
+				{
+					// Draw screen that will be faded
+					// ePreDraw.CallHookChain(false);
+					// CurrentScreen->Draw();
+					// eDraw.CallHookChain(false);
+
+					// Clear OpenGL errors, otherwise fading might be disabled
+					// due to some older errors in previous OpenGL calls
+					glGetError();
+
+					uint32 fadeCopyW = ScreenW / Screens,
+						fadeCopyH = ScreenH;
+
+					// It is possible that our fade textures are too small after
+					// a window resize. In that case, resize the texture to fit.
+					if (TexW < fadeCopyW || TexH < fadeCopyH)
+						InitFadeTextures();
+
+					// Copy screen to texture
+					glBindTexture(GL_TEXTURE_2D, FadeTex[screen - 1]);
+					glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, (screen - 1) * ScreenW / Screens, 
+						0, fadeCopyW, fadeCopyH);
+
+					GLenum glError = glGetError();
+					if (glError != GL_NO_ERROR)
+					{
+						FadeFailed = true;
+
+						// TODO: Do we want to use an error string? I'd hate to want to include/link to glu.h for just that
+						// Might be helpful to dump a lookup table later...
+						sLog.Error(_T("Display::Draw"), _T("Fading disabled, OpenGL error code: 0x%X"), glError);
+					}
+
+					if (!BlackScreen 
+						&& screen == 1 
+						&& !DoneOnShow)
+					{
+						// NextScreen->Show();
+						DoneOnShow = true;
+					}
+
+					// Set fade time once on final screen
+					if (screen == Screens)
+						FadeStartTime = SDL_GetTicks();
+				} // end of create fading texture
+
+				if (!BlackScreen)
+				{
+					// ePreDraw.CallHookChain(false);
+					// NextScreen->Draw();
+					// eDraw.CallHookChain(false);
+				}
+				// Draw black screen
+				else if (ScreenAct == 1)
+				{
+					glClearColor(0, 0, 0, 1);
+					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				}
+
+				// and draw old screen over it... slowly fading out
+				float fadeStateSquare = 0.0f;
+				if (FadeStartTime > 0)
+					fadeStateSquare = sqr((float)(SDL_GetTicks() - FadeStartTime) / FADE_DURATION);
+
+				if (fadeStateSquare < 1)
+				{
+					float	fadeW = ((float)ScreenW / Screens) / (float) TexW,
+							fadeH = (float) ScreenH / (float) TexH;
+
+					glBindTexture(GL_TEXTURE_2D, FadeTex[screen - 1]);
+
+					// TODO: check if glTexEnvi() gives any speed improvement
+					// glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+					
+					glColor4f(1.0f, 1.0f, 1.0f, 1 - fadeStateSquare);
+
+					glEnable(GL_TEXTURE_2D);
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					glEnable(GL_BLEND);
+					glBegin(GL_QUADS);
+						glTexCoord2f((0+fadeStateSquare/2)*fadeW, (0+fadeStateSquare/2)*fadeH);
+						glVertex2f(0.0f, (float) RenderH);
+						glTexCoord2f((0+fadeStateSquare/2)*fadeW, (1-fadeStateSquare/2)*fadeH);
+						glVertex2f(0.0f, 0.0f);
+						glTexCoord2f((1-fadeStateSquare/2)*fadeW, (1-fadeStateSquare/2)*fadeH);
+						glVertex2f((float) RenderW, 0.0f);
+						glTexCoord2f((1-fadeStateSquare/2)*fadeW, (0+fadeStateSquare/2)*fadeH);
+						glVertex2f((float) RenderW, (float) RenderH);
+					glEnd();
+					glDisable(GL_BLEND);
+					glDisable(GL_TEXTURE_2D);
+
+					// reset to default
+					// glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULE);
+				}
+			}
+			// There is no need to init next screen if it is a black screen
+			else if (!BlackScreen)
+			{
+				// NextScreen->OnShow();
+			}
+
+			// Fade out complete (if it was even fading to begin with...)
+			if (((FadeStartTime + FADE_DURATION < SDL_GetTicks()
+				|| (!FadeEnabled || FadeFailed))
+				&& (screen == Screens)))
+			{
+				FadeStartTime = 0;
+				DoneOnShow = false;
+				// CurrentScreen->OnHide();
+				// CurrentScreen->ShowFinish = false;
+				// CurrentScreen = NextScreen;
+				// NextScreen = NULL;
+
+				if (BlackScreen)
+					return false;
+
+				// CurrentScreen->OnShowFinish();
+				// CurrentScreen->ShowFinish = true;
+			}
+		}
+
+		// Draw OSD only on first screen if debug mode is enabled
+		if ((sIni.Debug || Params.Debug)
+			&& screen == 1)
+			DrawDebugInformation();
+
+		if (!BlackScreen)
+			DrawCursor();
+	}
+
+	return true;
+}
+
+void Display::DrawCursor()
+{
+}
+
+void Display::DrawDebugInformation()
+{
+	// White background for information
+	glEnable(GL_BLEND);
+	glDisable(GL_TEXTURE_2D);
+	glColor4f(1, 1, 1, 0.5);
+	glBegin(GL_QUADS);
+	glVertex2f(690, 44);
+	glVertex2f(690, 0);
+	glVertex2f(800, 0);
+	glVertex2f(800, 44);
+	glEnd();
+	glDisable(GL_BLEND);
+
+	// set font specs
+	SetFontStyle(ftNormal);
+	SetFontSize(21);
+	SetFontItalic(false);
+	glColor4f(0, 0, 0, 1);
+
+	// calculate fps
+	uint32 Ticks = SDL_GetTicks();
+	if (Ticks >= NextFPSSwap)
+	{
+		LastFPS = FPSCounter * 4;
+		FPSCounter = 0;
+		NextFPSSwap = Ticks + 250;
+	}
+
+	++FPSCounter;
+
+	/* draw text */
+
+	// fps
+	SetFontPos(695, 0);
+	glPrint(_T("FPS: %d"), LastFPS);
+
+	// rspeed
+	SetFontPos(695, 13);
+	glPrint(_T("RSpeed: %d"), (uint32) ceil(1000 * GetTimeMid()));
+
+	// lasterror
+	SetFontPos(695, 26);
+	glColor4f(1, 0, 0, 1);
+	glPrint(OSD_LastError);
+
+	glColor4f(1, 1, 1, 1);
+}
+
+void Display::SetCursor()
+{
+}
+
+Display::~Display()
+{
+	glDeleteTextures(2, FadeTex);
+}

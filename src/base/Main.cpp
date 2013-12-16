@@ -37,6 +37,8 @@
 #include "Music.h"
 #include "Graphic.h"
 
+#include "../menu/Display.h"
+
 extern boost::filesystem::path ScoreFile;
 
 /* globals */
@@ -230,7 +232,7 @@ int usdxMain(int argc, TCHAR ** argv)
 		sLog.Benchmark(0, _T("Loading time"));
 
 		// Prepare software cursor
-		// Display::SetCursor();
+		sDisplay.SetCursor();
 
 		// Start background music
 		// SoundLib::StartBgMusic();
@@ -241,7 +243,7 @@ int usdxMain(int argc, TCHAR ** argv)
 		if (badPlayer >= 0)
 		{
 			ScreenPopupError::ShowPopup(sLanguage.TranslateFormat(_T("ERROR_PLAYER_DEVICE_ASSIGNMENT"), BadPlayer + 1);
-			Display::CurrentScreen->FadeTo(&ScreenOptionsRecord);
+			sDisplay.CurrentScreen->FadeTo(&ScreenOptionsRecord);
 		}
 		*/
 
@@ -288,7 +290,8 @@ void usdxMainLoop()
 	const float MaxFPS = 100.0f;
 
 	bool done = false;
-	uint32 delay, ticksCurrent, ticksBeforeFrame;
+	uint32 ticksCurrent, ticksBeforeFrame;
+	int32 delay;
 
 	// For some reason this seems to be needed with the SDL timer functions.
 	CountSkipTime();
@@ -305,14 +308,12 @@ void usdxMainLoop()
 		// CheckEvents();
 
 		// Display
-		// done = !Display::Draw();
-		done = true; // TODO: Remove
-		// SwapBuffers();
+		done = !sDisplay.Draw();
+		SwapBuffers();
 		
 		// FPS limiter
 		ticksCurrent = SDL_GetTicks();
-		delay = (uint32)(MillisecondsInSecond / MaxFPS) - (ticksCurrent - ticksBeforeFrame);
-
+		delay = (int32)(MillisecondsInSecond / MaxFPS) - (ticksCurrent - ticksBeforeFrame);
 		if (delay > 0)
 			SDL_Delay(delay); // dynamic, maximum is 100 fps
 
