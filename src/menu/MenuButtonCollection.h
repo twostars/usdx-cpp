@@ -20,23 +20,25 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "stdafx.h"
-#include "../base/Graphic.h"
-#include "../base/ThemeDefines.h"
-#include "MenuBackgroundColor.h"
+#ifndef _MENUBUTTONCOLLECTION_H
+#define _MENUBUTTONCOLLECTION_H
+#pragma once
 
-MenuBackgroundColor::MenuBackgroundColor(const ThemeBackground* themedSettings)
-	: MenuBackground(themedSettings)
+class Texture;
+class MenuButtonCollection : public MenuButton
 {
-	Color = themedSettings->Color;
-}
+public:
+	MenuButtonCollection();
+	MenuButtonCollection(Texture* tex);
+	MenuButtonCollection(Texture* tex, Texture* deselectTexture);
 
-void MenuBackgroundColor::Draw()
-{
-	// Clear just once when in dual screen mode
-	if (ScreenAct != 1)
-		return;
+	void SetSelect(bool value);
+	void Draw();
 
-	glClearColor(Color.R, Color.G, Color.B, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+	uint8 FirstChild;
+	uint8 ChildCount;
+
+	std::vector<MenuButton> * ScreenButton;
+};
+
+#endif

@@ -20,4 +20,48 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "stdafx.h"
+#ifndef _EXCEPTIONS_H
+#define _EXCEPTIONS_H
+#pragma once
+
+class BaseException : public std::exception
+{
+public:
+	BaseException()
+	{
+	}
+
+	void SetMessage(const tstring& format, va_list args)
+	{
+		TCHAR buffer[1024] = {0};
+		_vsntprintf(buffer, 1024, format.c_str(), args);
+		_message = buffer;
+	}
+
+	const TCHAR * twhat() const
+	{
+		return _message.c_str();
+	}
+
+private:
+	tstring _message;
+};
+
+
+#define DECLARE_EXCEPTION(name, base) \
+class name : public base \
+{ \
+public: \
+	name(const tstring& message, ...) : base() \
+	{ \
+		va_list args; \
+		va_start(args, message); \
+		SetMessage(message, args); \
+		va_end(args); \
+	} \
+}
+
+DECLARE_EXCEPTION(CriticalException,       BaseException);
+DECLARE_EXCEPTION(NotImplementedException, BaseException);
+
+#endif

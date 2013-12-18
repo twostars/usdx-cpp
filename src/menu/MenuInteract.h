@@ -20,23 +20,37 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "stdafx.h"
-#include "../base/Graphic.h"
-#include "../base/ThemeDefines.h"
-#include "MenuBackgroundColor.h"
+#ifndef _MENUINTERACT_H
+#define _MENUINTERACT_H
+#pragma once
 
-MenuBackgroundColor::MenuBackgroundColor(const ThemeBackground* themedSettings)
-	: MenuBackground(themedSettings)
+enum InteractionType
 {
-	Color = themedSettings->Color;
-}
+	itButton			= 0,
+	itSelect			= 1,
+	itText				= 2,
+	itSelectSlide		= 3,
+	itBCollectionChild	= 5
+};
 
-void MenuBackgroundColor::Draw()
+/* For moving through a menu */
+struct MenuInteract
 {
-	// Clear just once when in dual screen mode
-	if (ScreenAct != 1)
-		return;
+	InteractionType Type;
+	int Num;  // number of this item in proper list like buttons, selects
+};
 
-	glClearColor(Color.R, Color.G, Color.B, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+// to handle the area where the mouse is over a control
+struct MouseOverRect
+{
+	float X, Y;
+	float W, H;
+};
+
+// to handle the on click action
+enum MouseClickAction 
+{
+	maNone, maReturn, maLeft, maRight
+};
+
+#endif

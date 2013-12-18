@@ -20,23 +20,23 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "stdafx.h"
-#include "../base/Graphic.h"
-#include "../base/ThemeDefines.h"
-#include "MenuBackgroundColor.h"
+#ifndef _MENU_BACKGROUND_FADE_H
+#define _MENU_BACKGROUND_FADE_H
+#pragma once
 
-MenuBackgroundColor::MenuBackgroundColor(const ThemeBackground* themedSettings)
-	: MenuBackground(themedSettings)
+#include "MenuBackgroundTexture.h"
+
+class MenuBackgroundFade : public MenuBackgroundTexture
 {
-	Color = themedSettings->Color;
-}
+public:
+	MenuBackgroundFade(const ThemeBackground * themedSettings);
+	void OnShow();
+	void Draw();
 
-void MenuBackgroundColor::Draw()
-{
-	// Clear just once when in dual screen mode
-	if (ScreenAct != 1)
-		return;
+protected:
+	float Alpha;
+	bool UseTexture;
+	uint32 FadeTime;
+};
 
-	glClearColor(Color.R, Color.G, Color.B, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+#endif

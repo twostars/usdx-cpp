@@ -37,6 +37,8 @@
 #include <set>
 #include <vector>
 #include <cstdarg>
+#include <algorithm>
+#include <cctype>
 
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
@@ -52,8 +54,9 @@
 #include "types.h"
 #include "string_utils.h"
 #include "math_utils.h"
+#include "misc_utils.h"
 
-#include "CriticalException.h"
+#include "exceptions.h"
 #include "Singleton.h"
 
 #include "enumerations.h"

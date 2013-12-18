@@ -41,6 +41,10 @@ typedef uint32_t uint32;
 typedef uint16_t uint16;
 typedef uint8_t uint8;
 
+#if defined(RGB)
+#	undef RGB
+#endif
+
 struct RGB
 {
 	float R, G, B;
@@ -50,6 +54,8 @@ struct RGB
 
 	void Set(uint8 r, uint8 g, uint8 b);
 	static float Transform(uint8 val);
+
+	uint32 ToUInt32() const;
 };
 
 struct RGBA

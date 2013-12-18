@@ -29,6 +29,14 @@ void LoadOpenGLExtensions();
 void SwapBuffers();
 
 SDL_Surface * LoadSurfaceFromFile(const boost::filesystem::path& filename);
+void glColorRGB(const RGB& color);
+void glColorRGB(const RGB& color, float alpha);
+void glColorRGB(const RGBA& color);
+void glColorRGB(const RGBA& color, float alpha);
+void glColorRGBInt(const RGB& color, float intensity);
+void glColorRGBInt(const RGB& color, float alpha, float intensity);
+void glColorRGBInt(const RGBA& color, float intensity);
+void glColorRGBInt(const RGBA& color, float alpha, float intensity);
 void FreeGfxResources();
 
 /* TODO: Clean up these globals */

@@ -20,4 +20,21 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "stdafx.h"
+#ifndef _MENUSTATIC_H
+#define _MENUSTATIC_H
+#pragma once
+
+class MenuStatic
+{
+public:
+	MenuStatic(Texture* tex);
+	void Draw();
+
+	Texture* Tex;
+	bool Visible;
+
+	bool Reflection;
+	float ReflectionSpacing;
+};
+
+#endif

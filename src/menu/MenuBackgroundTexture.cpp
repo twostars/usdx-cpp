@@ -21,3 +21,68 @@
  */
 
 #include "stdafx.h"
+#include "../base/Graphic.h"
+#include "../base/ThemeDefines.h"
+#include "../base/Skins.h"
+#include "../base/Texture.h"
+#include "MenuBackgroundTexture.h"
+
+MenuBackgroundTexture::MenuBackgroundTexture(const ThemeBackground* themedSettings)
+	: MenuBackground(themedSettings)
+{
+	if (themedSettings->Tex.empty())
+		throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): No texture name present."));
+
+	const boost::filesystem::path * texFilename;
+
+	Color = themedSettings->Color;
+	texFilename = sSkins.GetTextureFileName(themedSettings->Tex);
+
+	if (texFilename == NULL)
+	{
+		throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not found."), 
+			themedSettings->Tex.c_str());
+	}
+
+	// TODO
+	Tex = NULL;
+// 	Tex = Texture::GetTexture(texFilename, TextureType::Plain)
+	if (Tex == NULL)
+		throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not loaded."),
+		texFilename->native().c_str());
+
+	if (Tex->TexNum == 0)
+		throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): No textures for %s."),
+		themedSettings->Tex.c_str());
+}
+
+void MenuBackgroundTexture::Draw()
+{
+	// Clear just once when in dual screen mode
+	if (ScreenAct == 1)
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+	glColorRGB(Color);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glBindTexture(GL_TEXTURE_2D, Tex->TexNum);
+
+	glBegin(GL_QUADS);
+		glTexCoord2f(Tex->TexX1*Tex->TexW, Tex->TexY1*Tex->TexH);
+		glVertex2i(0, 0);
+
+		glTexCoord2f(Tex->TexX1*Tex->TexW, Tex->TexY2*Tex->TexH);
+		glVertex2i(0, RenderH);
+
+		glTexCoord2f(Tex->TexX2*Tex->TexW, Tex->TexY2*Tex->TexH);
+		glVertex2i(RenderW, RenderH);
+
+		glTexCoord2f(Tex->TexX2*Tex->TexW, Tex->TexY1*Tex->TexH);
+		glVertex2i(RenderW, 0);
+	glEnd();
+
+	glDisable(GL_BLEND);
+	glDisable(GL_TEXTURE_2D);
+}

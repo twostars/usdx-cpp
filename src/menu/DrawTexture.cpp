@@ -21,3 +21,24 @@
  */
 
 #include "stdafx.h"
+#include "DrawTexture.h"
+
+void DrawLine(float X1, float Y1, float X2, float Y2, RGB& ColRGB)
+{
+	glColor3f(ColRGB.R, ColRGB.G, ColRGB.B);
+	glBegin(GL_LINES);
+		glVertex2f(X1, Y1);
+		glVertex2f(X2, Y2);
+	glEnd();
+}
+
+void DrawQuad(float X,  float Y,  float W,  float H,  RGB& ColRGB)
+{
+	glColor3f(ColRGB.R, ColRGB.G, ColRGB.B);
+	glBegin(GL_QUADS);
+		glVertex2f(X,     Y);
+		glVertex2f(X,     Y + H);
+		glVertex2f(X + W, Y + H);
+		glVertex2f(X + W, Y);
+	glEnd();
+}

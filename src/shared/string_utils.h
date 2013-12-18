@@ -24,8 +24,6 @@
 #define _STRING_UTILS_H
 #pragma once
 
-#include <algorithm>
-
 #if defined(WIN32)
 #	define STRCASECMP	_stricmp
 #	define WSTRCASECMP	_wcsicmp
@@ -68,6 +66,33 @@ INLINE void strtoupper(std::wstring& str)
 	std::transform(str.begin(), str.end(), str.begin(), towupper);
 }
 
+template<int (&F)(int)> int safe_ctype(unsigned char c) { return F(c); } 
+static int safe_isspace(int c) { return safe_ctype<std::isspace>(c); }
+
+// trim from end
+template <typename STRING_TYPE>
+STRING_TYPE& rtrim(STRING_TYPE &s) 
+{
+	s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(safe_isspace))).base(), s.end());
+	return s;
+}
+
+// trim from start
+template <typename STRING_TYPE>
+STRING_TYPE& ltrim(STRING_TYPE &s) 
+{
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(safe_isspace))));
+	return s;
+}
+
+template <typename STRING_TYPE>
+STRING_TYPE& trim(STRING_TYPE &s) 
+{
+	rtrim(s);
+	ltrim(s);
+	return s;
+}
+
 /* Taken from SDL */
 #if UNICODE
 #define StringToUTF8(S) SDL_iconv_string("UTF-8", "UTF-16LE", (char *)(S), (SDL_wcslen(S)+1)*sizeof(WCHAR))
@@ -79,5 +104,10 @@ INLINE void strtoupper(std::wstring& str)
 
 // Extracts resolution dimensions in the standard format (e.g. 1920x1080) from a string.
 bool ExtractResolution(const tstring& str, int* w, int* h);
+
+int strpos(const TCHAR* haystack, const TCHAR* needle);
+#if defined(UNICODE)
+int strpos(const char * haystack, const char * needle); 
+#endif
 
 #endif

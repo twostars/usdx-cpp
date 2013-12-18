@@ -20,23 +20,11 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "stdafx.h"
-#include "../base/Graphic.h"
-#include "../base/ThemeDefines.h"
-#include "MenuBackgroundColor.h"
+#ifndef _MISC_UTILS_H
+#define _MISC_UTILS_H
+#pragma once
 
-MenuBackgroundColor::MenuBackgroundColor(const ThemeBackground* themedSettings)
-	: MenuBackground(themedSettings)
-{
-	Color = themedSettings->Color;
-}
+bool IsInStringArray(const TCHAR * needle, const TCHAR ** haystackArray);
+bool IsInStringArrayI(const TCHAR * needle, const TCHAR ** haystackArray);
 
-void MenuBackgroundColor::Draw()
-{
-	// Clear just once when in dual screen mode
-	if (ScreenAct != 1)
-		return;
-
-	glClearColor(Color.R, Color.G, Color.B, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+#endif

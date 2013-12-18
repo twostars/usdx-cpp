@@ -20,23 +20,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "stdafx.h"
-#include "../base/Graphic.h"
-#include "../base/ThemeDefines.h"
-#include "MenuBackgroundColor.h"
+#ifndef _MENU_BACKGROUND_H
+#define _MENU_BACKGROUND_H
+#pragma once
 
-MenuBackgroundColor::MenuBackgroundColor(const ThemeBackground* themedSettings)
-	: MenuBackground(themedSettings)
+DECLARE_EXCEPTION(MenuBackgroundException, BaseException);
+
+struct ThemeBackground;
+class MenuBackground
 {
-	Color = themedSettings->Color;
-}
+public:
+	MenuBackground(const ThemeBackground * themedSettings)
+	{
+	}
 
-void MenuBackgroundColor::Draw()
-{
-	// Clear just once when in dual screen mode
-	if (ScreenAct != 1)
-		return;
+	virtual void Draw()
+	{
+	}
 
-	glClearColor(Color.R, Color.G, Color.B, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+	virtual void OnShow()
+	{
+	}
+
+	virtual void OnFinish()
+	{
+	}
+
+	virtual ~MenuBackground()
+	{
+	}
+};
+
+#endif

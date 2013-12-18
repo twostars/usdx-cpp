@@ -48,3 +48,22 @@ bool ExtractResolution(const tstring& str, int* w, int* h)
 	return true;
 }
 
+int strpos(const TCHAR* haystack, const TCHAR* needle)
+{
+	TCHAR *p = _tcsstr((TCHAR *)haystack, (TCHAR *)needle);
+	if (p)
+		return p - haystack;
+
+	return -1;
+}
+
+#if defined(UNICODE)
+int strpos(const char * haystack, char * needle)
+{
+	char * p = strstr((char *)haystack, (char *)needle);
+	if (p)
+		return p - haystack;
+
+	return NULL;
+}
+#endif

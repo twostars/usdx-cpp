@@ -21,3 +21,63 @@
  */
 
 #include "stdafx.h"
+#include "../base/Graphic.h"
+#include "../base/ThemeDefines.h"
+#include "../base/Skins.h"
+#include "../base/Texture.h"
+#include "MenuBackgroundFade.h"
+
+const uint32 FADEINTIME = 1500; // Time the bg fades in
+
+MenuBackgroundFade::MenuBackgroundFade(const ThemeBackground * themedSettings)
+	: MenuBackgroundTexture(themedSettings)
+{
+	FadeTime = 0;
+
+	Alpha = themedSettings->Alpha;
+	if (themedSettings->Tex.empty()
+		|| Tex == NULL
+		|| Tex->TexNum == 0)
+		UseTexture = false;
+}
+
+void MenuBackgroundFade::OnShow()
+{
+	FadeTime = SDL_GetTicks();
+}
+
+void MenuBackgroundFade::Draw()
+{
+	float Progress;
+	if (FadeTime == 0)
+		Progress = Alpha;
+	else
+		Progress = Alpha * (SDL_GetTicks() - FadeTime) / FADEINTIME;
+
+	if (Progress > Alpha)
+	{
+		FadeTime = 0;
+		Progress = Alpha;
+	}
+
+	if (UseTexture)
+		return MenuBackgroundTexture::Draw();
+
+	// Clear just once when in dual screen mode
+	if (ScreenAct == 1)
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+	glDisable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glColorRGB(Color, Progress);
+
+	glBegin(GL_QUADS);
+		glVertex2i(0, 0);
+		glVertex2i(0, RenderH);
+		glVertex2i(RenderW, RenderH);
+		glVertex2i(RenderW, 0);
+	glEnd();
+	glDisable(GL_BLEND);
+}

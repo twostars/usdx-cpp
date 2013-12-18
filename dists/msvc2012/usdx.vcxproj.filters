@@ -315,9 +315,6 @@
     <ClCompile Include="..\..\src\menu\MenuEqualizer.cpp">
       <Filter>src\menu</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\menu\MenuInteract.cpp">
-      <Filter>src\menu</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\menu\MenuSelectSlide.cpp">
       <Filter>src\menu</Filter>
     </ClCompile>
@@ -334,9 +331,6 @@
       <Filter>src\menu</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\menu\Menu.cpp">
-      <Filter>src\menu</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\menu\MenuBackground.cpp">
       <Filter>src\menu</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\menu\MenuBackgroundColor.cpp">
@@ -441,6 +435,9 @@
     <ClCompile Include="..\..\src\shared\string_utils.cpp">
       <Filter>src\shared</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shared\misc_utils.cpp">
+      <Filter>src\shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lib\bass\c\bass.h">
@@ -509,9 +506,6 @@
     <ClInclude Include="..\..\src\lib\simpleini\SimpleIni.h">
       <Filter>lib\simpleini</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\shared\CriticalException.h">
-      <Filter>src\shared</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\base\PathUtils.h">
       <Filter>src\base</Filter>
     </ClInclude>
@@ -562,6 +556,54 @@
     </ClInclude>
     <ClInclude Include="..\..\src\shared\math_utils.h">
       <Filter>src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\Menu.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuBackground.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuInteract.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuButton.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuText.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\exceptions.h">
+      <Filter>src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\DrawTexture.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuBackgroundColor.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuBackgroundNone.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuBackgroundTexture.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuBackgroundFade.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuStatic.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuSelectSlide.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuButtonCollection.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\misc_utils.h">
+      <Filter>src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\menu\MenuBackgroundVideo.h">
+      <Filter>src\menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

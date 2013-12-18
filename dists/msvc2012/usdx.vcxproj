@@ -96,7 +96,6 @@
     <ClCompile Include="..\..\src\menu\Display.cpp" />
     <ClCompile Include="..\..\src\menu\DrawTexture.cpp" />
     <ClCompile Include="..\..\src\menu\Menu.cpp" />
-    <ClCompile Include="..\..\src\menu\MenuBackground.cpp" />
     <ClCompile Include="..\..\src\menu\MenuBackgroundColor.cpp" />
     <ClCompile Include="..\..\src\menu\MenuBackgroundFade.cpp" />
     <ClCompile Include="..\..\src\menu\MenuBackgroundNone.cpp" />
@@ -105,7 +104,6 @@
     <ClCompile Include="..\..\src\menu\MenuButton.cpp" />
     <ClCompile Include="..\..\src\menu\MenuButtonCollection.cpp" />
     <ClCompile Include="..\..\src\menu\MenuEqualizer.cpp" />
-    <ClCompile Include="..\..\src\menu\MenuInteract.cpp" />
     <ClCompile Include="..\..\src\menu\MenuSelectSlide.cpp" />
     <ClCompile Include="..\..\src\menu\MenuStatic.cpp" />
     <ClCompile Include="..\..\src\menu\MenuText.cpp" />
@@ -141,6 +139,7 @@
     <ClCompile Include="..\..\src\screens\ScreenStatDetail.cpp" />
     <ClCompile Include="..\..\src\screens\ScreenStatMain.cpp" />
     <ClCompile Include="..\..\src\screens\ScreenTop5.cpp" />
+    <ClCompile Include="..\..\src\shared\misc_utils.cpp" />
     <ClCompile Include="..\..\src\shared\SDL_utilities.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -182,10 +181,25 @@
     <ClInclude Include="..\..\src\lib\simpleini\SimpleIni.h" />
     <ClInclude Include="..\..\src\lua\LuaCore.h" />
     <ClInclude Include="..\..\src\menu\Display.h" />
+    <ClInclude Include="..\..\src\menu\DrawTexture.h" />
+    <ClInclude Include="..\..\src\menu\Menu.h" />
+    <ClInclude Include="..\..\src\menu\MenuBackground.h" />
+    <ClInclude Include="..\..\src\menu\MenuBackgroundColor.h" />
+    <ClInclude Include="..\..\src\menu\MenuBackgroundFade.h" />
+    <ClInclude Include="..\..\src\menu\MenuBackgroundNone.h" />
+    <ClInclude Include="..\..\src\menu\MenuBackgroundTexture.h" />
+    <ClInclude Include="..\..\src\menu\MenuBackgroundVideo.h" />
+    <ClInclude Include="..\..\src\menu\MenuButton.h" />
+    <ClInclude Include="..\..\src\menu\MenuButtonCollection.h" />
+    <ClInclude Include="..\..\src\menu\MenuInteract.h" />
+    <ClInclude Include="..\..\src\menu\MenuSelectSlide.h" />
+    <ClInclude Include="..\..\src\menu\MenuStatic.h" />
+    <ClInclude Include="..\..\src\menu\MenuText.h" />
     <ClInclude Include="..\..\src\shared\color_utils.h" />
-    <ClInclude Include="..\..\src\shared\CriticalException.h" />
+    <ClInclude Include="..\..\src\shared\exceptions.h" />
     <ClInclude Include="..\..\src\shared\enumerations.h" />
     <ClInclude Include="..\..\src\shared\math_utils.h" />
+    <ClInclude Include="..\..\src\shared\misc_utils.h" />
     <ClInclude Include="..\..\src\shared\SDL_utilities.h" />
     <ClInclude Include="..\..\src\shared\Singleton.h" />
     <ClInclude Include="..\..\src\shared\stdafx.h" />

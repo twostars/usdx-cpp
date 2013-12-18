@@ -21,3 +21,18 @@
  */
 
 #include "stdafx.h"
+#include "../base/Graphic.h"
+#include "../base/ThemeDefines.h"
+#include "MenuBackgroundNone.h"
+
+MenuBackgroundNone::MenuBackgroundNone(const ThemeBackground* themedSettings)
+	: MenuBackground(themedSettings)
+{
+}
+
+void MenuBackgroundNone::Draw()
+{
+	// Clear just once when in dual screen mode
+	if (ScreenAct == 1)
+		glClear(GL_DEPTH_BUFFER_BIT);
+}

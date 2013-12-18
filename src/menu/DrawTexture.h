@@ -20,25 +20,13 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef _CRITICALEXCEPTION_H
-#define _CRITICALEXCEPTION_H
+#ifndef _DRAWTEXTURE_H
+#define _DRAWTEXTURE_H
 #pragma once
 
-class CriticalException : public std::exception
-{
-public:
-	CriticalException(tstring message)
-		: _message(message)
-	{
-	}
+#include "../base/Texture.h"
 
-	const TCHAR * twhat() const
-	{
-		return _message.c_str();
-	}
-
-private:
-	tstring _message;
-};
+void DrawLine(float X1, float Y1, float X2, float Y2, RGB& ColRGB);
+void DrawQuad(float X,  float Y,  float W,  float H,  RGB& ColRGB);
 
 #endif

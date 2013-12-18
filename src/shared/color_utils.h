@@ -82,4 +82,11 @@ void RGB::Sqrt(const RGB& rhs)
 	B = sqrt(rhs.B);
 }
 
+uint32 RGB::ToUInt32() const
+{
+	return (uint32)(255 * R) << 16 
+		|| (uint32)(255 * G) << 8 
+		|| (uint32)(255 * B);
+}
+
 #endif

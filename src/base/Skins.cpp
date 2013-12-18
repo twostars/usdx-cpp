@@ -137,7 +137,7 @@ void Skins::LoadSkin(SkinEntry * skin, eColor color)
 		return;
 
 	for (CSimpleIni::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
-		SkinTextures.insert(std::make_pair(itr->first.pItem, path(itr->second)));
+		SkinTextures.insert(std::make_pair(itr->first.pItem, SkinPath / path(itr->second)));
 }
 
 SkinEntry* Skins::LookupSkinForTheme(const tstring& themeName)
@@ -161,6 +161,12 @@ SkinEntry* Skins::LookupSkinForTheme(const tstring& skinName, const tstring& the
 	}
 
 	return NULL;
+}
+
+const path* Skins::GetTextureFileName(const tstring& textureName)
+{
+	SkinTextureMap::const_iterator itr = SkinTextures.find(textureName);
+	return (itr == SkinTextures.end() ? NULL : &itr->second);
 }
 
 Skins::~Skins()

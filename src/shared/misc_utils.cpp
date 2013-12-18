@@ -21,22 +21,39 @@
  */
 
 #include "stdafx.h"
-#include "../base/Graphic.h"
-#include "../base/ThemeDefines.h"
-#include "MenuBackgroundColor.h"
 
-MenuBackgroundColor::MenuBackgroundColor(const ThemeBackground* themedSettings)
-	: MenuBackground(themedSettings)
+bool IsInStringArray(const TCHAR * needle, const TCHAR ** haystackArray)
 {
-	Color = themedSettings->Color;
+	if (needle == NULL || *needle == 0
+		|| haystackArray == NULL || *haystackArray == 0)
+		return false;
+
+	uint32 i = 0;
+	while (haystackArray[i] != NULL)
+	{
+		if (_tcscmp(haystackArray[i], needle) == 0)
+			return true;
+
+		i++;
+	}
+
+	return false;
 }
 
-void MenuBackgroundColor::Draw()
+bool IsInStringArrayI(const TCHAR * needle, const TCHAR ** haystackArray)
 {
-	// Clear just once when in dual screen mode
-	if (ScreenAct != 1)
-		return;
+	if (needle == NULL || *needle == 0
+		|| haystackArray == NULL || *haystackArray == 0)
+		return false;
 
-	glClearColor(Color.R, Color.G, Color.B, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	uint32 i = 0;
+	while (haystackArray[i] != NULL)
+	{
+		if (TSTRCASECMP(haystackArray[i], needle) == 0)
+			return true;
+
+		i++;
+	}
+
+	return false;
 }

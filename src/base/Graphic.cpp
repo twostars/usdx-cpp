@@ -208,6 +208,46 @@ SDL_Surface * LoadSurfaceFromFile(const path& filename)
 	return result;
 }
 
+void glColorRGB(const RGB& color)
+{
+  glColor3f(color.R, color.G, color.B);
+}
+
+void glColorRGB(const RGB& color, float alpha)
+{
+	glColor4f(color.R, color.G, color.B, alpha);
+}
+
+void glColorRGB(const RGBA& color)
+{
+	glColor4f(color.R, color.G, color.B, color.A);
+}
+
+void glColorRGB(const RGBA& color, float alpha)
+{
+  glColor4f(color.R, color.G, color.B, std::min(color.A, alpha));
+}
+
+void glColorRGBInt(const RGB& color, float intensity)
+{
+  glColor3f(color.R * intensity, color.G * intensity, color.B * intensity);
+}
+
+void glColorRGBInt(const RGB& color, float alpha, float intensity)
+{
+	glColor4f(color.R * intensity, color.G * intensity, color.B * intensity, alpha);
+}
+
+void glColorRGBInt(const RGBA& color, float intensity)
+{
+	glColor4f(color.R * intensity, color.G * intensity, color.B * intensity, color.A);
+}
+
+void glColorRGBInt(const RGBA& color, float alpha, float intensity)
+{
+  glColor4f(color.R * intensity, color.G * intensity, color.B * intensity, std::min(color.A, alpha));
+}
+
 void FreeGfxResources()
 {
 	for (SurfaceCollection::const_iterator itr = g_surfaces.begin(); itr != g_surfaces.end(); ++itr)

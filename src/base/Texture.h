@@ -24,8 +24,9 @@
 #define _TEXTURE_H
 #pragma once
 
-struct Texture
+class Texture
 {
+public:
 	uint32 TexNum;
 	float  X, Y, Z;
 	float  W, H;
@@ -40,8 +41,10 @@ struct Texture
 	float  TexX2, TexY2;
 	float  Alpha;
 	tstring Name; // experimental for handling cache images. maybe it's useful for dynamic skins
-};
 
+	void Draw();
+	void DrawReflection(float spacing);
+};
 
 #define IMPROVED_ENUM_NAME  TextureType
 #define IMPROVED_ENUM_LIST  ENUMITEM(Plain)        /* Plain (alpha = 1) */  \

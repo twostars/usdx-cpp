@@ -29,13 +29,6 @@
 
 #	include <tchar.h>
 
-// Use the preprocessor instead of typedefing to avoid strict type-checks
-#	ifdef UNICODE
-#		define tstring		std::wstring
-#	else
-#		define tstring		std::string
-#	endif
-
 // Other operating systems don't have the header, so define everything for ANSI.
 #else 
 
@@ -50,18 +43,25 @@
 #	define _snprintf	snprintf
 #	define _sntprintf	_snprintf
 #	define _vsntprintf  vsnprintf
+#	define _tcschr		strchr
+#	define _tcscmp		strcmp
 
 #endif
 
 #define TSTR(str) _T(#str)
 #define TSTRINGIFY(str) TSTR(str)
 
+// NOTE: Use the preprocessor instead of typedefing to avoid strict type-checks
 #ifdef UNICODE
+#	define tstring		std::wstring
 #	define tstring_ci	wstring_ci
 #	define TSTRCASECMP	WSTRCASECMP
 #else
+#	define tstring		std::string
 #	define tstring_ci	string_ci
 #	define TSTRCASECMP	STRCASECMP
 #endif
+
+typedef tstring::size_type tsize_type;
 
 #endif

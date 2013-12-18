@@ -42,8 +42,11 @@ public:
 	void ParseDir(const boost::filesystem::path& dir);
 	void LoadHeader(const boost::filesystem::path& iniFile);
 	void LoadSkin(SkinEntry * skin, eColor color);
+
 	SkinEntry* LookupSkinForTheme(const tstring& themeName);
 	SkinEntry* LookupSkinForTheme(const tstring& skinName, const tstring& themeName);
+	const boost::filesystem::path* GetTextureFileName(const tstring& textureName);
+
 	~Skins();
 
 private:

@@ -21,3 +21,16 @@
  */
 
 #include "stdafx.h"
+#include "MenuBackgroundVideo.h"
+
+MenuBackgroundVideo::MenuBackgroundVideo(const ThemeBackground * themedSettings)
+	: MenuBackground(themedSettings)
+{
+	// TODO
+}
+
+void MenuBackgroundVideo::Draw()
+{
+	// TODO
+}
+
