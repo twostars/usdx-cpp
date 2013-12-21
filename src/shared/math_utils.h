@@ -28,4 +28,11 @@
 template <typename T>
 T sqr(T val) { return val * val; }
 
+// Calculates log2 of number.  
+template <typename T>
+T Log2(T n)
+{  
+    return static_cast<T>(log(n) / log(2));  
+}
+
 #endif

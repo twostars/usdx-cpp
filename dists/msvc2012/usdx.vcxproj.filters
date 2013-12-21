@@ -438,6 +438,9 @@
     <ClCompile Include="..\..\src\shared\misc_utils.cpp">
       <Filter>src\shared</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\base\TextureMgr.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lib\bass\c\bass.h">
@@ -604,6 +607,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\menu\MenuBackgroundVideo.h">
       <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\TextureMgr.h">
+      <Filter>src\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

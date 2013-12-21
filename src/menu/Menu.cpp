@@ -21,7 +21,7 @@
  */
 
 #include "stdafx.h"
-#include "../base/Texture.h"
+#include "../base/TextureMgr.h"
 #include "../base/Skins.h"
 #include "../base/Graphic.h"
 #include "../base/Log.h"
@@ -200,16 +200,14 @@ void Menu::AddButtonCollection(const ThemeButtonCollection& collection, uint8 nu
 
 		// Give encoded color to GetTexture()
 		dst = MenuButtonCollection(
-			// TODO
-			// Texture.GetTexture(sSkins.GetTextureFileName(collection.Style.Tex), TextureType::Colorized, TempCol),
-			// Texture.GetTexture(sSkins.GetTextureFileName(collection.Style.Tex), TextureType::Colorized, TempDCol))
+			sTextureMgr.GetTexture(sSkins.GetTextureFileName(collection.Style.Tex), TextureType::Colorized, TempCol),
+			sTextureMgr.GetTexture(sSkins.GetTextureFileName(collection.Style.Tex), TextureType::Colorized, TempDCol)
 		);
 	}
 	else
 	{
 		dst = MenuButtonCollection(
-			// TODO
-			// Texture.GetTexture(sSkins.GetTextureFileName(collection.Style.Tex), collection.Style.Type)
+			sTextureMgr.GetTexture(sSkins.GetTextureFileName(collection.Style.Tex), collection.Style.Type)
 		);
 	}
 
@@ -236,12 +234,10 @@ void Menu::AddButtonCollection(const ThemeButtonCollection& collection, uint8 nu
 	dst.SelectInt = collection.Style.Int;
 	dst.DeselectInt = collection.Style.DInt;
 
-	assert(dst.Tex != NULL);
-
-	dst.Tex->TexX1 = 0;
-	dst.Tex->TexY1 = 0;
-	dst.Tex->TexX2 = 1;
-	dst.Tex->TexY2 = 1;
+	dst.Tex.TexX1 = 0;
+	dst.Tex.TexY1 = 0;
+	dst.Tex.TexX2 = 1;
+	dst.Tex.TexY2 = 1;
 
 	dst.SetSelect(false);
 
@@ -258,15 +254,13 @@ void Menu::AddButtonCollection(const ThemeButtonCollection& collection, uint8 nu
 	dst.FadeText = collection.Style.FadeText;
 
 	// Hack
-	if (collection.Style.Type != TextureType::Colorized)
+	eTextureType texType = TextureType::Colorized;
 	{
-		// TODO
-		// dst.FadeTex = Texture.GetTexture(sSkins.GetTextureFileName(collection.Style.FadeTex), TextureType::Colorized, TempCol);
-	}
-	else
-	{
-		// TODO
-		// dst.FadeTex = Texture.GetTexture(sSkins.GetTextureFileName(collection.Style.FadeTex), collection.Styl.Type, TempCol);
+		dst.FadeTex = sTextureMgr.GetTexture(
+			sSkins.GetTextureFileName(collection.Style.FadeTex), 
+			TextureType::Colorized, 
+			TempCol
+		);
 	}
 
 	dst.FadeTexPos = collection.Style.FadeTexPos;
@@ -381,38 +375,37 @@ int Menu::AddStatic(float x, float y, float w, float h, float z,
 					uint32 color /*= 0xFFFFFFFF*/,
 					bool reflection /*= false*/, float reflectionSpacing /*= 0.0f*/)
 {
-	// TODO
-	Texture * tex = NULL;
+	Texture tex;
 
 	// Colorize hack
 	if (textureType == TextureType::Colorized)
-		tex = NULL; // Texture.GetTexture(textureFilename, textureType, colRGB.ToUInt32());
+		tex = sTextureMgr.GetTexture(textureFilename, textureType, colRGB.ToUInt32());
 	else
-		tex = NULL; // Texture.GetTexture(textureFilename, textureType, 0xFF00FF);
+		tex = sTextureMgr.GetTexture(textureFilename, textureType, 0xFF00FF);
 
 	MenuStatic stat(tex);
 
-	stat.Tex->X = x;
-	stat.Tex->Y = y;
+	stat.Tex.X = x;
+	stat.Tex.Y = y;
 
 	if (w != 0.0f)
-		stat.Tex->W = w;
+		stat.Tex.W = w;
 
 	if (h != 0.0f)
-		stat.Tex->H = h;
+		stat.Tex.H = h;
 
 	if (z != 0.0f)
-		stat.Tex->Z = z;
+		stat.Tex.Z = z;
 
 	// Hack
 	if (textureType != TextureType::Colorized)
-		stat.Tex->ColRGB = colRGB;
+		stat.Tex.ColRGB = colRGB;
 
-	stat.Tex->TexX1 = texX1;
-	stat.Tex->TexY1 = texY1;
-	stat.Tex->TexX2 = texX2;
-	stat.Tex->TexY2 = texY2;
-	stat.Tex->Alpha = 1.0f;
+	stat.Tex.TexX1 = texX1;
+	stat.Tex.TexY1 = texY1;
+	stat.Tex.TexX2 = texX2;
+	stat.Tex.TexY2 = texY2;
+	stat.Tex.Alpha = 1.0f;
 
 	stat.Reflection = reflection;
 	stat.ReflectionSpacing = reflectionSpacing;
@@ -490,20 +483,18 @@ int Menu::AddButton(const ThemeButton& themeButton)
 
 		if (themeButton.Type == TextureType::Colorized)
 		{
-			// TODO
-			button.FadeTex = NULL;
-			// button.FadeTex = Texture.GetTexture(
-			//	sSkins.GetTextureFileName(themeButton.FadeTex), themeButton.Type),
-			//	themeButton.ColRGB.ToUInt32()
-			// );
+			button.FadeTex = sTextureMgr.GetTexture(
+				sSkins.GetTextureFileName(themeButton.FadeTex), 
+				themeButton.Type,
+				themeButton.ColRGB.ToUInt32()
+			);
 		}
 		else
 		{
-			// TODO
-			button.FadeTex = NULL;
-			// button.FadeTex = Texture.GetTexture(
-			//	sSkins.GetTextureFileName(themeButton.FadeTex), themeButton.Type)
-			// );
+			button.FadeTex = sTextureMgr.GetTexture(
+				sSkins.GetTextureFileName(themeButton.FadeTex), 
+				themeButton.Type
+			);
 		}
 
 		button.FadeTexPos = themeButton.FadeTexPos;
@@ -531,10 +522,7 @@ int Menu::AddButton(const ThemeButton& themeButton)
 				button.Parent = themeButton.Parent;
 				assert(button.Parent > 0 && button.Parent <= ButtonCollections.size());
 				if (ButtonCollections[button.Parent - 1].Fade)
-				{
-					assert(button.Tex != NULL);
-					button.Tex->Alpha = 0.0f;
-				}
+					button.Tex.Alpha = 0.0f;
 			}
 
 		}
@@ -573,18 +561,14 @@ int Menu::AddButton(float x, float y, float w, float h,
 	if (textureType == TextureType::Colorized)
 	{
 		Buttons.push_back(MenuButton(
-			NULL, NULL
-			// TODO
-//			Texture.GetTexture(texturePath, textureType, colRGB.ToUInt32()),
-//			Texture.GetTexture(texturePath, textureType, dColRGB.ToUInt32())
+			sTextureMgr.GetTexture(texturePath, textureType, colRGB.ToUInt32()),
+			sTextureMgr.GetTexture(texturePath, textureType, dColRGB.ToUInt32())
 		));
 	}
 	else
 	{
 		Buttons.push_back(MenuButton(
-			NULL
-			// TODO
-//			Texture.GetTexture(texturePath, textureType))
+			sTextureMgr.GetTexture(texturePath, textureType)
 		));
 	}
 
@@ -605,12 +589,10 @@ int Menu::AddButton(float x, float y, float w, float h,
 	button.SelectInt = intensity;
 	button.DeselectInt = dIntensity;
 
-	assert(button.Tex != NULL);
-
-	button.Tex->TexX1 = 0;
-	button.Tex->TexY1 = 0;
-	button.Tex->TexX2 = 1;
-	button.Tex->TexY2 = 1;
+	button.Tex.TexX1 = 0;
+	button.Tex.TexY1 = 0;
+	button.Tex.TexX2 = 1;
+	button.Tex.TexY2 = 1;
 	button.SetSelect(false);
 
 	button.Reflection = reflection;

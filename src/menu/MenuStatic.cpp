@@ -24,7 +24,7 @@
 #include "../base/Texture.h"
 #include "MenuStatic.h"
 
-MenuStatic::MenuStatic(Texture* tex)
+MenuStatic::MenuStatic(const Texture& tex)
 	: Tex(tex), Visible(true), Reflection(false), ReflectionSpacing(0.0f)
 {
 }
@@ -34,7 +34,7 @@ void MenuStatic::Draw()
 	if (!Visible)
 		return;
 
-	Tex->Draw();
+	Tex.Draw();
 	if (Reflection)
-		Tex->DrawReflection(ReflectionSpacing);
+		Tex.DrawReflection(ReflectionSpacing);
 }

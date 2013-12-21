@@ -29,27 +29,27 @@ MenuButton::MenuButton()
 	Create();
 }
 
-MenuButton::MenuButton(Texture* tex)
+MenuButton::MenuButton(const Texture& tex)
 {
 	Create();
 	Tex = tex;
-	DeselectTexture = Tex;
-	Tex->ColRGB.R = 0.0f;
-	Tex->ColRGB.G = 0.5f;
-	Tex->ColRGB.B = 0.0f;
-	Tex->Int = 1.0f;
+	DeselectTexture = tex;
+	Tex.ColRGB.R = 0.0f;
+	Tex.ColRGB.G = 0.5f;
+	Tex.ColRGB.B = 0.0f;
+	Tex.Int = 1.0f;
 	Colorized = false;
 }
 
-MenuButton::MenuButton(Texture* tex, Texture* deselectTexture)
+MenuButton::MenuButton(const Texture& tex, const Texture& deselectTexture)
 {
 	Create();
 	Tex = tex;
-	DeselectTexture = Tex;
-	Tex->ColRGB.R = 1.0f;
-	Tex->ColRGB.G = 1.5f;
-	Tex->ColRGB.B = 1.0f;
-	Tex->Int = 1.0f;
+	DeselectTexture = deselectTexture;
+	Tex.ColRGB.R = 1.0f;
+	Tex.ColRGB.G = 1.5f;
+	Tex.ColRGB.B = 1.0f;
+	Tex.Int = 1.0f;
 	Colorized = true;
 }
 
@@ -77,7 +77,7 @@ void MenuButton::Create()
 	DeselectTInt   = 1.0f;
 
 	Fade           = false;
-	FadeTex->TexNum = 0;
+	FadeTex.TexNum = 0;
 	FadeProgress   = 0.0f;
 	FadeText       = false;
 	SelectW        = DeselectW;
@@ -92,21 +92,20 @@ void MenuButton::Create()
 void MenuButton::SetX(float value)
 {
 	PosX = value;
-	if (FadeTex->TexNum == 0)
-		Tex->X = value;
+	if (FadeTex.TexNum == 0)
+		Tex.X = value;
 }
 
 void MenuButton::SetY(float value)
 {
 	PosY = value;
-	if (FadeTex->TexNum == 0)
-		Tex->Y = value;
+	if (FadeTex.TexNum == 0)
+		Tex.Y = value;
 }
 
 void MenuButton::SetZ(float value)
 {
-	assert(Tex != NULL);
-	Tex->Z = value;
+	Tex.Z = value;
 }
 
 void MenuButton::SetW(float value)
@@ -116,7 +115,7 @@ void MenuButton::SetW(float value)
 
 	DeselectW = value;
 	if (!Fade)
-		Tex->W = (Selected ? SelectW : DeselectW);
+		Tex.W = (Selected ? SelectW : DeselectW);
 }
 
 void MenuButton::SetH(float value)
@@ -126,7 +125,7 @@ void MenuButton::SetH(float value)
 
 	DeselectH = value;
 	if (!Fade)
-		Tex->W = (Selected ? SelectH : DeselectH);
+		Tex.W = (Selected ? SelectH : DeselectH);
 }
 
 void MenuButton::SetSelect(bool value)
@@ -135,8 +134,8 @@ void MenuButton::SetSelect(bool value)
 
 	if (value)
 	{
-		Tex->ColRGB = Tex2->ColRGB = SelectColRGB;
-		Tex->Int = Tex2->Int = SelectInt;
+		Tex.ColRGB = Tex2.ColRGB = SelectColRGB;
+		Tex.Int = Tex2.Int = SelectInt;
 
 		for (std::vector<MenuText>::iterator itr = Texts.begin(); itr != Texts.end(); ++itr)
                 itr->Int = SelectTInt;
@@ -148,14 +147,14 @@ void MenuButton::SetSelect(bool value)
 		}
 		else
 		{
-			Tex->W = SelectW;
-			Tex->H = SelectH;
+			Tex.W = SelectW;
+			Tex.H = SelectH;
 		}
 	}
 	else
 	{
-		Tex->ColRGB = Tex2->ColRGB = DeselectColRGB;
-		Tex->Int = Tex2->Int = DeselectInt;
+		Tex.ColRGB = Tex2.ColRGB = DeselectColRGB;
+		Tex.Int = Tex2.Int = DeselectInt;
 
 		for (std::vector<MenuText>::iterator itr = Texts.begin(); itr != Texts.end(); ++itr)
                 itr->Int = DeselectTInt;
@@ -167,8 +166,8 @@ void MenuButton::SetSelect(bool value)
 		}
 		else
 		{
-			Tex->W = DeselectW;
-			Tex->H = DeselectH;
+			Tex.W = DeselectW;
+			Tex.H = DeselectH;
 		}
 	}
 }
@@ -206,95 +205,95 @@ void MenuButton::Draw()
 		}
 
 		// Method without fade texture
-		if (FadeTex->TexNum == 0)
+		if (FadeTex.TexNum == 0)
 		{
-			DeselectTexture->W = Tex->W = DeselectW + (SelectW - DeselectW) * FadeProgress;
-			DeselectTexture->H = Tex->H = DeselectH + (SelectH - DeselectH) * FadeProgress;
+			DeselectTexture.W = Tex.W = DeselectW + (SelectW - DeselectW) * FadeProgress;
+			DeselectTexture.H = Tex.H = DeselectH + (SelectH - DeselectH) * FadeProgress;
 		}
 		// Method with fade texture
 		else
 		{
-			DeselectTexture->W = Tex->W = DeselectW;
-			DeselectTexture->H = Tex->H = DeselectH;
+			DeselectTexture.W = Tex.W = DeselectW;
+			DeselectTexture.H = Tex.H = DeselectH;
 
-			FadeTex->ColRGB = Tex->ColRGB;
-			FadeTex->Int = Tex->Int;
-			FadeTex->Z = Tex->Z;
+			FadeTex.ColRGB = Tex.ColRGB;
+			FadeTex.Int = Tex.Int;
+			FadeTex.Z = Tex.Z;
 
-			FadeTex->Alpha = Tex->Alpha;
-			FadeTex->TexX1 = 0;
-			FadeTex->TexX2 = 1;
-			FadeTex->TexY1 = 0;
-			FadeTex->TexY1 = 1;
+			FadeTex.Alpha = Tex.Alpha;
+			FadeTex.TexX1 = 0;
+			FadeTex.TexX2 = 1;
+			FadeTex.TexY1 = 0;
+			FadeTex.TexY1 = 1;
 
 			switch (FadeTexPos)
 			{
 			// Fade tex on top
 			case 0:
 				// Standard texture
-				DeselectTexture->X = Tex->X = PosX;
-				DeselectTexture->Y = Tex->Y = PosY + (SelectH - DeselectH) * FadeProgress;
+				DeselectTexture.X = Tex.X = PosX;
+				DeselectTexture.Y = Tex.Y = PosY + (SelectH - DeselectH) * FadeProgress;
 
 				// Fade texture
-				FadeTex->X = PosX;
-				FadeTex->Y = PosY;
-				FadeTex->W = Tex->W;
-				FadeTex->H = (SelectH - DeselectH) * FadeProgress;
-				FadeTex->ScaleW = Tex->ScaleW;
+				FadeTex.X = PosX;
+				FadeTex.Y = PosY;
+				FadeTex.W = Tex.W;
+				FadeTex.H = (SelectH - DeselectH) * FadeProgress;
+				FadeTex.ScaleW = Tex.ScaleW;
 
 				// Hack to fix a little space between both textures
-				FadeTex->TexY2 = 0.9f;
+				FadeTex.TexY2 = 0.9f;
 				break;
 
 			// Fade tex on left
 			case 1:
 				// Standard texture
-				DeselectTexture->X = Tex->X = PosX + (SelectW - DeselectW) * FadeProgress;
-				DeselectTexture->Y = Tex->Y = PosY;
+				DeselectTexture.X = Tex.X = PosX + (SelectW - DeselectW) * FadeProgress;
+				DeselectTexture.Y = Tex.Y = PosY;
 
 				// Fade texture
-				FadeTex->X = PosX;
-				FadeTex->Y = PosY;
-				FadeTex->W = (SelectW - DeselectW) * FadeProgress;
-				FadeTex->H = Tex->H;
-				FadeTex->ScaleH = Tex->ScaleH;
+				FadeTex.X = PosX;
+				FadeTex.Y = PosY;
+				FadeTex.W = (SelectW - DeselectW) * FadeProgress;
+				FadeTex.H = Tex.H;
+				FadeTex.ScaleH = Tex.ScaleH;
 
 				// Hack to fix a little space between both textures
-				FadeTex->TexX2 = 0.9f;
+				FadeTex.TexX2 = 0.9f;
 				break;
 
 			// Fade tex on bottom
 			case 2:
 				// Standard texture
-				DeselectTexture->X = Tex->X = PosX;
-				DeselectTexture->Y = Tex->Y = PosY;
+				DeselectTexture.X = Tex.X = PosX;
+				DeselectTexture.Y = Tex.Y = PosY;
 
 				// Fade texture
-				FadeTex->X = PosX;
-				FadeTex->Y = PosY + (SelectH - DeselectH) * FadeProgress;
-				FadeTex->W = Tex->W;
-				FadeTex->H = (SelectH - DeselectH) * FadeProgress;
-				FadeTex->ScaleW = Tex->ScaleW;
+				FadeTex.X = PosX;
+				FadeTex.Y = PosY + (SelectH - DeselectH) * FadeProgress;
+				FadeTex.W = Tex.W;
+				FadeTex.H = (SelectH - DeselectH) * FadeProgress;
+				FadeTex.ScaleW = Tex.ScaleW;
 
 				// Hack to fix a little space between both textures
-				FadeTex->TexY1 = 0.1f;
+				FadeTex.TexY1 = 0.1f;
 				break;
 
 			// Fade tex on right
 			case 3:
 				// Standard texture
-				DeselectTexture->X = Tex->X = PosX;
-				DeselectTexture->Y = Tex->Y = PosY;
+				DeselectTexture.X = Tex.X = PosX;
+				DeselectTexture.Y = Tex.Y = PosY;
 
 				// Fade texture
-				FadeTex->X = PosX + (SelectW - DeselectW) * FadeProgress;
-				FadeTex->Y = PosY;
-				FadeTex->W = (SelectW - DeselectW) * FadeProgress;
-				FadeTex->H = Tex->H;
-				FadeTex->ScaleW = Tex->ScaleW;
+				FadeTex.X = PosX + (SelectW - DeselectW) * FadeProgress;
+				FadeTex.Y = PosY;
+				FadeTex.W = (SelectW - DeselectW) * FadeProgress;
+				FadeTex.H = Tex.H;
+				FadeTex.ScaleW = Tex.ScaleW;
 
 				// Hack to fix a little space between both textures
-				FadeTex->TexX1 = 0.1f;
+				FadeTex.TexX1 = 0.1f;
 				break;
 			}
 		}
@@ -310,34 +309,34 @@ void MenuButton::Draw()
 
 	if (Selected || FadeProgress > 0.0f || !Colorized)
 	{
-		Tex->Draw();
+		Tex.Draw();
 	}
 	else
 	{
-		DeselectTexture->X = Tex->X;
-		DeselectTexture->Y = Tex->Y;
-		DeselectTexture->W = Tex->W;
-		DeselectTexture->H = Tex->H;
-		DeselectTexture->Draw();
+		DeselectTexture.X = Tex.X;
+		DeselectTexture.Y = Tex.Y;
+		DeselectTexture.W = Tex.W;
+		DeselectTexture.H = Tex.H;
+		DeselectTexture.Draw();
 	}
 
-	if (FadeTex->TexNum > 0)
-		FadeTex->Draw();
+	if (FadeTex.TexNum > 0)
+		FadeTex.Draw();
 
-	if (Tex2->Alpha > 0.0f)
+	if (Tex2.Alpha > 0.0f)
 	{
-		Tex2->ScaleW = Tex->ScaleW;
-		Tex2->ScaleH = Tex->ScaleH;
+		Tex2.ScaleW = Tex.ScaleW;
+		Tex2.ScaleH = Tex.ScaleH;
 
-		Tex2->X = Tex->X;
-		Tex2->Y = Tex->Y;
-		Tex2->W = Tex->W;
-		Tex2->H = Tex->H;
+		Tex2.X = Tex.X;
+		Tex2.Y = Tex.Y;
+		Tex2.W = Tex.W;
+		Tex2.H = Tex.H;
 
-		Tex2->ColRGB = Tex->ColRGB;
-		Tex2->Int = Tex->Int;
+		Tex2.ColRGB = Tex.ColRGB;
+		Tex2.Int = Tex.Int;
 
-		Tex2->Draw();
+		Tex2.Draw();
 	}
 
 	// Draw reflections
@@ -351,9 +350,9 @@ void MenuButton::Draw()
 			spacing = DeselectReflectionSpacing;
 
 		if (Selected || !Colorized)
-			Tex->DrawReflection(spacing);
+			Tex.DrawReflection(spacing);
 		else
-			DeselectTexture->DrawReflection(spacing);
+			DeselectTexture.DrawReflection(spacing);
 	}
 
 	for (std::vector<MenuText>::iterator itr = Texts.begin(); itr != Texts.end(); ++itr)
@@ -363,12 +362,12 @@ void MenuButton::Draw()
 MouseOverRect MenuButton::GetMouseOverRect()
 {
 	MouseOverRect rect = {0};
-	if (FadeTex->TexNum == 0)
+	if (FadeTex.TexNum == 0)
 	{
-		rect.X = Tex->X;
-		rect.Y = Tex->Y;
-		rect.W = Tex->W;
-		rect.H = Tex->H;
+		rect.X = Tex.X;
+		rect.Y = Tex.Y;
+		rect.W = Tex.W;
+		rect.H = Tex.H;
 		return rect;
 	}
 
@@ -376,34 +375,34 @@ MouseOverRect MenuButton::GetMouseOverRect()
 	{
 	// Fade tex on top
 	case 0:
-		rect.X = Tex->X;
-		rect.Y = FadeTex->Y;
-		rect.W = Tex->W;
-		rect.H = FadeTex->H + Tex->H;
+		rect.X = Tex.X;
+		rect.Y = FadeTex.Y;
+		rect.W = Tex.W;
+		rect.H = FadeTex.H + Tex.H;
 		break;
 
 	// Fade tex on left
 	case 1:
-		rect.X = FadeTex->X;
-		rect.Y = Tex->Y;
-		rect.W = FadeTex->W + Tex->W;
-		rect.H = Tex->H;
+		rect.X = FadeTex.X;
+		rect.Y = Tex.Y;
+		rect.W = FadeTex.W + Tex.W;
+		rect.H = Tex.H;
 		break;
 
 	// Fade tex on bottom
 	case 2:
-		rect.X = Tex->X;
-		rect.Y = Tex->Y;
-		rect.W = Tex->W;
-		rect.H = FadeTex->H + Tex->H;
+		rect.X = Tex.X;
+		rect.Y = Tex.Y;
+		rect.W = Tex.W;
+		rect.H = FadeTex.H + Tex.H;
 		break;
 
 	// Fade text on right
 	case 3:
-		rect.X = FadeTex->Y;
-		rect.Y = Tex->Y;
-		rect.W = FadeTex->W + Tex->W;
-		rect.H = Tex->H;
+		rect.X = FadeTex.Y;
+		rect.Y = Tex.Y;
+		rect.W = FadeTex.W + Tex.W;
+		rect.H = Tex.H;
 		break;
 	}
 

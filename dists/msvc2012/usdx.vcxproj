@@ -57,6 +57,7 @@
     <ClCompile Include="..\..\src\base\TextEncoding.cpp" />
     <ClCompile Include="..\..\src\base\TextGL.cpp" />
     <ClCompile Include="..\..\src\base\Texture.cpp" />
+    <ClCompile Include="..\..\src\base\TextureMgr.cpp" />
     <ClCompile Include="..\..\src\base\Themes.cpp" />
     <ClCompile Include="..\..\src\base\Time.cpp" />
     <ClCompile Include="..\..\src\base\UnicodeUtils.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="..\..\src\base\TextEncoding.h" />
     <ClInclude Include="..\..\src\base\TextGL.h" />
     <ClInclude Include="..\..\src\base\Texture.h" />
+    <ClInclude Include="..\..\src\base\TextureMgr.h" />
     <ClInclude Include="..\..\src\base\ThemeDefines.h" />
     <ClInclude Include="..\..\src\base\Themes.h" />
     <ClInclude Include="..\..\src\base\ThemeTypes.h" />

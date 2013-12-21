@@ -24,7 +24,7 @@
 #include "../base/Graphic.h"
 #include "../base/ThemeDefines.h"
 #include "../base/Skins.h"
-#include "../base/Texture.h"
+#include "../base/TextureMgr.h"
 #include "MenuBackgroundTexture.h"
 
 MenuBackgroundTexture::MenuBackgroundTexture(const ThemeBackground* themedSettings)
@@ -44,16 +44,10 @@ MenuBackgroundTexture::MenuBackgroundTexture(const ThemeBackground* themedSettin
 			themedSettings->Tex.c_str());
 	}
 
-	// TODO
-	Tex = NULL;
-// 	Tex = Texture::GetTexture(texFilename, TextureType::Plain)
-	if (Tex == NULL)
+	Tex = sTextureMgr.GetTexture(texFilename, TextureType::Plain);
+	if (Tex.TexNum)
 		throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not loaded."),
 		texFilename->native().c_str());
-
-	if (Tex->TexNum == 0)
-		throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): No textures for %s."),
-		themedSettings->Tex.c_str());
 }
 
 void MenuBackgroundTexture::Draw()
@@ -67,19 +61,19 @@ void MenuBackgroundTexture::Draw()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glBindTexture(GL_TEXTURE_2D, Tex->TexNum);
+	glBindTexture(GL_TEXTURE_2D, Tex.TexNum);
 
 	glBegin(GL_QUADS);
-		glTexCoord2f(Tex->TexX1*Tex->TexW, Tex->TexY1*Tex->TexH);
+		glTexCoord2f(Tex.TexX1*Tex.TexW, Tex.TexY1*Tex.TexH);
 		glVertex2i(0, 0);
 
-		glTexCoord2f(Tex->TexX1*Tex->TexW, Tex->TexY2*Tex->TexH);
+		glTexCoord2f(Tex.TexX1*Tex.TexW, Tex.TexY2*Tex.TexH);
 		glVertex2i(0, RenderH);
 
-		glTexCoord2f(Tex->TexX2*Tex->TexW, Tex->TexY2*Tex->TexH);
+		glTexCoord2f(Tex.TexX2*Tex.TexW, Tex.TexY2*Tex.TexH);
 		glVertex2i(RenderW, RenderH);
 
-		glTexCoord2f(Tex->TexX2*Tex->TexW, Tex->TexY1*Tex->TexH);
+		glTexCoord2f(Tex.TexX2*Tex.TexW, Tex.TexY1*Tex.TexH);
 		glVertex2i(RenderW, 0);
 	glEnd();
 

@@ -27,10 +27,10 @@
 class MenuStatic
 {
 public:
-	MenuStatic(Texture* tex);
+	MenuStatic(const Texture& tex);
 	void Draw();
 
-	Texture* Tex;
+	Texture Tex;
 	bool Visible;
 
 	bool Reflection;

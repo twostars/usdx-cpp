@@ -29,12 +29,12 @@ MenuButtonCollection::MenuButtonCollection()
 {
 }
 
-MenuButtonCollection::MenuButtonCollection(Texture* tex)
+MenuButtonCollection::MenuButtonCollection(const Texture& tex)
 	: MenuButton(tex), ScreenButton(NULL), FirstChild(0), ChildCount(0)
 {
 }
 
-MenuButtonCollection::MenuButtonCollection(Texture* tex, Texture* deselectTexture)
+MenuButtonCollection::MenuButtonCollection(const Texture& tex, const Texture& deselectTexture)
 	: MenuButton(tex, deselectTexture), ScreenButton(NULL), FirstChild(0), ChildCount(0)
 {
 }
@@ -78,8 +78,7 @@ void MenuButtonCollection::Draw()
 			}
 			else
 			{
-				assert((*itr).Tex != NULL);
-				(*itr).Tex->Alpha = fadeProgress;
+				(*itr).Tex.Alpha = fadeProgress;
 				for (std::vector<MenuText>::iterator textItr = (*itr).Texts.begin(); textItr != (*itr).Texts.end(); ++textItr)
 					(*textItr).Alpha = fadeProgress;
 			}

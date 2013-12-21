@@ -24,11 +24,21 @@
 #define _GRAPHIC_H
 #pragma once
 
+#include "Texture.h"
+
 void Initialize3D(const TCHAR * windowTitle);
 void LoadOpenGLExtensions();
 void SwapBuffers();
 
 SDL_Surface * LoadSurfaceFromFile(const boost::filesystem::path& filename);
+void UnloadSurface(SDL_Surface * texSurface);
+
+void AdjustPixelFormat(SDL_Surface *& texSurface, eTextureType textureType);
+bool PixelFormatEquals(SDL_PixelFormat * fmt1, const SDL_PixelFormat * fmt2);
+void ScaleImage(SDL_Surface * imgSurface, uint32 width, uint32 height);
+void FitImage(SDL_Surface *& imgSurface, uint32 width, uint32 height);
+void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor);
+
 void glColorRGB(const RGB& color);
 void glColorRGB(const RGB& color, float alpha);
 void glColorRGB(const RGBA& color);
@@ -37,6 +47,7 @@ void glColorRGBInt(const RGB& color, float intensity);
 void glColorRGBInt(const RGB& color, float alpha, float intensity);
 void glColorRGBInt(const RGBA& color, float intensity);
 void glColorRGBInt(const RGBA& color, float alpha, float intensity);
+
 void FreeGfxResources();
 
 /* TODO: Clean up these globals */

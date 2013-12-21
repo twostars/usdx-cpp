@@ -29,8 +29,8 @@ class MenuButton
 {
 public:
 	MenuButton();
-	MenuButton(Texture* tex);
-	MenuButton(Texture* tex, Texture* deselectTexture);
+	MenuButton(const Texture& tex);
+	MenuButton(const Texture& tex, const Texture& deselectTexture);
 
 private:
 	void Create();
@@ -48,13 +48,13 @@ public:
 	MouseOverRect GetMouseOverRect();
 
 	std::vector<MenuText> Texts;
-	Texture* Tex;
-	Texture* Tex2;
+	Texture Tex;
+	Texture Tex2;
 
 	bool Colorized;
-	Texture* DeselectTexture;
+	Texture DeselectTexture;
 
-	Texture* FadeTex;
+	Texture FadeTex;
 	uint8 FadeTexPos;
 
 	int DeselectType; // not used yet

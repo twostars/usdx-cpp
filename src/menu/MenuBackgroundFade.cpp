@@ -36,8 +36,7 @@ MenuBackgroundFade::MenuBackgroundFade(const ThemeBackground * themedSettings)
 
 	Alpha = themedSettings->Alpha;
 	if (themedSettings->Tex.empty()
-		|| Tex == NULL
-		|| Tex->TexNum == 0)
+		|| Tex.TexNum == 0)
 		UseTexture = false;
 }
 

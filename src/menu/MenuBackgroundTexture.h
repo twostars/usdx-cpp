@@ -34,7 +34,7 @@ public:
 	void Draw();
 
 protected:
-	Texture* Tex;
+	Texture Tex;
 	RGB Color;
 };
 

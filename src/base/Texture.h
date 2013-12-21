@@ -42,6 +42,21 @@ public:
 	float  Alpha;
 	tstring Name; // experimental for handling cache images. maybe it's useful for dynamic skins
 
+	Texture()
+	{
+		TexNum = 0xFFFFFFFF;
+		X = Y = Z = 0.0f;
+		W = H = 0.0f;
+		ScaleW = ScaleH = 1.0f;
+		Rot = 0.0f;
+		Int = 1.0f;
+		ColRGB.R = ColRGB.G = ColRGB.B = 1.0f;
+		TexW = TexH = 1.0f;
+		TexX1 = TexY1 = 0.0f;
+		TexX2 = TexY2 = 1.0f;
+		Alpha = 1.0f;
+	}
+
 	void Draw();
 	void DrawReflection(float spacing);
 };

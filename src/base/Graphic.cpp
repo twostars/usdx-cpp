@@ -58,6 +58,100 @@ PFNGLDRAWRANGEELEMENTSPROC	glDrawRangeElements;
 PFNGLTEXIMAGE3DPROC			glTexImage3D;
 PFNGLTEXSUBIMAGE3DPROC		glTexSubImage3D;
 
+static const struct SDL_PixelFormat PixelFmt_RGBA =
+{
+	/*format:*/         SDL_PIXELFORMAT_RGBA8888,
+    /*palette:*/        NULL,
+    /*BitsPerPixel:*/   32,
+    /*BytesPerPixel:*/  4,
+	/*padding[2]:*/     {0,0},
+    /*Rmask:*/           0x000000ff,
+    /*Gmask:*/           0x0000ff00,
+    /*Bmask:*/           0x00ff0000,
+    /*Amask:*/           0xff000000,
+    /*Rloss:*/           0,
+    /*Gloss:*/           0,
+    /*Bloss:*/           0,
+    /*Aloss:*/           0,
+    /*Rshift:*/          0,
+    /*Gshift:*/          8,
+    /*Bshift:*/          16,
+    /*Ashift:*/          24,
+	/*refcount:*/        0,
+	/*next:*/            NULL
+};
+
+static const struct SDL_PixelFormat PixelFmt_RGB =
+{
+	/*format:*/         SDL_PIXELFORMAT_RGB888,
+    /*palette:*/        NULL,
+    /*BitsPerPixel:*/   24,
+    /*BytesPerPixel:*/  3,
+	/*padding[2]:*/     {0,0},
+    /*Rmask:*/           0x000000ff,
+    /*Gmask:*/           0x0000ff00,
+    /*Bmask:*/           0x00ff0000,
+    /*Amask:*/           0x00000000,
+    /*Rloss:*/           0,
+    /*Gloss:*/           0,
+    /*Bloss:*/           0,
+    /*Aloss:*/           0,
+    /*Rshift:*/          0,
+    /*Gshift:*/          8,
+    /*Bshift:*/          16,
+    /*Ashift:*/          0,
+	/*refcount:*/        0,
+	/*next:*/            NULL
+};
+
+static const struct SDL_PixelFormat PixelFmt_BGRA =
+{
+	/*format:*/         SDL_PIXELFORMAT_BGRA8888,
+    /*palette:*/        NULL,
+    /*BitsPerPixel:*/   32,
+    /*BytesPerPixel:*/  4,
+	/*padding[2]:*/     {0,0},
+    /*Rmask:*/           0x000000ff,
+    /*Gmask:*/           0x0000ff00,
+    /*Bmask:*/           0x00ff0000,
+    /*Amask:*/           0xff000000,
+    /*Rloss:*/           0,
+    /*Gloss:*/           0,
+    /*Bloss:*/           0,
+    /*Aloss:*/           0,
+    /*Rshift:*/          16,
+    /*Gshift:*/          8,
+    /*Bshift:*/          0,
+    /*Ashift:*/          24,
+	/*refcount:*/        0,
+	/*next:*/            NULL
+};
+
+static const struct SDL_PixelFormat PixelFmt_BGR =
+{
+	/*format:*/         SDL_PIXELFORMAT_BGR888,
+    /*palette:*/        NULL,
+    /*BitsPerPixel:*/   24,
+    /*BytesPerPixel:*/  3,
+	/*padding[2]:*/     {0,0},
+    /*Rmask:*/           0x00ff0000,
+    /*Gmask:*/           0x0000ff00,
+    /*Bmask:*/           0x000000ff,
+    /*Amask:*/           0x00000000,
+    /*Rloss:*/           0,
+    /*Gloss:*/           0,
+    /*Bloss:*/           0,
+    /*Aloss:*/           0,
+    /*Rshift:*/          16,
+    /*Gshift:*/          8,
+    /*Bshift:*/          0,
+    /*Ashift:*/          0,
+	/*refcount:*/        0,
+	/*next:*/            NULL
+};
+
+enum ImagePixelFormat { ipfRGBA, ipfRGB, ipfBGRA, ipfBGR };
+
 void Initialize3D(const TCHAR * windowTitle)
 {
 	char * utf8Title;
@@ -208,9 +302,108 @@ SDL_Surface * LoadSurfaceFromFile(const path& filename)
 	return result;
 }
 
+void UnloadSurface(SDL_Surface * texSurface)
+{
+	if (texSurface == NULL)
+		return;
+
+	g_surfaces.erase(texSurface);
+	SDL_FreeSurface(texSurface);
+}
+
+void AdjustPixelFormat(SDL_Surface*& texSurface, eTextureType textureType)
+{
+	if (texSurface == NULL)
+		return;
+
+	const SDL_PixelFormat * pixelFormat = NULL;
+	switch (textureType)
+	{
+		case TextureType::Transparent:
+		case TextureType::Colorized:
+			pixelFormat = &PixelFmt_RGBA;
+			break;
+
+		default:
+			pixelFormat = &PixelFmt_RGB;
+			break;
+	}
+
+	if (!PixelFormatEquals(texSurface->format, pixelFormat))
+	{
+		SDL_Surface * tempSurface = texSurface;
+		texSurface = SDL_ConvertSurface(tempSurface, pixelFormat, SDL_SWSURFACE);
+
+		// Remove old surface from collection & free it from memory
+		UnloadSurface(tempSurface);
+
+		// Insert new surface to collection
+		g_surfaces.insert(texSurface);
+	}
+}
+
+bool PixelFormatEquals(SDL_PixelFormat * fmt1, const SDL_PixelFormat * fmt2)
+{
+	assert(fmt1 != NULL);
+	assert(fmt2 != NULL);
+
+	/*	couldn't we just check the declared pixel format? 
+		it's not like we use special pixel formats... just stock RGB/RGBA/BGR/BGRA...
+	*/
+	return (fmt1->BitsPerPixel == fmt2->BitsPerPixel
+			&& fmt1->BytesPerPixel == fmt2->BytesPerPixel
+			&& fmt1->Rloss == fmt2->Rloss
+			&& fmt1->Gloss == fmt2->Gloss
+			&& fmt1->Bloss == fmt2->Bloss
+			&& fmt1->Rmask == fmt2->Rmask
+			&& fmt1->Gmask == fmt2->Gmask
+			&& fmt1->Bmask == fmt2->Bmask
+			&& fmt1->Rshift == fmt2->Rshift
+			&& fmt1->Gshift == fmt2->Gshift
+			&& fmt1->Bshift == fmt2->Bshift);
+}
+
+void ScaleImage(SDL_Surface * imgSurface, uint32 width, uint32 height)
+{
+/*
+	// TODO
+	SDL_Surface * tempSurface = imgSurface;
+	imgSurface = SDL_ScaleSurfaceRect(tempSurface,
+                  0, 0, tempSurface->w, tempSurface->h,
+                  width, height);
+	UnloadSurface(tempSurface);
+	g_surfaces.insert(imgSurface);
+*/
+}
+
+void FitImage(SDL_Surface *& imgSurface, uint32 width, uint32 height)
+{
+	SDL_Surface * tempSurface = imgSurface;
+	SDL_PixelFormat * imgFmt;
+
+	// create a new surface with given width and height
+	imgFmt = tempSurface->format;
+	imgSurface = SDL_CreateRGBSurface(
+		SDL_SWSURFACE, width, height, imgFmt->BitsPerPixel,
+		imgFmt->Rmask, imgFmt->Gmask, imgFmt->Bmask, imgFmt->Amask);
+
+	// copy image from temp- to new surface
+	SDL_SetSurfaceAlphaMod(imgSurface, 255);
+	SDL_SetSurfaceAlphaMod(tempSurface, 255);
+	SDL_BlitSurface(tempSurface, NULL, imgSurface, NULL);
+
+	UnloadSurface(tempSurface);
+	g_surfaces.insert(imgSurface);
+}
+
+void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
+{
+	// TODO
+}
+
 void glColorRGB(const RGB& color)
 {
-  glColor3f(color.R, color.G, color.B);
+	glColor3f(color.R, color.G, color.B);
 }
 
 void glColorRGB(const RGB& color, float alpha)
@@ -225,12 +418,12 @@ void glColorRGB(const RGBA& color)
 
 void glColorRGB(const RGBA& color, float alpha)
 {
-  glColor4f(color.R, color.G, color.B, std::min(color.A, alpha));
+	glColor4f(color.R, color.G, color.B, std::min(color.A, alpha));
 }
 
 void glColorRGBInt(const RGB& color, float intensity)
 {
-  glColor3f(color.R * intensity, color.G * intensity, color.B * intensity);
+	glColor3f(color.R * intensity, color.G * intensity, color.B * intensity);
 }
 
 void glColorRGBInt(const RGB& color, float alpha, float intensity)
@@ -245,13 +438,13 @@ void glColorRGBInt(const RGBA& color, float intensity)
 
 void glColorRGBInt(const RGBA& color, float alpha, float intensity)
 {
-  glColor4f(color.R * intensity, color.G * intensity, color.B * intensity, std::min(color.A, alpha));
+	glColor4f(color.R * intensity, color.G * intensity, color.B * intensity, std::min(color.A, alpha));
 }
 
 void FreeGfxResources()
 {
 	for (SurfaceCollection::const_iterator itr = g_surfaces.begin(); itr != g_surfaces.end(); ++itr)
-		SDL_FreeSurface(*itr);
+		UnloadSurface(*itr);
 
 	if (Screen != NULL)
 	{

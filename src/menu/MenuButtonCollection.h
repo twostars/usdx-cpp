@@ -29,8 +29,8 @@ class MenuButtonCollection : public MenuButton
 {
 public:
 	MenuButtonCollection();
-	MenuButtonCollection(Texture* tex);
-	MenuButtonCollection(Texture* tex, Texture* deselectTexture);
+	MenuButtonCollection(const Texture& tex);
+	MenuButtonCollection(const Texture& tex, const Texture& deselectTexture);
 
 	void SetSelect(bool value);
 	void Draw();

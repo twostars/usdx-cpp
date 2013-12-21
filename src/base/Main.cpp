@@ -36,6 +36,7 @@
 #include "Ini.h"
 #include "Music.h"
 #include "Graphic.h"
+#include "TextureMgr.h"
 
 #include "../menu/Display.h"
 
@@ -73,6 +74,9 @@ int usdxMain(int argc, TCHAR ** argv)
 		// Setup the logger/benchmarker
 		new Log();
 		sLog.BenchmarkStart(0);
+
+		// Setup the texture manager
+		new TextureMgr();
 
 		// Language
 		sLog.BenchmarkStart(1);
@@ -274,6 +278,7 @@ int usdxMain(int argc, TCHAR ** argv)
 	delete Themes::getSingletonPtr();
 	delete Skins::getSingletonPtr();
 	delete Language::getSingletonPtr();
+	delete TextureMgr::getSingletonPtr();
 	delete Log::getSingletonPtr();
 	delete LuaCore::getSingletonPtr();
 
