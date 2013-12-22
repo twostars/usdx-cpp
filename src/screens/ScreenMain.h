@@ -20,12 +20,22 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "stdafx.h"
-#include "../base/Themes.h"
-#include "../menu/Menu.h"
-#include "ScreenLoading.h"
+#ifndef _SCREEN_MAIN_H
+#define _SCREEN_MAIN_H
+#pragma once
 
-ScreenLoading::ScreenLoading() : Menu()
+class ScreenMain : public Menu
 {
-	LoadFromTheme(sThemes.Loading);
-}
+public:
+	ScreenMain();
+
+	int TextDescription;
+	int TextDescriptionLong;
+
+private:
+	// ticks when the user interacted, used to start credits
+	// after a period of time without user interaction
+	uint32 _userInteractionTicks;
+};
+
+#endif

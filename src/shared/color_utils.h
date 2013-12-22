@@ -58,9 +58,9 @@ RGB GetSystemColor(eColor color)
 // e.g. 255 255 255
 void RGB::Load(const TCHAR * source)
 {
-	uint8 r, g, b;
-	_stscanf(source, _T("%d %d %d"), &r, &g, &b);
-	Set(r, g, b);
+	uint32 r, g, b;
+	_stscanf(source, _T("%u %u %u"), &r, &g, &b);
+	Set((uint8) r, (uint8) g, (uint8) b);
 }
 
 void RGB::Set(uint8 r, uint8 g, uint8 b)

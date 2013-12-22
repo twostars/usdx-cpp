@@ -21,11 +21,3 @@
  */
 
 #include "stdafx.h"
-#include "../base/Themes.h"
-#include "../menu/Menu.h"
-#include "ScreenLoading.h"
-
-ScreenLoading::ScreenLoading() : Menu()
-{
-	LoadFromTheme(sThemes.Loading);
-}

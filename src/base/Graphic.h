@@ -28,6 +28,11 @@
 
 void Initialize3D(const TCHAR * windowTitle);
 void LoadOpenGLExtensions();
+void LoadFontTextures();
+void UnloadFontTextures();
+void LoadLoadingScreen();
+void LoadTextures();
+void LoadScreens();
 void SwapBuffers();
 
 SDL_Surface * LoadSurfaceFromFile(const boost::filesystem::path& filename);

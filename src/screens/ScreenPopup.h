@@ -20,12 +20,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "stdafx.h"
-#include "../base/Themes.h"
-#include "../menu/Menu.h"
-#include "ScreenLoading.h"
+#ifndef _SCREEN_POPUP_H
+#define _SCREEN_POPUP_H
+#pragma once
 
-ScreenLoading::ScreenLoading() : Menu()
+class ScreenPopup : public Menu
 {
-	LoadFromTheme(sThemes.Loading);
-}
+};
+
+class ScreenPopupCheck : public ScreenPopup
+{
+};
+
+class ScreenPopupError : public ScreenPopup
+{
+};
+
+class ScreenPopupInfo : public ScreenPopup
+{
+};
+
+#endif

@@ -20,12 +20,12 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "stdafx.h"
-#include "../base/Themes.h"
-#include "../menu/Menu.h"
-#include "ScreenLoading.h"
+#ifndef _SCREEN_TOP5_H
+#define _SCREEN_TOP5_H
+#pragma once
 
-ScreenLoading::ScreenLoading() : Menu()
+class ScreenTop5 : public Menu
 {
-	LoadFromTheme(sThemes.Loading);
-}
+};
+
+#endif

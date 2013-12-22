@@ -26,8 +26,12 @@
 #include "Log.h"
 #include "CommandLine.h"
 #include "Ini.h"
+#include "TextGL.h"
 
 #include "../menu/Display.h"
+#include "../menu/Menu.h"
+
+#include "../screens/screens.h"
 
 #define WINDOW_ICON _T("ultrastardx-icon.png")
 
@@ -52,6 +56,55 @@ int ScreenW, ScreenH;
 int Screens, ScreenAct, ScreenX;
 
 bool Fullscreen;
+
+// Screens
+ScreenLoading			* UILoading = NULL;
+ScreenMain				* UIMain = NULL;
+ScreenName				* UIName = NULL;
+ScreenLevel				* UILevel = NULL;
+ScreenSong				* UISong = NULL;
+ScreenSing				* UISing = NULL;
+ScreenScore				* UIScore = NULL;
+ScreenTop5				* UITop5 = NULL;
+ScreenOptions			* UIOptions = NULL;
+ScreenOptionsGame		* UIOptionsGame = NULL;
+ScreenOptionsGraphics	* UIOptionsGraphics = NULL;
+ScreenOptionsSound		* UIOptionsSound = NULL;
+ScreenOptionsLyrics		* UIOptionsLyrics = NULL;
+ScreenOptionsThemes		* UIOptionsThemes = NULL;
+ScreenOptionsRecord		* UIOptionsRecord = NULL;
+ScreenOptionsAdvanced	* UIOptionsAdvanced = NULL;
+ScreenEditSub			* UIEditSub = NULL;
+ScreenEdit				* UIEdit = NULL;
+ScreenEditConvert		* UIEditConvert = NULL;
+ScreenEditHeader		* UIEditHeader = NULL;
+ScreenOpen				* UIOpen = NULL;
+
+ScreenSongMenu			* UISongMenu = NULL;
+ScreenSongJumpTo		* UISongJumpTo = NULL;
+
+// Party screens
+ScreenPartyNewRound		* UIPartyNewRound = NULL;
+ScreenPartyScore		* UIPartyScore = NULL;
+ScreenPartyWin			* UIPartyWin = NULL;
+ScreenPartyOptions		* UIPartyOptions = NULL;
+ScreenPartyPlayer		* UIPartyPlayer = NULL;
+ScreenPartyRounds		* UIPartyRounds = NULL;
+
+// Stats screens
+ScreenStatMain			* UIStatMain = NULL;
+ScreenStatDetail		* UIStatDetail = NULL;
+
+// Credits screen
+ScreenCredits			* UICredits = NULL;
+
+// Popups
+ScreenPopupCheck		* UIPopupCheck = NULL;
+ScreenPopupError		* UIPopupError = NULL;
+ScreenPopupInfo			* UIPopupInfo = NULL;
+
+typedef std::set<Menu *> ScreenCollection;
+ScreenCollection		g_screenCollection;
 
 PFNGLCOPYTEXSUBIMAGE3DPROC	glCopyTexSubImage3D;
 PFNGLDRAWRANGEELEMENTSPROC	glDrawRangeElements;
@@ -235,7 +288,40 @@ void Initialize3D(const TCHAR * windowTitle)
 
 	new Display();
 
-	// TODO
+	sLog.Status(_T("Initialize3D"), _T("Loading font textures"));
+	LoadFontTextures();
+
+	sLog.Status(_T("Initialize3D"), _T("Loading load screen"));
+	LoadLoadingScreen();
+
+	sLog.Status(_T("Initialize3D"), _T("Loading textures"));
+	LoadTextures();
+
+	sLog.Status(_T("Initialize3D"), _T("Loading screens"));
+	LoadScreens();
+
+	// TODO:
+	// Here should be a loop which
+	// * draws the loading screen (form time to time)
+	// * controlls the "process of the loading screen"
+	// * checks if the loadingthread has loaded textures (check mutex) and
+	//   * load the textures into opengl
+	//   * tells the loadingthread, that the memory for the texture can be reused
+	//     to load the next texture (over another mutex)
+	// * runs as long as the loadingthread tells, that everything is loaded and ready (using a third mutex)
+	//
+	// therefore LoadTextures() has to be changed, instead of caling some opengl functions
+	// for itself, it should change mutex
+	// the mainthread have to know somehow what opengl function have to be called with which parameters like
+	// texturetype, textureobject, texture-buffer-adress, ...
+	
+	assert(sDisplay.CurrentScreen != NULL);
+	sDisplay.CurrentScreen->FadeTo(UIMain);
+
+	sLog.BenchmarkEnd(2);
+	sLog.Benchmark(2, _T("Loading screens"));
+
+	sLog.Status(_T("Initialize3D"), _T("Finished"));
 }
 
 class OpenGL12
@@ -265,6 +351,93 @@ void LoadOpenGLExtensions()
 {
 	if (!OpenGL12::Load())
 		return sLog.Critical(_T("LoadOpenGLExtensions"), _T("Unable to load OpenGL 1.2"));
+}
+
+void LoadFontTextures()
+{
+	sLog.Status(_T("LoadFontTextures"), _T("Building fonts"));
+	BuildFonts();
+}
+
+void UnloadFontTextures()
+{
+	sLog.Status(_T("UnloadFontTextures"), _T("Killing fonts"));
+	KillFonts();
+}
+
+#define LOAD_SCREEN(name) \
+	LoadScreen(UI ## name, _T(#name))
+
+template <typename T>
+void LoadScreen(T *& p, TCHAR * name)
+{
+	assert(p == NULL);
+	sLog.BenchmarkStart(3);
+	sLog.Benchmark(3, _T("====> Screen %s"), name);
+	p = new T();
+	sLog.BenchmarkEnd(3);
+
+	// Add screen to collection.
+	g_screenCollection.insert(p);
+}
+
+void LoadLoadingScreen()
+{
+	assert(UILoading == NULL);
+
+	LOAD_SCREEN(Loading);
+	UILoading->OnShow();
+
+	sDisplay.CurrentScreen = UILoading;
+	SwapBuffers();
+
+	// Is this necessary? Original code does this, but Display::Draw() should call it appropriately..
+	// UILoading->Draw();
+
+	sDisplay.Draw();
+	SwapBuffers();
+}
+
+void LoadTextures()
+{
+	// TODO
+}
+
+void LoadScreens()
+{
+	LOAD_SCREEN(Main);
+	LOAD_SCREEN(Name);
+	LOAD_SCREEN(Level);
+	LOAD_SCREEN(Song);
+	LOAD_SCREEN(SongMenu);
+	LOAD_SCREEN(Sing);
+	LOAD_SCREEN(Score);
+	LOAD_SCREEN(Top5);
+	LOAD_SCREEN(Options);
+	LOAD_SCREEN(OptionsGame);
+	LOAD_SCREEN(OptionsGraphics);
+	LOAD_SCREEN(OptionsSound);
+	LOAD_SCREEN(OptionsLyrics);
+	LOAD_SCREEN(OptionsThemes);
+	LOAD_SCREEN(OptionsRecord);
+	LOAD_SCREEN(OptionsAdvanced);
+	LOAD_SCREEN(EditSub);
+	LOAD_SCREEN(Edit);
+	LOAD_SCREEN(EditConvert);
+	LOAD_SCREEN(Open);
+	LOAD_SCREEN(SongJumpTo);
+	LOAD_SCREEN(PopupCheck);
+	LOAD_SCREEN(PopupError);
+	LOAD_SCREEN(PopupInfo);
+	LOAD_SCREEN(PartyNewRound);
+	LOAD_SCREEN(PartyScore);
+	LOAD_SCREEN(PartyWin);
+	LOAD_SCREEN(PartyOptions);
+	LOAD_SCREEN(PartyPlayer);
+	LOAD_SCREEN(PartyRounds);
+	LOAD_SCREEN(StatMain);
+	LOAD_SCREEN(StatDetail);
+	LOAD_SCREEN(Credits);
 }
 
 void SwapBuffers()
@@ -445,6 +618,11 @@ void FreeGfxResources()
 {
 	for (SurfaceCollection::const_iterator itr = g_surfaces.begin(); itr != g_surfaces.end(); ++itr)
 		UnloadSurface(*itr);
+	g_surfaces.clear();
+
+	for (ScreenCollection::const_iterator itr = g_screenCollection.begin(); itr != g_screenCollection.end(); ++itr)
+		delete (*itr);
+	g_screenCollection.clear();
 
 	if (Screen != NULL)
 	{

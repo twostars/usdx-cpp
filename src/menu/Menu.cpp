@@ -65,7 +65,7 @@ static const TCHAR* s_supportedBackgroundVideoExts[] =
 };
 
 Menu::Menu()
-	: Fade(fBlack), ButtonPos(-1), Background(NULL), RightMbESC(true)
+	: Fade(fBlack), ButtonPos(-1), Background(NULL), RightMbESC(true), SelInteraction(0)
 {
 }
 
@@ -86,6 +86,7 @@ void Menu::SetInteraction(int num)
 	InteractionType oldType, newType;
 
 	assert(num >= 0 && num < (int) Interactions.size()); 
+	assert(SelInteraction >= 0 && SelInteraction < (int) Interactions.size()); 
 
 	oldNum = Interactions[SelInteraction].Num;
 	oldType = Interactions[SelInteraction].Type;
@@ -551,11 +552,7 @@ int Menu::AddButton(float x, float y, float w, float h,
 					float reflectionSpacing /*= 0.0f*/,
 					float deselectReflectionSpacing /*= 0.0f*/)
 {
-
-	// We don't want to use the old method (the constant reallocations).
-	assert(ButtonPos < 0);
-
-	int buttonNo = ButtonPos++;
+	int buttonNo = (int) Buttons.size();
 
 	// Colorize hack
 	if (textureType == TextureType::Colorized)

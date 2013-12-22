@@ -56,7 +56,7 @@ public:
 
 	void BenchmarkStart(int benchmarkNo);
 	void BenchmarkEnd(int benchmarkNo);
-	void Benchmark(int benchmarkNo, const TCHAR * message);
+	void Benchmark(int benchmarkNo, const TCHAR * message, ...);
 
 	void Msg(int level, const TCHAR * message);
 	void Msg(int level, const TCHAR * context, const TCHAR * message);

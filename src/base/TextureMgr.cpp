@@ -29,6 +29,7 @@ initialiseSingleton(TextureMgr);
 
 TextureMgr::TextureMgr()
 {
+	Limit = 1024*1024;
 }
 
 Texture TextureMgr::CreateTexture(
@@ -99,7 +100,7 @@ Texture TextureMgr::GetTexture(
 	if (texturePath == NULL
 		|| texturePath->empty())
 	{
-		assert(0);
+		// assert(0);
 		return tex;
 	}
 

@@ -21,3 +21,29 @@
  */
 
 #include "stdafx.h"
+#include "../base/Themes.h"
+#include "../menu/Menu.h"
+#include "ScreenMain.h"
+
+ScreenMain::ScreenMain() : Menu()
+{
+	const ThemeMain* main = sThemes.Main;
+
+	// Creation order needed because of LoadFromTheme() 
+	// & button collections.
+	// First we must setup custom texts & statics, then LoadFromTheme,
+	// and finally the buttons & select sliders.
+	TextDescription     = AddText(sThemes.Main->TextDescription);
+	TextDescriptionLong = AddText(sThemes.Main->TextDescriptionLong);
+
+	LoadFromTheme(main);
+
+	AddButton(main->ButtonSolo);
+	AddButton(main->ButtonMulti);
+	AddButton(main->ButtonStats);
+	AddButton(main->ButtonEditor);
+	AddButton(main->ButtonOptions);
+	AddButton(main->ButtonExit);
+
+	SetInteraction(0);
+}

@@ -52,7 +52,7 @@ class ThemeMain : public ThemeBasic
 public:
 	ThemeButton ButtonSolo;
 	ThemeButton ButtonMulti;
-	ThemeButton ButtonStat;
+	ThemeButton ButtonStats;
 	ThemeButton ButtonEditor;
 	ThemeButton ButtonOptions;
 	ThemeButton ButtonExit;

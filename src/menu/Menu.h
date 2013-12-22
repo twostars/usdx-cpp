@@ -75,6 +75,12 @@ public:
 	virtual void SetInteraction(int num);
 
 	// load background, texts, statics and button collections from ThemeBasic
+	INLINE void LoadFromTheme(const ThemeBasic* themeBasic)
+	{
+		assert(themeBasic != NULL);
+		LoadFromTheme(*themeBasic);
+	}
+
 	void LoadFromTheme(const ThemeBasic& themeBasic);
 
 	// Button collections

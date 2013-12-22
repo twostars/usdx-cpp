@@ -213,6 +213,10 @@ void Themes::LoadTheme(ThemeEntry * theme, eColor color)
 	sLog.Status(_T("Themes::LoadTheme"), _T("Loading: %s"), 
 		theme->FileName.native().c_str());
 
+	SI_Error result = ini.LoadFile(theme->FileName.c_str());
+	if (result != SI_OK)
+		sLog.Critical(_T("Unable to load theme config file."));
+
 	CreateThemeObjects();
 
 	sSkins.LoadSkin(sIni.Skin, color);
@@ -228,12 +232,12 @@ void Themes::LoadTheme(ThemeEntry * theme, eColor color)
 	LoadThemeBasic(Main, _T("Main"));
 	LoadThemeText(Main->TextDescription, _T("MainTextDescription"));
 	LoadThemeText(Main->TextDescriptionLong, _T("MainTextDescriptionLong"));
-	LoadThemeButton(Main->ButtonSolo, _T("ButtonSolo"));
-	LoadThemeButton(Main->ButtonMulti, _T("ButtonMulti"));
-	LoadThemeButton(Main->ButtonStat, _T("ButtonStat"));
-	LoadThemeButton(Main->ButtonEditor, _T("ButtonEditor"));
-	LoadThemeButton(Main->ButtonOptions, _T("ButtonOptions"));
-	LoadThemeButton(Main->ButtonExit, _T("ButtonExit"));
+	LoadThemeButton(Main->ButtonSolo, _T("MainButtonSolo"));
+	LoadThemeButton(Main->ButtonMulti, _T("MainButtonMulti"));
+	LoadThemeButton(Main->ButtonStats, _T("MainButtonStats"));
+	LoadThemeButton(Main->ButtonEditor, _T("MainButtonEditor"));
+	LoadThemeButton(Main->ButtonOptions, _T("MainButtonOptions"));
+	LoadThemeButton(Main->ButtonExit, _T("MainButtonExit"));
 
 	// Main description translation
 	Main->Description[0]     = sLanguage.Translate(_T("SING_SING"));
@@ -896,9 +900,11 @@ void Themes::LoadThemeTexts(AThemeText& themeTextCollection, const tstring& name
 {
 	int sectionNo = 1;
 	tstring tempName;
+	themeTextCollection.clear();
 	while (ini.GetSectionSize((tempName 
 		= (name + boost::lexical_cast<tstring>(sectionNo))).c_str()) > 0)
 	{
+		themeTextCollection.push_back(ThemeText());
 		LoadThemeText(themeTextCollection[sectionNo - 1], tempName);
 		++sectionNo;
 	}
@@ -935,9 +941,11 @@ void Themes::LoadThemeStatics(AThemeStatic& themeStaticCollection, const tstring
 {
 	int sectionNo = 1;
 	tstring tempName;
+	themeStaticCollection.clear();
 	while (ini.GetSectionSize((tempName 
 		= (name + boost::lexical_cast<tstring>(sectionNo))).c_str()) > 0)
 	{
+		themeStaticCollection.push_back(ThemeStatic());
 		LoadThemeStatic(themeStaticCollection[sectionNo - 1], tempName);
 		++sectionNo;
 	}
@@ -1045,9 +1053,11 @@ void Themes::LoadThemeButtonCollections(AThemeButtonCollection& themeButtonColle
 {
 	int sectionNo = 1;
 	tstring tempName;
+	themeButtonCollection.clear();
 	while (ini.GetSectionSize((tempName 
 		= (name + boost::lexical_cast<tstring>(sectionNo))).c_str()) > 0)
 	{
+		themeButtonCollection.push_back(ThemeButtonCollection());
 		LoadThemeButtonCollection(themeButtonCollection[sectionNo - 1], tempName);
 		++sectionNo;
 	}

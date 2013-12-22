@@ -30,6 +30,8 @@
 #include "../base/Graphic.h"
 #include "../base/TextGL.h"
 
+#include "Menu.h"
+
 initialiseSingleton(Display);
 
 extern CMDParams Params;
@@ -115,7 +117,7 @@ bool Display::Draw()
 			&& !BlackScreen)
 		{
 			// ePreDraw.CallHookChain(false);
-			// CurrentScreen->Draw();
+			CurrentScreen->Draw();
 			
 			FadeStartTime = 0;
 			FadeEnabled = (sIni.ScreenFade == Switch::On && !FadeFailed);
@@ -136,7 +138,7 @@ bool Display::Draw()
 				{
 					// Draw screen that will be faded
 					// ePreDraw.CallHookChain(false);
-					// CurrentScreen->Draw();
+					CurrentScreen->Draw();
 					// eDraw.CallHookChain(false);
 
 					// Clear OpenGL errors, otherwise fading might be disabled
@@ -170,7 +172,7 @@ bool Display::Draw()
 						&& screen == 1 
 						&& !DoneOnShow)
 					{
-						// NextScreen->Show();
+						NextScreen->OnShow();
 						DoneOnShow = true;
 					}
 
@@ -182,7 +184,7 @@ bool Display::Draw()
 				if (!BlackScreen)
 				{
 					// ePreDraw.CallHookChain(false);
-					// NextScreen->Draw();
+					NextScreen->Draw();
 					// eDraw.CallHookChain(false);
 				}
 				// Draw black screen
@@ -232,7 +234,7 @@ bool Display::Draw()
 			// There is no need to init next screen if it is a black screen
 			else if (!BlackScreen)
 			{
-				// NextScreen->OnShow();
+				NextScreen->OnShow();
 			}
 
 			// Fade out complete (if it was even fading to begin with...)
@@ -242,16 +244,16 @@ bool Display::Draw()
 			{
 				FadeStartTime = 0;
 				DoneOnShow = false;
-				// CurrentScreen->OnHide();
-				// CurrentScreen->ShowFinish = false;
-				// CurrentScreen = NextScreen;
-				// NextScreen = NULL;
+				CurrentScreen->OnHide();
+				CurrentScreen->ShowFinish = false;
+				CurrentScreen = NextScreen;
+				NextScreen = NULL;
 
 				if (BlackScreen)
 					return false;
 
-				// CurrentScreen->OnShowFinish();
-				// CurrentScreen->ShowFinish = true;
+				CurrentScreen->OnShowFinish();
+				CurrentScreen->ShowFinish = true;
 			}
 		}
 

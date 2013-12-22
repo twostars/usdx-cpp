@@ -44,7 +44,7 @@ public:
 
 	Texture()
 	{
-		TexNum = 0xFFFFFFFF;
+		TexNum = 0;
 		X = Y = Z = 0.0f;
 		W = H = 0.0f;
 		ScaleW = ScaleH = 1.0f;

@@ -231,9 +231,6 @@
     <ClCompile Include="..\..\src\screens\ScreenSong.cpp">
       <Filter>src\screens</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\screens\ScreenSongJumpto.cpp">
-      <Filter>src\screens</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\screens\ScreenSongMenu.cpp">
       <Filter>src\screens</Filter>
     </ClCompile>
@@ -441,6 +438,12 @@
     <ClCompile Include="..\..\src\base\TextureMgr.cpp">
       <Filter>src\base</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenSongJumpTo.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screens\ScreenOptionsGame.cpp">
+      <Filter>src\screens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lib\bass\c\bass.h">
@@ -610,6 +613,108 @@
     </ClInclude>
     <ClInclude Include="..\..\src\base\TextureMgr.h">
       <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\screens.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenPartyOptions.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenPartyPlayer.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenPartyRounds.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenPartyScore.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenPartyWin.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenPopup.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenScore.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenSing.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenSong.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenSongJumpTo.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenSongMenu.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenStatDetail.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenStatMain.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenTop5.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenCredits.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenEdit.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenEditConvert.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenEditHeader.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenEditSub.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenLevel.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenLoading.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenMain.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenName.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenOpen.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenOptions.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenOptionsAdvanced.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenOptionsGraphics.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenOptionsLyrics.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenOptionsRecord.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenOptionsSound.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenOptionsThemes.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenPartyNewRound.h">
+      <Filter>src\screens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screens\ScreenOptionsGame.h">
+      <Filter>src\screens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -60,8 +60,9 @@ void Log::BenchmarkEnd(int benchmarkNo)
 	_benchmarkTimeLength[benchmarkNo] = USTime.GetTime() - _benchmarkTimeStart[benchmarkNo];
 }
 
-void Log::Benchmark(int benchmarkNo, const TCHAR * message)
+void Log::Benchmark(int benchmarkNo, const TCHAR * message, ...)
 {
+	BUILD_VA_BUFFER(message, buffer, 1024);
 	// TODO
 }
 
