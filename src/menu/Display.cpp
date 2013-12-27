@@ -63,6 +63,8 @@ Display::Display()
 	DoneOnShow  = false;
 
 	NextFPSSwap = 0;
+	FPSCounter  = 0;
+	LastFPS     = 0;
 
 	glGenTextures(2, FadeTex);
 	InitFadeTextures();
@@ -82,6 +84,16 @@ Display::Display()
 
 void Display::InitFadeTextures()
 {
+	TexW = ScreenW; // std::pow(2.0, std::ceil(Log2(ScreenW / Screens)));
+	TexH = ScreenH; // std::pow(2.0, std::ceil(Log2(ScreenH)));
+
+	for (int i = 0; i < 2; i++)
+	{
+		glBindTexture(GL_TEXTURE_2D, FadeTex[i]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TexW, TexH, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	}
 }
 
 bool Display::Draw()
@@ -280,10 +292,10 @@ void Display::DrawDebugInformation()
 	glDisable(GL_TEXTURE_2D);
 	glColor4f(1, 1, 1, 0.5);
 	glBegin(GL_QUADS);
-	glVertex2f(690, 44);
-	glVertex2f(690, 0);
-	glVertex2f(800, 0);
-	glVertex2f(800, 44);
+	glVertex2f(RenderH + 90, 44);
+	glVertex2f(RenderH + 90, 0);
+	glVertex2f(RenderW, 0);
+	glVertex2f(RenderW, 44);
 	glEnd();
 	glDisable(GL_BLEND);
 

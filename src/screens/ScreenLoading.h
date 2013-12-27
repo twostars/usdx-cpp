@@ -28,8 +28,6 @@ class ScreenLoading : public Menu
 {
 public:
 	ScreenLoading();
-
-	bool Fadeout;
 };
 
 #endif
