@@ -279,14 +279,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>ultrastardeluxe</TargetName>
-    <LibraryPath>$(Boost_Root)\lib;$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\..\game\</OutDir>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>ultrastardeluxe</TargetName>
-    <LibraryPath>$(Boost_Root)\lib;$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\..\game\</OutDir>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -298,7 +298,7 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;HAVE_LIBC;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/fp:except- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(Boost_Root);..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -321,7 +321,7 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;HAVE_LIBC;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/fp:except- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(Boost_Root);..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

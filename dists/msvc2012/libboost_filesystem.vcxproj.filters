@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\src\lib\boost\libs\filesystem\src\codecvt_error_category.cpp" />
+    <ClCompile Include="..\..\src\lib\boost\libs\filesystem\src\operations.cpp" />
+    <ClCompile Include="..\..\src\lib\boost\libs\filesystem\src\path.cpp" />
+    <ClCompile Include="..\..\src\lib\boost\libs\filesystem\src\path_traits.cpp" />
+    <ClCompile Include="..\..\src\lib\boost\libs\filesystem\src\portability.cpp" />
+    <ClCompile Include="..\..\src\lib\boost\libs\filesystem\src\unique_path.cpp" />
+    <ClCompile Include="..\..\src\lib\boost\libs\filesystem\src\utf8_codecvt_facet.cpp" />
+    <ClCompile Include="..\..\src\lib\boost\libs\filesystem\src\windows_file_codecvt.cpp" />
+    <ClCompile Include="..\..\src\lib\boost\libs\smart_ptr\src\sp_collector.cpp" />
+    <ClCompile Include="..\..\src\lib\boost\libs\smart_ptr\src\sp_debug_hooks.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\lib\boost\libs\filesystem\src\windows_file_codecvt.hpp" />
+  </ItemGroup>
+</Project>
