@@ -69,12 +69,16 @@
     </CustomBuildBeforeTargets>
     <TargetName>$(ProjectName)16</TargetName>
     <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)..\..\src\shared;$(ZLibSrcDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Library|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <CustomBuildBeforeTargets />
     <TargetName>$(ProjectName)16</TargetName>
     <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)..\..\src\shared;$(ZLibSrcDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -82,12 +86,16 @@
     </CustomBuildBeforeTargets>
     <TargetName>$(ProjectName)16</TargetName>
     <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)..\..\src\shared;$(ZLibSrcDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Library|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <CustomBuildBeforeTargets />
     <TargetName>$(ProjectName)16</TargetName>
     <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)..\..\src\shared;$(ZLibSrcDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -96,7 +104,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;ZLIB_WINAPI;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FloatingPointExceptions>false</FloatingPointExceptions>
@@ -106,23 +114,24 @@
       <CompileAs>CompileAsC</CompileAs>
       <StringPooling>true</StringPooling>
       <DisableSpecificWarnings>4996;4127</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ZLibSrcDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <ForcedIncludeFiles>"$(SolutionDir)..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt"</ForcedIncludeFiles>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>zlib.lib</AdditionalDependencies>
+      <AdditionalDependencies>zlibwapi.lib</AdditionalDependencies>
       <Version>16</Version>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>if not exist "$(SolutionDir)..\..\src\shared\pnglibconf.h" (
+    copy "$(SolutionDir)..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt" "$(SolutionDir)..\..\src\shared\pnglibconf.h"
+)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Library|Win32'">
@@ -133,7 +142,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;ZLIB_WINAPI;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FloatingPointExceptions>false</FloatingPointExceptions>
@@ -143,17 +152,19 @@
       <CompileAs>CompileAsC</CompileAs>
       <StringPooling>true</StringPooling>
       <DisableSpecificWarnings>4996;4127</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ZLibSrcDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <ForcedIncludeFiles>"$(SolutionDir)..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt"</ForcedIncludeFiles>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>copy ..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt ..\..\src\lib\libpng\pnglibconf.h</Command>
+      <Command>if not exist "$(SolutionDir)..\..\src\shared\pnglibconf.h" (
+    copy "$(SolutionDir)..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt" "$(SolutionDir)..\..\src\shared\pnglibconf.h"
+)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -163,7 +174,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;ZLIB_WINAPI;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointExceptions>false</FloatingPointExceptions>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <PrecompiledHeaderFile>pngpriv.h</PrecompiledHeaderFile>
@@ -172,10 +183,10 @@
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
       <DisableSpecificWarnings>4996;4127</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ZLibSrcDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>Full</Optimization>
-      <ForcedIncludeFiles>"$(SolutionDir)..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt"</ForcedIncludeFiles>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -183,13 +194,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>zlib.lib</AdditionalDependencies>
+      <AdditionalDependencies>zlibwapi.lib</AdditionalDependencies>
       <Version>16</Version>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PreBuildEvent>
-      <Command>copy ..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt ..\..\src\lib\libpng\pnglibconf.h</Command>
+      <Command>if not exist "$(SolutionDir)..\..\src\shared\pnglibconf.h" (
+    copy "$(SolutionDir)..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt" "$(SolutionDir)..\..\src\shared\pnglibconf.h"
+)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Library|Win32'">
@@ -200,7 +213,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;ZLIB_WINAPI;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointExceptions>false</FloatingPointExceptions>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <PrecompiledHeaderFile>pngpriv.h</PrecompiledHeaderFile>
@@ -209,11 +222,11 @@
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
       <DisableSpecificWarnings>4996;4127</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ZLibSrcDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>Full</Optimization>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <ForcedIncludeFiles>"$(SolutionDir)..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt"</ForcedIncludeFiles>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -225,7 +238,9 @@
       <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
     </Lib>
     <PreBuildEvent>
-      <Command>copy ..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt ..\..\src\lib\libpng\pnglibconf.h</Command>
+      <Command>if not exist "$(SolutionDir)..\..\src\shared\pnglibconf.h" (
+    copy "$(SolutionDir)..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt" "$(SolutionDir)..\..\src\shared\pnglibconf.h"
+)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

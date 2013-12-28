@@ -1,16 +1,14 @@
 build/*
 build/delphi-win/*.dcu
 config.status
-link.res
 ppaslink.sh
 src/Makefile
 src/base/*.dcu
 src/base/__history
 src/lib/ffmpeg/*.dylib
+src/shared/pnglibconf.h
 src/macosx/build
-src/menu/*.dcu
 src/paths.inc
-src/screens/*.dcu
 game/config.ini
 
 # Compiled Object files
@@ -54,3 +52,4 @@ game/config.ini
 *.sbr
 *.map
 *.cod
+*.dcu
