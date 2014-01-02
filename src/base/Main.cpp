@@ -42,12 +42,16 @@
 
 extern boost::filesystem::path ScoreFile;
 
+void CheckEvents();
+
 /* globals */
 // TODO: Clean these up
 
 Time USTime;
 RelativeTimer VideoBGTimer;
 CMDParams Params;
+
+const int MAINTHREAD_EXEC_EVENT = SDL_USEREVENT + 2;
 
 int usdxMain(int argc, TCHAR ** argv)
 {
@@ -310,7 +314,7 @@ void usdxMainLoop()
 		//	sJoystick.Update();
 
 		// Check keyboard events
-		// CheckEvents();
+		CheckEvents();
 
 		// Display
 		done = !sDisplay.Draw();
@@ -324,4 +328,58 @@ void usdxMainLoop()
 
 		CountSkipTime();
 	} while (!done);
+}
+
+void CheckEvents()
+{
+	SDL_Event event;
+	bool mouseDown, keepGoing;
+	int mouseBtn;
+
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			sDisplay.Fade = 0.0f;
+			sDisplay.NextScreenWithCheck = NULL;
+			sDisplay.CheckOK = true;
+			break;
+
+		case SDL_MOUSEMOTION:
+			if (sIni.Mouse)
+			{
+				mouseDown = false;
+				mouseBtn = 0;
+			}
+			break;
+
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP:
+			if (sIni.Mouse)
+			{
+				mouseDown = (event.type == SDL_MOUSEBUTTONDOWN);
+				mouseBtn = event.button.button;
+
+				if (mouseBtn == SDL_BUTTON_LEFT || mouseBtn == SDL_BUTTON_RIGHT)
+					sDisplay.OnMouseButton(mouseDown);
+			}
+			break;
+
+		case SDL_WINDOWEVENT_RESIZED:
+			break;
+
+		case SDL_KEYDOWN:
+			break;
+
+		case SDL_JOYAXISMOTION:
+			break;
+
+		case SDL_JOYBUTTONDOWN:
+			break;
+
+		case MAINTHREAD_EXEC_EVENT:
+			break;
+		}
+	}
 }
