@@ -281,6 +281,36 @@ bool Display::Draw()
 	return true;
 }
 
+// called by MoveCursor and OnMouseButton to update last move and start fade in
+void Display::UpdateCursorFade()
+{
+	uint32 ticks = SDL_GetTicks();
+
+	// fade in on movement (or button press) if not first movement
+	if (!CursorVisible && CursorLastMove != 0)
+	{
+		CursorLastMove = ticks;
+		if (CursorFade)
+			CursorLastMove -= (uint32) std::ceil((CURSOR_FADE_IN_TIME * (1 - ticks - CursorLastMove) / CURSOR_FADE_OUT_TIME) - 0.5);
+
+		CursorVisible = true;
+		CursorFade = true;
+	}
+	else if (!CursorFade)
+	{
+		CursorLastMove = ticks;
+	}
+}
+
+void Display::OnMouseButton(bool pressed)
+{
+	if (sIni.Mouse != 2)
+		return;
+
+	CursorPressed = pressed;
+	UpdateCursorFade();
+}
+
 void Display::DrawCursor()
 {
 }
