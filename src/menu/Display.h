@@ -84,8 +84,8 @@ private:
 	tstring	OSD_LastError;
 
 	// software cursor data
-	double	CursorX;
-	double	CursorY;
+	float	CursorX;
+	float	CursorY;
 	bool	CursorPressed;
 	bool	CursorHiddenByScreen; // hides software cursor and deactivates auto fade in
 

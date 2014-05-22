@@ -121,4 +121,51 @@ extern class ScreenPopupCheck		* UIPopupCheck;
 extern class ScreenPopupError		* UIPopupError;
 extern class ScreenPopupInfo		* UIPopupInfo;
 
+// Notes
+extern Texture TexNoteLeft[6];      // formerly Tex_Left
+extern Texture TexNoteMid[6];       // formerly Tex_Mid
+extern Texture TexNoteRight[6];     // formerly Tex_Right
+
+extern Texture TexNoteBGLeft[6];    // formerly Tex_plain_Left
+extern Texture TexNoteBGMid[6];     // formerly Tex_plain_Mid
+extern Texture TexNoteBGRight[6];   // formerly Tex_plain_Right
+
+extern Texture TexNoteGlowLeft[6];  // formerly Tex_BG_Left
+extern Texture TexNoteGlowMid[6];   // formerly Tex_BG_Mid
+extern Texture TexNoteGlowRight[6]; // formerly Tex_BG_Right
+
+extern Texture TexNoteStar, TexNotePerfectStar;
+
+extern Texture TexBall, TexLyricHelpBar;
+extern Texture TexTimeProgress;
+
+// Sing Bar Mod
+extern Texture TexSingBarBack, TexSingBar, TexSingBarFront;
+
+// PhrasenBonus - Line Bonus Mod
+extern Texture TexSingLineBonusBack[9];
+
+// ScoreBG Textures
+extern Texture TexScoreBG[6];
+
+// Score Screen Textures
+extern Texture TexScoreNoteBarLevelDark[6];
+extern Texture TexScoreNoteBarRoundDark[6];
+
+extern Texture TexScoreNoteBarLevelLight[6];
+extern Texture TexScoreNoteBarRoundLight[6];
+
+extern Texture TexScoreNoteBarLevelLightest[6];
+extern Texture TexScoreNoteBarRoundLightest[6];
+
+extern Texture TexScoreRatings[8];
+
+// arrows for SelectSlide
+extern Texture TexSelectSArrowL, TexSelectSArrowR;
+
+// textures for software mouse cursor
+extern Texture TexCursorUnpressed, TexCursorPressed;
+
+extern bool PboSupported;
+
 #endif

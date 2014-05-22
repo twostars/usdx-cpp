@@ -27,6 +27,9 @@
 #include "CommandLine.h"
 #include "Ini.h"
 #include "TextGL.h"
+#include "Themes.h"
+#include "TextureMgr.h"
+#include "Skins.h"
 
 #include "../menu/Display.h"
 #include "../menu/Menu.h"
@@ -102,6 +105,53 @@ ScreenCredits			* UICredits = NULL;
 ScreenPopupCheck		* UIPopupCheck = NULL;
 ScreenPopupError		* UIPopupError = NULL;
 ScreenPopupInfo			* UIPopupInfo = NULL;
+
+// Notes
+Texture TexNoteLeft[6];      // formerly Tex_Left
+Texture TexNoteMid[6];       // formerly Tex_Mid
+Texture TexNoteRight[6];     // formerly Tex_Right
+
+Texture TexNoteBGLeft[6];    // formerly Tex_plain_Left
+Texture TexNoteBGMid[6];     // formerly Tex_plain_Mid
+Texture TexNoteBGRight[6];   // formerly Tex_plain_Right
+
+Texture TexNoteGlowLeft[6];   // formerly Tex_BG_Left
+Texture TexNoteGlowMid[6];    // formerly Tex_BG_Mid
+Texture TexNoteGlowRight[6];  // formerly Tex_BG_Right
+
+Texture TexNoteStar, TexNotePerfectStar;
+
+Texture TexBall, TexLyricHelpBar;
+Texture TexTimeProgress;
+
+// Sing Bar Mod
+Texture TexSingBarBack, TexSingBar, TexSingBarFront;
+
+// PhrasenBonus - Line Bonus Mod
+Texture TexSingLineBonusBack[9];
+
+// ScoreBG Textures
+Texture TexScoreBG[6];
+
+// Score Screen Textures
+Texture TexScoreNoteBarLevelDark[6];
+Texture TexScoreNoteBarRoundDark[6];
+
+Texture TexScoreNoteBarLevelLight[6];
+Texture TexScoreNoteBarRoundLight[6];
+
+Texture TexScoreNoteBarLevelLightest[6];
+Texture TexScoreNoteBarRoundLightest[6];
+
+Texture TexScoreRatings[8];
+
+// arrows for SelectSlide
+Texture TexSelectSArrowL, TexSelectSArrowR;
+
+// textures for software mouse cursor
+Texture TexCursorUnpressed, TexCursorPressed;
+
+bool PboSupported = false;
 
 typedef std::set<Menu *> ScreenCollection;
 ScreenCollection		g_screenCollection;
@@ -400,7 +450,123 @@ void LoadLoadingScreen()
 
 void LoadTextures()
 {
-	// TODO
+	RGB rgb;
+	uint32 Col;
+
+	sLog.Status(_T("LoadTextures"), _T("Loading textures"));
+	
+	// TODO: Do it once for each player...
+	for (int player = 1; player <= MAX_PLAYERS; player++)
+	{
+		sThemes.LoadColor(rgb, _T("P%dLight"), player);
+		Col = 0x10000 * (uint32) Round(rgb.R * 255)
+			+ 0x100 * (uint32) Round(rgb.G * 255)
+			+ (uint32) Round(rgb.B * 255);
+
+		TexNoteLeft[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("GrayLeft")), TextureType::Colorized, Col);
+		TexNoteMid[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("GrayMid")), TextureType::Colorized, Col);
+		TexNoteRight[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("GrayRight")), TextureType::Colorized, Col);
+
+		TexNoteBGLeft[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NotePlainLeft")), TextureType::Colorized, Col);
+		TexNoteBGMid[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NotePlainMid")), TextureType::Colorized, Col);
+		TexNoteBGRight[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NotePlainRight")), TextureType::Colorized, Col);
+
+		TexNoteGlowLeft[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteBGLeft")), TextureType::Colorized, Col);
+		TexNoteGlowMid[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteBGMid")), TextureType::Colorized, Col);
+		TexNoteGlowRight[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteBGRight")), TextureType::Colorized, Col);
+
+		// Backgrounds for the scores
+		TexScoreBG[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreBG")), TextureType::Colorized, Col);
+
+		// Line bonus score bar
+		TexScoreNoteBarLevelLight[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Light")), TextureType::Colorized, Col);
+		TexScoreNoteBarRoundLight[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Light_Round")), TextureType::Colorized, Col);
+
+		// Note bar score bar
+		sThemes.LoadColor(rgb, _T("P%dDark"), player);
+		Col = 0x10000 * (uint32) Round(rgb.R * 255)
+			+ 0x100 * (uint32) Round(rgb.G * 255)
+			+ (uint32) Round(rgb.B * 255);
+
+		TexScoreNoteBarLevelDark[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Dark")), TextureType::Colorized, Col);
+		TexScoreNoteBarRoundDark[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Dark_Round")), TextureType::Colorized, Col);
+
+		// Golden notes score bar
+		sThemes.LoadColor(rgb, _T("P%dLightest"), player);
+		Col = 0x10000 * (uint32) Round(rgb.R * 255)
+			+ 0x100 * (uint32) Round(rgb.G * 255)
+			+ (uint32) Round(rgb.B * 255);
+
+		TexScoreNoteBarLevelLightest[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Lightest")), TextureType::Colorized, Col);
+		TexScoreNoteBarRoundLightest[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Lightest_Round")), TextureType::Colorized, Col);
+
+	}
+
+	TexNotePerfectStar	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NotePerfectStar")), TextureType::Transparent, 0);
+	TexNoteStar			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteStar")), TextureType::Transparent, 0xFFFFFFFF);
+	TexBall				= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteStar")), TextureType::Transparent, 0xFFFF00FF); // TODO: Verify colour is correct
+	TexLyricHelpBar		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Ball")), TextureType::Transparent, 0xFFFF00FF);
+
+	TexSelectSArrowL	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("LyricHelpBar")), TextureType::Transparent, 0);
+	TexSelectSArrowR	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Select_ArrowLeft")), TextureType::Transparent, 0);
+
+	TexCursorUnpressed	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Select_ArrowRight")), TextureType::Transparent, 0);
+
+	const path* tex		= sSkins.GetTextureFileName(_T("Cursor_Pressed"));
+	if (tex == NULL)
+		TexCursorPressed = sTextureMgr.LoadTexture(tex, TextureType::Transparent, 0);
+	else
+		TexCursorPressed.TexNum = 0;
+
+	// Timebar mod
+	TexTimeProgress	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("TimeBar")), TextureType::Plain, 0);
+
+	// Singbar mod
+	TexSingBarBack	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("SingBarBack")), TextureType::Plain, 0);
+	TexSingBar		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("SingBarBar")), TextureType::Plain, 0);
+	TexSingBarFront	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("SingBarFront")), TextureType::Plain, 0);
+
+	// Line bonus popup
+	for (int i = 0; i <= 8; i++)
+	{
+		float r, g, b;
+		switch (i)
+		{
+			case 0:
+				r = 1, g = 0, b = 0;
+				break;
+
+			case 1:
+			case 2:
+			case 3:
+				r = 1, g = (i * 0.25f), b = 0;
+				break;
+
+			case 4:
+				r = 1, g = 1, b = 0;
+				break;
+
+			case 5:
+			case 6:
+			case 7:
+				r = 1 - ((i - 4) * 0.25f), g = 1, b = 0;
+				break;
+
+			case 8:
+				r = 0, g = 1, b = 0;
+				break;
+		}
+
+		Col = 0x10000 * (uint32) Round(r * 255)
+			+ 0x100 * (uint32) Round(g * 255)
+			+ (uint32) Round(b * 255);
+
+		TexSingLineBonusBack[i] = sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("LineBonusBack")), TextureType::Colorized, Col);
+	}
+
+	// Rating pictures that show a picture according to your rate
+	for (int i = 0; i < 8; i++)
+		TexScoreRatings[i] = sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Rating_%d"), i));
 }
 
 void LoadScreens()

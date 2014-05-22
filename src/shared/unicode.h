@@ -45,6 +45,7 @@
 #	define _vsntprintf  vsnprintf
 #	define _tcschr		strchr
 #	define _tcscmp		strcmp
+#	define TCHAR		char
 
 #endif
 

@@ -832,13 +832,26 @@ void Themes::LoadColors()
 	}
 }
 
-void Themes::LoadColor(RGB& rgb, tstring color)
+void Themes::LoadColor(RGB& rgb, const tstring& color)
 {
 	ColorMap::iterator itr = _colors.find(color);
 	if (itr != _colors.end())
 		rgb = itr->second;
 	else
 		rgb.R = rgb.G = rgb.B = 0.0f;
+}
+
+void Themes::LoadColor(RGB& rgb, const TCHAR * fmt, ...)
+{
+	TCHAR buffer[1024];
+	tstring color;
+	va_list args;
+	va_start(args, fmt);
+	_vsntprintf(buffer, 1024, fmt, args);
+	va_end(args);
+
+	color = buffer;
+	LoadColor(rgb, color);
 }
 
 void Themes::LoadThemeBasic(ThemeBasic * theme, const tstring& name)

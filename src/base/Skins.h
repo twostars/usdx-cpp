@@ -46,6 +46,7 @@ public:
 	SkinEntry* LookupSkinForTheme(const tstring& themeName);
 	SkinEntry* LookupSkinForTheme(const tstring& skinName, const tstring& themeName);
 	const boost::filesystem::path* GetTextureFileName(const tstring& textureName);
+	const boost::filesystem::path* GetTextureFileName(const TCHAR * fmt, ...);
 
 	~Skins();
 

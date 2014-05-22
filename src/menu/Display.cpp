@@ -293,7 +293,7 @@ void Display::UpdateCursorFade()
 	{
 		CursorLastMove = ticks;
 		if (CursorFade)
-			CursorLastMove -= (uint32) std::ceil((CURSOR_FADE_IN_TIME * (1 - ticks - CursorLastMove) / CURSOR_FADE_OUT_TIME) - 0.5);
+			CursorLastMove -= (uint32) Round(1.0 * (CURSOR_FADE_IN_TIME * (1 - ticks - CursorLastMove) / CURSOR_FADE_OUT_TIME));
 
 		CursorVisible = true;
 		CursorFade = true;
@@ -313,8 +313,90 @@ void Display::OnMouseButton(bool pressed)
 	UpdateCursorFade();
 }
 
+// Draws software cursor
 void Display::DrawCursor()
 {
+	float Alpha;
+	uint32 Ticks;
+	float DrawX;
+
+	// draw software cursor
+	if ((sIni.Mouse == 2) && ((Screens == 1) || ((ScreenAct - 1) == (Round(CursorX + 16) / RenderW))))
+	{
+		Ticks = SDL_GetTicks();
+
+		// start fade out after 5 secs w/o activity
+		if ((CursorVisible) && (CursorLastMove + CURSOR_AUTOHIDE_TIME <= Ticks))
+		{
+			CursorVisible = false;
+			CursorLastMove = Ticks;
+			CursorFade = true;
+		}
+
+		// fading
+		if (CursorFade)
+		{
+			// fade in
+			if (CursorVisible)
+			{
+				if (CursorLastMove + CURSOR_FADE_IN_TIME <= Ticks)
+					CursorFade = false;
+				else
+					Alpha = (float) (std::sin((Ticks - CursorLastMove) * 0.5 * M_PI / CURSOR_FADE_IN_TIME) * 0.7);
+			}
+			// fade out
+			else
+			{
+				if (CursorLastMove + CURSOR_FADE_OUT_TIME <= Ticks)
+					CursorFade = false;
+				else
+					Alpha = (float) (std::cos((Ticks - CursorLastMove) * 0.5 * M_PI / CURSOR_FADE_OUT_TIME) * 0.7);
+			}
+		}
+
+		// no else if here because we may turn off fade in if block
+		if (!CursorFade)
+		{
+			if (CursorVisible)
+				Alpha = 0.7f; // alpha when cursor visible and not fading
+			else
+				Alpha = 0;   // alpha when cursor is hidden
+		}
+
+		if (Alpha > 0 && !CursorHiddenByScreen)
+		{
+			DrawX = CursorX;
+			if (ScreenAct == 2)
+				DrawX -= RenderW;
+
+			glColor4f(1, 1, 1, Alpha);
+			glEnable(GL_TEXTURE_2D);
+			glEnable(GL_BLEND);
+			glDisable(GL_DEPTH_TEST);
+
+			if (CursorPressed && TexCursorPressed.TexNum > 0)
+				glBindTexture(GL_TEXTURE_2D, TexCursorPressed.TexNum);
+			else
+				glBindTexture(GL_TEXTURE_2D, TexCursorUnpressed.TexNum);
+
+			glBegin(GL_QUADS);
+				glTexCoord2i(0, 0);
+				glVertex2f(DrawX, CursorY);
+
+				glTexCoord2f(0, 1);
+				glVertex2f(DrawX, CursorY + 32);
+
+				glTexCoord2f(1, 1);
+				glVertex2f(DrawX + 32, CursorY + 32);
+
+				glTexCoord2f(1, 0);
+				glVertex2f(DrawX + 32, CursorY);
+			glEnd();
+
+			glDisable(GL_BLEND);
+			glDisable(GL_TEXTURE_2D);
+		}
+	}
 }
 
 void Display::DrawDebugInformation()

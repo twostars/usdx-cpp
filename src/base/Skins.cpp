@@ -169,6 +169,19 @@ const path* Skins::GetTextureFileName(const tstring& textureName)
 	return (itr == SkinTextures.end() ? NULL : &itr->second);
 }
 
+const path* Skins::GetTextureFileName(const TCHAR * fmt, ...)
+{
+	TCHAR buffer[1024];
+	tstring filename;
+	va_list args;
+	va_start(args, fmt);
+	_vsntprintf(buffer, 1024, fmt, args);
+	va_end(args);
+
+	filename = buffer;
+	return GetTextureFileName(filename);
+}
+
 Skins::~Skins()
 {
 }

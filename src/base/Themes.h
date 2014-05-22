@@ -51,7 +51,8 @@ public:
 	void LoadHeader(const boost::filesystem::path& iniFile);
 	void LoadTheme(ThemeEntry * theme, eColor color);
 	void LoadColors();
-	void LoadColor(RGB& rgb, tstring color);
+	void LoadColor(RGB& rgb, const tstring& color);
+	void LoadColor(RGB& rgb, const TCHAR* fmt, ...);
 
 	void LoadThemeBasic(ThemeBasic * theme, const tstring& name);
 	void LoadThemeBackground(ThemeBackground& themeBackground, const tstring& name);

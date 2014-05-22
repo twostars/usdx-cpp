@@ -32,7 +32,11 @@ T sqr(T val) { return val * val; }
 template <typename T>
 T Log2(T n)
 {  
-    return static_cast<T>(log(n) / log(2));  
+    return static_cast<T>(std::log(n) / std::log(2));  
 }
+
+// Rounds the specified number.
+template <typename T>
+T Round(T val) { return std::ceil(val - 0.5f); }
 
 #endif
