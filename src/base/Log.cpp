@@ -33,11 +33,11 @@ extern CMDParams Params;
 
 initialiseSingleton(Log);
 
-#define BUILD_VA_BUFFER(formatArg, buffer, bufferSize) \
+#define BUILD_VA_BUFFER(formatBuffer, formatArg, buffer, bufferSize) \
 	TCHAR buffer[bufferSize]; \
 	va_list ap; \
 	va_start(ap, formatArg); \
-	_vsntprintf(buffer, bufferSize, message, ap); \
+	_vsntprintf(buffer, bufferSize, formatBuffer, ap); \
 	va_end(ap)
 
 Log::Log() :
@@ -62,7 +62,7 @@ void Log::BenchmarkEnd(int benchmarkNo)
 
 void Log::Benchmark(int benchmarkNo, const TCHAR * message, ...)
 {
-	BUILD_VA_BUFFER(message, buffer, 1024);
+	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	// TODO
 }
 
@@ -109,25 +109,25 @@ void Log::Msg(int level, const TCHAR * context, const TCHAR * message)
 
 void Log::Debug(const TCHAR * context, const TCHAR * message, ...)
 {
-	BUILD_VA_BUFFER(message, buffer, 1024);
+	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_DEBUG, context, buffer);
 }
 
 void Log::Info(const TCHAR * context, const TCHAR * message, ...)
 {
-	BUILD_VA_BUFFER(message, buffer, 1024);
+	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_INFO, context, buffer);
 }
 
 void Log::Status(const TCHAR * context, const TCHAR * message, ...)
 {
-	BUILD_VA_BUFFER(message, buffer, 1024);
+	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_STATUS, context, buffer);
 }
 
 void Log::Warn(const TCHAR * context, const TCHAR * message, ...)
 {
-	BUILD_VA_BUFFER(message, buffer, 1024);
+	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_WARN, context, buffer);
 }
 
@@ -138,7 +138,7 @@ void Log::Error(const TCHAR * message)
 
 void Log::Error(const TCHAR * context, const TCHAR * message, ...)
 {
-	BUILD_VA_BUFFER(message, buffer, 1024);
+	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_ERROR, context, buffer);
 }
 
@@ -149,7 +149,7 @@ void Log::Critical(const TCHAR * message)
 
 void Log::Critical(const TCHAR * context, const TCHAR * message, ...)
 {
-	BUILD_VA_BUFFER(message, buffer, 1024);
+	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_CRITICAL, context, buffer);
 }
 

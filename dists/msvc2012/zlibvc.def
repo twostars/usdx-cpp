@@ -1,4 +1,4 @@
-LIBRARY
+LIBRARY	ZLIBWAPI
 ; zlib data compression and ZIP file I/O library
 
 EXPORTS

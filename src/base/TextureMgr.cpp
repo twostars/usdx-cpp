@@ -145,7 +145,7 @@ Texture TextureMgr::LoadTexture(
 	if (texSurface == NULL)
 	{
 		sLog.Error(_T("TextureMgr::LoadTexture"), _T("Could not load texture '%s' with type '%s'"),
-			texturePath->native().c_str(), Enum2String(textureType));
+			texturePath->native().c_str(), Enum2String(textureType).c_str());
 		return tex;
 	}
 

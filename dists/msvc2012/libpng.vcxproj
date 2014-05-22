@@ -28,8 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Library|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -67,7 +66,7 @@
     <LinkIncremental>false</LinkIncremental>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
-    <TargetName>$(ProjectName)16</TargetName>
+    <TargetName>$(ProjectName)16-16</TargetName>
     <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
     <IncludePath>$(SolutionDir)..\..\src\shared;$(ZLibSrcDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
@@ -75,7 +74,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Library|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <CustomBuildBeforeTargets />
-    <TargetName>$(ProjectName)16</TargetName>
+    <TargetName>$(ProjectName)16-16</TargetName>
     <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
     <IncludePath>$(SolutionDir)..\..\src\shared;$(ZLibSrcDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
@@ -84,7 +83,7 @@
     <LinkIncremental>false</LinkIncremental>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
-    <TargetName>$(ProjectName)16</TargetName>
+    <TargetName>$(ProjectName)16-16</TargetName>
     <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
     <IncludePath>$(SolutionDir)..\..\src\shared;$(ZLibSrcDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
@@ -92,7 +91,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Library|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <CustomBuildBeforeTargets />
-    <TargetName>$(ProjectName)16</TargetName>
+    <TargetName>$(ProjectName)16-16</TargetName>
     <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
     <IncludePath>$(SolutionDir)..\..\src\shared;$(ZLibSrcDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
@@ -121,18 +120,24 @@
       </ForcedIncludeFiles>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>zlibwapi.lib</AdditionalDependencies>
       <Version>16</Version>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
     </Link>
     <PreBuildEvent>
       <Command>if not exist "$(SolutionDir)..\..\src\shared\pnglibconf.h" (
     copy "$(SolutionDir)..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt" "$(SolutionDir)..\..\src\shared\pnglibconf.h"
 )</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>if exist "$(SolutionDir)..\..\build\$(Configuration)\libpng16-16.dll" (
+    copy "$(SolutionDir)..\..\build\$(Configuration)\libpng16-16.dll" "$(SolutionDir)..\..\game\libpng16-16.dll"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Library|Win32'">
     <ClCompile>
@@ -190,7 +195,6 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
@@ -198,12 +202,19 @@
       <Version>16</Version>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
     </Link>
     <PreBuildEvent>
       <Command>if not exist "$(SolutionDir)..\..\src\shared\pnglibconf.h" (
     copy "$(SolutionDir)..\..\src\lib\libpng\scripts\pnglibconf.h.prebuilt" "$(SolutionDir)..\..\src\shared\pnglibconf.h"
 )</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>if exist "$(SolutionDir)..\..\build\$(Configuration)\libpng16-16.dll" (
+    copy "$(SolutionDir)..\..\build\$(Configuration)\libpng16-16.dll" "$(SolutionDir)..\..\game\libpng16-16.dll"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Library|Win32'">
     <ClCompile>
@@ -264,6 +275,12 @@
     <ClCompile Include="..\..\src\lib\libpng\pngwrite.c" />
     <ClCompile Include="..\..\src\lib\libpng\pngwtran.c" />
     <ClCompile Include="..\..\src\lib\libpng\pngwutil.c" />
+    <ClCompile Include="..\..\src\shared\DllMain.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Library|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug Library|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\src\lib\libpng\scripts\pngwin.rc">

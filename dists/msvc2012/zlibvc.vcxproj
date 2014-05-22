@@ -59,7 +59,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
@@ -236,7 +236,6 @@
       <ProgramDatabaseFile>$(OutDir)zlibwapi.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)zlibwapi.map</MapFileName>
-      <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
@@ -247,6 +246,11 @@
       <Command>cd ..\..\src\lib\zlib\contrib\masmx86
 bld_ml32.bat</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>if exist "$(SolutionDir)..\..\build\$(Configuration)\zlibwapi.dll" (
+    copy "$(SolutionDir)..\..\build\$(Configuration)\zlibwapi.dll" "$(SolutionDir)..\..\game\zlibwapi.dll"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithoutAsm|Win32'">
     <Midl>
@@ -289,13 +293,17 @@ bld_ml32.bat</Command>
       <ProgramDatabaseFile>$(OutDir)zlibwapi.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)zlibwapi.map</MapFileName>
-      <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <ImportLibrary>$(OutDir)zlibwapi.lib</ImportLibrary>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
+    <PostBuildEvent>
+      <Command>if exist "$(SolutionDir)..\..\build\$(Configuration)\zlibwapi.dll" (
+    copy "$(SolutionDir)..\..\build\$(Configuration)\zlibwapi.dll" "$(SolutionDir)..\..\game\zlibwapi.dll"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -339,7 +347,6 @@ bld_ml32.bat</Command>
       <ProgramDatabaseFile>$(OutDir)zlibwapi.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)zlibwapi.map</MapFileName>
-      <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
@@ -350,6 +357,11 @@ bld_ml32.bat</Command>
       <Command>cd ..\..\src\lib\zlib\contrib\masmx86
 bld_ml32.bat</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>if exist "$(SolutionDir)..\..\build\$(Configuration)\zlibwapi.dll" (
+    copy "$(SolutionDir)..\..\build\$(Configuration)\zlibwapi.dll" "$(SolutionDir)..\..\game\zlibwapi.dll"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -637,14 +649,6 @@ bld_ml64.bat</Command>
     <ClCompile Include="..\..\src\lib\zlib\gzread.c" />
     <ClCompile Include="..\..\src\lib\zlib\gzwrite.c" />
     <ClCompile Include="..\..\src\lib\zlib\infback.c" />
-    <ClCompile Include="..\..\src\lib\zlib\masmx64\inffas8664.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseWithoutAsm|Itanium'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseWithoutAsm|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\src\lib\zlib\inffast.c" />
     <ClCompile Include="..\..\src\lib\zlib\inflate.c" />
     <ClCompile Include="..\..\src\lib\zlib\inftrees.c" />
@@ -669,23 +673,20 @@ bld_ml64.bat</Command>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ZLIB_INTERNAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\lib\zlib\zutil.c" />
+    <ClCompile Include="..\..\src\shared\DllMain.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\src\lib\zlib\contrib\vstudio\vc11\zlib.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\lib\zlib\contrib\vstudio\vc11\zlibvc.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\src\lib\zlibdeflate.h" />
-    <ClInclude Include="..\..\src\lib\zlib\infblock.h" />
-    <ClInclude Include="..\..\src\lib\zlib\infcodes.h" />
     <ClInclude Include="..\..\src\lib\zlib\inffast.h" />
     <ClInclude Include="..\..\src\lib\zlib\inftrees.h" />
-    <ClInclude Include="..\..\src\lib\zlib\infutil.h" />
     <ClInclude Include="..\..\src\lib\zlib\zconf.h" />
     <ClInclude Include="..\..\src\lib\zlib\zlib.h" />
     <ClInclude Include="..\..\src\lib\zlib\zutil.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="zlibvc.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

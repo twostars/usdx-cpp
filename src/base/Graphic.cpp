@@ -470,7 +470,8 @@ SDL_Surface * LoadSurfaceFromFile(const path& filename)
 	SDL_RWops * src = SDL_RWFromFP(fp, SDL_TRUE);
 
 	SDL_Surface * result = IMG_LoadTyped_RW(src, 1, ext);
-	g_surfaces.insert(result);
+	if (result != nullptr)
+		g_surfaces.insert(result);
 
 	return result;
 }
