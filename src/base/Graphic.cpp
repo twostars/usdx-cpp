@@ -296,7 +296,7 @@ void Initialize3D(const TCHAR * windowTitle)
 	Screen = SDL_CreateWindow(utf8Title, 
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		0, 0, 
+		resolution.first, resolution.second, 
 		flags
 	);
 	SDL_free(utf8Title);
@@ -784,7 +784,7 @@ void glColorRGBInt(const RGBA& color, float alpha, float intensity)
 void FreeGfxResources()
 {
 	for (SurfaceCollection::const_iterator itr = g_surfaces.begin(); itr != g_surfaces.end(); ++itr)
-		UnloadSurface(*itr);
+		SDL_FreeSurface(*itr);
 	g_surfaces.clear();
 
 	for (ScreenCollection::const_iterator itr = g_screenCollection.begin(); itr != g_screenCollection.end(); ++itr)
