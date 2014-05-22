@@ -32,6 +32,8 @@
 
 #include "Menu.h"
 
+#include "../screens/ScreenSing.h"
+
 initialiseSingleton(Display);
 
 extern CMDParams Params;
@@ -366,6 +368,45 @@ void Display::DrawDebugInformation()
 
 void Display::SetCursor()
 {
+	int cursor = 0;
+
+	// Hide cursor
+	if (CurrentScreen != UISing
+		|| CursorHiddenByScreen)
+	{
+		// Show SDL (OS) cursor in window mode even when mouse support is off
+		if ((sIni.Mouse == 0 && !Fullscreen)
+			// Show SDL (OS) cursor when hardware cursor is selected.
+			|| sIni.Mouse == 1)
+			cursor = 1;
+
+		if (sIni.Mouse != 2)
+			CursorHiddenByScreen = false;
+	}
+	else if (sIni.Mouse != 2)
+	{
+		CursorHiddenByScreen = true;
+	}
+
+	SDL_ShowCursor(cursor);
+
+	if (sIni.Mouse == 2)
+	{
+		// Show software cursor
+		if (CursorHiddenByScreen)
+		{
+			CursorHiddenByScreen = false;
+			CursorVisible = false;
+			CursorFade = false;
+		}
+		// Hide software cursor in sing screen
+		else if (CurrentScreen != UISing)
+		{
+			CursorHiddenByScreen = true;
+			CursorVisible = false;
+			CursorFade = false;
+		}
+	}
 }
 
 Display::~Display()
