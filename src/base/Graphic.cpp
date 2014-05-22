@@ -504,13 +504,13 @@ void LoadTextures()
 
 	TexNotePerfectStar	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NotePerfectStar")), TextureType::Transparent, 0);
 	TexNoteStar			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteStar")), TextureType::Transparent, 0xFFFFFFFF);
-	TexBall				= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteStar")), TextureType::Transparent, 0xFFFF00FF); // TODO: Verify colour is correct
-	TexLyricHelpBar		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Ball")), TextureType::Transparent, 0xFFFF00FF);
+	TexBall				= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Ball")), TextureType::Transparent, 0xFFFF00FF); // TODO: Verify colour is correct
+	TexLyricHelpBar		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("LyricHelpBar")), TextureType::Transparent, 0xFFFF00FF);
 
-	TexSelectSArrowL	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("LyricHelpBar")), TextureType::Transparent, 0);
-	TexSelectSArrowR	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Select_ArrowLeft")), TextureType::Transparent, 0);
+	TexSelectSArrowL	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Select_ArrowLeft")), TextureType::Transparent, 0);
+	TexSelectSArrowR	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Select_ArrowRight")), TextureType::Transparent, 0);
 
-	TexCursorUnpressed	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Select_ArrowRight")), TextureType::Transparent, 0);
+	TexCursorUnpressed	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Cursor")), TextureType::Transparent, 0);
 
 	const path* tex		= sSkins.GetTextureFileName(_T("Cursor_Pressed"));
 	if (tex == NULL)
