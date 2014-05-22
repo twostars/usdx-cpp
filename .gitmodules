@@ -34,6 +34,3 @@
 [submodule "src/lib/zlib"]
 	path = src/lib/zlib
 	url = https://github.com/twostars/zlib
-[submodule "src/lib/sqlite"]
-	path = src/lib/sqlite
-	url = http://repo.or.cz/r/sqlite.git
