@@ -352,6 +352,9 @@ void CheckEvents()
 				mouseDown = false;
 				mouseBtn = 0;
 			}
+
+			sDisplay.MoveCursor((float) event.button.x * RenderW * Screens / ScreenW,
+				(float) event.button.y * RenderH / ScreenH);
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:

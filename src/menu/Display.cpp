@@ -304,6 +304,17 @@ void Display::UpdateCursorFade()
 	}
 }
 
+void Display::MoveCursor(float x, float y)
+{
+	if (sIni.Mouse != 2)
+		return;
+
+	CursorX = x;
+	CursorY = y;
+
+	UpdateCursorFade();
+}
+
 void Display::OnMouseButton(bool pressed)
 {
 	if (sIni.Mouse != 2)

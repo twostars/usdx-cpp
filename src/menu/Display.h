@@ -44,7 +44,7 @@ public:
 	void SetCursor();
 
 	// called when cursor moves, positioning of software cursor
-	void MouseCursor(double x, double y);
+	void MoveCursor(float x, float y);
 
 	// called when left or right mouse button is pressed/released
 	void OnMouseButton(bool pressed);

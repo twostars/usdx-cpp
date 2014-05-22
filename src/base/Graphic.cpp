@@ -499,7 +499,6 @@ void LoadTextures()
 
 		TexScoreNoteBarLevelLightest[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Lightest")), TextureType::Colorized, Col);
 		TexScoreNoteBarRoundLightest[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Lightest_Round")), TextureType::Colorized, Col);
-
 	}
 
 	TexNotePerfectStar	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NotePerfectStar")), TextureType::Transparent, 0);
