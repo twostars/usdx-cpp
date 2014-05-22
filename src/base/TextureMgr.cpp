@@ -208,7 +208,11 @@ Texture TextureMgr::LoadTexture(
 	}
 	else
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, 4, newWidth, newHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, texSurface->pixels);
+#if defined(BIG_ENDIAN)
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, newWidth, newHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, texSurface->pixels);
+#else
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, newWidth, newHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texSurface->pixels);
+#endif
 	}
 
 	// Setup texture

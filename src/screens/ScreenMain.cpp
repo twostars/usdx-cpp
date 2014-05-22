@@ -27,23 +27,23 @@
 
 ScreenMain::ScreenMain() : Menu()
 {
-	const ThemeMain* main = sThemes.Main;
+	const ThemeMain* theme = sThemes.Main;
 
 	// Creation order needed because of LoadFromTheme() 
 	// & button collections.
 	// First we must setup custom texts & statics, then LoadFromTheme,
 	// and finally the buttons & select sliders.
-	TextDescription     = AddText(sThemes.Main->TextDescription);
-	TextDescriptionLong = AddText(sThemes.Main->TextDescriptionLong);
+	TextDescription     = AddText(theme->TextDescription);
+	TextDescriptionLong = AddText(theme->TextDescriptionLong);
 
-	LoadFromTheme(main);
+	LoadFromTheme(theme);
 
-	AddButton(main->ButtonSolo);
-	AddButton(main->ButtonMulti);
-	AddButton(main->ButtonStats);
-	AddButton(main->ButtonEditor);
-	AddButton(main->ButtonOptions);
-	AddButton(main->ButtonExit);
+	AddButton(theme->ButtonSolo);
+	AddButton(theme->ButtonMulti);
+	AddButton(theme->ButtonStats);
+	AddButton(theme->ButtonEditor);
+	AddButton(theme->ButtonOptions);
+	AddButton(theme->ButtonExit);
 
 	SetInteraction(0);
 }

@@ -64,6 +64,9 @@ void MenuText::Create(float x, float y, float w, uint32 style,
 	TextString = text;
 	Reflection = reflection;
 	ReflectionSpacing = reflectionSpacing;
+	Selected = false;
+	SelectBlink = false;
+	STicks = 0;
 }
 
 void MenuText::EnableBlinkingCursor()

@@ -80,11 +80,17 @@ void MenuButton::Create()
 	FadeTex.TexNum = 0;
 	FadeProgress   = 0.0f;
 	FadeText       = false;
-	SelectW        = DeselectW;
-	SelectH        = DeselectH;
+	FadeTexPos     = 0;
+	SelectW        = DeselectW = 0.0f;
+	SelectH        = DeselectH = 0.0f;
 
 	PosX           = 0.0f;
 	PosY           = 0.0f;
+
+	ReflectionSpacing = 0.0f;
+	DeselectReflectionSpacing = 0.0f;
+
+	FadeLastTick   = 0;
 
 	Parent         = 0;
 }

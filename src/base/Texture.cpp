@@ -80,6 +80,7 @@ void Texture::Draw()
 
 	glDisable(GL_DEPTH_TEST); 
 	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
 }
 
 void Texture::DrawReflection(float spacing)
