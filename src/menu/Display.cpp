@@ -322,10 +322,10 @@ void Display::DrawDebugInformation()
 	glDisable(GL_TEXTURE_2D);
 	glColor4f(1, 1, 1, 0.5);
 	glBegin(GL_QUADS);
-	glVertex2f(RenderH + 90, 44);
-	glVertex2f(RenderH + 90, 0);
-	glVertex2f(RenderW, 0);
-	glVertex2f(RenderW, 44);
+	glVertex2i(RenderH + 90, 44);
+	glVertex2i(RenderH + 90, 0);
+	glVertex2i(RenderW, 0);
+	glVertex2i(RenderW, 44);
 	glEnd();
 	glDisable(GL_BLEND);
 
