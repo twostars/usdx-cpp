@@ -75,4 +75,50 @@ extern PFNGLDRAWRANGEELEMENTSPROC	glDrawRangeElements;
 extern PFNGLTEXIMAGE3DPROC			glTexImage3D;
 extern PFNGLTEXSUBIMAGE3DPROC		glTexSubImage3D;
 
+// Screens
+extern class ScreenLoading			* UILoading;
+extern class ScreenMain				* UIMain;
+extern class ScreenName				* UIName;
+extern class ScreenLevel			* UILevel;
+extern class ScreenSong				* UISong;
+extern class ScreenSing				* UISing;
+extern class ScreenScore			* UIScore;
+extern class ScreenTop5				* UITop5;
+extern class ScreenOptions			* UIOptions;
+extern class ScreenOptionsGame		* UIOptionsGame;
+extern class ScreenOptionsGraphics	* UIOptionsGraphics;
+extern class ScreenOptionsSound		* UIOptionsSound;
+extern class ScreenOptionsLyrics	* UIOptionsLyrics;
+extern class ScreenOptionsThemes	* UIOptionsThemes;
+extern class ScreenOptionsRecord	* UIOptionsRecord;
+extern class ScreenOptionsAdvanced	* UIOptionsAdvanced;
+extern class ScreenEditSub			* UIEditSub;
+extern class ScreenEdit				* UIEdit;
+extern class ScreenEditConvert		* UIEditConvert;
+extern class ScreenEditHeader		* UIEditHeader;
+extern class ScreenOpen				* UIOpen;
+
+extern class ScreenSongMenu			* UISongMenu;
+extern class ScreenSongJumpTo		* UISongJumpTo;
+
+// Party screens
+extern class ScreenPartyNewRound	* UIPartyNewRound;
+extern class ScreenPartyScore		* UIPartyScore;
+extern class ScreenPartyWin			* UIPartyWin;
+extern class ScreenPartyOptions		* UIPartyOptions;
+extern class ScreenPartyPlayer		* UIPartyPlayer;
+extern class ScreenPartyRounds		* UIPartyRounds;
+
+// Stats screens
+extern class ScreenStatMain			* UIStatMain;
+extern class ScreenStatDetail		* UIStatDetail;
+
+// Credits Screen
+extern class ScreenCredits			* UICredits;
+
+// Popups
+extern class ScreenPopupCheck		* UIPopupCheck;
+extern class ScreenPopupError		* UIPopupError;
+extern class ScreenPopupInfo		* UIPopupInfo;
+
 #endif
