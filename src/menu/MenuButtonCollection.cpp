@@ -56,6 +56,8 @@ void MenuButtonCollection::SetSelect(bool value)
 
 void MenuButtonCollection::Draw()
 {
+	MenuButton::Draw();
+
 	// If fading is activated, fade child buttons
 	if (Fade)
 	{
