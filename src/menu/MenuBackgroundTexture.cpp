@@ -45,7 +45,7 @@ MenuBackgroundTexture::MenuBackgroundTexture(const ThemeBackground* themedSettin
 	}
 
 	Tex = sTextureMgr.GetTexture(texFilename, TextureType::Plain);
-	if (Tex.TexNum)
+	if (Tex.TexNum == 0)
 		throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not loaded."),
 		texFilename->native().c_str());
 }
