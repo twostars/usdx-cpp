@@ -283,7 +283,10 @@ void Initialize3D(const TCHAR * windowTitle)
 		resolution.first *= Screens; /* assume they're spread out horizontally... */
 
 	// Specify fullscreen mode
-	Fullscreen = (Params.ScreenMode != scmWindowed) || (sIni.FullScreen == Switch::On);
+	if (Params.ScreenMode != scmDefault)
+		Fullscreen = (Params.ScreenMode == scmFullscreen);
+	else
+		Fullscreen = (sIni.FullScreen == Switch::On);
 
 	sLog.Status(_T("Initialize3D"), _T("SDL_CreateWindow (%s)"), Fullscreen ? _T("fullscreen") : _T("windowed"));
 	uint32 flags = SDL_WINDOW_OPENGL;

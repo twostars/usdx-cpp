@@ -293,7 +293,7 @@ void Ini::LoadGraphicsSettings()
 	static const TCHAR * section = _T("Graphics");
 
 	Screens       = LOOKUP_ARRAY_INDEX(IScreens,        section, _T("Screens"), 0 /* 1 */);
-	FullScreen    = LOOKUP_ENUM_VALUE(Switch,           section, _T("FullScreen"), Params.ScreenMode == scmWindowed ? Switch::Off : Switch::On);
+	FullScreen    = LOOKUP_ENUM_VALUE(Switch,           section, _T("FullScreen"), Switch::On);
 	Depth         = LOOKUP_ARRAY_INDEX(IDepth,          section, _T("Depth"), 1 /* 32-bit */);
 
 	// TextureSize (aka CachedCoverSize)
