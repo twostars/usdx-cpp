@@ -54,9 +54,6 @@ int APIENTRY _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 	// blocks, so advise user what's going on.
 	if (attachedConsole)
 		_tprintf(_T("Please press any key to continue.\n"));
-	// produce equivalent blocking behaviour for our console.
-	else
-		system("pause");
 #endif
 
 	FreeConsole();
