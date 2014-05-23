@@ -26,17 +26,13 @@
 
 // Squares the specified number. 
 template <typename T>
-T sqr(T val) { return val * val; }
+INLINE T sqr(T val) { return val * val; }
 
 // Calculates log2 of number.  
-template <typename T>
-T Log2(T n)
-{  
-    return static_cast<T>(std::log(n) / std::log(2));  
-}
+INLINE double Log2(double n) { return std::log(n) / std::log(2.0); }
 
 // Rounds the specified number.
 template <typename T>
-T Round(T val) { return std::ceil(val - 0.5f); }
+INLINE T Round(T val) { return static_cast<T>(std::ceil(val - 0.5f)); }
 
 #endif
