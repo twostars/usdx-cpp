@@ -31,10 +31,10 @@ public:
 	{
 	}
 
-	void SetMessage(const tstring& format, va_list args)
+	void SetMessage(const TCHAR * format, va_list args)
 	{
-		TCHAR buffer[1024] = {0};
-		_vsntprintf(buffer, 1024, format.c_str(), args);
+		TCHAR buffer[1024];
+		_vsntprintf(buffer, 1024, format, args);
 		_message = buffer;
 	}
 
@@ -52,11 +52,11 @@ private:
 class name : public base \
 { \
 public: \
-	name(const tstring& message, ...) : base() \
+	name(const TCHAR * format, ...) : base() \
 	{ \
 		va_list args; \
-		va_start(args, message); \
-		SetMessage(message, args); \
+		va_start(args, format); \
+		SetMessage(format, args); \
 		va_end(args); \
 	} \
 }
