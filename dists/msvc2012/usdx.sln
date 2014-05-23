@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "usdx", "usdx.vcxproj", "{82A899DA-591E-4A3F-997C-0B276628766F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2BD5534E-00E2-4BEA-AC96-D9A92EA24696} = {2BD5534E-00E2-4BEA-AC96-D9A92EA24696}
@@ -34,6 +36,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libboost_filesystem", "libb
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libboost_system", "libboost_system.vcxproj", "{84CD7659-9A4A-4368-BA3D-550BDF875DDC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libjpeg", "..\..\src\lib\libjpeg\dists\msvc2012\jpeg.vcxproj", "{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -242,6 +246,27 @@ Global
 		{84CD7659-9A4A-4368-BA3D-550BDF875DDC}.Release-XP|Win32.ActiveCfg = Release|Win32
 		{84CD7659-9A4A-4368-BA3D-550BDF875DDC}.Release-XP|Win32.Build.0 = Release|Win32
 		{84CD7659-9A4A-4368-BA3D-550BDF875DDC}.Release-XP|x64.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Debug Library|Win32.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Debug Library|Win32.Build.0 = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Debug Library|x64.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Debug|Win32.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Debug|Win32.Build.0 = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Debug|x64.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Debug-XP|Win32.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Debug-XP|Win32.Build.0 = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Debug-XP|x64.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release Library|Win32.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release Library|Win32.Build.0 = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release Library|x64.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release|Win32.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release|Win32.Build.0 = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release|x64.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.ReleaseWithoutAsm|Win32.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.ReleaseWithoutAsm|Win32.Build.0 = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.ReleaseWithoutAsm|x64.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release-XP|Win32.ActiveCfg = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release-XP|Win32.Build.0 = Release|Win32
+		{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}.Release-XP|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

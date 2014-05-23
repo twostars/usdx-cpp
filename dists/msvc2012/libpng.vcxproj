@@ -134,8 +134,8 @@
 )</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>if exist "$(SolutionDir)..\..\build\$(Configuration)\libpng16-16.dll" (
-    copy "$(SolutionDir)..\..\build\$(Configuration)\libpng16-16.dll" "$(SolutionDir)..\..\game\libpng16-16.dll"
+      <Command>if exist "$(TargetPath)" (
+    copy "$(TargetPath)" "$(SolutionDir)..\..\game\$(TargetFileName)"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -211,8 +211,8 @@
 )</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>if exist "$(SolutionDir)..\..\build\$(Configuration)\libpng16-16.dll" (
-    copy "$(SolutionDir)..\..\build\$(Configuration)\libpng16-16.dll" "$(SolutionDir)..\..\game\libpng16-16.dll"
+      <Command>if exist "$(TargetPath)" (
+    copy "$(TargetPath)" "$(SolutionDir)..\..\game\$(TargetFileName)"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

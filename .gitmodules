@@ -34,3 +34,6 @@
 [submodule "src/lib/zlib"]
 	path = src/lib/zlib
 	url = https://github.com/twostars/zlib
+[submodule "src/lib/libjpeg/src"]
+	path = src/lib/libjpeg/src
+	url = https://github.com/twostars/libjpeg
