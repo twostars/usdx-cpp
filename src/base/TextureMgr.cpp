@@ -219,8 +219,8 @@ Texture TextureMgr::LoadTexture(
 	tex.W = (float) oldWidth;
 	tex.H = (float) oldHeight;
 	tex.TexNum = ActTex;
-	tex.TexW = (float)(oldWidth / newWidth);
-	tex.TexH = (float)(oldHeight / newHeight);
+	tex.TexW = (tex.W / newWidth);
+	tex.TexH = (tex.H / newHeight);
 	tex.Name = texturePath->native();
 
 	UnloadSurface(texSurface);
