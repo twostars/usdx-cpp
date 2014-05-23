@@ -37,3 +37,9 @@
 [submodule "src/lib/libjpeg/src"]
 	path = src/lib/libjpeg/src
 	url = https://github.com/twostars/libjpeg
+[submodule "src/lib/libsamplerate"]
+	path = src/lib/libsamplerate
+	url = https://github.com/twostars/libsamplerate
+[submodule "src/lib/portaudio"]
+	path = src/lib/portaudio
+	url = https://github.com/twostars/portaudio
