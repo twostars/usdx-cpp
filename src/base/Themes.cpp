@@ -866,7 +866,8 @@ void Themes::LoadThemeBasic(ThemeBasic * theme, const tstring& name)
 
 void Themes::LoadThemeBackground(ThemeBackground& themeBackground, const tstring& name)
 {
-	const TCHAR * section = (name + _T("Background")).c_str();
+	const tstring tmp = name + _T("Background");
+	const TCHAR * section = tmp.c_str();
 
 	themeBackground.BGType  = LOOKUP_ENUM_VALUE(BackgroundType, section, _T("Type"), BackgroundType::Auto);
 	themeBackground.Tex     = ini.GetValue(section, _T("Tex"), _T(""));
