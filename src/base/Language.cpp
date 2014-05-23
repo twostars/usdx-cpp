@@ -194,6 +194,12 @@ const tstring Language::Translate(const tstring& id)
 	return id;
 }
 
+const tstring Language::Translate(const TCHAR * id)
+{
+	tstring tmp = id;
+	return Translate(tmp);
+}
+
 void Language::TranslateOptionValues()
 {
 	// Translate language names.

@@ -96,6 +96,7 @@ void Texture::DrawReflection(float spacing)
 	glBindTexture(GL_TEXTURE_2D, TexNum);
 
 	glBegin(GL_QUADS);
+		// Top-left
 		glColorRGBInt(ColRGB, Alpha - 0.3f, Int);
 		glTexCoord2f(TexX1*TexW, TexY2*TexH);
 		glVertex3f(X, Y+H*ScaleH + spacing, Z);

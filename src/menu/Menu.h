@@ -182,7 +182,8 @@ public:
 	void FadeTo(Menu* screen, /*AudioPlaybackStream*/void * playbackStream); // TODO
 
 	// Popup hack
-	void CheckFadeTo(Menu* screen, const tstring& message);
+	void CheckFadeTo(Menu* screen, const TCHAR * message);
+	static void CheckFadeToCallback(bool value);
 
 	virtual bool DrawBG();
 	virtual bool DrawFG();

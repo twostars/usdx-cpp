@@ -33,6 +33,7 @@
 #include "Menu.h"
 
 #include "../screens/ScreenSing.h"
+#include "../screens/ScreenPopup.h"
 
 initialiseSingleton(Display);
 
@@ -133,6 +134,14 @@ bool Display::Draw()
 			// ePreDraw.CallHookChain(false);
 			CurrentScreen->Draw();
 			
+			// Popups
+			if (UIPopupError != NULL && UIPopupError->Visible)
+				UIPopupError->Draw();
+			else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
+				UIPopupInfo->Draw();
+			else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
+				UIPopupCheck->Draw();
+
 			FadeStartTime = 0;
 			FadeEnabled = (sIni.ScreenFade == Switch::On && !FadeFailed);
 

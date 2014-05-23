@@ -39,10 +39,14 @@
 #include "TextureMgr.h"
 
 #include "../menu/Display.h"
+#include "../menu/Menu.h"
+
+#include "../screens/ScreenPopup.h"
 
 extern boost::filesystem::path ScoreFile;
 
 void CheckEvents();
+void DoQuit();
 
 /* globals */
 // TODO: Clean these up
@@ -341,9 +345,7 @@ void CheckEvents()
 		switch (event.type)
 		{
 		case SDL_QUIT:
-			sDisplay.Fade = 0.0f;
-			sDisplay.NextScreenWithCheck = NULL;
-			sDisplay.CheckOK = true;
+			DoQuit();
 			break;
 
 		case SDL_MOUSEMOTION:
@@ -384,5 +386,45 @@ void CheckEvents()
 		case MAINTHREAD_EXEC_EVENT:
 			break;
 		}
+
+		switch (event.type)
+		{
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+			case SDL_MOUSEMOTION:
+				// Drop input when changing screens
+				if (sDisplay.NextScreen == NULL)
+				{
+					if (UIPopupError != NULL && UIPopupError->Visible)
+						keepGoing = UIPopupError->ParseMouse(mouseBtn, mouseDown, event.button.x, event.button.y);
+					else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
+						keepGoing = UIPopupInfo->ParseMouse(mouseBtn, mouseDown, event.button.x, event.button.y);
+					else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
+						keepGoing = UIPopupCheck->ParseMouse(mouseBtn, mouseDown, event.button.x, event.button.y);
+					else
+						keepGoing = sDisplay.CurrentScreen->ParseMouse(mouseBtn, mouseDown, event.button.x, event.button.y);
+
+					if (!keepGoing)
+						DoQuit();
+				}
+				break;
+		}
 	}
+}
+
+void DoQuit()
+{
+	// If question option is enabled then show exit popup
+	if (sIni.AskBeforeDel
+		// If the exit popup's already visible, assume we already want to close it.
+		// TODO: Remove this once the popup behaves correctly, as this really just allows it to be closed.
+		&& (UIPopupCheck != NULL && !UIPopupCheck->Visible))
+	{
+		sDisplay.CurrentScreen->CheckFadeTo(NULL, _T("MSG_QUIT_USDX"));
+		return;
+	}
+
+	sDisplay.Fade = 0;
+	sDisplay.NextScreenWithCheck = NULL;
+	sDisplay.CheckOK = true;
 }

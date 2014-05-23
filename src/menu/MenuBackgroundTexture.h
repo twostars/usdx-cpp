@@ -30,7 +30,7 @@ class Texture;
 class MenuBackgroundTexture : public MenuBackground
 {
 public:
-	MenuBackgroundTexture(const ThemeBackground * themedSettings);
+	MenuBackgroundTexture(const ThemeBackground * themedSettings, bool isOptionalTexture = false);
 	void Draw();
 
 protected:

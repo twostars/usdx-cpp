@@ -32,6 +32,8 @@
 #include "MenuBackgroundVideo.h"
 #include "MenuBackgroundFade.h"
 #include "Display.h"
+#include "../screens/ScreenPopup.h"
+#include "../screens/ScreenSing.h"
 
 static const TCHAR* s_supportedTextureExts[] =
 {
@@ -693,14 +695,31 @@ void Menu::FadeTo(Menu* screen, /*AudioPlaybackStream*/void * playbackStream)
 	// AudioPlayback.PlaySound(playbackStream);
 }
 
-void Menu::CheckFadeTo(Menu* screen, const tstring& message)
+void Menu::CheckFadeTo(Menu* screen, const TCHAR * message)
 {
 	sDisplay.Fade = 0.0f;
 	sDisplay.NextScreenWithCheck = screen;
 	sDisplay.CheckOK = false;
 
-	// TODO
+	UIPopupCheck->ShowPopup(message, &Menu::CheckFadeToCallback);
 	// ScreenPopupCheck.ShowPopup(message, OnSaveEncodingError, NULL, false);
+}
+
+void Menu::CheckFadeToCallback(bool value)
+{
+	sDisplay.CheckOK = value;
+	if (!value)
+	{
+		sDisplay.NextScreenWithCheck = NULL;
+		return;
+	}
+
+	// Hack to finish sing screen correctly on exit with Q shortcut
+	if (sDisplay.NextScreenWithCheck == NULL)
+	{
+		if (sDisplay.CurrentScreen == UISing)
+			UISing->Finish();
+	}
 }
 
 bool Menu::DrawBG()

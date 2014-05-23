@@ -21,3 +21,10 @@
  */
 
 #include "stdafx.h"
+#include "../menu/Menu.h"
+#include "ScreenSing.h"
+
+void ScreenSing::Finish()
+{
+	// TODO
+}

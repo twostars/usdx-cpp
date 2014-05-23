@@ -26,6 +26,8 @@
 
 class ScreenSing : public Menu
 {
+public:
+	void Finish();
 };
 
 #endif

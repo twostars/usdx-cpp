@@ -30,7 +30,7 @@
 const uint32 FADEINTIME = 1500; // Time the bg fades in
 
 MenuBackgroundFade::MenuBackgroundFade(const ThemeBackground * themedSettings)
-	: MenuBackgroundTexture(themedSettings)
+	: MenuBackgroundTexture(themedSettings, true)
 {
 	FadeTime = 0;
 

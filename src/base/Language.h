@@ -34,6 +34,7 @@ public:
 	void ChangeLanguage(const tstring& language);
 	void AddConst(const tstring& id, const tstring& text);
 	const tstring Translate(const tstring& id);
+	const tstring Translate(const TCHAR* id);
 	void TranslateOptionValues();
 	~Language();
 

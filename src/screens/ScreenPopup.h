@@ -26,10 +26,21 @@
 
 class ScreenPopup : public Menu
 {
+public:
+	ScreenPopup();
+
+	bool Visible;
 };
 
+typedef void(*PopupCallback)(bool);
 class ScreenPopupCheck : public ScreenPopup
 {
+public:
+	ScreenPopupCheck();
+	void ShowPopup(const TCHAR * message, PopupCallback callback);
+
+protected:
+	PopupCallback Callback;
 };
 
 class ScreenPopupError : public ScreenPopup

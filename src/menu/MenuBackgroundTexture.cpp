@@ -27,27 +27,32 @@
 #include "../base/TextureMgr.h"
 #include "MenuBackgroundTexture.h"
 
-MenuBackgroundTexture::MenuBackgroundTexture(const ThemeBackground* themedSettings)
+MenuBackgroundTexture::MenuBackgroundTexture(const ThemeBackground* themedSettings, bool isOptionalTexture /*= false*/)
 	: MenuBackground(themedSettings)
 {
-	if (themedSettings->Tex.empty())
-		throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): No texture name present."));
-
 	const boost::filesystem::path * texFilename;
 
 	Color = themedSettings->Color;
-	texFilename = sSkins.GetTextureFileName(themedSettings->Tex);
 
-	if (texFilename == NULL)
+	if (themedSettings->Tex.empty())
 	{
-		throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not found."), 
-			themedSettings->Tex.c_str());
+		if (!isOptionalTexture)
+			throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): No texture name present."));
 	}
+	else
+	{
+		texFilename = sSkins.GetTextureFileName(themedSettings->Tex);
+		if (texFilename == NULL)
+		{
+			throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not found."), 
+				themedSettings->Tex.c_str());
+		}
 
-	Tex = sTextureMgr.GetTexture(texFilename, TextureType::Plain);
-	if (Tex.TexNum == 0)
-		throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not loaded."),
-		texFilename->native().c_str());
+		Tex = sTextureMgr.GetTexture(texFilename, TextureType::Plain);
+		if (Tex.TexNum == 0)
+			throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not loaded."),
+			texFilename->native().c_str());
+	}
 }
 
 void MenuBackgroundTexture::Draw()
