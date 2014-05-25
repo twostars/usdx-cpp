@@ -115,11 +115,10 @@ void Menu::SetInteraction(int num)
 		break;
 
 	case itBCollectionChild:
-		assert(oldNum >= 0 && oldNum < (int) ButtonCollections.size());
 		assert(oldNum >= 0 && oldNum < (int) Buttons.size());
 		assert(newNum >= 0 && newNum < (int) Buttons.size());
 
-		ButtonCollections[oldNum].Selected = false;
+		Buttons[oldNum].Selected = false;
 
 		// deselect collection if next button is not from collection
 		if (newType != itButton 
@@ -763,7 +762,7 @@ bool Menu::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 // default mouse parsing: clicking generates return keypress,
 // mousewheel selects in select slide
 // override ParseMouse to customize
-bool Menu::ParseMouse(int mouseButton, bool btnDown, int x, int y)
+bool Menu::ParseMouse(int mouseButton, bool btnDown, float x, float y)
 {
 	bool result = true;
 
@@ -791,7 +790,7 @@ bool Menu::ParseMouse(int mouseButton, bool btnDown, int x, int y)
 	}
 	else
 	{
-		int nBut = InteractAt((float) x, (float) y);
+		int nBut = InteractAt(x, y);
 		if (nBut >= 0)
 		{
 			// Select on mouse-over

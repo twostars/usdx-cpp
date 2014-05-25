@@ -420,13 +420,13 @@ void CheckEvents()
 				if (sDisplay.NextScreen == NULL)
 				{
 					if (UIPopupError != NULL && UIPopupError->Visible)
-						keepGoing = UIPopupError->ParseMouse(mouseBtn, mouseDown, event.button.x, event.button.y);
+						keepGoing = UIPopupError->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
 					else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
-						keepGoing = UIPopupInfo->ParseMouse(mouseBtn, mouseDown, event.button.x, event.button.y);
+						keepGoing = UIPopupInfo->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
 					else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
-						keepGoing = UIPopupCheck->ParseMouse(mouseBtn, mouseDown, event.button.x, event.button.y);
+						keepGoing = UIPopupCheck->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
 					else
-						keepGoing = sDisplay.CurrentScreen->ParseMouse(mouseBtn, mouseDown, event.button.x, event.button.y);
+						keepGoing = sDisplay.CurrentScreen->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
 
 					if (!keepGoing)
 						DoQuit();
