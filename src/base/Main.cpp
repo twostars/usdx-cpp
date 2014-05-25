@@ -348,6 +348,30 @@ void CheckEvents()
 			DoQuit();
 			break;
 
+		case SDL_WINDOWEVENT:
+			switch (event.window.event)
+			{
+				case SDL_WINDOWEVENT_RESIZED:
+				case SDL_WINDOWEVENT_MAXIMIZED:
+					if (event.window.data1 == 0
+						|| event.window.data2 == 0)
+						return;
+
+					ScreenW = event.window.data1;
+					ScreenH = event.window.data2;
+
+					SDL_SetWindowSize(Screen, ScreenW, ScreenH);
+					
+					glViewport(0, 0, ScreenW, ScreenH);
+					glMatrixMode(GL_PROJECTION);
+					glLoadIdentity();
+					glOrtho(0, ScreenW, ScreenH, 0, -1, 1);
+					glMatrixMode(GL_MODELVIEW);
+					glLoadIdentity();
+					break;
+			}
+			break;
+
 		case SDL_MOUSEMOTION:
 			if (sIni.Mouse)
 			{
