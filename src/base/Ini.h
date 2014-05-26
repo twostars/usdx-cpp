@@ -65,9 +65,9 @@ public:
 	Ini();
 	void Load();
 	void Save();
+	void SaveToFile();
 	~Ini();
 
-private:
 	void LoadProfileSettings();
 	void SaveProfileSettings();
 	void LoadGameSettings();
@@ -90,6 +90,7 @@ private:
 	void LoadPaths();
 	void SavePaths();
 
+private:
 	void AddResolution(int width, int height);
 
 public:

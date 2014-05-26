@@ -185,8 +185,6 @@ void Ini::Load()
 
 void Ini::Save()
 {
-	const TCHAR * iniFile = GetConfigFile();
-
 	SaveProfileSettings();
 	SaveGameSettings();
 	SaveGraphicsSettings();
@@ -199,11 +197,17 @@ void Ini::Save()
 	SaveThemes();
 	SavePaths();
 
+	SaveToFile();
+}
+
+void Ini::SaveToFile()
+{
+	const TCHAR * iniFile = GetConfigFile();
 	SI_Error result = ini.SaveFile(iniFile);
 	if (result != SI_OK)
-		sLog.Error(_T("Ini::Save"), _T("Failed to save config to file: %s"), iniFile);
+		sLog.Error(_T("Ini::SaveToFile"), _T("Failed to save config to file: %s"), iniFile);
 	else
-		sLog.Status(_T("Ini::Save"), _T("Saved config to file: %s"), iniFile);
+		sLog.Status(_T("Ini::SaveToFile"), _T("Saved config to file: %s"), iniFile);
 }
 
 void Ini::LoadProfileSettings()

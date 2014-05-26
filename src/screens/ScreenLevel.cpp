@@ -21,3 +21,80 @@
  */
 
 #include "stdafx.h"
+#include "../base/Ini.h"
+#include "../base/Themes.h"
+#include "../base/Graphic.h"
+#include "../menu/Menu.h"
+#include "ScreenLevel.h"
+#include "ScreenMain.h"
+#include "ScreenName.h"
+#include "ScreenSong.h"
+
+ScreenLevel::ScreenLevel() : Menu()
+{
+	const ThemeLevel * theme = sThemes.Level;
+
+	LoadFromTheme(theme);
+
+	AddButton(theme->ButtonEasy);
+	AddButton(theme->ButtonMedium);
+	AddButton(theme->ButtonHard);
+
+	SetInteraction(0);
+}
+
+void ScreenLevel::OnShow()
+{
+	Menu::OnShow();
+
+	// Set the selected difficulty level.
+	SetInteraction(sIni.Difficulty);
+}
+
+bool ScreenLevel::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+{
+	if (!pressedDown)
+		return true;
+	
+	switch (pressedKey)
+	{
+		case SDLK_ESCAPE:
+		case SDLK_BACKSPACE:
+			// AudioPlayback.PlaySound(SoundLib.Back); // TODO
+			if (sIni.OnSongClick == eSongClickType::SelectPlayers)
+				FadeTo(UIMain);
+			else
+				FadeTo(UIName);
+			break;
+
+		case SDLK_RETURN:
+			sIni.Difficulty = (eDifficultyType) SelInteraction;
+			sIni.SaveGameSettings();
+			sIni.SaveToFile();
+			// AudioPlayback.PlaySound(SoundLib.Start); // TODO
+
+			// Set standard mode
+			// UISong->Mode = smNormal;
+			FadeTo(UISong);
+			break;
+
+		case SDLK_DOWN:
+		case SDLK_RIGHT:
+			InteractNext();
+			break;
+
+		case SDLK_UP:
+		case SDLK_LEFT:
+			InteractPrev();
+			break;
+	}
+
+	return true;
+}
+
+void ScreenLevel::SetAnimationProgress(float progress)
+{
+	Buttons[0].Tex.ScaleW = progress;
+	Buttons[1].Tex.ScaleW = progress;
+	Buttons[2].Tex.ScaleW = progress;
+}

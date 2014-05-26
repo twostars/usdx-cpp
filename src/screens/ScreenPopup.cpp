@@ -39,10 +39,6 @@ bool ScreenPopup::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool presse
 	{
 		switch (pressedKey)
 		{
-			// case SDLK_Q:
-			//	result = false;
-			//	break;
-
 			case SDLK_ESCAPE:
 			case SDLK_BACKSPACE:
 			case SDLK_RETURN:
@@ -104,10 +100,6 @@ bool ScreenPopupCheck::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool p
 	{
 		switch (pressedKey)
 		{
-			// case SDLK_Q:
-			//	result = false;
-			//	break;
-
 			case SDLK_ESCAPE:
 			case SDLK_BACKSPACE:
 				Visible = false;
