@@ -28,6 +28,7 @@ class ScreenPopup : public Menu
 {
 public:
 	ScreenPopup();
+	void ShowPopup(const tstring& msg);
 
 	bool Visible;
 };
@@ -45,10 +46,14 @@ protected:
 
 class ScreenPopupError : public ScreenPopup
 {
+public:
+	ScreenPopupError();
 };
 
-class ScreenPopupInfo : public ScreenPopup
+class ScreenPopupInfo : public ScreenPopupError
 {
+public:
+	ScreenPopupInfo();
 };
 
 #endif

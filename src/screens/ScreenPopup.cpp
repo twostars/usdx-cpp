@@ -31,6 +31,17 @@ ScreenPopup::ScreenPopup()
 {
 }
 
+void ScreenPopup::ShowPopup(const tstring& msg)
+{
+	SetInteraction(0);
+	Visible = true;
+	Background->OnShow();
+
+	Texts[0].TextString = msg;
+	Buttons[0].Visible = true;
+	Buttons[0].Texts[0].TextString = _T("OK"); // TODO: Fix language reference
+}
+
 ScreenPopupCheck::ScreenPopupCheck()
 	: ScreenPopup(), Callback(NULL)
 {
@@ -68,4 +79,24 @@ void ScreenPopupCheck::ShowPopup(const TCHAR * message, PopupCallback callback)
 	noButton.Texts[0].TextString = sLanguage.Translate(_T("SONG_MENU_NO"));
 
 	Background->OnShow();
+}
+
+ScreenPopupError::ScreenPopupError() : ScreenPopup()
+{
+	const ThemeErrorPopup * theme = sThemes.ErrorPopup;
+
+	AddText(theme->TextError);
+	LoadFromTheme(theme);
+	AddButton(theme->Button1);
+	if (Buttons[0].Texts.empty())
+		AddButtonText(14.0f, 20.0f, _T("Button 1"));
+
+	SetInteraction(0);
+
+	Texts[1].TextString = sLanguage.Translate(_T("MSG_ERROR_TITLE"));
+}
+
+ScreenPopupInfo::ScreenPopupInfo() : ScreenPopupError()
+{
+	Texts[1].TextString = sLanguage.Translate(_T("MSG_INFO_TITLE"));
 }

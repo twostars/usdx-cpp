@@ -76,7 +76,6 @@ bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 				{
 					// Solo button
 					case 0:
-						FadeTo(UILevel);
 						// if (Songs.SongList.Count >= 1)
 						// {
 
