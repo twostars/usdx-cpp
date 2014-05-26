@@ -46,7 +46,7 @@ static const int CHANNEL_OFF = 0;         // for field ChannelToPlayerMap
 static const int LATENCY_AUTODETECT = -1; // for field Latency
 
 #define LOOKUP_ENUM_VALUE(type, section, key, defaultValue) \
-	type::String2Enum(ini.GetValue(section, key, type::Enum2String(defaultValue).c_str()))
+	type::String2Enum(ini.GetValue(section, key, type::Enum2String(defaultValue).c_str()), defaultValue)
 
 #define LOOKUP_ARRAY_INDEX(arr, section, key, defaultOffset) \
 	GET_INDEX(arr, ini.GetValue(section, key, arr[defaultOffset].c_str()))
