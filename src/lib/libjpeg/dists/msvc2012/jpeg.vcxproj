@@ -89,7 +89,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)..\..\game\</OutDir>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
     <TargetName>$(ProjectName)-9</TargetName>
   </PropertyGroup>
@@ -113,9 +113,8 @@
       <ModuleDefinitionFile>LIBJPEG.DEF</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>if exist "$(TargetPath)" (
-    copy "$(TargetPath)" "$(SolutionDir)..\..\game\$(TargetFileName)"
-)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

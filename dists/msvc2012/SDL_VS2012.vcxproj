@@ -25,13 +25,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <PlatformToolset>v110_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -69,20 +69,20 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\..\game\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\..\game\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\..\src\lib\libsdl\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\src\lib\libsdl\src\lib\libsdl\include;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>..\..\src\lib\libsdl\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\src\lib\libsdl\src\lib\libsdl\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent />
@@ -94,9 +94,9 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);"$(DXSDK_DIR)\Include";</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HAVE_LIBC;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\..\src\lib\libsdl\include;%(AdditionalIncludeDirectories);"$(DXSDK_DIR)\Include";</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_LIBC;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -112,11 +112,13 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <CLRUnmanagedCodeCheck>false</CLRUnmanagedCodeCheck>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)\lib\x86</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -131,7 +133,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);"$(DXSDK_DIR)\Include";</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\lib\libsdl\include;%(AdditionalIncludeDirectories);"$(DXSDK_DIR)\Include";</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -165,8 +167,8 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <IntrinsicFunctions>false</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);"$(DXSDK_DIR)\Include";</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HAVE_LIBC;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\src\lib\libsdl\include;%(AdditionalIncludeDirectories);"$(DXSDK_DIR)\Include";</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_LIBC;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -185,12 +187,13 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)\lib\x86</AdditionalLibraryDirectories>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -206,7 +209,7 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <IntrinsicFunctions>false</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);"$(DXSDK_DIR)\Include";</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\lib\libsdl\include;%(AdditionalIncludeDirectories);"$(DXSDK_DIR)\Include";</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -284,6 +287,9 @@
     <ClInclude Include="..\..\src\lib\libsdl\include\SDL_video.h" />
     <ClInclude Include="..\..\src\lib\libsdl\include\SDL_gamecontroller.h" />
     <ClInclude Include="..\..\src\lib\libsdl\src\core\windows\SDL_windows.h" />
+    <ClInclude Include="..\..\src\lib\libsdl\src\dynapi\SDL_dynapi.h" />
+    <ClInclude Include="..\..\src\lib\libsdl\src\dynapi\SDL_dynapi_overrides.h" />
+    <ClInclude Include="..\..\src\lib\libsdl\src\dynapi\SDL_dynapi_procs.h" />
     <ClInclude Include="..\..\src\lib\libsdl\src\events\blank_cursor.h" />
     <ClInclude Include="..\..\src\lib\libsdl\src\events\default_cursor.h" />
     <ClInclude Include="..\..\src\lib\libsdl\src\audio\directsound\directx.h" />
@@ -294,6 +300,7 @@
     <ClInclude Include="..\..\src\lib\libsdl\src\libm\math_private.h" />
     <ClInclude Include="..\..\src\lib\libsdl\src\render\mmx.h" />
     <ClInclude Include="..\..\src\lib\libsdl\src\render\opengl\SDL_shaders_gl.h" />
+    <ClInclude Include="..\..\src\lib\libsdl\src\render\SDL_d3dmath.h" />
     <ClInclude Include="..\..\src\lib\libsdl\src\render\SDL_sysrender.h" />
     <ClInclude Include="..\..\src\lib\libsdl\src\render\SDL_yuv_sw_c.h" />
     <ClInclude Include="..\..\src\lib\libsdl\src\audio\SDL_audio_c.h" />
@@ -364,6 +371,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\lib\libsdl\src\core\windows\SDL_windows.c" />
+    <ClCompile Include="..\..\src\lib\libsdl\src\dynapi\SDL_dynapi.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\events\SDL_clipboardevents.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\events\SDL_gesture.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\events\SDL_touch.c" />
@@ -382,9 +390,11 @@
     <ClCompile Include="..\..\src\lib\libsdl\src\libm\s_floor.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\libm\s_scalbn.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\libm\s_sin.c" />
+    <ClCompile Include="..\..\src\lib\libsdl\src\render\direct3d11\SDL_render_d3d11.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\render\direct3d\SDL_render_d3d.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\render\opengl\SDL_render_gl.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\render\opengl\SDL_shaders_gl.c" />
+    <ClCompile Include="..\..\src\lib\libsdl\src\render\SDL_d3dmath.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\render\SDL_render.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\render\SDL_yuv_mmx.c" />
     <ClCompile Include="..\..\src\lib\libsdl\src\render\SDL_yuv_sw.c" />

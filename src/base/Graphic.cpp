@@ -623,15 +623,8 @@ SDL_Surface * LoadSurfaceFromFile(const path& filename)
 		return NULL;
 	}
 
-	FILE * fp = _tfopen(filename.c_str(), _T("rb"));
-	if (fp == NULL)
-	{
-		sLog.Error(_T("LoadSurfaceFromFile"), _T("fopen() failed on %s (file not found, or no permission to access)."), filename.native().c_str());
-		return NULL;
-	}
-
 	const char * ext = filename.extension().generic_string().c_str() + 1;
-	SDL_RWops * src = SDL_RWFromFP(fp, SDL_TRUE);
+	SDL_RWops * src = SDL_RWFromFile(filename.generic_string().c_str(), "rb");
 
 	SDL_Surface * result = IMG_LoadTyped_RW(src, 1, ext);
 	if (result != nullptr)
