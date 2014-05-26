@@ -21,3 +21,132 @@
  */
 
 #include "stdafx.h"
+#include "../base/Ini.h"
+#include "../base/Themes.h"
+#include "../base/Graphic.h"
+#include "../menu/Menu.h"
+#include "ScreenLevel.h"
+#include "ScreenMain.h"
+#include "ScreenName.h"
+#include "ScreenSing.h"
+#include "ScreenSong.h"
+
+ScreenName::ScreenName() : Menu(), GotoSingScreen(false)
+{
+	const ThemeName * theme = sThemes.Name;
+
+	LoadFromTheme(theme);
+	for (int player = 0; player < MAX_PLAYERS; player++)
+		AddButton(theme->ButtonPlayer[player]);
+
+	SetInteraction(0);
+}
+
+void ScreenName::OnShow()
+{
+	Menu::OnShow();
+
+	for (int player = 0; player < MAX_PLAYERS; player++)
+		Buttons[player].Texts[0].TextString = sIni.Name[player];
+
+	// TODO
+	// for (int player = 0; player < PlayersPlayer; player++)
+	// {
+	//	Buttons[player].Visible = true;
+	//	Buttons[player].Selectable = true;
+	// }
+
+	// for (int player = PlayersPlayer + 1; player < MAX_PLAYERS; player++)
+	// {
+	//	Buttons[player].Visible = false;
+	//	Buttons[player].Selectable = false;
+	// }
+}
+
+bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+{
+	if (!pressedDown)
+		return true;
+
+	// TODO: Verify this is correct. Not familiar with pascal's syntax so this might be wrong.
+	uint16 modState = SDL_GetModState()
+		& (KMOD_LSHIFT + KMOD_RSHIFT
+		+ KMOD_LCTRL + KMOD_RCTRL
+		+ KMOD_LALT + KMOD_RALT);
+
+	// TODO: Append name text to the selected button
+	// This needs to be handled differently because of SDL2
+	// if (IsPrintableChar(charCode))
+	// {
+	//	Buttons[SelInteraction].Texts[0].Text += (tstring) charCode;
+	//	return true;
+	// }
+
+	MenuButton& selectedButton = Buttons[SelInteraction];
+	if (pressedKey >= SDLK_F1 && pressedKey <= SDLK_F12)
+	{
+		size_t index = pressedKey - SDLK_F1;
+		tstring& buttonText = selectedButton.Texts[0].TextString;
+		// TODO: Verify this is correct.
+		if (modState == KMOD_ALT)
+			sIni.NameTemplate[index] = buttonText;
+		else
+			buttonText = sIni.NameTemplate[index];
+	}
+	else
+	{
+		switch (pressedKey)
+		{
+			case SDLK_BACKSPACE:
+				selectedButton.Texts[0].DeleteLastLetter();
+				break;
+
+			case SDLK_ESCAPE:
+				sIni.SaveProfileSettings();
+				sIni.SaveToFile();
+
+				// AudioPlayback.PlaySound(SoundLib.Back); // TODO
+
+				if (GotoSingScreen)
+					FadeTo(UISong);
+				else
+					FadeTo(UIMain);
+				break;
+
+			case SDLK_RETURN:
+				for (int player = 0; player < MAX_PLAYERS; player++)
+					sIni.Name[player] = Buttons[player].Texts[0].TextString;
+
+				sIni.SaveProfileSettings();
+				sIni.SaveToFile();
+
+				// AudioPlayback.PlaySound(SoundLib.Start);
+
+				if (GotoSingScreen)
+					FadeTo(UISing);
+				else
+					FadeTo(UILevel);
+
+				GotoSingScreen = false;
+				break;
+
+			case SDLK_DOWN:
+			case SDLK_RIGHT:
+				InteractNext();
+				break;
+
+			case SDLK_UP:
+			case SDLK_LEFT:
+				InteractPrev();
+				break;
+		}
+	}
+
+	return true;
+}
+
+void ScreenName::SetAnimationProgress(float progress)
+{
+	for (int player = 0; player < MAX_PLAYERS; player++)
+		Buttons[player].DeselectTexture.ScaleW = progress;
+}

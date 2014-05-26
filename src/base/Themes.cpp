@@ -1043,7 +1043,8 @@ void Themes::LoadThemeButton(ThemeButton& themeButton, const tstring& name, AThe
 
 	// Read button texts
 	int len = ini.GetLongValue(section, _T("Texts"), 0);
-	for (int i = 1; i < len; i++)
+	themeButton.Text.assign(len, ThemeText());
+	for (int i = 1; i <= len; i++)
 		LoadThemeText(themeButton.Text[i - 1], _T("Text") + boost::lexical_cast<tstring>(i));
 }
 

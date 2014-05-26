@@ -21,6 +21,7 @@
  */
 
 #include "stdafx.h"
+#include "../base/Ini.h"
 #include "../base/Graphic.h"
 #include "../base/Themes.h"
 #include "../base/Language.h"
@@ -31,6 +32,7 @@
 #include "../screens/ScreenPartyOptions.h"
 #include "../screens/ScreenOptions.h"
 #include "../screens/ScreenStatMain.h"
+#include "../screens/ScreenName.h"
 #include "ScreenMain.h"
 
 ScreenMain::ScreenMain() : Menu(), _userInteractionTicks(0)
@@ -79,20 +81,20 @@ bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 						// if (Songs.SongList.Count >= 1)
 						// {
 
-						//		if (sIni.Players >= 0) && (sIni.Players <= 3)
-						//			PlayersPlay = Ini.Players + 1;
+						//		if (sIni.Players >= 0 && sIni.Players <= 3)
+						//			PlayersPlay = sIni.Players + 1;
 
 						//		if (sIni.Players == 4)
 						//			PlayersPlay = 6;
 
-						//		if (sIni.OnSongClick == sSelectPlayer)
-						FadeTo(UILevel);
-						//		else
-						//		{
-						//			UIName->Goto_SingScreen = false;
-						//			FadeTo(UIName, /*SoundLib.Start*/ NULL); // TODO
-						//		}
-						//	}
+							if (sIni.OnSongClick == eSongClickType::SelectPlayers)
+								FadeTo(UILevel);
+							else
+							{
+							//	UIName->Goto_SingScreen = false;
+								FadeTo(UIName, /*SoundLib.Start*/ NULL); // TODO
+							}
+						// }
 						//	else // show error message
 						//		UIPopupError->ShowPopup(sLanguage.Translate(_T("ERROR_NO_SONGS")));
 						break;

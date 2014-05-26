@@ -26,6 +26,15 @@
 
 class ScreenName : public Menu
 {
+public:
+	ScreenName();
+
+	virtual void OnShow();
+	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	void SetAnimationProgress(float progress);
+
+	// If true then next screen in sing screen
+	bool GotoSingScreen;
 };
 
 #endif
