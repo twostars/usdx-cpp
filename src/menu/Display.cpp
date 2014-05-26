@@ -392,7 +392,6 @@ void Display::DrawCursor()
 			glColor4f(1, 1, 1, Alpha);
 			glEnable(GL_TEXTURE_2D);
 			glEnable(GL_BLEND);
-			glDisable(GL_DEPTH_TEST);
 
 			if (CursorPressed && TexCursorPressed.TexNum > 0)
 				glBindTexture(GL_TEXTURE_2D, TexCursorPressed.TexNum);
@@ -466,6 +465,16 @@ void Display::DrawDebugInformation()
 	glPrint(OSD_LastError);
 
 	glColor4f(1, 1, 1, 1);
+}
+
+bool Display::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+{
+	if (NextScreen != NULL)
+		return NextScreen->ParseInput(pressedKey, keyCode, pressedDown);
+	else if (CurrentScreen != NULL)
+		return CurrentScreen->ParseInput(pressedKey, keyCode, pressedDown);
+
+	return true;
 }
 
 void Display::SetCursor()

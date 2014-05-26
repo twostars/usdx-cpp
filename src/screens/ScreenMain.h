@@ -28,6 +28,7 @@ class ScreenMain : public Menu
 {
 public:
 	ScreenMain();
+	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 
 	int TextDescription;
 	int TextDescriptionLong;

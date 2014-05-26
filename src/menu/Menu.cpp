@@ -813,6 +813,10 @@ bool Menu::ParseMouse(int mouseButton, bool btnDown, float x, float y)
 						assert(interact.Num >= 0 && interact.Num < (int) SelectSlides.size());
 						action = SelectSlides[interact.Num].OnClick((float) x, (float) y);
 					}
+					else
+					{
+						action = maReturn;
+					}
 					break;
 
 				/*

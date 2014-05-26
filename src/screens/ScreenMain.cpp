@@ -21,11 +21,19 @@
  */
 
 #include "stdafx.h"
+#include "../base/Graphic.h"
 #include "../base/Themes.h"
+#include "../base/Language.h"
 #include "../menu/Menu.h"
+#include "../screens/ScreenEdit.h"
+#include "../screens/ScreenPopup.h"
+#include "../screens/ScreenLevel.h"
+#include "../screens/ScreenPartyOptions.h"
+#include "../screens/ScreenOptions.h"
+#include "../screens/ScreenStatMain.h"
 #include "ScreenMain.h"
 
-ScreenMain::ScreenMain() : Menu()
+ScreenMain::ScreenMain() : Menu(), _userInteractionTicks(0)
 {
 	const ThemeMain* theme = sThemes.Main;
 
@@ -46,4 +54,82 @@ ScreenMain::ScreenMain() : Menu()
 	AddButton(theme->ButtonExit);
 
 	SetInteraction(0);
+}
+
+bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+{
+	_userInteractionTicks = SDL_GetTicks();
+
+	if (pressedDown)
+	{
+		// TODO: Special key combinations 
+		// Q->quit, ALT+C->Credits, M->party options/"modes", S->Stats, E->Edit
+
+		switch (pressedKey)
+		{
+			case SDLK_ESCAPE:
+			case SDLK_BACKSPACE:
+				return false;
+
+			case SDLK_RETURN:
+				switch (SelInteraction)
+				{
+					// Solo button
+					case 0:
+						FadeTo(UILevel);
+						// if (Songs.SongList.Count >= 1)
+						// {
+
+						//		if (sIni.Players >= 0) && (sIni.Players <= 3)
+						//			PlayersPlay = Ini.Players + 1;
+
+						//		if (sIni.Players == 4)
+						//			PlayersPlay = 6;
+
+						//		if (sIni.OnSongClick == sSelectPlayer)
+						FadeTo(UILevel);
+						//		else
+						//		{
+						//			UIName->Goto_SingScreen = false;
+						//			FadeTo(UIName, /*SoundLib.Start*/ NULL); // TODO
+						//		}
+						//	}
+						//	else // show error message
+						//		UIPopupError->ShowPopup(sLanguage.Translate(_T("ERROR_NO_SONGS")));
+						break;
+
+					// Multi
+					case 1:
+						// if (Songs.SongList.Count >= 1)
+						FadeTo(UIPartyOptions, /*SoundLib.Start*/ NULL); // TODO
+						break;
+
+					// Stats
+					case 2:
+						FadeTo(UIStatMain, /*SoundLib.Start*/ NULL); // TODO
+						break;
+
+					// Editor:
+					case 3:
+		//#if defined(UseMIDIPort)
+						FadeTo(UIEdit, /*SoundLib.Start*/ NULL); // TODO
+		//#else
+		//				UIPopupError->ShowPopup(sLanguage.Translate(_T("ERROR_NO_EDITOR")));
+		//#endif
+						break;
+
+					// Options
+					case 4:
+						FadeTo(UIOptions, /*SoundLib.Start*/ NULL); // TODO
+						break;
+
+					// Exit
+					case 5:
+						return false;
+						}
+				break;
+		}
+	}
+
+	return true;
 }

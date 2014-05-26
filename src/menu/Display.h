@@ -38,7 +38,7 @@ public:
 	void DrawCursor();
 
 	// calls ParseInput of cur or next Screen if assigned
-	bool ParseInput(/* TODO */);
+	bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 
 	// sets SDL_ShowCursor depending on options set in Ini
 	void SetCursor();

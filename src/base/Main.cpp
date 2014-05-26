@@ -399,6 +399,20 @@ void CheckEvents()
 			break;
 
 		case SDL_KEYDOWN:
+			// If there is a visible popup then let it handle input instead of the underlying screen
+			// should be done in a way to be sure the topmost popup has preference (maybe error, then check)
+			if (UIPopupError != NULL && UIPopupError->Visible)
+				keepGoing = UIPopupError->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
+			else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
+				keepGoing = UIPopupInfo->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
+			else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
+				keepGoing = UIPopupCheck->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
+			else
+				keepGoing = sDisplay.ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
+
+			// if screen wants to exist
+			if (!keepGoing)
+				DoQuit();
 			break;
 
 		case SDL_JOYAXISMOTION:

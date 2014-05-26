@@ -442,10 +442,6 @@ void LoadLoadingScreen()
 	UILoading->OnShow();
 
 	sDisplay.CurrentScreen = UILoading;
-	SwapBuffers();
-
-	// Is this necessary? Original code does this, but Display::Draw() should call it appropriately..
-	// UILoading->Draw();
 
 	sDisplay.Draw();
 	SwapBuffers();
