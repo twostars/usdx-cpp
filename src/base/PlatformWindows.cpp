@@ -73,9 +73,6 @@ bool Platform::TerminateIfAlreadyRunning(const TCHAR * windowTitle)
 	if (dialogResult != IDYES)
 		return true;
 
-	// TODO: Allow for multiple instances with different window titles.
-	// i.e. <title> Instance <number>
-
 	// No other instance exists.
 	return false;
 }

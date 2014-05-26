@@ -515,7 +515,7 @@ void LoadTextures()
 	TexCursorUnpressed	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Cursor")), TextureType::Transparent, 0);
 
 	const path* tex		= sSkins.GetTextureFileName(_T("Cursor_Pressed"));
-	if (tex == NULL)
+	if (tex != NULL)
 		TexCursorPressed = sTextureMgr.LoadTexture(tex, TextureType::Transparent, 0);
 	else
 		TexCursorPressed.TexNum = 0;
