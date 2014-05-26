@@ -282,6 +282,18 @@ void Initialize3D(const TCHAR * windowTitle)
 	if (Screens > 1)
 		resolution.first *= Screens; /* assume they're spread out horizontally... */
 
+	// Set minimum color component sizes
+	// Note: do not request an alpha plane with SDL_GL_ALPHA_SIZE here as
+	// some cards/implementations do not support them (SDL_SetVideoMode fails).
+	// We do not the alpha plane anymore since offscreen rendering in back-buffer
+	// was removed.
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,      5);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,    5);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,     5);
+
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,    16); // Z-Buffer depth
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,  1);
+
 	// Specify fullscreen mode
 	if (Params.ScreenMode != scmDefault)
 		Fullscreen = (Params.ScreenMode == scmFullscreen);
@@ -313,23 +325,11 @@ void Initialize3D(const TCHAR * windowTitle)
 	// Create an OpenGL context
 	GLContext = SDL_GL_CreateContext(Screen);
 
-	// Set minimum color component sizes
-	// Note: do not request an alpha plane with SDL_GL_ALPHA_SIZE here as
-	// some cards/implementations do not support them (SDL_SetVideoMode fails).
-	// We do not the alpha plane anymore since offscreen rendering in back-buffer
-	// was removed.
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,      5);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,    5);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,     5);
-
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,    16); // Z-Buffer depth
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,  1);
+	// Load extensions
+	LoadOpenGLExtensions();
 
 	// Hide cursor
 	SDL_ShowCursor(0);
-
-	// Load extensions
-	LoadOpenGLExtensions();
 
 	ScreenW = resolution.first;
 	ScreenH = resolution.second;
