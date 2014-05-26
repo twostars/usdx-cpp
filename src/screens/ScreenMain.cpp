@@ -125,7 +125,7 @@ bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 					// Exit
 					case 5:
 						return false;
-						}
+					}
 				break;
 		}
 	}

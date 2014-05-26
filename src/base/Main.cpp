@@ -337,7 +337,7 @@ void usdxMainLoop()
 void CheckEvents()
 {
 	SDL_Event event;
-	bool mouseDown, keepGoing;
+	bool mouseDown;
 	int mouseBtn;
 
 	while (SDL_PollEvent(&event))
@@ -402,17 +402,17 @@ void CheckEvents()
 			// If there is a visible popup then let it handle input instead of the underlying screen
 			// should be done in a way to be sure the topmost popup has preference (maybe error, then check)
 			if (UIPopupError != NULL && UIPopupError->Visible)
-				keepGoing = UIPopupError->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
+				UIPopupError->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
 			else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
-				keepGoing = UIPopupInfo->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
+				UIPopupInfo->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
 			else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
-				keepGoing = UIPopupCheck->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
+				UIPopupCheck->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
 			else
-				keepGoing = sDisplay.ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
-
-			// if screen wants to exist
-			if (!keepGoing)
-				DoQuit();
+			{
+				// if screen wants to exit
+				if (!sDisplay.ParseInput(event.key.keysym.sym, event.key.keysym.sym, true))
+					DoQuit();
+			}
 			break;
 
 		case SDL_JOYAXISMOTION:
@@ -434,16 +434,16 @@ void CheckEvents()
 				if (sDisplay.NextScreen == NULL)
 				{
 					if (UIPopupError != NULL && UIPopupError->Visible)
-						keepGoing = UIPopupError->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
+						UIPopupError->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
 					else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
-						keepGoing = UIPopupInfo->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
+						UIPopupInfo->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
 					else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
-						keepGoing = UIPopupCheck->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
+						UIPopupCheck->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
 					else
-						keepGoing = sDisplay.CurrentScreen->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
-
-					if (!keepGoing)
-						DoQuit();
+					{
+						if (!sDisplay.CurrentScreen->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y))
+							DoQuit();
+					}
 				}
 				break;
 		}
@@ -453,10 +453,7 @@ void CheckEvents()
 void DoQuit()
 {
 	// If question option is enabled then show exit popup
-	if (sIni.AskBeforeDel
-		// If the exit popup's already visible, assume we already want to close it.
-		// TODO: Remove this once the popup behaves correctly, as this really just allows it to be closed.
-		&& (UIPopupCheck != NULL && !UIPopupCheck->Visible))
+	if (sIni.AskBeforeDel)
 	{
 		sDisplay.CurrentScreen->CheckFadeTo(NULL, _T("MSG_QUIT_USDX"));
 		return;

@@ -31,6 +31,40 @@ ScreenPopup::ScreenPopup()
 {
 }
 
+bool ScreenPopup::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+{
+	bool result = true;
+
+	if (pressedDown)
+	{
+		switch (pressedKey)
+		{
+			// case SDLK_Q:
+			//	result = false;
+			//	break;
+
+			case SDLK_ESCAPE:
+			case SDLK_BACKSPACE:
+			case SDLK_RETURN:
+				Visible = false;
+				result = false;
+				break;
+
+			case SDLK_DOWN:
+			case SDLK_RIGHT:
+				InteractNext();
+				break;
+
+			case SDLK_UP:
+			case SDLK_LEFT:
+				InteractPrev();
+				break;
+		}
+	}
+
+	return result;
+}
+
 void ScreenPopup::ShowPopup(const tstring& msg)
 {
 	SetInteraction(0);
@@ -60,6 +94,49 @@ ScreenPopupCheck::ScreenPopupCheck()
 		AddButtonText(14.0f, 20.0f, _T("Button 2"));
 
 	SetInteraction(0);
+}
+
+bool ScreenPopupCheck::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+{
+	bool result = true, value = false;
+
+	if (pressedDown)
+	{
+		switch (pressedKey)
+		{
+			// case SDLK_Q:
+			//	result = false;
+			//	break;
+
+			case SDLK_ESCAPE:
+			case SDLK_BACKSPACE:
+				Visible = false;
+				result = false;
+				break;
+
+			case SDLK_RETURN:
+				Visible = false;
+				result = false;
+				value = (SelInteraction == 0);
+				break;
+
+			case SDLK_DOWN:
+			case SDLK_RIGHT:
+				InteractNext();
+				break;
+
+			case SDLK_UP:
+			case SDLK_LEFT:
+				InteractPrev();
+				break;
+		}
+	}
+
+	if (!result
+		&& Callback != NULL)
+		Callback(value);
+
+	return result;
 }
 
 void ScreenPopupCheck::ShowPopup(const TCHAR * message, PopupCallback callback)

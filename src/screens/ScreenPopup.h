@@ -28,6 +28,7 @@ class ScreenPopup : public Menu
 {
 public:
 	ScreenPopup();
+	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	void ShowPopup(const tstring& msg);
 
 	bool Visible;
@@ -38,6 +39,7 @@ class ScreenPopupCheck : public ScreenPopup
 {
 public:
 	ScreenPopupCheck();
+	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	void ShowPopup(const TCHAR * message, PopupCallback callback);
 
 protected:
