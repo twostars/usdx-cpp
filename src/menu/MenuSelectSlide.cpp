@@ -51,7 +51,7 @@ MenuSelectSlide::MenuSelectSlide() : pData(NULL)
 	Lines = 0;
 }
 
-void MenuSelectSlide::SetSelect(bool value)
+void MenuSelectSlide::SetSelected(bool value)
 {
 	Selected = value;
 

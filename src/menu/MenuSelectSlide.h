@@ -30,7 +30,7 @@ class MenuSelectSlide
 public:
 	MenuSelectSlide();
 
-	void SetSelect(bool value);
+	void SetSelected(bool value);
 	void SetSelectOpt(int value);
 	INLINE int GetSelectOpt() { return SelectOptInt; }
 
@@ -45,7 +45,7 @@ public:
 	MouseOverRect GetMouseOverRect();
 	MouseClickAction OnClick(float x, float y);
 
-public:
+protected:
 	bool Selected;
 
 private:

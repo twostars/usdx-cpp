@@ -79,7 +79,10 @@ public:
 	bool Reflection;
 	float ReflectionSpacing;
 
+protected:
 	bool Selected;
+
+public:
 	tstring TextString;
 	std::vector<tstring> TextTiles;
 

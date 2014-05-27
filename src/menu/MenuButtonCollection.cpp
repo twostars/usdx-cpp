@@ -39,8 +39,10 @@ MenuButtonCollection::MenuButtonCollection(const Texture& tex, const Texture& de
 {
 }
 
-void MenuButtonCollection::SetSelect(bool value)
+void MenuButtonCollection::SetSelected(bool value)
 {
+	MenuButton::SetSelected(value);
+
 	if (!Fade)
 	{
 		assert(ScreenButton != NULL);
@@ -56,6 +58,9 @@ void MenuButtonCollection::SetSelect(bool value)
 
 void MenuButtonCollection::Draw()
 {
+	if (!Visible)
+		return;
+
 	MenuButton::Draw();
 
 	// If fading is activated, fade child buttons
@@ -63,16 +68,15 @@ void MenuButtonCollection::Draw()
 	{
 		assert(ScreenButton != NULL);
 
-		float fadeProgress = 0.0f;
-		if (FadeProgress >= 0.5f)
-			fadeProgress = (FadeProgress - 0.666f) * 3;
+		bool isFading = (FadeProgress >= 0.5f);
+		float currentFadeProgress = (FadeProgress - 0.666f) * 3;
 
 		for (std::vector<MenuButton>::iterator itr = ScreenButton->begin(); itr != ScreenButton->end(); ++itr)
 		{
 			if ((*itr).Parent != Parent)
 				continue;
 
-			if (FadeProgress < 0.5f)
+			if (!isFading)
 			{
 				(*itr).Visible = Selected;
 				for (std::vector<MenuText>::iterator textItr = (*itr).Texts.begin(); textItr != (*itr).Texts.end(); ++textItr)
@@ -80,9 +84,9 @@ void MenuButtonCollection::Draw()
 			}
 			else
 			{
-				(*itr).Tex.Alpha = fadeProgress;
+				(*itr).Tex.Alpha = currentFadeProgress;
 				for (std::vector<MenuText>::iterator textItr = (*itr).Texts.begin(); textItr != (*itr).Texts.end(); ++textItr)
-					(*textItr).Alpha = fadeProgress;
+					(*textItr).Alpha = currentFadeProgress;
 			}
 		}
 	}

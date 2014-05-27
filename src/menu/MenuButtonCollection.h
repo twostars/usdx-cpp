@@ -32,7 +32,7 @@ public:
 	MenuButtonCollection(const Texture& tex);
 	MenuButtonCollection(const Texture& tex, const Texture& deselectTexture);
 
-	void SetSelect(bool value);
+	void SetSelected(bool value);
 	void Draw();
 
 	uint8 FirstChild;

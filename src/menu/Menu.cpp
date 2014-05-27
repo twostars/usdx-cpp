@@ -101,24 +101,24 @@ void Menu::SetInteraction(int num)
 	{
 	case itButton:
 		assert(oldNum >= 0 && oldNum < (int) Buttons.size());
-		Buttons[oldNum].Selected = false;
+		Buttons[oldNum].SetSelected(false);
 		break;
 
 	case itText:
 		assert(oldNum >= 0 && oldNum < (int) Texts.size());
-		Texts[oldNum].Selected = false;
+		Texts[oldNum].SetSelected(false);
 		break;
 
 	case itSelectSlide:
 		assert(oldNum >= 0 && oldNum < (int) SelectSlides.size());
-		SelectSlides[oldNum].Selected = false;
+		SelectSlides[oldNum].SetSelected(false);
 		break;
 
 	case itBCollectionChild:
 		assert(oldNum >= 0 && oldNum < (int) Buttons.size());
 		assert(newNum >= 0 && newNum < (int) Buttons.size());
 
-		Buttons[oldNum].Selected = false;
+		Buttons[oldNum].SetSelected(false);
 
 		// deselect collection if next button is not from collection
 		if (newType != itButton 
@@ -126,7 +126,7 @@ void Menu::SetInteraction(int num)
 		{
 			index = Buttons[oldNum].Parent - 1;
 			assert(index >= 0 && index < (int) ButtonCollections.size());
-			ButtonCollections[index].Selected = false;
+			ButtonCollections[index].SetSelected(false);
 		}
 		break;
 	}
@@ -137,24 +137,24 @@ void Menu::SetInteraction(int num)
 	{
 	case itButton:
 		assert(newNum >= 0 && newNum < (int) Buttons.size());
-		Buttons[newNum].Selected = true;
+		Buttons[newNum].SetSelected(true);
 		break;
 
 	case itText:
 		assert(newNum >= 0 && newNum < (int) Texts.size());
-		Texts[newNum].Selected = true;
+		Texts[newNum].SetSelected(true);
 		break;
 
 	case itSelectSlide:
 		assert(newNum >= 0 && newNum < (int) SelectSlides.size());
-		SelectSlides[newNum].Selected = true;
+		SelectSlides[newNum].SetSelected(true);
 		break;
 
 	case itBCollectionChild:
 		assert(newNum >= 0 && newNum < (int) Buttons.size());
 		index = Buttons[newNum].Parent - 1;
 		assert(index >= 0 && index < (int) ButtonCollections.size());
-		ButtonCollections[index].Selected = true;
+		ButtonCollections[index].SetSelected(true);
 		break;
 	}
 
@@ -247,7 +247,7 @@ void Menu::AddButtonCollection(const ThemeButtonCollection& collection, uint8 nu
 	dst.Tex.TexX2 = 1;
 	dst.Tex.TexY2 = 1;
 
-	dst.SetSelect(false);
+	dst.SetSelected(false);
 
 	dst.Reflection = collection.Style.Reflection;
 	dst.ReflectionSpacing = collection.Style.ReflectionSpacing;
@@ -596,7 +596,7 @@ int Menu::AddButton(float x, float y, float w, float h,
 	button.Tex.TexY1 = 0;
 	button.Tex.TexX2 = 1;
 	button.Tex.TexY2 = 1;
-	button.SetSelect(false);
+	button.SetSelected(false);
 
 	button.Reflection = reflection;
 	button.ReflectionSpacing = reflectionSpacing;
@@ -665,8 +665,9 @@ void Menu::AddButtonText(MenuButton& button,
 int Menu::AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, uint32 * pData,
 	const tstring* values, size_t valueCount)
 {
-	int result = AddSelectSlide(themeSelectSlide.X, themeSelectSlide.Y, themeSelectSlide.W, themeSelectSlide.H,
-		themeSelectSlide.SkipX, themeSelectSlide.SBGW,
+	int result = AddSelectSlide((float) themeSelectSlide.X, (float) themeSelectSlide.Y, 
+		(float) themeSelectSlide.W, (float) themeSelectSlide.H,
+		(float) themeSelectSlide.SkipX, (float) themeSelectSlide.SBGW,
 		themeSelectSlide.ColRGB, themeSelectSlide.Int,
 		themeSelectSlide.DColRGB, themeSelectSlide.DInt,
 		themeSelectSlide.TColRGB, themeSelectSlide.TInt,
@@ -687,7 +688,7 @@ int Menu::AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, uint32 * pDat
 
 	MenuSelectSlide& slide = SelectSlides[SelectSlides.size() - 1];
 
-	slide.Text.Size = themeSelectSlide.TextSize;
+	slide.Text.Size = (float) themeSelectSlide.TextSize;
 	slide.Tex.Z = themeSelectSlide.Z;
 	slide.TexSBG.Z = themeSelectSlide.Z;
 	slide.Tex_SelectS_ArrowL.Z = themeSelectSlide.Z;
@@ -810,7 +811,7 @@ int Menu::AddSelectSlide(float x, float y, float w, float h, float skipX, float 
 	slide.SetSelectOpt(*pData);
 
 	// Disables default selection
-	slide.SetSelect(false);
+	slide.SetSelected(false);
 
 	// Adds interaction
 	AddInteraction(InteractionType::itSelectSlide, slideNo);
@@ -1016,7 +1017,7 @@ bool Menu::ParseMouse(int mouseButton, bool btnDown, float x, float y)
 			{
 				assert(nBut < (int) ButtonCollections.size());
 				MenuButtonCollection& collection = ButtonCollections[nBut];
-				if (!collection.Selected)
+				if (!collection.IsSelected())
 				{
 					nBut = collection.FirstChild - 1;
 					if (nBut != SelInteraction)

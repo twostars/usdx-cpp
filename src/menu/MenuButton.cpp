@@ -134,7 +134,7 @@ void MenuButton::SetH(float value)
 		Tex.W = (Selected ? SelectH : DeselectH);
 }
 
-void MenuButton::SetSelect(bool value)
+void MenuButton::SetSelected(bool value)
 {
 	Selected = value;
 

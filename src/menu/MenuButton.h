@@ -42,7 +42,8 @@ public:
 	void SetW(float value);
 	void SetH(float value);
 
-	virtual void SetSelect(bool value);
+	bool IsSelected() { return Selected; }
+	virtual void SetSelected(bool value);
 	virtual void Draw();
 
 	MouseOverRect GetMouseOverRect();
@@ -82,8 +83,10 @@ public:
 	float SelectW;
 	float SelectH;
 
+protected:
 	bool Selected;
 
+public:
 	float FadeProgress;
 	uint32 FadeLastTick;
 
