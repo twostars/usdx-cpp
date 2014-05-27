@@ -44,38 +44,38 @@ MenuSelectSlide::MenuSelectSlide()
 
 	Int = DInt = TInt = TDInt = 1.0f;
 	SBGInt = SBGDInt = STInt = STDInt = 1.0f;
+
+	ShowArrows = false;
+	OneItemOnly = false;
+
+	Lines = 0;
 }
 
 void MenuSelectSlide::SetSelect(bool value)
 {
-	assert(Tex != NULL);
 	Selected = value;
 
 	if (value)
 	{
-		assert(TexSBG != NULL);
-
-		Tex->ColRGB = ColRGB;
-		Tex->Int = Int;
+		Tex.ColRGB = ColRGB;
+		Tex.Int = Int;
 
 		Text.ColRGB = TColRGB;
 		Text.Int = TInt;
 
-		TexSBG->ColRGB = SBGColRGB;
-		TexSBG->Int = SBGInt;
+		TexSBG.ColRGB = SBGColRGB;
+		TexSBG.Int = SBGInt;
 	}
 	else
 	{
-		assert(DeselectTexture != NULL);
-
 		if (Colorized)
 		{
-			DeselectTexture->Int = DInt;
+			DeselectTexture.Int = DInt;
 		}
 		else
 		{
-			Tex->ColRGB = DColRGB;
-			Tex->Int = DInt;
+			Tex.ColRGB = DColRGB;
+			Tex.Int = DInt;
 		}
 
 		Text.ColRGB = TDColRGB;
@@ -83,13 +83,12 @@ void MenuSelectSlide::SetSelect(bool value)
 
 		if (ColorizedSBG)
 		{
-			DeselectTextureSBG->Int = SBGDInt;
+			DeselectTextureSBG.Int = SBGDInt;
 		}
 		else
 		{
-			assert(TexSBG != NULL);
-			TexSBG->ColRGB = SBGDColRGB;
-			TexSBG->Int = SBGDInt;
+			TexSBG.ColRGB = SBGDColRGB;
+			TexSBG.Int = SBGDInt;
 		}
 	}
 }
@@ -108,14 +107,11 @@ void MenuSelectSlide::SetSelectOpt(int value)
 		|| TextOptionNames.empty())
 		return;
 
-	assert(Tex_SelectS_ArrowL != NULL);
-	assert(Tex_SelectS_ArrowR != NULL);
-
 	// First option selected
 	if (value <= 0)
 	{
-		Tex_SelectS_ArrowL->Alpha = ArrowAlphaNoOptionsLeft;
-		Tex_SelectS_ArrowR->Alpha = (float) (TextOptionNames.size() > 1 ? ArrowAlphaOptionsLeft : ArrowAlphaNoOptionsLeft);
+		Tex_SelectS_ArrowL.Alpha = ArrowAlphaNoOptionsLeft;
+		Tex_SelectS_ArrowR.Alpha = (float) (TextOptionNames.size() > 1 ? ArrowAlphaOptionsLeft : ArrowAlphaNoOptionsLeft);
 
 		size_t i = 0;
 		for (std::vector<MenuText>::iterator itr = TextOptions.begin(); itr != TextOptions.end(); ++itr, ++i)
@@ -126,8 +122,8 @@ void MenuSelectSlide::SetSelectOpt(int value)
 	// Last option selected
 	else if (value >= (int) TextOptions.size())
 	{
-		Tex_SelectS_ArrowL->Alpha = ArrowAlphaNoOptionsLeft;
-		Tex_SelectS_ArrowR->Alpha = ArrowAlphaNoOptionsLeft;
+		Tex_SelectS_ArrowL.Alpha = ArrowAlphaNoOptionsLeft;
+		Tex_SelectS_ArrowR.Alpha = ArrowAlphaNoOptionsLeft;
 
 		size_t i = 0;
 		for (std::vector<MenuText>::reverse_iterator itr = TextOptions.rbegin(); itr != TextOptions.rend(); ++itr, ++i)
@@ -138,8 +134,8 @@ void MenuSelectSlide::SetSelectOpt(int value)
 	// In between first and last
 	else
 	{
-		Tex_SelectS_ArrowL->Alpha = ArrowAlphaOptionsLeft;
-		Tex_SelectS_ArrowR->Alpha = ArrowAlphaOptionsLeft;
+		Tex_SelectS_ArrowL.Alpha = ArrowAlphaOptionsLeft;
+		Tex_SelectS_ArrowR.Alpha = ArrowAlphaOptionsLeft;
 
 		int halfL = (int) std::ceil((Lines - 1) / 2);
 		int halfR = Lines - 1 - halfL;
@@ -197,32 +193,28 @@ void MenuSelectSlide::Draw()
 
 	if (Selected || !Colorized)
 	{
-		assert(Tex != NULL);
-		Tex->Draw();
+		Tex.Draw();
 	}
 	else
 	{
-		assert(DeselectTexture);
-		DeselectTexture->X = Tex->X;
-		DeselectTexture->Y = Tex->Y;
-		DeselectTexture->W = Tex->W;
-		DeselectTexture->H = Tex->H;
-		DeselectTexture->Draw();
+		DeselectTexture.X = Tex.X;
+		DeselectTexture.Y = Tex.Y;
+		DeselectTexture.W = Tex.W;
+		DeselectTexture.H = Tex.H;
+		DeselectTexture.Draw();
 	}
 
 	if (Selected || !ColorizedSBG)
 	{
-		assert(TexSBG != NULL);
-		TexSBG->Draw();
+		TexSBG.Draw();
 	}
 	else
 	{
-		assert(DeselectTextureSBG);
-		DeselectTextureSBG->X = Tex->X;
-		DeselectTextureSBG->Y = Tex->Y;
-		DeselectTextureSBG->W = Tex->W;
-		DeselectTextureSBG->H = Tex->H;
-		DeselectTextureSBG->Draw();
+		DeselectTextureSBG.X = Tex.X;
+		DeselectTextureSBG.Y = Tex.Y;
+		DeselectTextureSBG.W = Tex.W;
+		DeselectTextureSBG.H = Tex.H;
+		DeselectTextureSBG.Draw();
 	}
 
 	Text.Draw();
@@ -233,8 +225,6 @@ void MenuSelectSlide::Draw()
 void MenuSelectSlide::GenerateLines()
 {
 	float maxLen = 0.0f;
-
-	assert(TexSBG != NULL);
 
 	SetFontStyle(ftNormal); /* Text.Style */
 	SetFontSize(Text.Size);
@@ -254,7 +244,7 @@ void MenuSelectSlide::GenerateLines()
 	// Show all items
 	else
 	{
-		Lines = (uint8) std::floor((TexSBG->W - MinSideSpacing * 2) / (maxLen + MinItemSpacing));
+		Lines = (uint8) std::floor((TexSBG.W - MinSideSpacing * 2) / (maxLen + MinItemSpacing));
 		if (Lines > TextOptionNames.size())
 			Lines = (uint8) TextOptionNames.size();
 
@@ -275,8 +265,8 @@ void MenuSelectSlide::GenerateLines()
 		text.Int = STDInt;
 
 		// Generate positions
-		text.Y = TexSBG->Y + (TexSBG->H - Text.Size) / 2;
-		text.X = TexSBG->X;
+		text.Y = TexSBG.Y + (TexSBG.H - Text.Size) / 2;
+		text.X = TexSBG.X;
 
 		text.Align = 0;
 
@@ -285,16 +275,16 @@ void MenuSelectSlide::GenerateLines()
 		{
 		case 2:
 			assert(TextOptionNames.size() >= 2);
-			text.X += 20 + (TexSBG->W - 40 - glTextWidth(TextOptionNames[1])) * i;
+			text.X += 20 + (TexSBG.W - 40 - glTextWidth(TextOptionNames[1])) * i;
 			break;
 
 		case 1:
-			text.X += (TexSBG->W / 2);
+			text.X += (TexSBG.W / 2);
 			text.Align = 1; // center
 			break;
 
 		default:
-			text.X += (TexSBG->W / 2) + (TexSBG->W - MinSideSpacing * 2) * ((float)i / (float)Lines - 0.5f);
+			text.X += (TexSBG.W / 2) + (TexSBG.W - MinSideSpacing * 2) * ((float)i / (float)Lines - 0.5f);
 			break;
 		}
 	}
@@ -304,29 +294,24 @@ MouseOverRect MenuSelectSlide::GetMouseOverRect()
 {
 	MouseOverRect rect = {0};
 
-	assert(Tex != NULL);
-	assert(TexSBG != NULL);
-
-	rect.X = Tex->X;
-	rect.Y = Tex->Y;
-	rect.W = (TexSBG->X + TexSBG->W) - Tex->X;
-	rect.H = std::max(Tex->H, TexSBG->H);
+	rect.X = Tex.X;
+	rect.Y = Tex.Y;
+	rect.W = (TexSBG.X + TexSBG.W) - Tex.X;
+	rect.H = std::max(Tex.H, TexSBG.H);
 
 	return rect;
 }
 
 MouseClickAction MenuSelectSlide::OnClick(float x, float y)
 {
-	assert(TexSBG != NULL);
-
 	// Use left sides to inc or dec selection by click
-	float areaW = TexSBG->W / 20.0f;
+	float areaW = TexSBG.W / 20.0f;
 
-	if (y > TexSBG->Y && y <= TexSBG->Y + TexSBG->H)
+	if (y > TexSBG.Y && y <= TexSBG.Y + TexSBG.H)
 	{
-		if (x >= TexSBG->X && x <= TexSBG->X + areaW)
+		if (x >= TexSBG.X && x <= TexSBG.X + areaW)
 			return maLeft; // hit left area
-		else if (x >= TexSBG->X + TexSBG->W - areaW && x <= TexSBG->X + TexSBG->W)
+		else if (x >= TexSBG.X + TexSBG.W - areaW && x <= TexSBG.X + TexSBG.W)
 			return maRight; // hit right area
 	}
 
@@ -340,10 +325,9 @@ tstring MenuSelectSlide::AdjustOptionTextToFit(const tstring& optionText)
 	float maxLen;
 	size_t len;
 
-	assert(TexSBG != NULL);
-	if (TexSBG->W > 0)
+	if (TexSBG.W > 0)
 	{
-		maxLen = TexSBG->W - MinSideSpacing * 2;
+		maxLen = TexSBG.W - MinSideSpacing * 2;
 
 		SetFontStyle(ftNormal);
 		SetFontSize(Text.Size);

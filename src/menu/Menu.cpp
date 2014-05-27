@@ -157,6 +157,12 @@ void Menu::SetInteraction(int num)
 		ButtonCollections[index].Selected = true;
 		break;
 	}
+
+	OnInteraction();
+}
+
+void Menu::OnInteraction()
+{
 }
 
 // Load background, texts, statics & button collections from ThemeBasic
@@ -570,7 +576,6 @@ int Menu::AddButton(float x, float y, float w, float h,
 		));
 	}
 
-
 	MenuButton& button = Buttons[buttonNo];
 
 	button.SetX(x);
@@ -657,9 +662,165 @@ void Menu::AddButtonText(MenuButton& button,
 	button.Texts.push_back(text);
 }
 
+int Menu::AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, int data,
+	const tstring* values, size_t valueCount)
+{
+	int result = AddSelectSlide(themeSelectSlide.X, themeSelectSlide.Y, themeSelectSlide.W, themeSelectSlide.H,
+		themeSelectSlide.SkipX, themeSelectSlide.SBGW,
+		themeSelectSlide.ColRGB, themeSelectSlide.Int,
+		themeSelectSlide.DColRGB, themeSelectSlide.DInt,
+		themeSelectSlide.TColRGB, themeSelectSlide.TInt,
+		themeSelectSlide.TDColRGB, themeSelectSlide.TDInt,
+		themeSelectSlide.SBGColRGB, themeSelectSlide.SBGInt,
+		themeSelectSlide.SBGDColRGB, themeSelectSlide.SBGDInt,
+		themeSelectSlide.STColRGB, themeSelectSlide.STInt,
+		themeSelectSlide.STDColRGB, themeSelectSlide.STDInt,
+		sSkins.GetTextureFileName(themeSelectSlide.Tex), themeSelectSlide.Type,
+		sSkins.GetTextureFileName(themeSelectSlide.TexSBG), themeSelectSlide.TypeSBG,
+		themeSelectSlide.Text, data);
+
+	if (result < 0)
+		return result;
+
+	for (size_t i = 0; i < valueCount; i++)
+		AddSelectSlideOption(values[i]);
+
+	MenuSelectSlide& slide = SelectSlides[SelectSlides.size() - 1];
+
+	slide.Text.Size = themeSelectSlide.TextSize;
+	slide.Tex.Z = themeSelectSlide.Z;
+	slide.TexSBG.Z = themeSelectSlide.Z;
+	slide.Tex_SelectS_ArrowL.Z = themeSelectSlide.Z;
+	slide.Tex_SelectS_ArrowR.Z = themeSelectSlide.Z;
+
+	slide.ShowArrows = themeSelectSlide.ShowArrows;
+	slide.OneItemOnly = themeSelectSlide.OneItemOnly;
+
+	// Generate lines
+	slide.GenerateLines();
+	slide.SetSelectOpt(slide.SelectOptInt); // refresh
+
+	return result;
+}
+
+int Menu::AddSelectSlide(float x, float y, float w, float h, float skipX, float sbgw,
+	const RGB& colRGB, float intensity,
+	const RGB& dColRGB, float dIntensity,
+	const RGB& tColRGB, float tIntensity,
+	const RGB& tdColRGB, float tdIntensity,
+	const RGB& sbgColRGB, float sbgIntensity,
+	const RGB& sbgdColRGB, float sbgdIntensity,
+	const RGB& stColRGB, float stIntensity,
+	const RGB& stdColRGB, float stdIntensity,
+	const boost::filesystem::path* texturePath,
+	eTextureType textureType,
+	const boost::filesystem::path* sbgTexturePath,
+	eTextureType sbgTextureType,
+	const tstring& caption, int data)
+{
+	int slideNo = (int) SelectSlides.size();
+
+	SelectSlides.push_back(MenuSelectSlide());
+	MenuSelectSlide& slide = SelectSlides[slideNo];
+
+	// Colorize hack
+	if (textureType == TextureType::Colorized)
+	{
+		slide.Colorized = true;
+		slide.Tex = sTextureMgr.GetTexture(texturePath, textureType, colRGB.ToUInt32());
+		slide.DeselectTexture = sTextureMgr.GetTexture(texturePath, textureType, dColRGB.ToUInt32());
+	}
+	else
+	{
+		slide.Colorized = false;
+		slide.Tex = sTextureMgr.GetTexture(texturePath, textureType);
+		slide.ColRGB = colRGB;
+		slide.DColRGB = dColRGB;
+	}
+
+	slide.Int = intensity;
+	slide.DInt = dIntensity;
+
+	slide.Tex.X = x;
+	slide.Tex.Y = y;
+	slide.Tex.W = w;
+	slide.Tex.H = h;
+
+	if (textureType == TextureType::Colorized)
+	{
+		slide.ColorizedSBG = true;
+		slide.TexSBG = sTextureMgr.GetTexture(sbgTexturePath, sbgTextureType, sbgColRGB.ToUInt32());
+		slide.DeselectTextureSBG = sTextureMgr.GetTexture(sbgTexturePath, sbgTextureType, sbgdColRGB.ToUInt32());
+	}
+	else
+	{
+		slide.ColorizedSBG = false;
+		slide.TexSBG = sTextureMgr.GetTexture(sbgTexturePath, sbgTextureType);
+		slide.SBGColRGB = sbgColRGB;
+		slide.SBGDColRGB = sbgdColRGB;
+	}
+
+	slide.SBGInt = sbgIntensity;
+	slide.SBGDInt = sbgdIntensity;
+
+	slide.Tex_SelectS_ArrowL = TexSelectSArrowL;
+	slide.Tex_SelectS_ArrowL.X = x + w + skipX;
+	slide.Tex_SelectS_ArrowL.Y = y + (h - TexSelectSArrowL.H) / 2;
+	slide.Tex_SelectS_ArrowL.W = TexSelectSArrowL.W;
+	slide.Tex_SelectS_ArrowL.H = TexSelectSArrowL.H;
+
+	slide.Tex_SelectS_ArrowR = TexSelectSArrowR;
+	slide.Tex_SelectS_ArrowR.X = x + w + skipX + sbgw - TexSelectSArrowR.W;
+	slide.Tex_SelectS_ArrowR.Y = y + (h - TexSelectSArrowR.H) / 2;
+	slide.Tex_SelectS_ArrowR.W = TexSelectSArrowR.W;
+	slide.Tex_SelectS_ArrowR.H = TexSelectSArrowR.H;
+
+	slide.TexSBG.X = x + w + skipX;
+	slide.TexSBG.Y = y;
+	slide.TexSBG.W = sbgw;
+	slide.TexSBG.H = h;
+
+	slide.Text.X = x + 20.0f;
+	slide.Text.Y = y + (slide.TexSBG.H / 2) - 15.0f;
+	slide.Text.TextString = caption;
+	slide.Text.Size = 30.0f;
+	slide.Text.Visible = true;
+
+	slide.TColRGB = tColRGB;
+	slide.TInt = tIntensity;
+	slide.TDColRGB = tdColRGB;
+	slide.TDInt = tdIntensity;
+
+	slide.STColRGB = stColRGB;
+	slide.STInt = stIntensity;
+	slide.STDColRGB = stdColRGB;
+	slide.STDInt = stdIntensity;
+
+	slide.Tex.TexX1 = 0;
+	slide.Tex.TexY1 = 0;
+	slide.Tex.TexX2 = 1;
+	slide.Tex.TexY2 = 1;
+
+	slide.TexSBG.TexX1 = 0;
+	slide.TexSBG.TexY1 = 0;
+	slide.TexSBG.TexX2 = 1;
+	slide.TexSBG.TexY2 = 1;
+	
+	slide.Data = data; // official takes the address of data instead, we need to pay more attention to this...
+	slide.SetSelectOpt(data);
+
+	// Disables default selection
+	slide.SetSelect(false);
+
+	// Adds interaction
+	AddInteraction(InteractionType::itSelectSlide, slideNo);
+
+	return slideNo;
+}
+
 void Menu::AddSelectSlideOption(const tstring& addText)
 {
-	AddSelectSlideOption(SelectSlides.size(), addText);
+	AddSelectSlideOption(SelectSlides.size() - 1, addText);
 }
 
 void Menu::AddSelectSlideOption(uint32 selectNum, const tstring& addText)

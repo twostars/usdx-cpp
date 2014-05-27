@@ -51,4 +51,63 @@ private:
 
 #define sLanguage (Language::getSingleton())
 
+
+extern tstring IDifficultyTranslated[3];
+extern tstring ITabsTranslated[2];
+
+extern tstring ISortingTranslated[7];
+
+extern tstring IDebugTranslated[2];
+
+extern tstring IFullScreenTranslated[2];
+extern tstring IVisualizerTranslated[3];
+
+extern tstring IBackgroundMusicTranslated[2];
+extern tstring ISingWindowTranslated[2];
+
+extern tstring IOscilloscopeTranslated[2];
+
+extern tstring ISpectrumTranslated[2];
+extern tstring ISpectrographTranslated[2];
+extern tstring IMovieSizeTranslated[3];
+extern tstring IVideoPreviewTranslated[2];
+extern tstring IVideoEnabledTranslated[2];
+
+extern tstring IClickAssistTranslated[2];
+extern tstring IBeatClickTranslated[2];
+extern tstring ISavePlaybackTranslated[2];
+
+extern tstring IVoicePassthroughTranslated[2];
+
+extern tstring ISyncToTranslated[3];
+
+extern tstring IAudioOutputBufferSizeTranslated[10];
+extern tstring IAudioInputBufferSizeTranslated[10];
+
+extern tstring IPreviewVolumeTranslated[11];
+extern tstring IPreviewFadingTranslated[6];
+
+extern tstring ILyricsFontTranslated[3];
+extern tstring ILyricsEffectTranslated[5];
+extern tstring INoteLinesTranslated[2];
+
+extern tstring IColorTranslated[9];
+
+// Advanced
+extern tstring ILoadAnimationTranslated[2];
+extern tstring IEffectSingTranslated[2];
+extern tstring IScreenFadeTranslated[2];
+extern tstring IAskBeforeDelTranslated[2];
+extern tstring IOnSongClickTranslated[3];
+
+extern tstring ILineBonusTranslated[2];
+extern tstring IPartyPopupTranslated[2];
+
+extern tstring IJoypadTranslated[2];
+extern tstring IMouseTranslated[3];
+
+// Recording options
+extern tstring IChannelPlayerTranslated[7];
+extern tstring IMicBoostTranslated[4];
+
 #endif

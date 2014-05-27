@@ -56,16 +56,16 @@ public:
 	std::vector<MenuText> TextOptions; // Texts in the position of possible options
 	std::vector<tstring>  TextOptionNames; // Names of the possible options
 
-	Texture* Tex;		// Select texture
-	Texture* TexSBG;	// Selection background texture
+	Texture Tex;		// Select texture
+	Texture TexSBG;	// Selection background texture
 
 	bool Colorized;
-	Texture* DeselectTexture;
+	Texture DeselectTexture;
 	bool ColorizedSBG;
-	Texture* DeselectTextureSBG;
+	Texture DeselectTextureSBG;
 
-	Texture* Tex_SelectS_ArrowL;
-	Texture* Tex_SelectS_ArrowR;
+	Texture Tex_SelectS_ArrowL;
+	Texture Tex_SelectS_ArrowR;
 
 	int SelectOptInt;
 	// int* PData;
@@ -73,6 +73,9 @@ public:
 
 	// For automatically setting line count
 	uint8 Lines;
+
+	// Arrows on/off
+	bool ShowArrows; // default is false
 
 	// Whether to show one item or all that fits into the selection.
 	bool OneItemOnly; // default is false

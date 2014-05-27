@@ -1124,8 +1124,8 @@ void Themes::LoadThemeSelectSlide(ThemeSelectSlide& themeSelectSlide, const tstr
 	LoadColor(themeSelectSlide.STDColRGB, ini.GetValue(section, _T("STDColor"), _T("")));
 	themeSelectSlide.STDInt = (float) ini.GetDoubleValue(section, _T("STDInt"), 1.0);
 
-	themeSelectSlide.ShowArrows = ini.GetBoolValue(section, _T("ShowArrays"), 0);
-	themeSelectSlide.OneTimeOnly = ini.GetBoolValue(section, _T("OneItemOnly"), 0);
+	themeSelectSlide.ShowArrows = ini.GetBoolValue(section, _T("ShowArrays"), false);
+	themeSelectSlide.OneItemOnly = ini.GetBoolValue(section, _T("OneItemOnly"), false);
 }
 
 void Themes::LoadThemeEqualizer(ThemeEqualizer& themeEqualizer, const tstring& name)

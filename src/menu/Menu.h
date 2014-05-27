@@ -73,6 +73,7 @@ public:
 	// Interaction
 	void AddInteraction(InteractionType type, int num);
 	virtual void SetInteraction(int num);
+	virtual void OnInteraction();
 
 	// load background, texts, statics and button collections from ThemeBasic
 	INLINE void LoadFromTheme(const ThemeBasic* themeBasic)
@@ -159,10 +160,11 @@ public:
 
 	// Select slide
 	int AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, int data, 
-		const std::vector<tstring>& values);
+		const tstring* values, size_t valueCount);
 	int AddSelectSlide(float x, float y, float w, float h, float skipX, float sbgw,
 		const RGB& colRGB,     float intensity,
 		const RGB& dColRGB,    float dIntensity,
+		const RGB& tColRGB,    float tIntensity,
 		const RGB& tdColRGB,   float tdIntensity,
 		const RGB& sbgColRGB,  float sbgIntensity,
 		const RGB& sbgdColRGB, float sbgdIntensity,

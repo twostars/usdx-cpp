@@ -89,7 +89,7 @@ tstring IColorTranslated[]            = { _T("Blue"), _T("Green"), _T("Pink"), _
 tstring ILoadAnimationTranslated[]    = { _T("Off"), _T("On") };
 tstring IEffectSingTranslated[]       = { _T("Off"), _T("On") };
 tstring IScreenFadeTranslated[]       = { _T("Off"), _T("On") };
-tstring IAskbeforeDelTranslated[]     = { _T("Off"), _T("On") };
+tstring IAskBeforeDelTranslated[]     = { _T("Off"), _T("On") };
 tstring IOnSongClickTranslated[]      = { _T("Sing"), _T("Select Players"), _T("Open Menu") };
 
 tstring ILineBonusTranslated[]        = { _T("Off"), _T("On") };
@@ -310,8 +310,8 @@ void Language::TranslateOptionValues()
 	IScreenFadeTranslated[Switch::Off]                    = switchOff;
 	IScreenFadeTranslated[Switch::On]                     = switchOn;
 
-	IAskbeforeDelTranslated[Switch::Off]                  = switchOff;
-	IAskbeforeDelTranslated[Switch::On]                   = switchOn;
+	IAskBeforeDelTranslated[Switch::Off]                  = switchOff;
+	IAskBeforeDelTranslated[Switch::On]                   = switchOn;
 
 	IOnSongClickTranslated[SongClickType::Sing]           = Translate(_T("OPTION_VALUE_SING"));
 	IOnSongClickTranslated[SongClickType::SelectPlayers]  = Translate(_T("OPTION_VALUE_SELECT_PLAYERS"));

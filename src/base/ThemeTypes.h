@@ -134,7 +134,7 @@ struct ThemeSelectSlide
 	int TextSize;
 
 	bool ShowArrows;
-	bool OneTimeOnly;
+	bool OneItemOnly;
 
 	tstring Text;
 
