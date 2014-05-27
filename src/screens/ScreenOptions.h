@@ -26,6 +26,16 @@
 
 class ScreenOptions : public Menu
 {
+public:
+	ScreenOptions();
+
+	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual void SetAnimationProgress(float progress);
+
+	virtual void OnShow();
+	virtual void OnInteraction();
+
+	int TextDescription;
 };
 
 #endif

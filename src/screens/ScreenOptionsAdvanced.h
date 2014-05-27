@@ -26,6 +26,10 @@
 
 class ScreenOptionsAdvanced : public Menu
 {
+public:
+	ScreenOptionsAdvanced();
+	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual void OnShow();
 };
 
 #endif
