@@ -68,8 +68,7 @@ public:
 	Texture Tex_SelectS_ArrowR;
 
 	int SelectOptInt;
-	// int* PData;
-	int Data;
+	uint32 * pData;
 
 	// For automatically setting line count
 	uint8 Lines;

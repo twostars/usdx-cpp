@@ -29,7 +29,7 @@ static const int ArrowAlphaNoOptionsLeft = 0;
 static const int MinItemSpacing = 5;
 static const int MinSideSpacing = 24;
 
-MenuSelectSlide::MenuSelectSlide()
+MenuSelectSlide::MenuSelectSlide() : pData(NULL)
 {
 	Visible = true;
 
@@ -101,7 +101,8 @@ void MenuSelectSlide::SetSelectOpt(int value)
 		value = (int) TextOptions.size();
 
 	SelectOptInt = value;
-	Data = value;
+	if (pData != NULL)
+		*pData = value;
 
 	if (TextOptions.empty()
 		|| TextOptionNames.empty())

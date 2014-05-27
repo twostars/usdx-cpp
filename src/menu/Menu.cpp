@@ -662,7 +662,7 @@ void Menu::AddButtonText(MenuButton& button,
 	button.Texts.push_back(text);
 }
 
-int Menu::AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, int data,
+int Menu::AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, uint32 * pData,
 	const tstring* values, size_t valueCount)
 {
 	int result = AddSelectSlide(themeSelectSlide.X, themeSelectSlide.Y, themeSelectSlide.W, themeSelectSlide.H,
@@ -677,7 +677,7 @@ int Menu::AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, int data,
 		themeSelectSlide.STDColRGB, themeSelectSlide.STDInt,
 		sSkins.GetTextureFileName(themeSelectSlide.Tex), themeSelectSlide.Type,
 		sSkins.GetTextureFileName(themeSelectSlide.TexSBG), themeSelectSlide.TypeSBG,
-		themeSelectSlide.Text, data);
+		themeSelectSlide.Text, pData);
 
 	if (result < 0)
 		return result;
@@ -716,7 +716,7 @@ int Menu::AddSelectSlide(float x, float y, float w, float h, float skipX, float 
 	eTextureType textureType,
 	const boost::filesystem::path* sbgTexturePath,
 	eTextureType sbgTextureType,
-	const tstring& caption, int data)
+	const tstring& caption, uint32 * pData)
 {
 	int slideNo = (int) SelectSlides.size();
 
@@ -806,8 +806,8 @@ int Menu::AddSelectSlide(float x, float y, float w, float h, float skipX, float 
 	slide.TexSBG.TexX2 = 1;
 	slide.TexSBG.TexY2 = 1;
 	
-	slide.Data = data; // official takes the address of data instead, we need to pay more attention to this...
-	slide.SetSelectOpt(data);
+	slide.pData = pData;
+	slide.SetSelectOpt(*pData);
 
 	// Disables default selection
 	slide.SetSelect(false);

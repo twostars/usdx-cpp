@@ -159,7 +159,7 @@ public:
 		int font, int size, int align, const tstring& addText);
 
 	// Select slide
-	int AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, int data, 
+	int AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, uint32 * pData, 
 		const tstring* values, size_t valueCount);
 	int AddSelectSlide(float x, float y, float w, float h, float skipX, float sbgw,
 		const RGB& colRGB,     float intensity,
@@ -174,7 +174,7 @@ public:
 		eTextureType textureType,
 		const boost::filesystem::path* sbgFilename,
 		eTextureType sbgTextureType,
-		const tstring& caption, int data);
+		const tstring& caption, uint32 * pData);
 	void AddSelectSlideOption(const tstring& addText);
 	void AddSelectSlideOption(uint32 selectNum, const tstring& addText);
 	void UpdateSelectSlideOptions(const ThemeSelectSlide& themeSelectSlide, uint32 selectNo, 

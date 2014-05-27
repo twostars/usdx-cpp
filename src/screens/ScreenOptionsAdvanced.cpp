@@ -39,27 +39,27 @@ ScreenOptionsAdvanced::ScreenOptionsAdvanced() : Menu()
 
 	theme->SelectScreenFade.ShowArrows = true;
 	theme->SelectScreenFade.OneItemOnly = true;
-	AddSelectSlide(theme->SelectScreenFade, sIni.ScreenFade, IScreenFadeTranslated, SDL_arraysize(IScreenFadeTranslated));
+	AddSelectSlide(theme->SelectScreenFade, (uint32 *)&sIni.ScreenFade, IScreenFadeTranslated, SDL_arraysize(IScreenFadeTranslated));
 
 	theme->SelectEffectSing.ShowArrows = true;
 	theme->SelectEffectSing.OneItemOnly = true;
-	AddSelectSlide(theme->SelectEffectSing, sIni.EffectSing, IEffectSingTranslated, SDL_arraysize(IEffectSingTranslated));
+	AddSelectSlide(theme->SelectEffectSing, (uint32 *)&sIni.EffectSing, IEffectSingTranslated, SDL_arraysize(IEffectSingTranslated));
 
 	theme->SelectLineBonus.ShowArrows = true;
 	theme->SelectLineBonus.OneItemOnly = true;
-	AddSelectSlide(theme->SelectLineBonus, sIni.LineBonus, ILineBonusTranslated, SDL_arraysize(ILineBonusTranslated));
+	AddSelectSlide(theme->SelectLineBonus, (uint32 *)&sIni.LineBonus, ILineBonusTranslated, SDL_arraysize(ILineBonusTranslated));
 
 	theme->SelectOnSongClick.ShowArrows = true;
 	theme->SelectOnSongClick.OneItemOnly = true;
-	AddSelectSlide(theme->SelectOnSongClick, sIni.OnSongClick, IOnSongClickTranslated, SDL_arraysize(IOnSongClickTranslated));
+	AddSelectSlide(theme->SelectOnSongClick, (uint32 *)&sIni.OnSongClick, IOnSongClickTranslated, SDL_arraysize(IOnSongClickTranslated));
 
 	theme->SelectAskBeforeDel.ShowArrows = true;
 	theme->SelectAskBeforeDel.OneItemOnly = true;
-	AddSelectSlide(theme->SelectAskBeforeDel, sIni.AskBeforeDel, IAskBeforeDelTranslated, SDL_arraysize(IAskBeforeDelTranslated));
+	AddSelectSlide(theme->SelectAskBeforeDel, (uint32 *)&sIni.AskBeforeDel, IAskBeforeDelTranslated, SDL_arraysize(IAskBeforeDelTranslated));
 
 	theme->SelectPartyPopup.ShowArrows = true;
 	theme->SelectPartyPopup.OneItemOnly = true;
-	AddSelectSlide(theme->SelectPartyPopup, sIni.PartyPopup, IPartyPopupTranslated, SDL_arraysize(IPartyPopupTranslated));
+	AddSelectSlide(theme->SelectPartyPopup, (uint32 *)&sIni.PartyPopup, IPartyPopupTranslated, SDL_arraysize(IPartyPopupTranslated));
 
 	AddButton(theme->ButtonExit);
 	if (Buttons[0].Texts.empty())
