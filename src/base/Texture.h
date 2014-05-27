@@ -54,7 +54,7 @@ public:
 		TexW = TexH = 1.0f;
 		TexX1 = TexY1 = 0.0f;
 		TexX2 = TexY2 = 1.0f;
-		Alpha = 1.0f;
+		Alpha = 0.0f;
 	}
 
 	void Draw();

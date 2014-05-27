@@ -62,6 +62,7 @@ Texture TextureMgr::CreateTexture(
 
 	tex.TexNum = ActTex;
 	tex.Name = texturePath->native();
+	tex.Alpha = 1.0f;
 
 	return tex;
 }
@@ -222,6 +223,7 @@ Texture TextureMgr::LoadTexture(
 	tex.TexW = (tex.W / newWidth);
 	tex.TexH = (tex.H / newHeight);
 	tex.Name = texturePath->native();
+	tex.Alpha = 1.0f;
 
 	UnloadSurface(texSurface);
 	return tex;
