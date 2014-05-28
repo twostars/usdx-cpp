@@ -858,7 +858,7 @@ void Themes::LoadThemeBasic(ThemeBasic * theme, const tstring& name)
 {
 	LoadThemeBackground(theme->Background, name);
 	LoadThemeTexts(theme->Text, name + _T("Text"));
-	LoadThemeStatics(theme->Static, name + _T("Statics"));
+	LoadThemeStatics(theme->Static, name + _T("Static"));
 	LoadThemeButtonCollections(theme->ButtonCollection, name + _T("ButtonCollection"));
 
 	_lastThemeBasic = theme;
@@ -928,6 +928,8 @@ void Themes::LoadThemeStatic(ThemeStatic& themeStatic, const tstring& name)
 {
 	const TCHAR * section = name.c_str();
 
+	themeStatic.Tex = ini.GetValue(section, _T("Tex"), _T(""));
+
 	themeStatic.X = ini.GetLongValue(section, _T("X"));
 	themeStatic.Y = ini.GetLongValue(section, _T("Y"));
 	themeStatic.Z = (float) ini.GetDoubleValue(section, _T("Z"));
@@ -945,7 +947,7 @@ void Themes::LoadThemeStatic(ThemeStatic& themeStatic, const tstring& name)
 
 	themeStatic.TexX1 = (float) ini.GetDoubleValue(section, _T("TexX1"), 0.0);
 	themeStatic.TexY1 = (float) ini.GetDoubleValue(section, _T("TexY1"), 0.0);
-	themeStatic.TexX2 = (float) ini.GetDoubleValue(section, _T("TexX2"), .0);
+	themeStatic.TexX2 = (float) ini.GetDoubleValue(section, _T("TexX1"), 1.0);
 	themeStatic.TexY2 = (float) ini.GetDoubleValue(section, _T("TexX2"), 1.0);
 
 	LoadColor(themeStatic.ColRGB, themeStatic.Color);

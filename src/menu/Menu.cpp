@@ -395,15 +395,9 @@ int Menu::AddStatic(float x, float y, float w, float h, float z,
 
 	stat.Tex.X = x;
 	stat.Tex.Y = y;
-
-	if (w != 0.0f)
-		stat.Tex.W = w;
-
-	if (h != 0.0f)
-		stat.Tex.H = h;
-
-	if (z != 0.0f)
-		stat.Tex.Z = z;
+	stat.Tex.W = w;
+	stat.Tex.H = h;
+	stat.Tex.Z = z;
 
 	// Hack
 	if (textureType != TextureType::Colorized)
