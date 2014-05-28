@@ -57,10 +57,14 @@
 #	define tstring		std::wstring
 #	define tstring_ci	wstring_ci
 #	define TSTRCASECMP	WSTRCASECMP
+#	define StrSplit		StrSplitW
+#	define strpos		strposW
 #else
 #	define tstring		std::string
 #	define tstring_ci	string_ci
 #	define TSTRCASECMP	STRCASECMP
+#	define StrSplit		StrSplitA
+#	define strpos		strposA
 #endif
 
 typedef tstring::size_type tsize_type;

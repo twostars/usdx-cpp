@@ -105,9 +105,10 @@ STRING_TYPE& trim(STRING_TYPE &s)
 // Extracts resolution dimensions in the standard format (e.g. 1920x1080) from a string.
 bool ExtractResolution(const tstring& str, int* w, int* h);
 
-int strpos(const TCHAR* haystack, const TCHAR* needle);
-#if defined(UNICODE)
-int strpos(const char * haystack, const char * needle); 
-#endif
+int strposA(const char * haystack, const char * needle); 
+int strposW(const wchar_t* haystack, const wchar_t* needle);
+
+void StrSplitA(const std::string& src, const std::string& sep, std::vector<std::string> * result);
+void StrSplitW(const std::wstring& src, const std::wstring& sep, std::vector<std::wstring> * result);
 
 #endif

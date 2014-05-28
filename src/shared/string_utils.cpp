@@ -48,22 +48,62 @@ bool ExtractResolution(const tstring& str, int* w, int* h)
 	return true;
 }
 
-int strpos(const TCHAR* haystack, const TCHAR* needle)
+int strposA(const char * haystack, char * needle)
 {
-	TCHAR *p = _tcsstr((TCHAR *)haystack, (TCHAR *)needle);
+	const char * p = strstr(haystack, needle);
+	if (p)
+		return p - haystack;
+
+	return NULL;
+}
+
+int strposW(const wchar_t * haystack, const wchar_t * needle)
+{
+	const wchar_t * p = wcsstr(haystack, needle);
 	if (p)
 		return p - haystack;
 
 	return -1;
 }
 
-#if defined(UNICODE)
-int strpos(const char * haystack, char * needle)
+void StrSplitA(const std::string& src, const std::string& sep, std::vector<std::string> * result)
 {
-	char * p = strstr((char *)haystack, (char *)needle);
-	if (p)
-		return p - haystack;
+	std::string s;
+	for (std::string::const_iterator i = src.begin(); i != src.end(); ++i)
+	{
+		if (sep.find(*i) != std::string::npos)
+		{
+			if (!s.empty())
+				result->push_back(s);
+			s.clear();
+		}
+		else
+		{
+			s += *i;
+		}
+	}
 
-	return NULL;
+	if (!s.empty()) 
+		result->push_back(s);
 }
-#endif
+
+void StrSplitW(const std::wstring& src, const std::wstring& sep, std::vector<std::wstring> * result)
+{
+	std::wstring s;
+	for (std::wstring::const_iterator i = src.begin(); i != src.end(); ++i)
+	{
+		if (sep.find(*i) != std::wstring::npos)
+		{
+			if (!s.empty())
+				result->push_back(s);
+			s.clear();
+		}
+		else
+		{
+			s += *i;
+		}
+	}
+
+	if (!s.empty()) 
+		result->push_back(s);
+}
