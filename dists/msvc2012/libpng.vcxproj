@@ -118,7 +118,6 @@
       <Optimization>Full</Optimization>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

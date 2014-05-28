@@ -87,8 +87,8 @@ Display::Display()
 
 void Display::InitFadeTextures()
 {
-	TexW = Round(std::pow(2.0, std::ceil(Log2(ScreenW / Screens))));
-	TexH = Round(std::pow(2.0, std::ceil(Log2(ScreenH))));
+	TexW = (uint32) Round(std::pow(2.0, std::ceil(Log2(ScreenW / Screens))));
+	TexH = (uint32) Round(std::pow(2.0, std::ceil(Log2(ScreenH))));
 
 	for (int i = 0; i < 2; i++)
 	{

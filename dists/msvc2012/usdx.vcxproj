@@ -298,12 +298,12 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;HAVE_LIBC;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/fp:except- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;Lua.lib;winmm.lib;version.lib;Imm32.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;Lua.lib;winmm.lib;version.lib;Imm32.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
@@ -324,14 +324,14 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;HAVE_LIBC;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/fp:except- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;Lua.lib;winmm.lib;version.lib;Imm32.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;Lua.lib;winmm.lib;version.lib;Imm32.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>

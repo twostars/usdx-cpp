@@ -43,3 +43,6 @@
 [submodule "src/lib/portaudio"]
 	path = src/lib/portaudio
 	url = https://github.com/twostars/portaudio
+[submodule "src/lib/SDL_ttf"]
+	path = src/lib/SDL_ttf
+	url = https://github.com/twostars/SDL_ttf

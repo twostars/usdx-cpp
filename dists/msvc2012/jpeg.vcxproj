@@ -11,67 +11,67 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="../../src/jdct.h" />
-    <ClInclude Include="../../src/jerror.h" />
-    <ClInclude Include="../../src/jinclude.h" />
-    <ClInclude Include="../../src/jmemsys.h" />
-    <ClInclude Include="../../src/jmorecfg.h" />
-    <ClInclude Include="../../src/jpegint.h" />
-    <ClInclude Include="../../src/jpeglib.h" />
-    <ClInclude Include="../../src/jversion.h" />
+    <ClInclude Include="../../src/lib/libjpeg/src/jdct.h" />
+    <ClInclude Include="../../src/lib/libjpeg/src/jerror.h" />
+    <ClInclude Include="../../src/lib/libjpeg/src/jinclude.h" />
+    <ClInclude Include="../../src/lib/libjpeg/src/jmemsys.h" />
+    <ClInclude Include="../../src/lib/libjpeg/src/jmorecfg.h" />
+    <ClInclude Include="../../src/lib/libjpeg/src/jpegint.h" />
+    <ClInclude Include="../../src/lib/libjpeg/src/jpeglib.h" />
+    <ClInclude Include="../../src/lib/libjpeg/src/jversion.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="../../src/jaricom.c" />
-    <ClCompile Include="../../src/jcapimin.c" />
-    <ClCompile Include="../../src/jcapistd.c" />
-    <ClCompile Include="../../src/jcarith.c" />
-    <ClCompile Include="../../src/jccoefct.c" />
-    <ClCompile Include="../../src/jccolor.c" />
-    <ClCompile Include="../../src/jcdctmgr.c" />
-    <ClCompile Include="../../src/jchuff.c" />
-    <ClCompile Include="../../src/jcinit.c" />
-    <ClCompile Include="../../src/jcmainct.c" />
-    <ClCompile Include="../../src/jcmarker.c" />
-    <ClCompile Include="../../src/jcmaster.c" />
-    <ClCompile Include="../../src/jcomapi.c" />
-    <ClCompile Include="../../src/jcparam.c" />
-    <ClCompile Include="../../src/jcprepct.c" />
-    <ClCompile Include="../../src/jcsample.c" />
-    <ClCompile Include="../../src/jctrans.c" />
-    <ClCompile Include="../../src/jdapimin.c" />
-    <ClCompile Include="../../src/jdapistd.c" />
-    <ClCompile Include="../../src/jdarith.c" />
-    <ClCompile Include="../../src/jdatadst.c" />
-    <ClCompile Include="../../src/jdatasrc.c" />
-    <ClCompile Include="../../src/jdcoefct.c" />
-    <ClCompile Include="../../src/jdcolor.c" />
-    <ClCompile Include="../../src/jddctmgr.c" />
-    <ClCompile Include="../../src/jdhuff.c" />
-    <ClCompile Include="../../src/jdinput.c" />
-    <ClCompile Include="../../src/jdmainct.c" />
-    <ClCompile Include="../../src/jdmarker.c" />
-    <ClCompile Include="../../src/jdmaster.c" />
-    <ClCompile Include="../../src/jdmerge.c" />
-    <ClCompile Include="../../src/jdpostct.c" />
-    <ClCompile Include="../../src/jdsample.c" />
-    <ClCompile Include="../../src/jdtrans.c" />
-    <ClCompile Include="../../src/jerror.c" />
-    <ClCompile Include="../../src/jfdctflt.c" />
-    <ClCompile Include="../../src/jfdctfst.c" />
-    <ClCompile Include="../../src/jfdctint.c" />
-    <ClCompile Include="../../src/jidctflt.c" />
-    <ClCompile Include="../../src/jidctfst.c" />
-    <ClCompile Include="../../src/jidctint.c" />
-    <ClCompile Include="../../src/jmemmgr.c" />
-    <ClCompile Include="../../src/jmemnobs.c" />
-    <ClCompile Include="../../src/jquant1.c" />
-    <ClCompile Include="../../src/jquant2.c">
+    <ClCompile Include="../../src/lib/libjpeg/src/jaricom.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcapimin.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcapistd.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcarith.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jccoefct.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jccolor.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcdctmgr.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jchuff.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcinit.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcmainct.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcmarker.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcmaster.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcomapi.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcparam.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcprepct.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jcsample.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jctrans.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdapimin.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdapistd.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdarith.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdatadst.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdatasrc.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdcoefct.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdcolor.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jddctmgr.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdhuff.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdinput.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdmainct.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdmarker.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdmaster.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdmerge.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdpostct.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdsample.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jdtrans.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jerror.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jfdctflt.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jfdctfst.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jfdctint.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jidctflt.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jidctfst.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jidctint.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jmemmgr.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jmemnobs.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jquant1.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jquant2.c">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</Optimization>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
       <BufferSecurityCheck Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</BufferSecurityCheck>
       <BufferSecurityCheck Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</BufferSecurityCheck>
     </ClCompile>
-    <ClCompile Include="../../src/jutils.c" />
+    <ClCompile Include="../../src/lib/libjpeg/src/jutils.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{019DBD2A-273D-4BA4-BF86-B5EFE2ED76B1}</ProjectGuid>
@@ -124,15 +124,14 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_DLL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>../../src/lib/libjpeg/dists/msvc2012</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ModuleDefinitionFile>LIBJPEG.DEF</ModuleDefinitionFile>
+      <ModuleDefinitionFile>../../src/lib/libjpeg/dists/msvc2012/LIBJPEG.DEF</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -143,13 +142,12 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_DEBUG;_DLL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../src/lib/libjpeg/dists/msvc2012</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -157,7 +155,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ModuleDefinitionFile>LIBJPEG.DEF</ModuleDefinitionFile>
+      <ModuleDefinitionFile>../../src/lib/libjpeg/dists/msvc2012/LIBJPEG.DEF</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
       <Command>
