@@ -499,11 +499,10 @@ FontBase * FTScalableFont::CreateMipmap(int level, float scale)
 
 GlyphCacheHashEntry::~GlyphCacheHashEntry()
 {
-	for (std::map<uint8, Glyph *>::iterator itr = GlyphTable.begin();
-		itr != GlyphTable.end(); ++itr)
+	for (std::map<uint8, Glyph *>::iterator itr = Table.begin(); itr != Table.end(); ++itr)
 		delete itr->second;
 
-	GlyphTable.clear();
+	Table.clear();
 }
 
 FTFontFace * FTFontFaceCache::LoadFace(const path& filename, int size)
@@ -883,20 +882,95 @@ CachedFont::CachedFont(const path& filename)
 {
 }
 
+Glyph * CachedFont::GetGlyph(TCHAR ch)
+{
+	Glyph * glyph = Cache.GetGlyph(ch);
+	if (glyph == NULL)
+		return glyph;
+
+	glyph = LoadGlyph(ch);
+	if (Cache.AddGlyph(ch, glyph))
+		return glyph;
+
+	delete glyph;
+	return NULL;
+}
+
 void CachedFont::FlushCache(bool keepBaseSet)
 {
 	Cache.FlushCache(keepBaseSet);
 }
 
-bool GlyphCache::AddGlyph(TCHAR ch, const Glyph * glyph)
+bool GlyphCache::AddGlyph(TCHAR ch, Glyph * glyph)
 {
 	uint32 baseCode = (ch >> 8);
+	GlyphTable * glyphTable = FindGlyphTable(baseCode);
+	if (glyphTable == NULL)
+	{
+		Hash[baseCode] = GlyphCacheHashEntry();
+		glyphTable = &Hash[baseCode].Table;
+	}
+
+	// Get glyph table offset
+	uint32 glyphCode = (ch & 0xff);
+
+	// insert glyph into table if not present
+	std::map<uint8, Glyph *>::iterator itr = glyphTable->find(glyphCode);
+	if (itr == glyphTable->end())
+	{
+		glyphTable->insert(std::make_pair(glyphCode, glyph));
+		return true;
+	}
+
 	return false;
+}
+
+Glyph * GlyphCache::GetGlyph(TCHAR ch)
+{
+	uint32 baseCode = (ch >> 8);
+	GlyphTable * glyphTable = FindGlyphTable(baseCode);
+	if (glyphTable == NULL)
+		return NULL;
+
+	// Get glyph table offset
+	uint8 glyphCode = (ch & 0xff);
+
+	// Lookup glyph from table
+	std::map<uint8, Glyph *>::iterator itr = glyphTable->find(glyphCode);
+	return (itr == glyphTable->end() ? NULL : itr->second);
+}
+
+GlyphTable * GlyphCache::FindGlyphTable(uint32 baseCode)
+{
+	std::map<uint32, GlyphCacheHashEntry>::iterator itr = Hash.find(baseCode);
+	return (itr == Hash.end() ? NULL : &itr->second.Table);
 }
 
 void GlyphCache::FlushCache(bool keepBaseSet)
 {
-	// TODO
+	// Destroy created glyphs
+	if (!keepBaseSet)
+	{
+		// Clearing will free the GlyphCacheHashEntry objects which will free their Glyphs.
+		Hash.clear();
+		return;
+	}
+
+	for (std::map<uint32, GlyphCacheHashEntry>::iterator itr = Hash.begin();
+		itr != Hash.end();)
+	{
+		std::map<uint32, GlyphCacheHashEntry>::iterator curItr = itr;
+		++itr;
+
+		GlyphCacheHashEntry& entry = curItr->second;
+
+		// The base set (0-255) have a base code of 0 as the upper bytes are 0.
+		if (curItr->first == 0)
+			continue;
+
+		// Removing will free the GlyphCacheHashEntry objects which will free their Glyphs.
+		Hash.erase(curItr);
+	}
 }
 
 GlyphCache::~GlyphCache()
@@ -1159,6 +1233,11 @@ FTFont::FTFont(const path& filename,
 				delete glyph;
 		}
 	}
+}
+
+Glyph * FTFont::LoadGlyph(TCHAR ch)
+{
+	return new FTGlyph(this, ch, Outset, LoadFlags);
 }
 
 FontBounds FTFont::BBoxLines(const LineArray& lines, bool advance)

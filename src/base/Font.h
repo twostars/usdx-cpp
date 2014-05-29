@@ -144,11 +144,13 @@ public:
 	virtual const FontBounds& GetBounds() = 0;
 };
 
+typedef std::map<uint8, Glyph *> GlyphTable;
+
 class GlyphCacheHashEntry
 {
 public:
 	~GlyphCacheHashEntry();
-	std::map<uint8, Glyph *> GlyphTable;
+	GlyphTable Table;
 };
 
 class GlyphCache
@@ -158,11 +160,20 @@ public:
 	* Adds glyph with char-code ch to the cache.
 	* @returns true on success, false otherwise
 	*/
-	bool AddGlyph(TCHAR ch, const Glyph * glyph);
+	bool AddGlyph(TCHAR ch, Glyph * glyph);
+	Glyph * GetGlyph(TCHAR ch);
+
+    /**
+    * Finds a glyph-table storing cached glyphs with base-code BaseCode
+    * (= upper char-code bytes) in the hash-list and returns the table and
+    * its index.
+	*/
+	GlyphTable * FindGlyphTable(uint32 baseCode);
+
 	void FlushCache(bool keepBaseSet);
 	~GlyphCache();
 
-	std::map<uint8, GlyphCacheHashEntry> Hash;
+	std::map<uint32, GlyphCacheHashEntry> Hash;
 };
 
 // FreeType font face class.
@@ -273,6 +284,14 @@ class CachedFont : public FontBase
 public:
 	CachedFont(const path& filename);
 	virtual void Init() {}
+
+	/**
+	* Callback to create (load) a glyph with char code ch.
+	* Implemented by subclasses.
+	*/
+	virtual Glyph * LoadGlyph(TCHAR ch) = 0;
+	Glyph * GetGlyph(TCHAR ch);
+
 	void FlushCache(bool keepBaseSet);
 
 protected:
@@ -343,6 +362,9 @@ public:
 		uint32 loadFlags = 0);
 
 	static FTFontFaceCache& GetFaceCache() { return s_fontFaceCache; }
+
+	/** @seealso CachedFont::LoadGlyph */
+	virtual Glyph * LoadGlyph(TCHAR ch);
 
 	virtual FontBounds BBoxLines(const LineArray& lines, bool advance);
 	virtual void AddFallback(const path& filename);
