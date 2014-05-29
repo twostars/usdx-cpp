@@ -716,6 +716,9 @@
     <ClInclude Include="..\..\src\screens\ScreenOptionsGame.h">
       <Filter>src\screens</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\base\Font.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\res\ultrastardx.rc">

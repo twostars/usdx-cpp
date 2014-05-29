@@ -29,8 +29,8 @@
 
 struct ThemeEntry
 {
-	boost::filesystem::path Path;
-	boost::filesystem::path FileName;
+	path Path;
+	path FileName;
 	tstring Theme;
 	tstring Name;
 	tstring Creator;
@@ -48,7 +48,7 @@ public:
 
 	void CreateThemeObjects();
 	void LoadList();
-	void LoadHeader(const boost::filesystem::path& iniFile);
+	void LoadHeader(const path& iniFile);
 	void LoadTheme(ThemeEntry * theme, eColor color);
 	void LoadColors();
 	void LoadColor(RGB& rgb, const tstring& color);

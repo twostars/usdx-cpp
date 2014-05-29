@@ -39,15 +39,35 @@
 #define ICONS_DIR		_T("icons")
 
 #define CONFIG_FILE		_T("config.ini")
+#define FONTS_FILE		_T("fonts.ini")
 
-typedef std::set<boost::filesystem::path> PathSet;
+typedef std::set<path> PathSet;
 
 const TCHAR * GetConfigFile();
 const TCHAR * GetScoreFile();
 
-void AddSongPath(boost::filesystem::path& path);
-void AddCoverPath(boost::filesystem::path& path);
+void AddSongPath(path& path);
+void AddCoverPath(path& path);
 
 void InitializePaths();
+
+extern path SharedPath;
+extern path UserPath;
+
+extern path LogPath;
+extern path SongPath;
+extern path ConfigFile;
+extern path ScoreFile;
+
+extern path SoundPath;
+extern path ThemePath;
+extern path LanguagesPath;
+extern path PluginPath;
+extern path VisualsPath;
+extern path FontPath;
+extern path ResourcesPath;
+
+extern path PlaylistPath;
+extern path ScreenshotsPath;
 
 #endif

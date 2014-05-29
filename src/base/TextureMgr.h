@@ -28,7 +28,7 @@
 
 struct TextureEntry
 {
-	boost::filesystem::path	Name;
+	path	Name;
 	eTextureType			Type;
 	uint32					Color;
 	Texture					Tex;		// Full-size texture
@@ -46,16 +46,16 @@ public:
 
 	TextureMgr();
 
-	Texture CreateTexture(const uint8* data, const boost::filesystem::path* texturePath,
+	Texture CreateTexture(const uint8* data, const path* texturePath,
 		uint16 width, uint16 height);
 	void AddTexture(const Texture& tex, eTextureType textureType, 
 		uint32 color = 0, bool cache = false);
-	Texture GetTexture(const boost::filesystem::path* texturePath, 
+	Texture GetTexture(const path* texturePath, 
 		eTextureType textureType, uint32 color = 0, bool fromCache = false);
-	Texture LoadTexture(const boost::filesystem::path* texturePath, 
+	Texture LoadTexture(const path* texturePath, 
 		eTextureType textureType = TextureType::Plain, uint32 color = 0);
 	int FindTexture(const Texture& tex, eTextureType textureType, uint32 color);
-	void UnloadTexture(const boost::filesystem::path* texturePath, eTextureType textureType, 
+	void UnloadTexture(const path* texturePath, eTextureType textureType, 
 		uint32 color = 0, bool fromCache = false);
 
 	~TextureMgr();

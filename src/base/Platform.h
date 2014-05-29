@@ -37,15 +37,15 @@ public:
 	static void ShowMessage(const TCHAR * message, MessageType messageType);
 
 	static void DetectLocalExecution();
-	static void GetExecutionDir(boost::filesystem::path * outPath);
-	static void GetSpecialPath(int csidl, boost::filesystem::path * outPath); /* NOTE: Windows only */
-	static void GetUserHomeDir(boost::filesystem::path * outPath);
-	static void GetLogPath(boost::filesystem::path * outPath);
-	static void GetGameSharedPath(boost::filesystem::path * outPath);
-	static void GetGameUserPath(boost::filesystem::path * outPath);
-	static void GetMusicPath(boost::filesystem::path * outPath);
+	static void GetExecutionDir(path * outPath);
+	static void GetSpecialPath(int csidl, path * outPath); /* NOTE: Windows only */
+	static void GetUserHomeDir(path * outPath);
+	static void GetLogPath(path * outPath);
+	static void GetGameSharedPath(path * outPath);
+	static void GetGameUserPath(path * outPath);
+	static void GetMusicPath(path * outPath);
 
-	static bool IsPathReadonly(const boost::filesystem::path * requestedPath);
+	static bool IsPathReadonly(const path * requestedPath);
 
 	static bool s_useLocalDirs;
 };

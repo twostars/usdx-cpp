@@ -36,7 +36,7 @@ void Platform::Init()
 	DetectLocalExecution();
 }
 
-void Platform::GetExecutionDir(boost::filesystem::path * path)
+void Platform::GetExecutionDir(path * path)
 {
 	*path = boost::filesystem::current_path();
 }

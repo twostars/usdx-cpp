@@ -43,8 +43,6 @@
 
 #include "../screens/ScreenPopup.h"
 
-extern boost::filesystem::path ScoreFile;
-
 void CheckEvents();
 void DoQuit();
 
@@ -272,6 +270,8 @@ int usdxMain(int argc, TCHAR ** argv)
 		_tprintf(_T("Unhandled exception occurred\n"));
 	}
 
+	FreeGfxResources();
+
 	// delete PartyGame::getSingletonPtr();
 	// delete Joystick::getSingletonPtr();
 	// delete EffectManager::getSingletonPtr();
@@ -290,7 +290,6 @@ int usdxMain(int argc, TCHAR ** argv)
 	delete Log::getSingletonPtr();
 	delete LuaCore::getSingletonPtr();
 
-	FreeGfxResources();
 	SDL_Quit();
 
 	return 0;

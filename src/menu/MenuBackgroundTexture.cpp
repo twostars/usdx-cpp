@@ -30,7 +30,7 @@
 MenuBackgroundTexture::MenuBackgroundTexture(const ThemeBackground* themedSettings, bool isOptionalTexture /*= false*/)
 	: MenuBackground(themedSettings)
 {
-	const boost::filesystem::path * texFilename;
+	const path * texFilename;
 
 	Color = themedSettings->Color;
 

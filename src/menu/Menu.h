@@ -112,14 +112,14 @@ public:
 	// Static
 	int AddStatic(const ThemeStatic& themeStatic);
 	int AddStatic(float x, float y, float w, float h, 
-		const RGB& colRGB, const boost::filesystem::path* textureFilename, 
+		const RGB& colRGB, const path* textureFilename, 
 		eTextureType textureType = TextureType::Plain, uint32 color = 0xFFFFFFFF);
 	int AddStatic(float x, float y, float w, float h, float z, 
-		const RGB& colRGB, const boost::filesystem::path* textureFilename, 
+		const RGB& colRGB, const path* textureFilename, 
 		eTextureType textureType = TextureType::Plain, uint32 color = 0xFFFFFFFF);
 	int AddStatic(float x, float y, float w, float h, float z, 
 		const RGB& colRGB, float texX1, float texY1, float texX2, float texY2,
-		const boost::filesystem::path* textureFilename, 
+		const path* textureFilename, 
 		eTextureType textureType = TextureType::Plain,
 		uint32 color = 0xFFFFFFFF,
 		bool reflection = false, float reflectionSpacing = 0.0f);
@@ -137,13 +137,13 @@ public:
 	void SetButtonLength(size_t length);
 	int AddButton(const ThemeButton& themeButton);
 	int AddButton(float x, float y, float w, float h, 
-		const boost::filesystem::path* texturePath,
+		const path* texturePath,
 		eTextureType textureType = TextureType::Plain,
 		bool reflection = false);
 	int AddButton(float x, float y, float w, float h, 
 		const RGB& colRGB, float intensity,
 		const RGB& dColRGB, float dIntensity,
-		const boost::filesystem::path* texturePath,
+		const path* texturePath,
 		eTextureType textureType = TextureType::Plain,
 		bool reflection = false,
 		float reflectionSpacing = 0.0f,
@@ -170,9 +170,9 @@ public:
 		const RGB& sbgdColRGB, float sbgdIntensity,
 		const RGB& stColRGB,   float stIntensity,
 		const RGB& stdColRGB,  float stdIntensity,
-		const boost::filesystem::path* textureFilename,
+		const path* textureFilename,
 		eTextureType textureType,
-		const boost::filesystem::path* sbgFilename,
+		const path* sbgFilename,
 		eTextureType sbgTextureType,
 		const tstring& caption, uint32 * pData);
 	void AddSelectSlideOption(const tstring& addText);

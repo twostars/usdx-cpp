@@ -34,7 +34,7 @@ TextureMgr::TextureMgr()
 
 Texture TextureMgr::CreateTexture(
 	const uint8* data, 
-	const boost::filesystem::path* texturePath,
+	const path* texturePath,
 	uint16 width, uint16 height)
 {
 	Texture tex;
@@ -91,7 +91,7 @@ void TextureMgr::AddTexture(
 }
 
 Texture TextureMgr::GetTexture(
-	const boost::filesystem::path* texturePath, 
+	const path* texturePath, 
 	eTextureType textureType, uint32 color /*= 0*/, 
 	bool fromCache /*= false*/)
 {
@@ -134,7 +134,7 @@ Texture TextureMgr::GetTexture(
 }
 
 Texture TextureMgr::LoadTexture(
-	const boost::filesystem::path* texturePath, 
+	const path* texturePath, 
 	eTextureType textureType /*= TextureType::Plain*/, uint32 color /*= 0*/)
 {
 	Texture tex;
@@ -248,7 +248,7 @@ int TextureMgr::FindTexture(
 }
 
 void TextureMgr::UnloadTexture(
-	const boost::filesystem::path* texturePath, eTextureType textureType, 
+	const path* texturePath, eTextureType textureType, 
 	uint32 color /*= 0*/, bool fromCache /*= false*/)
 {
 	Texture lookupTex;

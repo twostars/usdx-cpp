@@ -782,6 +782,8 @@ void FreeGfxResources()
 		delete (*itr);
 	g_screenCollection.clear();
 
+	UnloadFontTextures();
+
 	if (Screen != NULL)
 	{
 		SDL_DestroyWindow(Screen);

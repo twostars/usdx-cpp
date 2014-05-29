@@ -290,7 +290,7 @@ void Menu::AddBackground(const ThemeBackground& themedSettings)
 		case BackgroundType::Auto:
 			if (!themedSettings.Tex.empty())
 			{
-				const boost::filesystem::path* textureFilename 
+				const path* textureFilename 
 					= sSkins.GetTextureFileName(themedSettings.Tex);
 
 				if (textureFilename != NULL)
@@ -363,14 +363,14 @@ int Menu::AddStatic(const ThemeStatic& themeStatic)
 }
 
 int Menu::AddStatic(float x, float y, float w, float h, 
-					const RGB& colRGB, const boost::filesystem::path* textureFilename, 
+					const RGB& colRGB, const path* textureFilename, 
 					eTextureType textureType /*= TextureType::Plain*/, uint32 color /*= 0xFFFFFFFF*/)
 {
 	return AddStatic(x, y, w, h, 0.0f /* z*/, colRGB, textureFilename, textureType, color);
 }
 
 int Menu::AddStatic(float x, float y, float w, float h, float z, 
-					const RGB& colRGB, const boost::filesystem::path* textureFilename, 
+					const RGB& colRGB, const path* textureFilename, 
 					eTextureType textureType /*= TextureType::Plain*/, uint32 color /*= 0xFFFFFFFF*/)
 {
 	return AddStatic(x, y, w, h, z, colRGB, 0.0f, 0.0f, 1.0f, 1.0f, textureFilename, textureType, color);
@@ -378,7 +378,7 @@ int Menu::AddStatic(float x, float y, float w, float h, float z,
 
 int Menu::AddStatic(float x, float y, float w, float h, float z, 
 					const RGB& colRGB, float texX1, float texY1, float texX2, float texY2,
-					const boost::filesystem::path* textureFilename, 
+					const path* textureFilename, 
 					eTextureType textureType /*= TextureType::Plain*/,
 					uint32 color /*= 0xFFFFFFFF*/,
 					bool reflection /*= false*/, float reflectionSpacing /*= 0.0f*/)
@@ -534,7 +534,7 @@ int Menu::AddButton(const ThemeButton& themeButton)
 }
 
 int Menu::AddButton(float x, float y, float w, float h, 
-					const boost::filesystem::path* texturePath,
+					const path* texturePath,
 					eTextureType textureType /*= TextureType::Plain*/,
 					bool reflection /*= false*/)
 {
@@ -547,7 +547,7 @@ int Menu::AddButton(float x, float y, float w, float h,
 int Menu::AddButton(float x, float y, float w, float h, 
 					const RGB& colRGB, float intensity,
 					const RGB& dColRGB, float dIntensity,
-					const boost::filesystem::path* texturePath,
+					const path* texturePath,
 					eTextureType textureType /*= TextureType::Plain*/,
 					bool reflection /*= false*/,
 					float reflectionSpacing /*= 0.0f*/,
@@ -707,9 +707,9 @@ int Menu::AddSelectSlide(float x, float y, float w, float h, float skipX, float 
 	const RGB& sbgdColRGB, float sbgdIntensity,
 	const RGB& stColRGB, float stIntensity,
 	const RGB& stdColRGB, float stdIntensity,
-	const boost::filesystem::path* texturePath,
+	const path* texturePath,
 	eTextureType textureType,
-	const boost::filesystem::path* sbgTexturePath,
+	const path* sbgTexturePath,
 	eTextureType sbgTextureType,
 	const tstring& caption, uint32 * pData)
 {
@@ -1326,7 +1326,7 @@ void Menu::InteractPrevRow()
 void Menu::AddBox(float x, float y, float w, float h)
 {
 	RGB colRGB1 = {0.0f, 0.0f, 0.0f}, colRGB2 = {1.0f, 1.0f, 1.0f};
-	const boost::filesystem::path* textureFilename = sSkins.GetTextureFileName(_T("MainBar"));
+	const path* textureFilename = sSkins.GetTextureFileName(_T("MainBar"));
 
 	AddStatic(x,   y,   w,   h,   colRGB1, textureFilename, TextureType::Colorized);
 	AddStatic(x+2, y+2, w-4, h-4, colRGB2, textureFilename, TextureType::Colorized);

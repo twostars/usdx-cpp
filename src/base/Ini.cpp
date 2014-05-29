@@ -647,7 +647,7 @@ void Ini::LoadPaths()
 		return;
 
 	for (CSimpleIni::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
-		AddSongPath(boost::filesystem::path(itr->second));
+		AddSongPath(path(itr->second));
 }
 
 void Ini::SavePaths()

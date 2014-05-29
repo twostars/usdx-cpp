@@ -156,6 +156,7 @@
     <ClInclude Include="..\..\src\base\CommandLine.h" />
     <ClInclude Include="..\..\src\base\Common.h" />
     <ClInclude Include="..\..\src\base\Config.h" />
+    <ClInclude Include="..\..\src\base\Font.h" />
     <ClInclude Include="..\..\src\base\Graphic.h" />
     <ClInclude Include="..\..\src\base\Ini.h" />
     <ClInclude Include="..\..\src\base\Language.h" />
@@ -298,7 +299,7 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;HAVE_LIBC;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/fp:except- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;..\..\src\lib\SDL_ttf\external\freetype-2.4.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -324,7 +325,7 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;HAVE_LIBC;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/fp:except- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;..\..\src\lib\SDL_ttf\external\freetype-2.4.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

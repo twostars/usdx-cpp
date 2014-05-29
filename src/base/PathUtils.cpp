@@ -25,8 +25,6 @@
 #include "Log.h"
 #include "CommandLine.h"
 
-using namespace boost::filesystem;
-
 extern CMDParams Params;
 
 path SharedPath;
@@ -72,7 +70,7 @@ bool FindPath(path& resultPath, const path& requestedPath, bool needsWritePermis
 
 		return true;
 	}
-	catch (filesystem_error)
+	catch (boost::filesystem::filesystem_error)
 	{
 		return false;
 	}

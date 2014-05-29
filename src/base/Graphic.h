@@ -35,7 +35,7 @@ void LoadTextures();
 void LoadScreens();
 void SwapBuffers();
 
-SDL_Surface * LoadSurfaceFromFile(const boost::filesystem::path& filename);
+SDL_Surface * LoadSurfaceFromFile(const path& filename);
 void UnloadSurface(SDL_Surface * texSurface);
 
 void AdjustPixelFormat(SDL_Surface *& texSurface, eTextureType textureType);

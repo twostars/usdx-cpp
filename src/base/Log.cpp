@@ -158,7 +158,7 @@ void Log::Voice(int soundNo)
 	// TODO
 }
 
-void Log::Buffer(const TCHAR * buffer, const size_t length, const boost::filesystem::path& filename)
+void Log::Buffer(const TCHAR * buffer, const size_t length, const path& filename)
 {
 	FILE * fp = _tfopen(filename.native().c_str(), _T("a"));
 	if (fp == NULL)
