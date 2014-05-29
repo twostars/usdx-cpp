@@ -27,6 +27,8 @@
 #include <SDL_ttf.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include FT_GLYPH_H
+#include FT_STROKER_H
 
 // Enables the Freetype font cache
 #define ENABLE_FT_FACE_CACHE 1
@@ -46,8 +48,9 @@ enum FontStyle
 
 enum FontPart
 {
-	fpInner		= (1 << 0),
-	fpOutline	= (1 << 1),
+	fpNone,
+	fpInner,
+	fpOutline
 };
 
 struct FontBounds
@@ -59,6 +62,17 @@ struct FontBounds
 struct FontPosition
 {
 	float X, Y;
+};
+
+struct TextureSize
+{
+	int Width, Height;
+};
+
+struct BitmapCoords
+{
+	double Left, Top;
+	int Width, Height;
 };
 
 #pragma pack(push, 1)
@@ -124,10 +138,10 @@ public:
 	virtual void RenderReflection() = 0;
 
 	// Distance to next glyph (in pixels)
-	virtual FontPosition GetAdvance() = 0;
+	virtual const FontPosition& GetAdvance() = 0;
 
 	// Glyph bounding box (in pixels)
-	virtual FontBounds GetBounds() = 0;
+	virtual const FontBounds& GetBounds() = 0;
 };
 
 class GlyphCacheHashEntry
@@ -140,6 +154,11 @@ public:
 class GlyphCache
 {
 public:
+	/**
+	* Adds glyph with char-code ch to the cache.
+	* @returns true on success, false otherwise
+	*/
+	bool AddGlyph(TCHAR ch, const Glyph * glyph);
 	void FlushCache(bool keepBaseSet);
 	~GlyphCache();
 
@@ -187,6 +206,66 @@ public:
 	void UnloadFace(FTFontFace * face);
 
 	std::set<FTFontFace *> Faces;
+};
+
+class FTFont;
+class FTGlyph : public Glyph
+{
+public:
+	/**
+	* Creates a glyph with char-code ch from font Font.
+	* @param loadFlags flags passed to FT_Load_Glyph()
+	*/
+	FTGlyph(FTFont * font, TCHAR ch, float outset, uint32 loadFlags);
+
+	/**
+	* Creates an OpenGL texture (and display list) for the glyph.
+	* The glyph's and bitmap's metrics are set correspondingly.
+	* @param  LoadFlags  flags passed to FT_Load_Glyph()
+	* @raises FontException  if the glyph could not be initialized
+	*/
+	void CreateTexture(uint32 loadFlags);
+
+	/**
+	* Extrudes the outline of a glyph's bitmap stored in TexBuffer with size
+	* fTexSize by Outset pixels.
+	* This is useful to create bold or outlined fonts.
+	* TexBuffer must be 2*Ceil(Outset) pixels higher and wider than the
+	* original glyph bitmap, otherwise the glyph borders cannot be extruded
+	* correctly.
+	* The bitmap must be 2* pixels wider and higher than the
+	* original glyph's bitmap with the latter centered in it.
+	*/
+	void StrokeBorder(FT_Glyph glyph);
+
+	// Renders the glyph (normal render pass)
+	virtual void Render(bool useDisplayLists);
+
+	// Renders the glyph's reflection
+	virtual void RenderReflection();
+
+	// Distance to next glyph (in pixels)
+	virtual const FontPosition& GetAdvance();
+
+	// Glyph bounding box (in pixels)
+	virtual const FontBounds& GetBounds();
+
+	~FTGlyph();
+
+protected:
+	TCHAR CharCode;				//**< Char code
+	FTFontFace * Face;			//**< Freetype face used for this glyph
+	FT_UInt CharIndex;			//**< Freetype specific char-index (<> char-code)
+	GLuint DisplayList;			//**< Display-list ID
+	GLuint Texture;				//**< Texture ID
+	BitmapCoords BitmapCoords;	//**< Left/Top offset and Width/Height of the bitmap (in pixels)
+	FontPosition TexOffset;		//**< Right and bottom texture offset for removal of power-of-2 padding
+	TextureSize TexSize;		//**< Texture size in pixels
+
+	FTFont * Font;				//**< Font associated with this glyph
+	FontPosition Advance;		//**< Advance width of this glyph
+	FontBounds Bounds;			//**< Glyph bounds
+	float Outset;				//**< Extrusion outset
 };
 
 class CachedFont : public FontBase
@@ -272,7 +351,7 @@ public:
 	bool PreCache;					//**< pre-load base glyphs
 	uint32 LoadFlags;				//**< FT glpyh load-flags
 	bool UseDisplayLists;			//**< true: use display-lists, false: direct drawing
-	uint8 Part;						//**< indicates the part of an outline font
+	FontPart Part;						//**< indicates the part of an outline font
 	FTFontFaceArray FallbackFaces;	//**< available fallback faces, ordered by priority
 
 	static FTFontFaceCache s_fontFaceCache;

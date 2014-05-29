@@ -23,6 +23,8 @@
 #include "stdafx.h"
 #include "Font.h"
 
+static FreeType s_ftLibrary;
+
 // shear factor used for the italic effect (bigger value -> more bending)
 static const GLfloat cShearFactor = 0.25f;
 
@@ -44,7 +46,36 @@ static const GLfloat cShearMatrixInv[] =
 
 FTFontFaceCache FTFont::s_fontFaceCache;
 
-static FreeType s_ftLibrary;
+/**
+* Size of the transparent border surrounding the glyph image in the texture.
+* The border is necessary because OpenGL does not smooth texels at the
+* border of a texture with the GL_CLAMP or GL_CLAMP_TO_EDGE styles.
+* Without the border, magnified glyph textures look very ugly at their edges.
+* It looks edgy, as if some pixels are missing especially on the left edge
+* (just set cTexSmoothBorder to 0 to see what is meant by this).
+* With the border even the glyphs edges are blended to the border (transparent)
+* color and everything looks nice.
+*
+* Note:
+* OpenGL already supports texture border by setting the border parameter
+* of glTexImage*D() to 1 and using a texture size of 2^m+2b and setting the
+* border pixels to the border color. In some forums it is discouraged to use
+* the border parameter as only a few of the more modern graphics cards support
+* this feature. On an ATI Radeon 9700 card, the slowed down to 0.5 fps and
+* the glyph's background got black. So instead of using this feature we
+* handle it on our own. The only drawback is that textures might get bigger
+* because the border might require a higher power of 2 size instead of just
+* two additional pixels.
+*/
+const int cTexSmoothBorder = 1;
+
+INLINE int NextPowerOf2(int value)
+{
+	int result = 1;
+	while (result < value)
+		result <<= 1;
+	return result;
+}
 
 FontBase::FontBase()
 {
@@ -374,6 +405,326 @@ void FTFontFaceCache::UnloadFace(FTFontFace * face)
 		Faces.erase(itr);
 }
 
+FTGlyph::FTGlyph(FTFont * font, TCHAR ch, float outset, uint32 loadFlags)
+	: DisplayList(NULL)
+{
+	Font = font;
+	Outset = outset;
+	CharCode = ch;
+
+	// Note: the default face is also used if no face (neither default nor fallback)
+	// contains a glyph for the given char.
+	Face = Font->Face;
+
+	// search the FreeType char index (use default Unicode charmap) in the default face
+	CharIndex = FT_Get_Char_Index(Face->Face, (FT_ULong) ch);
+	if (CharIndex == 0)
+	{
+		// Glyph not in default font, search in fallback font faces
+		for (FTFontFaceArray::iterator itr = Font->FallbackFaces.begin();
+			itr != font->FallbackFaces.end(); ++itr)
+		{
+			CharIndex = FT_Get_Char_Index((*itr)->Face, (FT_ULong) ch);
+			if (CharIndex != 0)
+			{
+				Face = (*itr);
+				break;
+			}
+		}
+	}
+
+	Face->IncRef();
+	CreateTexture(loadFlags);
+}
+
+void FTGlyph::CreateTexture(uint32 loadFlags)
+{
+	FT_Glyph glyph;
+	FT_BitmapGlyph BitmapGlyph;
+	FT_Bitmap * Bitmap;
+	FT_BBox cbox;
+
+	// We need vector data for outlined glyphs so do not load bitmaps.
+	// This is necessary for mixed fonts that contain bitmap versions of smaller
+	// glyphs, for example n CJK fonts.
+	if (Outset > 0.0f)
+		loadFlags |= FT_LOAD_NO_BITMAP;
+
+	// Load the glyph for our character
+	if (FT_Load_Glyph(Face->Face, CharIndex, loadFlags) != 0)
+		throw FontException(_T("FTGlyph::CreateTexture(): FT_Load_Glyph() failed for font '%s'."), Font->Filename.c_str());
+
+	// Move the face's glyph into a FT_Glyph object.
+	if (FT_Get_Glyph(Face->Face->glyph, &glyph) != 0)
+		throw FontException(_T("FTGlyph::CreateTexture(): FT_Get_Glyph() failed for font '%s'."), Font->Filename.c_str());
+
+	if (Outset > 0.0f)
+		StrokeBorder(glyph);
+
+	// Store scaled advance width/height in glyph object
+	Advance.X = Face->Face->glyph->advance.x / 64.0f + Outset*2;
+	Advance.Y = Face->Face->glyph->advance.y / 64.0f + Outset*2;
+
+	// Get the contour's bounding box (in 1/64th pixels, not font units)
+	FT_Glyph_Get_CBox(glyph, FT_GLYPH_BBOX_UNSCALED, &cbox);
+
+	// Convert 1/64th values to double values
+	Bounds.Left = cbox.xMin / 64.0f;
+	Bounds.Right = cbox.xMax / 64.0f + Outset*2;
+	Bounds.Bottom = cbox.yMin / 64.0f;
+	Bounds.Top = cbox.yMax / 64.0f + Outset*2;
+
+	// Convert the glyph to a bitmap (and destroy original glyph image).
+	// Request 8-bit greyscale pixel mode.
+	FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, NULL, 1);
+	BitmapGlyph = (FT_BitmapGlyph) glyph;
+
+	// Get bitmap offsets
+	BitmapCoords.Left = BitmapGlyph->left - cTexSmoothBorder;
+
+	// Note: add 1*Outset for lifting the baseline so outset fonts do not intersect
+	// with the baseline; ceil(Outset) for the outset pixels added to the bitmap.
+	BitmapCoords.Top = BitmapGlyph->top + Outset + std::ceil(Outset) + cTexSmoothBorder;
+
+	// Make accessing the bitmap easier
+	Bitmap = &BitmapGlyph->bitmap;
+
+	// Get bitmap dimensions
+	BitmapCoords.Width = Bitmap->width + ((int) std::ceil(Outset) + cTexSmoothBorder) * 2;
+	BitmapCoords.Height = Bitmap->rows + ((int) std::ceil(Outset) + cTexSmoothBorder) * 2;
+
+	// Get power-of-2 bitmap widths
+	TexSize.Width = NextPowerOf2(BitmapCoords.Width);
+	TexSize.Height = NextPowerOf2(BitmapCoords.Height);
+
+	// Texture widths ignoring empty (power of 2) padding space.
+	TexOffset.X = (float) BitmapCoords.Width / (float) TexSize.Width;
+	TexOffset.Y = (float) BitmapCoords.Height / (float) TexSize.Height;
+
+	// Allocate memory for texture data
+	uint8 * TexBuffer = new uint8[TexSize.Width * TexSize.Height];
+	uint8 * BitmapBuffer;
+
+	// Freetype stores the bitmap with either upper (pitch is > 0) or lower
+	// (pitch < 0) glyphs line first. Set the buffer to the upper line.
+	// See http://freetype.sourceforge.net/freetype2/docs/glyphs/glyphs-7.html
+	if (Bitmap->pitch > 0)
+		BitmapBuffer = &Bitmap->buffer[0];
+	else
+		BitmapBuffer = &Bitmap->buffer[(Bitmap->rows - 1) * std::abs(Bitmap->pitch)];
+
+	// copy data to texture bitmap (upper line first).
+	for (int y = 0; y < Bitmap->rows; y++)
+	{
+		// set pointer to first pixel in line that holds bitmap data.
+		// Each line starts with a cTexSmoothBorder pixel and multiple outset pixels
+		// that are added by Extrude() later.
+		uint8 * TexLine = TexBuffer + (y + cTexSmoothBorder + (int) std::ceil(Outset)) 
+						* TexSize.Width + cTexSmoothBorder + (int) std::ceil(Outset);
+
+		// get next lower line offset, use pitch instead of width as it tells
+		// us the storage direction of the lines. In addition a line might be padded.
+		uint8 * BitmapLine = &BitmapBuffer[y * Bitmap->pitch];
+
+		// check for pixel mode and copy pixels
+		// Should be 8 bit gray, but even with FT_RENDER_MODE_NORMAL, freetype
+		// sometimes (e.g. 16px sized japanese fonts) fallbacks to 1 bit pixels.
+		switch (Bitmap->pixel_mode)
+		{
+			// 8-bit gray
+			case FT_PIXEL_MODE_GRAY:
+			{
+				for (int x = 0; x < Bitmap->width; x++)
+					TexLine[x] = BitmapLine[x];
+			} break;
+
+			// 1-bit mono
+			case FT_PIXEL_MODE_MONO:
+			{
+				for (int x = 0; x < Bitmap->width; x++)
+					TexLine[x] = 255 * ((BitmapLine[x / 8] >> (7 - (x % 8))) & 1);
+			} break;
+
+			default:
+				throw FontException(_T("FTGlyph::CreateTexture(): Unhandled pixel format (%d)."), Bitmap->pixel_mode);
+		}
+	}
+
+	// allocate resources for textures and display lists
+	glGenTextures(1, &Texture);
+
+	// setup texture parameters
+	glBindTexture(GL_TEXTURE_2D, Texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	// create alpha-map (GL_ALPHA component only).
+	// TexCoord (0,0) corresponds to the top left pixel of the glyph,
+	// (1,1) to the bottom right pixel. So the glyph is flipped as OpenGL uses
+	// a cartesian (y-axis up) coordinate system for textures.   
+	// See the cTexSmoothBorder comment for info on texture borders.
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, TexSize.Width, TexSize.Height,
+		0, GL_ALPHA, GL_UNSIGNED_BYTE, &TexBuffer[0]);
+
+	// free expanded data
+	delete [] TexBuffer;
+
+	// create the display list
+	DisplayList = glGenLists(1);
+
+	// render to display-list
+	glNewList(DisplayList, GL_COMPILE);
+	Render(false);
+	glEndList();
+
+	// free glyph data (bitmap, etc.)
+	FT_Done_Glyph(glyph);
+}
+
+void FTGlyph::StrokeBorder(FT_Glyph Glyph)
+{
+	FT_Outline * Outline;
+	FT_Stroker OuterStroker = NULL, InnerStroker = NULL;
+	FT_UInt OuterNumPoints, InnerNumPoints, GlyphNumPoints;
+	FT_UInt OuterNumContours, InnerNumContours, GlyphNumContours;
+	FT_StrokerBorder OuterBorder, InnerBorder;
+	FT_Int OutlineFlags;
+	bool UseStencil;
+
+	// It is possible to extrude the borders of a glyph with FT_Glyph_Stroke
+	// but it will extrude the border to the outside and the inside of a glyph
+	// although we just want to extrude to the outside.
+	// FT_Glyph_StrokeBorder extrudes to the outside but also fills the interior
+	// (this is what we need for bold fonts).
+	// In both cases the inner font and outline font (border) will overlap.
+	// Normally this does not matter but it does if alpha blending is active.
+	// In this case if e.g. the inner color is set to white, the outline to red
+	// and alpha to 0.5 the inner part will not be white it will be pink.
+
+	// If we are to create the interior of an outlined font (fInner = true)
+	// we have to create two borders:
+	// - one extruded to the outside by fOutset pixels and
+	// - one extruded to the inside by almost 0 zero pixels.
+	// The second one is used as a stencil for the first one, clearing the
+	// interiour of the glyph.
+	// The stencil is not needed to create bold fonts.
+	UseStencil = (Font->Part == fpInner);
+
+	// we cannot extrude bitmaps, only vector based glyphs.
+	// Check for FT_GLYPH_FORMAT_OUTLINE otherwise a cast to FT_OutlineGlyph is
+	// invalid and FT_Stroker_ParseOutline() will crash
+	if (Glyph->format != FT_GLYPH_FORMAT_OUTLINE)
+		return;
+
+	Outline = &((FT_OutlineGlyph) Glyph)->outline;
+  
+	OuterBorder = FT_Outline_GetOutsideBorder(Outline);
+	if (OuterBorder == FT_STROKER_BORDER_LEFT)
+		InnerBorder = FT_STROKER_BORDER_RIGHT;
+	else
+		InnerBorder = FT_STROKER_BORDER_LEFT;
+
+	// extrude outer border
+	if (FT_Stroker_New(Glyph->library, &OuterStroker) != 0)
+		throw FontException(_T("FTGlyph::StrokeBorder(): FT_Stroker_New() failed for font '%s'."), Font->Filename.c_str());
+
+	FT_Stroker_Set(
+		OuterStroker,
+		(FT_Fixed) Round(Outset * 64),
+		FT_STROKER_LINECAP_ROUND,
+		FT_STROKER_LINEJOIN_BEVEL,
+		(FT_Fixed) 0);
+
+	// similar to FT_Glyph_StrokeBorder(inner = FT_FALSE) but it is possible to
+	// use FT_Stroker_ExportBorder() afterwards to combine inner and outer borders
+	if (FT_Stroker_ParseOutline(OuterStroker, Outline, 0) != 0)
+		throw FontException(_T("FTGlyph::StrokeBorder(): FT_Stroker_ParseOutline() failed for font '%s'."), Font->Filename.c_str());
+
+	FT_Stroker_GetBorderCounts(OuterStroker, OuterBorder, &OuterNumPoints, &OuterNumContours);
+
+	// extrude inner border (= stencil)
+	if (UseStencil)
+	{
+		if (FT_Stroker_New(Glyph->library, &InnerStroker) != 0)
+			throw FontException(_T("FTGlyph::StrokeBorder(): FT_Stroker_New() failed for font '%s'."), Font->Filename.c_str());
+
+		FT_Stroker_Set(
+			InnerStroker,
+			63, // extrude at most one pixel to avoid a black border
+			FT_STROKER_LINECAP_ROUND,
+			FT_STROKER_LINEJOIN_BEVEL,
+			0);
+
+		if (FT_Stroker_ParseOutline(InnerStroker, Outline, 0) != 0)
+			throw FontException(_T("FTGlyph::StrokeBorder(): FT_Stroker_ParseOutline() failed for font '%s'."), Font->Filename.c_str());
+
+		FT_Stroker_GetBorderCounts(InnerStroker, InnerBorder, &InnerNumPoints, &InnerNumContours);
+	}
+	else
+	{
+		InnerNumPoints = 0;
+		InnerNumContours = 0;
+	}
+
+	// combine borders (subtract: OuterBorder - InnerBorder)
+	GlyphNumPoints = InnerNumPoints + OuterNumPoints;
+	GlyphNumContours = InnerNumContours + OuterNumContours;
+
+	// save flags before deletion (TODO: set them on the resulting outline)
+	OutlineFlags = Outline->flags;
+
+	// resize glyph outline to hold inner and outer border
+	FT_Outline_Done(Glyph->library, Outline);
+	if (FT_Outline_New(Glyph->library, GlyphNumPoints, GlyphNumContours, Outline) != 0)
+		throw FontException(_T("FTGlyph::StrokeBorder(): FT_Outline_New() failed for font '%s'."), Font->Filename.c_str());
+
+	Outline->n_points = 0;
+	Outline->n_contours = 0;
+
+	// add points to outline. The inner-border is used as a stencil.
+	FT_Stroker_ExportBorder(OuterStroker, OuterBorder, Outline);
+	if (UseStencil)
+		FT_Stroker_ExportBorder(InnerStroker, InnerBorder, Outline);
+
+	if (FT_Outline_Check(Outline) != 0)
+		throw FontException(_T("FTGlyph::StrokeBorder(): FT_Stroker_ExportBorder() failed for font '%s'."), Font->Filename.c_str());
+
+	if (InnerStroker != NULL)
+		FT_Stroker_Done(InnerStroker);
+
+	if (OuterStroker != NULL)
+		FT_Stroker_Done(OuterStroker);
+}
+
+void FTGlyph::Render(bool useDisplayLists)
+{
+	// TODO
+}
+
+void FTGlyph::RenderReflection()
+{
+	// TODO
+}
+
+const FontPosition& FTGlyph::GetAdvance()
+{
+	return Advance;
+}
+
+const FontBounds& FTGlyph::GetBounds()
+{
+	return Bounds;
+}
+
+FTGlyph::~FTGlyph()
+{
+	Face->DecRef();
+}
+
 CachedFont::CachedFont(const path& filename)
 	: FontBase(filename)
 {
@@ -382,6 +733,12 @@ CachedFont::CachedFont(const path& filename)
 void CachedFont::FlushCache(bool keepBaseSet)
 {
 	Cache.FlushCache(keepBaseSet);
+}
+
+bool GlyphCache::AddGlyph(TCHAR ch, const Glyph * glyph)
+{
+	uint32 baseCode = (ch >> 8);
+	return false;
 }
 
 void GlyphCache::FlushCache(bool keepBaseSet)
@@ -412,8 +769,8 @@ void FTFontFace::Load()
 		throw FontException(_T("FTFontFace::Load(): Could not set pixel size for '%s' to %d."), Filename.c_str(), Size);
 
 	// Get scale factor for font unit to pixel size transformation
-	FontUnitScale.X = Face->size->metrics.x_ppem / Face->units_per_EM;
-	FontUnitScale.Y = Face->size->metrics.y_ppem / Face->units_per_EM;
+	FontUnitScale.X = (float) Face->size->metrics.x_ppem / (float) Face->units_per_EM;
+	FontUnitScale.Y = (float) Face->size->metrics.y_ppem / (float) Face->units_per_EM;
 }
 
 FTFontFace::~FTFontFace()
@@ -633,7 +990,7 @@ FTFont::FTFont(const path& filename,
 	PreCache = preCache;
 	LoadFlags = loadFlags;
 	UseDisplayLists = true;
-	Part = 0;
+	Part = fpNone;
 	Face = GetFaceCache().LoadFace(filename, size);
 	Face->IncRef();
 
@@ -642,9 +999,12 @@ FTFont::FTFont(const path& filename,
 	// pre-cache some commonly used glyphs (' ' - '~')
 	if (preCache)
 	{
-// TODO
-//		for (char ch = ' '; ch < '~'; ch++)
-//			Cache.AddGlyph(ch, new FTGlyph(this, ch, outset, loadFlags)); 
+		for (TCHAR ch = ' '; ch < '~'; ch++)
+		{
+			FTGlyph * glyph = new FTGlyph(this, ch, outset, loadFlags);
+			if (!Cache.AddGlyph(ch, glyph))
+				delete glyph;
+		}
 	}
 }
 
