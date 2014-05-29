@@ -22,6 +22,7 @@
 
 #include "stdafx.h"
 #include "Font.h"
+#include "Log.h"
 
 static FreeType s_ftLibrary;
 
@@ -249,6 +250,160 @@ FontBounds ScalableFont::BBoxLines(const LineArray& lines, bool advance)
 	return result;
 }
 
+/**
+ * Returns the correct mipmap font for the current scale and projection
+ * matrix. The modelview scale is adjusted to the mipmap level, so
+ * Print() will display the font in the correct size.
+ */
+FontBase * ScalableFont::ChooseMipmapFont()
+{
+	FontBase * result = NULL;
+	int desiredLevel = GetMipmapLevel();
+
+	// get the smallest mipmap available for the desired level
+	// as not all levels must be assigned to a font.
+	for (int level = desiredLevel; level >= 0; level--)
+	{
+		FontBase * font = MipmapFonts[level];
+		if (font != NULL)
+		{
+			result = font;
+			break;
+		}
+	}
+
+	if (result == NULL)
+		sLog.Critical(_T("ScalableFont::ChooseMipmapFont"), _T("No mipmap font available for desired level %d. Base font is '%s'."),
+		desiredLevel, BaseFont->Filename.c_str());
+
+	// since the mipmap font (if level > 0) is smaller than the base-font
+	// we have to scale to get its size right.
+	float MipmapScale = MipmapFonts[0]->GetHeight() / result->GetHeight();
+	glScalef(MipmapScale, MipmapScale, 0);
+
+	return result;
+}
+
+/**
+ * Returns the mipmap level to use with regard to the current projection
+ * and modelview matrix, font scale and stretch.
+ *
+ * Note:
+ * - for Freetype fonts, hinting and grid-fitting must be disabled, otherwise
+ *   the glyph widths/heights ratios and advance widths of the mipmap fonts
+ *   do not match as they are adjusted sligthly (e.g. an 'a' at size 12px has
+ *   width 12px, but at size 6px width 8px).
+ * - returned mipmap-level is used for all glyphs of the current text to print.
+ *   This is faster, much easier to handle, since we just need to create
+ *   multiple sized fonts and select the one we need for the mipmap-level and
+ *   it avoids that neighbored glyphs use different mipmap-level which might
+ *   look odd because one glyph might look blurry and the other sharp.
+ *
+ * Motivation:
+ *   We do not use OpenGL for mipmapping as the results are very bad. At least
+ *   with automatic mipmap generation (gluBuildMipmaps) the fonts look rather
+ *   blurry.
+ *   Defining our own mipmaps by creating multiple textures with
+ *   for different mimap levels is a pain, as the font size passed to freetype
+ *   is not the size of the bitmaps created and it does not guarantee that a
+ *   glyph bitmap of a font with font-size s/2 is half the size of the font with
+ *   font-size s. If the bitmap size is just a single pixel bigger than the half
+ *   we might need a texture of the next power-of-2 and the texture would not be
+ *   half of the size of the next bigger mipmap. In addition we use a fixed one
+ *   pixel sized border to smooth the texture (see cTexSmoothBorder) and maybe
+ *   an outset that is added to the font, so creating a glyph mipmap that is
+ *   exactly half the size of the next bigger one is a very difficult task.
+ *
+ * Solution:
+ *   Use mipmap textures that are not exactly half the size of the next mipmap
+ *   level. OpenGL does not support this (at least not without extensions).
+ *   The trickiest task is to determine the mipmap to use by calculating the
+ *   amount of minification that is performed in this function.
+ */
+int ScalableFont::GetMipmapLevel()
+{
+	// width/height of square used for determining the scale
+	const GLdouble cTestSize = 10.0;
+
+	// an offset to the mipmap-level to adjust the change-over of two consecutive
+	// mipmap levels. If for example the bias is 0.1 and unbiased level is 1.9
+	// the result level will be 2. A bias of 0.5 is equal to rounding.
+	// With bias=0.1 we prefer larger mipmaps over smaller ones.
+	const GLdouble cBias = 0.2;
+
+	GLdouble ModelMatrix[16], ProjMatrix[16];
+	GLint ViewportArray[4];
+	GLdouble WinCoords[3][3] =
+	{
+		{ 0.0, 0.0, 0.0 },
+		{ 0.0, 0.0, 0.0 },
+		{ 0.0, 0.0, 0.0 },
+	};
+	double Dist, Dist2, DistSum, WidthScale, HeightScale;
+
+	// 1. Retrieve current transformation matrices for gluProject
+	glGetDoublev(GL_MODELVIEW_MATRIX, ModelMatrix);
+	glGetDoublev(GL_PROJECTION_MATRIX, ProjMatrix);
+	glGetIntegerv(GL_VIEWPORT, ViewportArray);
+
+	// 2. Project 3 of the corner points of a square with size cTestSize
+	// to window coordinates (the square is just a dummy for a glyph).
+
+	// project point (x1, y1) to window coordinates
+	gluProject(0.0, 0.0, 0.0,
+		ModelMatrix, ProjMatrix, ViewportArray,
+		&WinCoords[0][0], &WinCoords[0][1], &WinCoords[0][2]);
+
+	// project point (x2, y1) to window coordinates
+	gluProject(cTestSize, 0.0, 0.0,
+		ModelMatrix, ProjMatrix, ViewportArray,
+		&WinCoords[1][0], &WinCoords[1][1], &WinCoords[1][2]);
+
+	// project point (x1, y2) to window coordinates
+	gluProject(0.0, cTestSize, 0.0,
+		ModelMatrix, ProjMatrix, ViewportArray,
+		&WinCoords[2][0], &WinCoords[2][1], &WinCoords[2][2]);
+
+	// 3. Lets see how much the width and height of the square changed.
+	// Calculate the width and height as displayed on the screen in window
+	// coordinates and calculate the ratio to the original coordinates in
+	// modelview space so the ratio gives us the scale (minification here).
+
+	// projected width ||(x1, y1) - (x2, y1)||
+	Dist = (WinCoords[0][0] - WinCoords[1][0]);
+	Dist2 = (WinCoords[0][1] - WinCoords[1][1]);
+
+	WidthScale = 1.0;
+	DistSum = (Dist*Dist) + (Dist2*Dist2);
+	if (DistSum > 0.0)
+		WidthScale = cTestSize / std::sqrt(DistSum);
+
+	// projected height ||(x1, y1) - (x2, y1)||
+	Dist = (WinCoords[0][0] - WinCoords[2][0]);
+	Dist2 = (WinCoords[0][1] - WinCoords[2][1]);
+
+	HeightScale = 1.0;
+	DistSum = (Dist*Dist) + (Dist2*Dist2);
+	if (DistSum > 0.0)
+		HeightScale = cTestSize / std::sqrt(DistSum);
+
+	// 4. Now that we have got the scale, take the bigger minification scale
+	// and get it to a logarithmic scale as each mipmap is 1/2 the size of its
+	// predecessor (Mipmap_size[i] = Mipmap_size[i-1]/2).
+	// The result is our mipmap-level = the index of the mipmap to use.
+
+	// Level > 0: Minifaction; level < 0: Magnification
+	int mipmapLevel = (int) Log2(std::max(WidthScale, HeightScale) + cBias);
+
+	// Clamp to valid range
+	if (mipmapLevel < 0)
+		mipmapLevel = 0;
+	else if (mipmapLevel >= SDL_arraysize(MipmapFonts))
+		mipmapLevel = SDL_arraysize(MipmapFonts) - 1;
+
+	return mipmapLevel;
+}
+
 void ScalableFont::PrintLines(const LineArray& lines, bool reflectionPass /*= false*/)
 {
 	glPushMatrix();
@@ -257,11 +412,9 @@ void ScalableFont::PrintLines(const LineArray& lines, bool reflectionPass /*= fa
 	glScalef(Scale * Stretch, Scale, 0.0f);
 
 	// print text
-#if 0 // TODO
 	if (UseMipmaps)
-		ChooseMipmapFont().PrintLines(lines)
+		ChooseMipmapFont()->PrintLines(lines);
 	else
-#endif
 		BaseFont->PrintLines(lines);
 
 	glPopMatrix();
@@ -269,7 +422,7 @@ void ScalableFont::PrintLines(const LineArray& lines, bool reflectionPass /*= fa
 
 void ScalableFont::Render(const tstring& text)
 {
-	assert(!"Unused ScalableFont::Render() called.");
+	sLog.Critical(_T("ScalableFont::Render"), _T("Unused method called. This should not be called.."));
 }
 
 float ScalableFont::GetUnderlinePosition()

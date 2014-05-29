@@ -293,6 +293,18 @@ public:
 	virtual FontBase * CreateMipmap(int level, float scale) = 0;
 	virtual FontBounds BBoxLines(const LineArray& lines, bool advance);
 
+	/**
+	* Chooses the mipmap that looks nicest with current scale and projection
+	* matrix.
+	*/
+	FontBase * ChooseMipmapFont();
+
+	/**
+	* Returns the mipmap level considering the current scale and projection
+	* matrix.
+	*/
+	int GetMipmapLevel();
+
 	virtual void PrintLines(const LineArray& lines, bool reflectionPass = false);
 	virtual void Render(const tstring& text);
 
