@@ -42,6 +42,10 @@ static const GLfloat cShearMatrixInv[] =
 	0, 0, 0, 1
 };
 
+FTFontFaceCache FTFont::s_fontFaceCache;
+
+static FreeType s_ftLibrary;
+
 FontBase::FontBase()
 {
 	ResetIntern();
@@ -318,19 +322,103 @@ GlyphCacheHashEntry::~GlyphCacheHashEntry()
 	GlyphTable.clear();
 }
 
+FTFontFace * FTFontFaceCache::LoadFace(const path& filename, int size)
+{
+	FTFontFace * face = NULL;
+
+#ifdef ENABLE_FT_FACE_CACHE
+	for (std::set<FTFontFace *>::iterator itr = Faces.begin(); 
+		itr != Faces.end(); ++itr)
+	{
+		face = *itr;
+		if (face->Filename == filename
+			&& face->Size == size)
+		{
+			face->IncRef();
+			return face;
+		}
+	}
+#endif
+
+	face = new FTFontFace(filename, size);
+
+	try
+	{
+		face->Load();
+	}
+	catch (FontException)
+	{
+		// Perform cleanup first to ensure we don't leak memory.
+		delete face;
+		face = NULL;
+
+		// Then re-throw the exception.
+		throw;
+	}
+
+	// Add reference as it's going in the set.
+	face->IncRef();
+	Faces.insert(face);
+
+	return face;
+}
+
+void FTFontFaceCache::UnloadFace(FTFontFace * face)
+{
+	if (face == NULL)
+		return;
+
+	std::set<FTFontFace *>::iterator itr = Faces.find(face);
+	if (itr != Faces.end()
+		&& (*itr)->DecRef() == 0)
+		Faces.erase(itr);
+}
+
 CachedFont::CachedFont(const path& filename)
 	: FontBase(filename)
+{
+}
+
+void CachedFont::FlushCache(bool keepBaseSet)
+{
+	Cache.FlushCache(keepBaseSet);
+}
+
+void GlyphCache::FlushCache(bool keepBaseSet)
 {
 	// TODO
 }
 
-FTFontFace::FTFontFace()
+GlyphCache::~GlyphCache()
+{
+	FlushCache(false);
+}
+
+FTFontFace::FTFontFace(const path& filename, int size)
+	: Filename(filename), Size(size), RefCount(0)
 {
 }
 
-FTFontFace::FTFontFace(const path& filename)
-	: Filename(filename)
+void FTFontFace::Load()
 {
+	if (FT_New_Face(s_ftLibrary.GetLibrary(), Filename.generic_string().c_str(), 0, &Face) != 0)
+		throw FontException(_T("FTFontFace::Load(): Could not load font '%s'"), Filename.c_str());
+
+	// Support scalable fonts only
+	if (!FT_IS_SCALABLE(Face))
+		throw FontException(_T("FTFontFace::Load(): Font '%s' is not scalable."), Filename.c_str());
+
+	if (FT_Set_Pixel_Sizes(Face, 0, Size) != 0)
+		throw FontException(_T("FTFontFace::Load(): Could not set pixel size for '%s' to %d."), Filename.c_str(), Size);
+
+	// Get scale factor for font unit to pixel size transformation
+	FontUnitScale.X = Face->size->metrics.x_ppem / Face->units_per_EM;
+	FontUnitScale.Y = Face->size->metrics.y_ppem / Face->units_per_EM;
+}
+
+FTFontFace::~FTFontFace()
+{
+	FT_Done_Face(Face);
 }
 
 FTOutlineFont::FTOutlineFont(const path& filename, int size, float outset,
@@ -426,6 +514,20 @@ FontBounds FTOutlineFont::BBoxLines(const LineArray& lines, bool advance)
 	return OutlineFont->BBoxLines(lines, advance);
 }
 
+void FTOutlineFont::SetOutlineColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a /*= -1.0f*/)
+{
+	OutlineColor.R = r;
+	OutlineColor.G = g;
+	OutlineColor.B = b;
+	OutlineColor.A = a;
+}
+
+void FTOutlineFont::FlushCache(bool keepBaseSet)
+{
+	OutlineFont->FlushCache(keepBaseSet);
+	InnerFont->FlushCache(keepBaseSet);
+}
+
 float FTOutlineFont::GetUnderlinePosition()
 {
 	return OutlineFont->GetUnderlinePosition();
@@ -499,12 +601,22 @@ void FTScalableOutlineFont::AddFallback(const path& filename)
 
 void FTScalableOutlineFont::SetOutlineColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a /*= -1.0f*/)
 {
-	// TODO
+	for (int i = 0; i < SDL_arraysize(MipmapFonts); i++)
+	{
+		FontBase * font = MipmapFonts[i];
+		if (font != NULL)
+			static_cast<FTOutlineFont *>(font)->SetOutlineColor(r, g, b, a);
+	}
 }
 
 void FTScalableOutlineFont::FlushCache(bool keepBaseSet)
 {
-	// TODO
+	for (int i = 0; i < SDL_arraysize(MipmapFonts); i++)
+	{
+		FontBase * font = MipmapFonts[i];
+		if (font != NULL)
+			static_cast<FTOutlineFont *>(font)->FlushCache(keepBaseSet);
+	}
 }
 
 float FTScalableOutlineFont::GetOutset()
@@ -514,7 +626,7 @@ float FTScalableOutlineFont::GetOutset()
 
 FTFont::FTFont(const path& filename,
 	int size, float outset /*= 0.0f*/, bool preCache /*= true*/,
-	uint32 loadFlags /*= FT_LOAD_DEFAULT*/) : CachedFont(filename), Face(filename)
+	uint32 loadFlags /*= FT_LOAD_DEFAULT*/) : CachedFont(filename)
 {
 	Size = size;
 	Outset = outset;
@@ -522,8 +634,8 @@ FTFont::FTFont(const path& filename,
 	LoadFlags = loadFlags;
 	UseDisplayLists = true;
 	Part = 0;
-	// TODO
-	// Face = GetFaceCache().LoadFace(filename, size);
+	Face = GetFaceCache().LoadFace(filename, size);
+	Face->IncRef();
 
 	ResetIntern();
 
@@ -545,21 +657,18 @@ FontBounds FTFont::BBoxLines(const LineArray& lines, bool advance)
 
 void FTFont::AddFallback(const path& filename)
 {
-	FTFontFace fontFace;
-	// GetFaceCache().LoadFace(filename, Size, &fontFace);
+	FTFontFace * fontFace = GetFaceCache().LoadFace(filename, Size);
 	FallbackFaces.push_back(fontFace);
 }
 
 float FTFont::GetUnderlinePosition()
 {
-	// TODO
-	return 0.0f;
+	return Face->Face->underline_position * Face->FontUnitScale.Y - Outset;
 }
 
 float FTFont::GetUnderlineThickness()
 {
-	// TODO
-	return 0.0f;
+	return Face->Face->underline_thickness * Face->FontUnitScale.Y - Outset*2;
 }
 
 float FTFont::GetHeight()
@@ -569,16 +678,43 @@ float FTFont::GetHeight()
 
 float FTFont::GetAscender()
 {
-	return Face.Face.ascender * Face.FontUnitScale.Y + Outset*2;
+	return Face->Face->ascender * Face->FontUnitScale.Y + Outset*2;
 }
 
 float FTFont::GetDescender()
 {
 	// Note: outset is not part of the descender as the baseline is lifted
-	return Face.Face.descender * Face.FontUnitScale.Y;
+	return Face->Face->descender * Face->FontUnitScale.Y;
 }
 
 void FTFont::Render(const tstring& text)
 {
 	// TODO
+}
+
+FTFont::~FTFont()
+{
+	GetFaceCache().UnloadFace(Face);
+	for (FTFontFaceArray::iterator itr = FallbackFaces.begin(); itr != FallbackFaces.end(); ++itr)
+		GetFaceCache().UnloadFace(*itr);
+	FallbackFaces.clear();
+
+	if (Face != NULL)
+		Face->DecRef();
+}
+
+FreeType::FreeType()
+{
+	if (FT_Init_FreeType(&_ftLibrary) != 0)
+		throw FontException(_T("FT_Init_FreeType() failed"));
+}
+
+FT_Library& FreeType::GetLibrary()
+{
+	return _ftLibrary;
+}
+
+FreeType::~FreeType()
+{
+	FT_Done_FreeType(_ftLibrary);
 }

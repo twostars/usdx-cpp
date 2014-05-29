@@ -28,6 +28,9 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+// Enables the Freetype font cache
+#define ENABLE_FT_FACE_CACHE 1
+
 // Flip direction of y-axis.
 // Default is a cartesian coordinate system with y-axis in upper direction
 // but with USDX the y-axis is in lower direction.
@@ -137,6 +140,9 @@ public:
 class GlyphCache
 {
 public:
+	void FlushCache(bool keepBaseSet);
+	~GlyphCache();
+
 	std::map<uint8, GlyphCacheHashEntry> Hash;
 };
 
@@ -144,22 +150,51 @@ public:
 class FTFontFace
 {
 public:
-	FTFontFace();
-	FTFontFace(const path& filename);
+	FTFontFace(const path& filename, int size);
+	void Load();
+	~FTFontFace();
 
 	path Filename;	//**< filename of the font-file
-	FT_FaceRec Face;					//**< Holds the height of the font
+	FT_Face Face;					//**< Holds the height of the font
 	FontPosition FontUnitScale;			//**< FT font-units to pixel ratio
 	int Size;
+
+	int RefCount; // TODO: Move this into its own class & make it atomic. Not a priority as it's only used in a single-thread anyway.
+	void IncRef() { ++RefCount; }
+	int DecRef() 
+	{
+		int refCount = --RefCount;
+		if (refCount == 0) 
+			delete this; 
+		return refCount;
+	}
 };
 
-typedef std::vector<FTFontFace> FTFontFaceArray;
+typedef std::vector<FTFontFace *> FTFontFaceArray;
+
+/**
+* Loading font faces with freetype is a slow process.
+* Especially loading a font (e.g. fallback fonts) more than once is a waste
+* of time. Just cache already loaded faces here.
+*/
+class FTFontFaceCache
+{
+public:
+	/**
+	* @raises FontException if the font could not be initialized
+	*/
+	FTFontFace * LoadFace(const path& filename, int size);
+	void UnloadFace(FTFontFace * face);
+
+	std::set<FTFontFace *> Faces;
+};
 
 class CachedFont : public FontBase
 {
 public:
 	CachedFont(const path& filename);
 	virtual void Init() {}
+	void FlushCache(bool keepBaseSet);
 
 protected:
 	GlyphCache Cache;
@@ -216,6 +251,8 @@ public:
 		int size, float outset = 0.0f, bool precache = true,
 		uint32 loadFlags = 0);
 
+	static FTFontFaceCache& GetFaceCache() { return s_fontFaceCache; }
+
 	virtual FontBounds BBoxLines(const LineArray& lines, bool advance);
 	virtual void AddFallback(const path& filename);
 
@@ -227,7 +264,9 @@ public:
 
 	virtual void Render(const tstring& text);
 
-	FTFontFace Face;				//**< Default font face
+	~FTFont();
+
+	FTFontFace * Face;				//**< Default font face
 	int Size;						//**< Font base size (in pixels)
 	float Outset;					//**< size of outset extrusion (in pixels)
 	bool PreCache;					//**< pre-load base glyphs
@@ -235,6 +274,8 @@ public:
 	bool UseDisplayLists;			//**< true: use display-lists, false: direct drawing
 	uint8 Part;						//**< indicates the part of an outline font
 	FTFontFaceArray FallbackFaces;	//**< available fallback faces, ordered by priority
+
+	static FTFontFaceCache s_fontFaceCache;
 };
 
 class FTScalableFont : public ScalableFont
@@ -286,6 +327,16 @@ public:
 	virtual void DrawUnderline(const tstring& line);
 	virtual void Render(const tstring& line);
 	virtual FontBounds BBoxLines(const LineArray& lines, bool advance);
+
+	/**
+	* Sets the color of the outline.
+	* If the alpha component is < 0, OpenGL's current alpha value will be
+	* used.
+	*/
+    void SetOutlineColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a = -1.0f);
+
+    /** @seealso GlyphCache.FlushCache */
+    void FlushCache(bool keepBaseSet);
 
 	virtual float GetUnderlinePosition();
 	virtual float GetUnderlineThickness();
@@ -342,6 +393,17 @@ public:
 	ScalableFont * Font;
 	bool Outlined;
 	float X, Y, Z;
+};
+
+class FreeType
+{
+public:
+	FreeType();
+	FT_Library& GetLibrary();
+	~FreeType();
+
+protected:
+	FT_Library _ftLibrary;
 };
 
 #endif

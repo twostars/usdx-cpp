@@ -81,47 +81,54 @@ void BuildFonts()
 	if (result != SI_OK)
 		return sLog.Debug(_T("BuildFonts"), _T("Failed to load config."));
 
-	for (size_t i = 0; i < Fonts.size(); i++)
+	try
 	{
-		GLFont& font = Fonts[i];
-
-		const tstring section = _T("Font_") + FontNames[i];
-		tstring fontFile = ini.GetValue(section.c_str(), _T("File"), _T(""));
-		path fontPath = FindFontFile(fontFile);
-
-		long fontMaxResolution = ini.GetLongValue(section.c_str(), _T("MaxResolution"), 64);
-		bool fontPrecache = ini.GetBoolValue(section.c_str(), _T("PreCache"), true);
-		float fontOutline = (float) ini.GetDoubleValue(section.c_str(), _T("Outline"), 0.0);
-
-		// Create either outlined or normal font
-		if (fontOutline > 0.0f)
+		for (size_t i = 0; i < Fonts.size(); i++)
 		{
-			// outlined font
-			FTScalableOutlineFont * outlineFont = new FTScalableOutlineFont(
-				fontPath, (int) fontMaxResolution, fontOutline, true, fontPrecache);
+			GLFont& font = Fonts[i];
 
-			outlineFont->SetOutlineColor(
-				(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorR"),  0.0),
-				(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorG"),  0.0),
-				(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorB"),  0.0),
-				(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorA"), -1.0)
-			);
-			font.Font = outlineFont;
-			font.Outlined = true;
+			const tstring section = _T("Font_") + FontNames[i];
+			tstring fontFile = ini.GetValue(section.c_str(), _T("File"), _T(""));
+			path fontPath = FindFontFile(fontFile);
+
+			long fontMaxResolution = ini.GetLongValue(section.c_str(), _T("MaxResolution"), 64);
+			bool fontPrecache = ini.GetBoolValue(section.c_str(), _T("PreCache"), true);
+			float fontOutline = (float) ini.GetDoubleValue(section.c_str(), _T("Outline"), 0.0);
+
+			// Create either outlined or normal font
+			if (fontOutline > 0.0f)
+			{
+				// outlined font
+				FTScalableOutlineFont * outlineFont = new FTScalableOutlineFont(
+					fontPath, (int) fontMaxResolution, fontOutline, true, fontPrecache);
+
+				outlineFont->SetOutlineColor(
+					(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorR"), 0.0),
+					(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorG"), 0.0),
+					(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorB"), 0.0),
+					(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorA"), -1.0)
+					);
+				font.Font = outlineFont;
+				font.Outlined = true;
+			}
+			else
+			{
+				float fontEmbolden = (float) ini.GetDoubleValue(section.c_str(), _T("Embolden"), 0.0);
+				font.Font = new FTScalableFont(
+					fontPath, fontMaxResolution, fontEmbolden, true, fontPrecache);
+				font.Outlined = false;
+			}
+
+			font.Font->GlyphSpacing = (float) ini.GetDoubleValue(section.c_str(), _T("GlyphSpacing"), 0.0);
+			font.Font->Stretch = (float) ini.GetDoubleValue(section.c_str(), _T("Stretch"), 1.0);
+			font.Font->Init();
+
+			AddFontFallbacks(ini, font.Font);
 		}
-		else
-		{
-			float fontEmbolden = (float) ini.GetDoubleValue(section.c_str(), _T("Embolden"), 0.0);
-			font.Font = new FTScalableFont(
-				fontPath, fontMaxResolution, fontEmbolden, true, fontPrecache);
-			font.Outlined = false;
-		}
-
-		font.Font->GlyphSpacing = (float) ini.GetDoubleValue(section.c_str(), _T("GlyphSpacing"), 0.0);
-		font.Font->Stretch = (float) ini.GetDoubleValue(section.c_str(), _T("Stretch"), 1.0);
-		font.Font->Init();
-
-		AddFontFallbacks(ini, font.Font);
+	}
+	catch (FontException& ex)
+	{
+		sLog.Critical(_T("BuildFonts"), ex.twhat());
 	}
 }
 
@@ -136,7 +143,6 @@ float glTextWidth(const tstring& text)
 {
 	FontBounds bounds = Fonts[ActiveFont].Font->BBox(text, true);
 	return bounds.Right - bounds.Left;
-	return 0.0f;
 }
 
 // Custom OpenGL print routine
