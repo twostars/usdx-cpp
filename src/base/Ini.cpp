@@ -105,6 +105,7 @@ Ini::Ini()
 	// Graphics
 	Screens = 1;
 	Resolution = DefaultResolution;
+	SelectedResolution = 0;
 	Depth = 32;
 	VisualizerOption = VisualizerOption::Off;
 	FullScreen = Switch::On;
@@ -336,6 +337,9 @@ void Ini::LoadGraphicsSettings()
 		FullScreen = Switch::Off;
 	}
 
+	// Get the selected resolution's ID for option configuration/selection.
+	SelectedResolution = GetResolutionID(resName);
+
 	sLog.Status(_T("Video"), _T("Using resolution: %u x %u."), 
 		Resolution.first, Resolution.second);
 }
@@ -360,14 +364,8 @@ void Ini::SaveGraphicsSettings()
 
 	SAVE_ENUM_VALUE(section, _T("Visualization"), VisualizerOption);
 
-	ResolutionMap::iterator itr = LoadedResolutions.find(Resolution);
-	tstring resName;
-	if (itr != LoadedResolutions.end())
-		resName = itr->second;
-	else
-		resName = DefaultResolutionName;
-
-	ini.SetValue(section, _T("Resolution"), resName.c_str());
+	tstring selectedResolution = ResolutionNameList[SelectedResolution];
+	ini.SetValue(section, _T("Resolution"), selectedResolution.c_str());
 }
 
 void Ini::LoadScreenModes()
@@ -377,6 +375,7 @@ void Ini::LoadScreenModes()
 	// Clear existing resolutions
 	LoadedResolutions.clear();
 	ResolutionNameMap.clear();
+	ResolutionNameList.clear();
 
 	// Load resolutions for this display device
 	if (modes != NULL)
@@ -412,6 +411,10 @@ void Ini::LoadScreenModes()
 		AddResolution(2048, 1152);
 		AddResolution(2560, 1600);
 	}
+
+	// Load resolution list now so as to ensure it's in the correct order (lowest -> highest).
+	for (ResolutionMap::iterator itr = LoadedResolutions.begin(); itr != LoadedResolutions.end(); ++itr)
+		ResolutionNameList.push_back(itr->second);
 
 	sLog.Status(_T("Video"), _T("Loaded resolutions: %u"), LoadedResolutions.size());
 }

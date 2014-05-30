@@ -512,7 +512,7 @@ void Themes::LoadTheme(ThemeEntry * theme, eColor color)
 	// Options: graphics~
 	LoadThemeBasic(OptionsGraphics, _T("OptionsGraphics"));
 	LoadThemeSelectSlide(OptionsGraphics->SelectFullscreen, _T("OptionsGraphicsSelectFullscreen"));
-	LoadThemeSelectSlide(OptionsGraphics->SelectResolution, _T("OptionsGraphicsSelectResolution"));
+	LoadThemeSelectSlide(OptionsGraphics->SelectResolution, _T("OptionsGraphicsSelectSlideResolution"));
 	LoadThemeSelectSlide(OptionsGraphics->SelectDepth, _T("OptionsGraphicsSelectDepth"));
 	LoadThemeSelectSlide(OptionsGraphics->SelectVisualizer, _T("OptionsGraphicsSelectVisualizer"));
 	LoadThemeSelectSlide(OptionsGraphics->SelectOscilloscope, _T("OptionsGraphicsSelectOscilloscope"));

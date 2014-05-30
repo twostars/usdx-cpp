@@ -24,7 +24,10 @@
 #define _MISC_UTILS_H
 #pragma once
 
+typedef std::vector<tstring> OptionList;
+
 bool IsInStringArray(const TCHAR * needle, const TCHAR ** haystackArray);
 bool IsInStringArrayI(const TCHAR * needle, const TCHAR ** haystackArray);
+uint32 GetListIndex(OptionList& list, const tstring & val);
 
 #endif

@@ -136,7 +136,7 @@ void Language::LoadList()
 	if (_langSet.empty())
 		sLog.Critical(_T("Could not load any language file."));
 
-	LanguageSet::const_iterator itr = std::find(_langSet.begin(), _langSet.end(), DEFAULT_LANGUAGE);
+	OptionList::const_iterator itr = std::find(_langSet.begin(), _langSet.end(), DEFAULT_LANGUAGE);
 	if (itr == _langSet.end())
 		sLog.Critical(_T("Default language (") DEFAULT_LANGUAGE _T(") does not exist."));
 }
@@ -167,27 +167,6 @@ void Language::ChangeLanguage(const tstring& language)
 	// Translate & cache option values so we can avoid
 	// looking them up on-demand.
 	TranslateOptionValues();
-}
-
-uint32 Language::GetLanguageID(const tstring& language)
-{
-	// TODO: This is not especially efficient, this needs to be reworked.
-	for (size_t i = 0; i < _langSet.size(); i++)
-	{
-		if (language == _langSet[i])
-			return (uint32) i;
-	}
-
-	return 0;
-}
-
-const tstring& Language::GetLanguageByID(uint32 id)
-{
-	static const tstring DefaultLanguage = DEFAULT_LANGUAGE;
-	if (id >= _langSet.size())
-		return DefaultLanguage;
-
-	return _langSet[id];
 }
 
 void Language::AddConst(const tstring& id, const tstring& text)
@@ -226,7 +205,7 @@ void Language::TranslateOptionValues()
 {
 	// Translate language names.
 	_translatedLanguageNames.clear();
-	for (LanguageSet::const_iterator itr = _langSet.begin(); itr != _langSet.end(); ++itr)
+	for (OptionList::const_iterator itr = _langSet.begin(); itr != _langSet.end(); ++itr)
 		_translatedLanguageNames[*itr] = Translate(_T("OPTION_VALUE_") + *itr);
 
 	tstring switchOff = Translate(_T("OPTION_VALUE_OFF"));

@@ -57,3 +57,15 @@ bool IsInStringArrayI(const TCHAR * needle, const TCHAR ** haystackArray)
 
 	return false;
 }
+
+uint32 GetListIndex(OptionList& list, const tstring & val)
+{
+	// TODO: This is not especially efficient, this needs to be reworked.
+	for (size_t i = 0; i < list.size(); i++)
+	{
+		if (val == list[i])
+			return (uint32) i;
+	}
+
+	return 0;
+}

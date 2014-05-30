@@ -26,6 +26,14 @@
 
 class ScreenOptionsGraphics : public Menu
 {
+public:
+	ScreenOptionsGraphics();
+	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual void OnShow();
+	void SaveAndReturn();
+
+protected:
+	uint32 OldResolution;
 };
 
 #endif

@@ -44,7 +44,7 @@ ScreenOptionsGame::ScreenOptionsGame() : Menu()
 	theme->SelectDifficulty.OneItemOnly = true;
 	AddSelectSlide(theme->SelectDifficulty, (uint32 *)&sIni.Difficulty, IDifficultyTranslated, SDL_arraysize(IDifficultyTranslated));
 
-	LanguageSet& langSet = sLanguage.GetLanguageSet();
+	OptionList& langSet = sLanguage.GetLanguageSet();
 	theme->SelectLanguage.ShowArrows = true;
 	theme->SelectLanguage.OneItemOnly = true;
 	AddSelectSlide(theme->SelectLanguage, (uint32 *)&sIni.Language, &langSet[0], langSet.size());
@@ -112,8 +112,12 @@ bool ScreenOptionsGame::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool 
 
 void ScreenOptionsGame::OnShow()
 {
+	Menu::OnShow();
+
 	OldTabs = sIni.Tabs;
 	OldSorting = sIni.Sorting;
+
+	SetInteraction(0);
 }
 
 void ScreenOptionsGame::SaveAndReturn()

@@ -21,3 +21,110 @@
  */
 
 #include "stdafx.h"
+#include "../base/Graphic.h"
+#include "../base/Ini.h"
+#include "../base/Language.h"
+#include "../menu/Menu.h"
+#include "../base/Themes.h"
+#include "ScreenOptions.h"
+#include "ScreenOptionsGraphics.h"
+
+ScreenOptionsGraphics::ScreenOptionsGraphics() : Menu()
+{
+	ThemeOptionsGraphics * theme = sThemes.OptionsGraphics;
+	LoadFromTheme(theme);
+
+	OptionList& resolutionList = sIni.ResolutionNameList;
+	theme->SelectResolution.ShowArrows = true;
+	theme->SelectResolution.OneItemOnly = true;
+	AddSelectSlide(theme->SelectResolution, (uint32 *)&sIni.SelectedResolution, &resolutionList[0], resolutionList.size());
+
+	theme->SelectFullscreen.ShowArrows = true;
+	theme->SelectFullscreen.OneItemOnly = true;
+	AddSelectSlide(theme->SelectFullscreen, (uint32 *)&sIni.FullScreen, IFullScreenTranslated, SDL_arraysize(IFullScreenTranslated));
+
+	theme->SelectDepth.ShowArrows = true;
+	theme->SelectDepth.OneItemOnly = true;
+	AddSelectSlide(theme->SelectDepth, (uint32 *)&sIni.Depth, IDepth, SDL_arraysize(IDepth));
+
+	theme->SelectVisualizer.ShowArrows = true;
+	theme->SelectVisualizer.OneItemOnly = true;
+	AddSelectSlide(theme->SelectVisualizer, (uint32 *)&sIni.VisualizerOption, IVisualizerTranslated, SDL_arraysize(IVisualizerTranslated));
+
+	theme->SelectOscilloscope.ShowArrows = true;
+	theme->SelectOscilloscope.OneItemOnly = true;
+	AddSelectSlide(theme->SelectOscilloscope, (uint32 *)&sIni.Oscilloscope, IOscilloscopeTranslated, SDL_arraysize(IOscilloscopeTranslated));
+
+	theme->SelectMovieSize.ShowArrows = true;
+	theme->SelectMovieSize.OneItemOnly = true;
+	AddSelectSlide(theme->SelectMovieSize, (uint32 *)&sIni.MovieSize, IMovieSizeTranslated, SDL_arraysize(IMovieSizeTranslated));
+
+	AddButton(theme->ButtonExit);
+	if (Buttons[0].Texts.empty())
+		AddButtonText(20.0f, 5.0f, sThemes.Options->Description[7]);
+}
+
+bool ScreenOptionsGraphics::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+{
+	if (!pressedDown)
+		return true;
+
+	switch (pressedKey)
+	{
+		case SDLK_ESCAPE:
+		case SDLK_BACKSPACE:
+			SaveAndReturn();
+			break;
+
+		case SDLK_RETURN:
+			// Back button
+			if (SelInteraction == 6)
+				SaveAndReturn();
+			break;
+
+		case SDLK_DOWN:
+			InteractNext();
+			break;
+
+		case SDLK_UP:
+			InteractPrev();
+			break;
+
+		case SDLK_RIGHT:
+		case SDLK_LEFT:
+			if (SelInteraction >= 0 && SelInteraction <= 5)
+			{
+				// AudioPlayback.PlaySound(SoundLib.Option);
+				if (pressedKey == SDLK_RIGHT)
+					InteractInc();
+				else
+					InteractDec();
+			}
+			break;
+	}
+
+	return true;
+}
+
+void ScreenOptionsGraphics::OnShow()
+{
+	Menu::OnShow();
+	OldResolution = sIni.SelectedResolution;
+	SetInteraction(0);
+}
+
+void ScreenOptionsGraphics::SaveAndReturn()
+{
+	sIni.SaveGraphicsSettings();
+	sIni.SaveToFile();
+
+	// If we've changed the resolution...
+	if (OldResolution != sIni.SelectedResolution)
+	{
+		// TODO: Change the resolution.
+		// Currently this will invalidate all textures on Windows/Mac OSX (Linux is fine).
+	}
+
+	// AudioPlayback.PlaySound(SoundLib.Back); // TODO
+	FadeTo(UIOptions);
+}

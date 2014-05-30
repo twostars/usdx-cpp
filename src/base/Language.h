@@ -26,7 +26,6 @@
 
 #define DEFAULT_LANGUAGE _T("English")
 
-typedef std::vector<tstring> LanguageSet;
 typedef std::map<tstring, tstring> LanguageEntryMap;
 
 class Language : public Singleton<Language>
@@ -34,10 +33,10 @@ class Language : public Singleton<Language>
 public:
 	Language();
 	void LoadList();
-	LanguageSet& GetLanguageSet() { return _langSet; }
+	OptionList& GetLanguageSet() { return _langSet; }
 	void ChangeLanguage(const tstring& language);
-	uint32 GetLanguageID(const tstring& language);
-	const tstring& GetLanguageByID(uint32 id);
+	uint32 GetLanguageID(const tstring& language) { return GetListIndex(_langSet, language); }
+	const tstring& GetLanguageByID(uint32 id) { return _langSet[id]; }
 	void AddConst(const tstring& id, const tstring& text);
 	const tstring Translate(const tstring& id);
 	const tstring Translate(const TCHAR* id);
@@ -45,7 +44,7 @@ public:
 	~Language();
 
 private:
-	LanguageSet _langSet;
+	OptionList _langSet;
 	LanguageEntryMap _translatedLanguageNames;
 
 	LanguageEntryMap _langEntryMap;

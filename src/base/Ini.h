@@ -90,6 +90,8 @@ public:
 	void LoadPaths();
 	void SavePaths();
 
+	uint32 GetResolutionID(const tstring& resName) { return GetListIndex(ResolutionNameList, resName); }
+
 private:
 	void AddResolution(int width, int height);
 
@@ -113,6 +115,7 @@ public:
 	// Graphics
 	int Screens;
 	ResolutionWH Resolution;
+	uint32 SelectedResolution;
 	int Depth;
 	eVisualizerOption VisualizerOption;
 	eSwitch FullScreen;
@@ -173,6 +176,9 @@ public:
 	ResolutionMap        LoadedResolutions;
 	ReverseResolutionMap ResolutionNameMap;
 
+	// List of resolution names to be used for option selection.
+	OptionList       ResolutionNameList;
+
 private:
 	CSimpleIni ini;
 };
@@ -181,5 +187,6 @@ private:
 
 extern const tstring IPlayers[5];
 extern const int IPlayersVals[5];
+extern const tstring IDepth[2];
 
 #endif
