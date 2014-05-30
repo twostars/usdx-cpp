@@ -123,7 +123,7 @@ void MenuSelectSlide::SetSelectOpt(int value)
 	// Last option selected
 	else if (value >= (int) TextOptions.size())
 	{
-		Tex_SelectS_ArrowL.Alpha = ArrowAlphaNoOptionsLeft;
+		Tex_SelectS_ArrowL.Alpha = ArrowAlphaOptionsLeft;
 		Tex_SelectS_ArrowR.Alpha = ArrowAlphaNoOptionsLeft;
 
 		size_t i = 0;
@@ -259,7 +259,9 @@ void MenuSelectSlide::GenerateLines()
 			Lines = 1;
 	}
 
-	// Free old space used by tects
+	// Free old space used by texts
+	TextOptions.clear();
+
 	for (uint8 i = 0; i < Lines; i++)
 	{
 		MenuText text;
@@ -294,6 +296,8 @@ void MenuSelectSlide::GenerateLines()
 			text.X += (TexSBG.W / 2) + (TexSBG.W - MinSideSpacing * 2) * ((float)i / (float)Lines - 0.5f);
 			break;
 		}
+
+		TextOptions.push_back(text);
 	}
 }
 

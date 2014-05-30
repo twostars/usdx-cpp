@@ -1197,7 +1197,7 @@ void Menu::InteractInc()
 		num = interact.Num;
 		assert(num >= 0 && num < (int) SelectSlides.size());
 		value = SelectSlides[num].GetSelectOpt() + 1;
-		if (value < (int) SelectSlides[num].TextOptionNames.size() - 1)
+		if (value < (int) SelectSlides[num].TextOptionNames.size())
 			SelectSlides[num].SetSelectOpt(value);
 		break;
 
