@@ -134,3 +134,16 @@ bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 
 	return true;
 }
+
+void ScreenMain::OnInteraction()
+{
+	const ThemeMain * theme = sThemes.Main;
+	Texts[TextDescription].SetText(theme->Description[SelInteraction]);
+	Texts[TextDescriptionLong].SetText(theme->DescriptionLong[SelInteraction]);
+}
+
+void ScreenMain::SetAnimationProgress(float progress)
+{
+	Statics[0].Tex.ScaleW = progress;
+	Statics[0].Tex.ScaleH = progress;
+}
