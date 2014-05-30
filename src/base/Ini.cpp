@@ -95,6 +95,7 @@ Ini::Ini()
 	// Game
 	Players = 0;
 	Difficulty = DifficultyType::Easy;
+	Language = 0;
 	LanguageName = DEFAULT_LANGUAGE;
 	Tabs = Switch::Off;
 	TabsAtStartup = Tabs;
@@ -271,6 +272,7 @@ void Ini::LoadGameSettings()
 	Players       = LOOKUP_ARRAY_INDEX(IPlayers,        section, _T("Players"), 0);
 	Difficulty    = LOOKUP_ENUM_VALUE(DifficultyType,   section, _T("Difficulty"), DifficultyType::Easy);
 	LanguageName  = ini.GetValue(section, _T("Language"), DEFAULT_LANGUAGE);
+	Language      = sLanguage.GetLanguageID(LanguageName);
 
 	Tabs          = LOOKUP_ENUM_VALUE(Switch,            section, _T("Tabs"), Switch::Off);
 	TabsAtStartup = Tabs;
@@ -282,6 +284,9 @@ void Ini::LoadGameSettings()
 void Ini::SaveGameSettings()
 {
 	static const TCHAR * section = _T("Game");
+
+	// Set the language name.
+	LanguageName = sLanguage.GetLanguageByID(Language);
 
 	ini.SetValue(section, _T("Players"), IPlayers[Players].c_str());
 	ini.SetValue(section, _T("Difficulty"), Enum2String(Difficulty).c_str());

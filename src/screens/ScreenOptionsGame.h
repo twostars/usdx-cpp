@@ -26,6 +26,16 @@
 
 class ScreenOptionsGame : public Menu
 {
+public:
+	ScreenOptionsGame();
+	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual void OnShow();
+	void SaveAndReturn();
+	void RefreshSongs();
+
+protected:
+	eSwitch OldTabs;
+	eSortingType OldSorting;
 };
 
 #endif

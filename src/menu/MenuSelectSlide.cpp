@@ -93,20 +93,13 @@ void MenuSelectSlide::SetSelected(bool value)
 	}
 }
 
-void MenuSelectSlide::SetSelectOpt(int value)
+void MenuSelectSlide::SetSelectOpt(uint32 value)
 {
-	if (value <= 0)
-		value = 0;
-	else if (value >= (int) TextOptionNames.size())
-		value = (int) TextOptions.size();
-
-	SelectOptInt = value;
-	if (pData != NULL)
-		*pData = value;
-
 	if (TextOptions.empty()
 		|| TextOptionNames.empty())
 		return;
+
+	*pData = value;
 
 	// First option selected
 	if (value <= 0)
@@ -121,16 +114,16 @@ void MenuSelectSlide::SetSelectOpt(int value)
 		DoSelection(0);
 	}
 	// Last option selected
-	else if (value >= (int) TextOptions.size())
+	else if (value >= TextOptionNames.size() - 1)
 	{
 		Tex_SelectS_ArrowL.Alpha = ArrowAlphaOptionsLeft;
 		Tex_SelectS_ArrowR.Alpha = ArrowAlphaNoOptionsLeft;
 
-		size_t i = 0;
-		for (std::vector<MenuText>::reverse_iterator itr = TextOptions.rbegin(); itr != TextOptions.rend(); ++itr, ++i)
-			(*itr).SetText(AdjustOptionTextToFit(TextOptionNames[TextOptions.size() - (Lines - i - 1)]));
+		size_t i = TextOptions.size() - 1;
+		for (std::vector<MenuText>::reverse_iterator itr = TextOptions.rbegin(); itr != TextOptions.rend(); ++itr, --i)
+			(*itr).SetText(AdjustOptionTextToFit(TextOptionNames[TextOptionNames.size() - Lines - i]));
 
-		DoSelection(Lines - i);
+		DoSelection(Lines - 1);
 	}
 	// In between first and last
 	else
@@ -138,8 +131,8 @@ void MenuSelectSlide::SetSelectOpt(int value)
 		Tex_SelectS_ArrowL.Alpha = ArrowAlphaOptionsLeft;
 		Tex_SelectS_ArrowR.Alpha = ArrowAlphaOptionsLeft;
 
-		int halfL = (int) std::ceil((Lines - 1) / 2);
-		int halfR = Lines - 1 - halfL;
+		uint32 halfL = (uint32) std::ceil((Lines - 1) / 2.0f);
+		uint32 halfR = Lines - 1 - halfL;
 
 		// Select option is near to the left side
 		if (value <= halfL)
@@ -150,14 +143,14 @@ void MenuSelectSlide::SetSelectOpt(int value)
 			DoSelection(value);
 		}
 		// Selected option is near to the right side
-		else if (value > (int) TextOptionNames.size() - halfR)
+		else if (value > TextOptionNames.size() - halfR)
 		{
-			halfL = (int) TextOptionNames.size() - value;
+			halfL = TextOptionNames.size() - value;
 			halfR = Lines - 1 - halfR;
 
 			size_t i = 0;
 			for (std::vector<MenuText>::reverse_iterator itr = TextOptions.rbegin(); itr != TextOptions.rend(); ++itr, ++i)
-				(*itr).SetText(AdjustOptionTextToFit(TextOptionNames[TextOptions.size() - (Lines - i - 1)]));
+				(*itr).SetText(AdjustOptionTextToFit(TextOptionNames[TextOptionNames.size() - (Lines - i - 1)]));
 
 			DoSelection(halfL);
 		}

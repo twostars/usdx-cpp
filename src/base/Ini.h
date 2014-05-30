@@ -103,6 +103,7 @@ public:
 	// Game
 	int Players;
 	eDifficultyType Difficulty;
+	uint32 Language;
 	tstring LanguageName;
 	eSwitch Tabs;
 	eSwitch TabsAtStartup;
@@ -177,5 +178,8 @@ private:
 };
 
 #define sIni (Ini::getSingleton())
+
+extern const tstring IPlayers[5];
+extern const int IPlayersVals[5];
 
 #endif

@@ -26,6 +26,8 @@
 
 class ScreenSong : public Menu
 {
+public:
+	void Refresh();
 };
 
 #endif

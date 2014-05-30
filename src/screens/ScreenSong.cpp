@@ -21,3 +21,17 @@
  */
 
 #include "stdafx.h"
+#include "../menu/Menu.h"
+#include "ScreenSong.h"
+
+void ScreenSong::Refresh()
+{
+	// Note: this is commented out in the official USDX.
+#if 0
+	CatSongs.Refresh();
+	CatSongs.ShowCategoryList();
+	SetInteraction(0);
+	SelectNext(true);
+	FixSelected();
+#endif
+}

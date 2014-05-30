@@ -694,7 +694,7 @@ int Menu::AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, uint32 * pDat
 
 	// Generate lines
 	slide.GenerateLines();
-	slide.SetSelectOpt(slide.SelectOptInt); // refresh
+	slide.SetSelectOpt(slide.GetSelectOpt()); // refresh
 
 	return result;
 }

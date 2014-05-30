@@ -31,8 +31,14 @@ public:
 	MenuSelectSlide();
 
 	void SetSelected(bool value);
-	void SetSelectOpt(int value);
-	INLINE int GetSelectOpt() { return SelectOptInt; }
+	void SetSelectOpt(uint32 value);
+	INLINE uint32 GetSelectOpt() 
+	{
+		if (pData == NULL)
+			return 0;
+
+		return *pData; 
+	}
 
 private:
 	void DoSelection(size_t sel);
@@ -67,7 +73,6 @@ public:
 	Texture Tex_SelectS_ArrowL;
 	Texture Tex_SelectS_ArrowR;
 
-	int SelectOptInt;
 	uint32 * pData;
 
 	// For automatically setting line count
