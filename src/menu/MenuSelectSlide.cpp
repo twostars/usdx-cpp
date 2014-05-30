@@ -218,6 +218,12 @@ void MenuSelectSlide::Draw()
 		DeselectTextureSBG.Draw();
 	}
 
+	if (ShowArrows)
+	{
+		Tex_SelectS_ArrowL.Draw();
+		Tex_SelectS_ArrowR.Draw();
+	}
+
 	Text.Draw();
 	for (std::vector<MenuText>::iterator itr = TextOptions.begin(); itr != TextOptions.end(); ++itr)
 		(*itr).Draw();
