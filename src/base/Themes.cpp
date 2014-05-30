@@ -559,7 +559,7 @@ void Themes::LoadTheme(ThemeEntry * theme, eColor color)
 	LoadThemeSelectSlide(OptionsAdvanced->SelectScreenFade, _T("OptionsAdvancedSelectScreenFade"));
 	LoadThemeSelectSlide(OptionsAdvanced->SelectEffectSing, _T("OptionsAdvancedSelectEffectSing"));
 	LoadThemeSelectSlide(OptionsAdvanced->SelectLineBonus, _T("OptionsAdvancedSelectLineBonus"));
-	LoadThemeSelectSlide(OptionsAdvanced->SelectOnSongClick, _T("OptionsAdvancedSelectOnSongClick"));
+	LoadThemeSelectSlide(OptionsAdvanced->SelectOnSongClick, _T("OptionsAdvancedSelectSlideOnSongClick"));
 	LoadThemeSelectSlide(OptionsAdvanced->SelectAskBeforeDel, _T("OptionsAdvancedSelectAskBeforeDel"));
 	LoadThemeSelectSlide(OptionsAdvanced->SelectPartyPopup, _T("OptionsAdvancedSelectPartyPopup"));
 	LoadThemeButton(OptionsAdvanced->ButtonExit, _T("OptionsAdvancedButtonExit"));
