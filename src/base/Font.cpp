@@ -655,6 +655,7 @@ void FTGlyph::CreateTexture(uint32 loadFlags)
 
 	// Allocate memory for texture data
 	uint8 * TexBuffer = new uint8[TexSize.Width * TexSize.Height];
+	memset(TexBuffer, 0, TexSize.Width * TexSize.Height);
 	uint8 * BitmapBuffer;
 
 	// Freetype stores the bitmap with either upper (pitch is > 0) or lower
@@ -885,6 +886,7 @@ void FTGlyph::Render(bool useDisplayLists)
 	// bottom right
 	glTexCoord2f(TexOffset.X, TexOffset.Y);
 	glVertex2f(BitmapCoords.Width, -BitmapCoords.Height);
+
 	glEnd();
 
 	glPopMatrix();
@@ -1375,9 +1377,9 @@ FontBounds FTFont::BBoxLines(const LineArray& lines, bool advance)
 					LineBounds.Left = LineBounds.Right + Glyph->Bounds.Left;
 
 				// update right bound
-				if (CharIndex < TextLine.size() || // not the last character
-					(TextLine[CharIndex] == ' ') ||      // on space char (Bounds.Right = 0)
-					advance)                             // or in advance mode
+				if (CharIndex < (TextLine.size() - 1)	// not the last character
+					|| (TextLine[CharIndex] == ' ')		// on space char (Bounds.Right = 0)
+					|| advance)							// or in advance mode
 				{
 					// add advance && glyph spacing
 					LineBounds.Right += Glyph->Advance.X + GlyphSpacing;
