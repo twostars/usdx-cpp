@@ -84,6 +84,10 @@ void Menu::AddInteraction(InteractionType type, int num)
 
 void Menu::SetInteraction(int num)
 {
+	// Don't bother selecting the already selected control.
+	if (SelInteraction == num)
+		return;
+
 	int oldNum, newNum, index;
 	InteractionType oldType, newType;
 
@@ -644,9 +648,6 @@ void Menu::AddButtonText(MenuButton& button,
 						float addX, float addY, const RGB& colRGB, 
 						int font, int size, int align, const tstring& addText)
 {
-	if (Buttons.empty())
-		return;
-
 	MenuText text(button.PosX + addX, button.PosY + addY, addText);
 	text.ColRGB = colRGB;
 	text.Int = 1.0f;
@@ -777,7 +778,7 @@ int Menu::AddSelectSlide(float x, float y, float w, float h, float skipX, float 
 
 	slide.Text.X = x + 20.0f;
 	slide.Text.Y = y + (slide.TexSBG.H / 2) - 15.0f;
-	slide.Text.TextString = caption;
+	slide.Text.SetText(caption);
 	slide.Text.Size = 30.0f;
 	slide.Text.Visible = true;
 

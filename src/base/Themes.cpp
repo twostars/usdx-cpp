@@ -1047,7 +1047,7 @@ void Themes::LoadThemeButton(ThemeButton& themeButton, const tstring& name, AThe
 	int len = ini.GetLongValue(section, _T("Texts"), 0);
 	themeButton.Text.assign(len, ThemeText());
 	for (int i = 1; i <= len; i++)
-		LoadThemeText(themeButton.Text[i - 1], _T("Text") + boost::lexical_cast<tstring>(i));
+		LoadThemeText(themeButton.Text[i - 1], name + _T("Text") + boost::lexical_cast<tstring>(i));
 }
 
 void Themes::LoadThemeButtonCollection(ThemeButtonCollection& themeButtonCollection, const tstring& name)

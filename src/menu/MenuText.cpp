@@ -57,6 +57,7 @@ void MenuText::Create(float x, float y, float w, uint32 style,
 {
 	Alpha = 1.0f;
 	X = x, Y = y, Z = z, W = w;
+	MoveX = MoveY = 0.0f;
 	Style = style;
 	Size = size;
 	ColRGB = rgb;
@@ -100,7 +101,7 @@ void MenuText::SetText(const tstring& text)
 
 	// Break out now if there is no need to create tiles
 	if (W <= 0 
-		&& _tcschr(text.c_str(), '\n') == NULL)
+		&& _tcschr(text.c_str(), _T('\n')) == NULL)
 	{
 		TextTiles.push_back(text);
 		return;
@@ -172,7 +173,7 @@ void MenuText::SetText(const tstring& text)
 
 bool MenuText::GetNextPos(ParseData& data)
 {
-	tsize_type T1, T2;
+	int T1, T2;
 
 	data.LastPos = data.NextPos;
 
@@ -185,10 +186,10 @@ bool MenuText::GetNextPos(ParseData& data)
 	// Next break
 	T2 = strpos(TextString.c_str() + data.LastPos + 1, _T("\n"));
 
-	if (T1 == 0)
+	if (T1 < 0)
 		T1 = TextString.length();
 
-	if (T2 == 0)
+	if (T2 < 0)
 		T2 = TextString.length();
 
 	// Get nearest pos
@@ -214,8 +215,8 @@ void MenuText::AddBreak(ParseData& data, tsize_type from, tsize_type to)
 
 void MenuText::DeleteLastLetter()
 {
-	// Needs at least 2 characters.
-	if (TextString.length() >= 2)
+	// Needs at least 1 character.
+	if (!TextString.empty())
 		SetText(TextString.substr(0, TextString.length() - 1));
 }
 
@@ -244,6 +245,10 @@ void MenuText::Draw()
 			SelectBlink = !SelectBlink;
 		}
 	}
+
+	// TODO: Temporary hack until I find why TextTiles are being cleared after being set.
+	if (!TextString.empty() && TextTiles.empty())
+		SetText(TextString);
 
     // draw text as many strings
 	Y2 = Y + MoveY;

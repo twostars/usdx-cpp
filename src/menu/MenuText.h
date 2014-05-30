@@ -81,9 +81,9 @@ public:
 
 protected:
 	bool Selected;
+	tstring TextString;
 
 public:
-	tstring TextString;
 	std::vector<tstring> TextTiles;
 
 	uint32 STicks;

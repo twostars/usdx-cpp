@@ -54,7 +54,7 @@ int strposA(const char * haystack, char * needle)
 	if (p)
 		return p - haystack;
 
-	return NULL;
+	return -1;
 }
 
 int strposW(const wchar_t * haystack, const wchar_t * needle)

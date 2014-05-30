@@ -67,9 +67,10 @@ void ScreenPopup::ShowPopup(const tstring& msg)
 	Visible = true;
 	Background->OnShow();
 
-	Texts[0].TextString = msg;
+	Texts[0].SetText(msg);
 	Buttons[0].Visible = true;
-	Buttons[0].Texts[0].TextString = _T("OK"); // TODO: Fix language reference
+	const tstring OK(_T("OK"));
+	Buttons[0].Texts[0].SetText(OK); // TODO: Fix language reference
 }
 
 ScreenPopupCheck::ScreenPopupCheck()
@@ -136,16 +137,16 @@ void ScreenPopupCheck::ShowPopup(const TCHAR * message, PopupCallback callback)
 	Visible = true;
 	Callback = callback;
 
-	Texts[0].TextString = sLanguage.Translate(message);
+	Texts[0].SetText(sLanguage.Translate(message));
 
 	MenuButton& yesButton = Buttons[0];
 	MenuButton& noButton = Buttons[1];
 
 	yesButton.Visible = true;
-	yesButton.Texts[0].TextString = sLanguage.Translate(_T("SONG_MENU_YES"));
+	yesButton.Texts[0].SetText(sLanguage.Translate(_T("SONG_MENU_YES")));
 
 	noButton.Visible = true;
-	noButton.Texts[0].TextString = sLanguage.Translate(_T("SONG_MENU_NO"));
+	noButton.Texts[0].SetText(sLanguage.Translate(_T("SONG_MENU_NO")));
 
 	Background->OnShow();
 }
@@ -162,10 +163,10 @@ ScreenPopupError::ScreenPopupError() : ScreenPopup()
 
 	SetInteraction(0);
 
-	Texts[1].TextString = sLanguage.Translate(_T("MSG_ERROR_TITLE"));
+	Texts[1].SetText(sLanguage.Translate(_T("MSG_ERROR_TITLE")));
 }
 
 ScreenPopupInfo::ScreenPopupInfo() : ScreenPopupError()
 {
-	Texts[1].TextString = sLanguage.Translate(_T("MSG_INFO_TITLE"));
+	Texts[1].SetText(sLanguage.Translate(_T("MSG_INFO_TITLE")));
 }

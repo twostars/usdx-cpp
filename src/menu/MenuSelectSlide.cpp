@@ -116,7 +116,7 @@ void MenuSelectSlide::SetSelectOpt(int value)
 
 		size_t i = 0;
 		for (std::vector<MenuText>::iterator itr = TextOptions.begin(); itr != TextOptions.end(); ++itr, ++i)
-			(*itr).TextString = AdjustOptionTextToFit(TextOptionNames[i]);
+			(*itr).SetText(AdjustOptionTextToFit(TextOptionNames[i]));
 
 		DoSelection(0);
 	}
@@ -128,7 +128,7 @@ void MenuSelectSlide::SetSelectOpt(int value)
 
 		size_t i = 0;
 		for (std::vector<MenuText>::reverse_iterator itr = TextOptions.rbegin(); itr != TextOptions.rend(); ++itr, ++i)
-			(*itr).TextString = AdjustOptionTextToFit(TextOptionNames[TextOptions.size() - (Lines - i - 1)]);
+			(*itr).SetText(AdjustOptionTextToFit(TextOptionNames[TextOptions.size() - (Lines - i - 1)]));
 
 		DoSelection(Lines - i);
 	}
@@ -146,7 +146,7 @@ void MenuSelectSlide::SetSelectOpt(int value)
 		{
 			size_t i = 0;
 			for (std::vector<MenuText>::iterator itr = TextOptions.begin(); itr != TextOptions.end(); ++itr, ++i)
-				(*itr).TextString = AdjustOptionTextToFit(TextOptionNames[i]);
+				(*itr).SetText(AdjustOptionTextToFit(TextOptionNames[i]));
 			DoSelection(value);
 		}
 		// Selected option is near to the right side
@@ -157,7 +157,7 @@ void MenuSelectSlide::SetSelectOpt(int value)
 
 			size_t i = 0;
 			for (std::vector<MenuText>::reverse_iterator itr = TextOptions.rbegin(); itr != TextOptions.rend(); ++itr, ++i)
-				(*itr).TextString = AdjustOptionTextToFit(TextOptionNames[TextOptions.size() - (Lines - i - 1)]);
+				(*itr).SetText(AdjustOptionTextToFit(TextOptionNames[TextOptions.size() - (Lines - i - 1)]));
 
 			DoSelection(halfL);
 		}
@@ -165,7 +165,7 @@ void MenuSelectSlide::SetSelectOpt(int value)
 		{
 			size_t i = 0;
 			for (std::vector<MenuText>::iterator itr = TextOptions.begin(); itr != TextOptions.end(); ++itr, ++i)
-				(*itr).TextString = AdjustOptionTextToFit(TextOptionNames[value - halfL + i]);
+				(*itr).SetText(AdjustOptionTextToFit(TextOptionNames[value - halfL + i]));
 			DoSelection(halfL);
 		}
 	}

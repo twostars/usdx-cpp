@@ -167,5 +167,5 @@ void ScreenOptions::OnShow()
 
 void ScreenOptions::OnInteraction()
 {
-	Texts[TextDescription].TextString = sThemes.Options->Description[SelInteraction];
+	Texts[TextDescription].SetText(sThemes.Options->Description[SelInteraction]);
 }

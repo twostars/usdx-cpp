@@ -47,7 +47,7 @@ void ScreenName::OnShow()
 	Menu::OnShow();
 
 	for (int player = 0; player < MAX_PLAYERS; player++)
-		Buttons[player].Texts[0].TextString = sIni.Name[player];
+		Buttons[player].Texts[0].SetText(sIni.Name[player]);
 
 	// TODO
 	// for (int player = 0; player < PlayersPlayer; player++)
@@ -86,7 +86,7 @@ bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 	if (pressedKey >= SDLK_F1 && pressedKey <= SDLK_F12)
 	{
 		size_t index = pressedKey - SDLK_F1;
-		tstring& buttonText = selectedButton.Texts[0].TextString;
+		tstring buttonText = selectedButton.Texts[0].GetText();
 		// TODO: Verify this is correct.
 		if (modState == KMOD_ALT)
 			sIni.NameTemplate[index] = buttonText;
@@ -115,7 +115,7 @@ bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 
 			case SDLK_RETURN:
 				for (int player = 0; player < MAX_PLAYERS; player++)
-					sIni.Name[player] = Buttons[player].Texts[0].TextString;
+					sIni.Name[player] = Buttons[player].Texts[0].GetText();
 
 				sIni.SaveProfileSettings();
 				sIni.SaveToFile();
