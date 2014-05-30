@@ -230,7 +230,7 @@ void MenuButton::Draw()
 			FadeTex.TexX1 = 0;
 			FadeTex.TexX2 = 1;
 			FadeTex.TexY1 = 0;
-			FadeTex.TexY1 = 1;
+			FadeTex.TexY2 = 1;
 
 			switch (FadeTexPos)
 			{
