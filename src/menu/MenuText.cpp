@@ -56,6 +56,7 @@ void MenuText::Create(float x, float y, float w, uint32 style,
 					  float z)
 {
 	Alpha = 1.0f;
+	Int = 1.0f;
 	X = x, Y = y, Z = z, W = w;
 	MoveX = MoveY = 0.0f;
 	Style = style;
