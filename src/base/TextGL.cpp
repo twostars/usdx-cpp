@@ -146,11 +146,21 @@ float glTextWidth(const tstring& text)
 }
 
 // Custom OpenGL print routine
-void glPrint(const tstring& text, ...)
+void glPrint(const TCHAR * format, ...)
 {
-	if (text.empty())
-		return;
+	TCHAR buffer[1024];
+	tstring text;
+	va_list args;
+	va_start(args, format);
+	_vsntprintf(buffer, 1024, format, args);
+	va_end(args);
+	text = buffer;
 
+	glPrint(text);
+}
+
+void glPrint(const tstring& text)
+{
 	GLFont& font = Fonts[ActiveFont];
 	glPushMatrix();
 		// Set font position

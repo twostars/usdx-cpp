@@ -37,7 +37,8 @@ enum FontType
 void BuildFonts();
 void KillFonts();
 float glTextWidth(const tstring& text);
-void glPrint(const tstring& text, ...);
+void glPrint(const TCHAR * format, ...);
+void glPrint(const tstring& text);
 void ResetFont();
 void SetFontPos(float X, float Y);
 void SetFontZ(float Z);

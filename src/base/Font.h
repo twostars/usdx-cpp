@@ -105,7 +105,7 @@ public:
 	virtual void PrintLines(const LineArray& lines, bool reflectionPass = false);
 	virtual void Print(const tstring& text);
 	virtual void DrawUnderline(const tstring& line);
-	virtual void Render(const tstring& line) = 0;
+	virtual void Render(const tstring& line, bool reflectionPass) = 0;
 	virtual FontBounds BBox(const tstring& text, bool advance = true);
 	virtual FontBounds BBoxLines(const LineArray& lines, bool advance) = 0;
 
@@ -263,7 +263,6 @@ public:
 
 	~FTGlyph();
 
-protected:
 	TCHAR CharCode;				//**< Char code
 	FTFontFace * Face;			//**< Freetype face used for this glyph
 	FT_UInt CharIndex;			//**< Freetype specific char-index (<> char-code)
@@ -325,7 +324,7 @@ public:
 	int GetMipmapLevel();
 
 	virtual void PrintLines(const LineArray& lines, bool reflectionPass = false);
-	virtual void Render(const tstring& text);
+	virtual void Render(const tstring& text, bool reflectionPass);
 
 	virtual float GetUnderlinePosition();
 	virtual float GetUnderlineThickness();
@@ -375,7 +374,7 @@ public:
 	virtual float GetAscender();
 	virtual float GetDescender();
 
-	virtual void Render(const tstring& text);
+	virtual void Render(const tstring& text, bool reflectionPass);
 
 	~FTFont();
 
@@ -438,7 +437,7 @@ public:
 	void ResetIntern();
 	virtual void AddFallback(const path& filename);
 	virtual void DrawUnderline(const tstring& line);
-	virtual void Render(const tstring& line);
+	virtual void Render(const tstring& line, bool reflectionPass);
 	virtual FontBounds BBoxLines(const LineArray& lines, bool advance);
 
 	/**

@@ -164,7 +164,7 @@ void FontBase::PrintLines(const LineArray& lines, bool reflectionPass /*= false*
 			glMultMatrixf((const GLfloat *)&cShearMatrix);
 
 		// Render text line
-		Render(lines[lineIndex]);
+		Render(lines[lineIndex], reflectionPass);
 
 		glPopMatrix();
 	}
@@ -420,7 +420,7 @@ void ScalableFont::PrintLines(const LineArray& lines, bool reflectionPass /*= fa
 	glPopMatrix();
 }
 
-void ScalableFont::Render(const tstring& text)
+void ScalableFont::Render(const tstring& text, bool reflectionPass)
 {
 	sLog.Critical(_T("ScalableFont::Render"), _T("Unused method called. This should not be called.."));
 }
@@ -854,12 +854,105 @@ void FTGlyph::StrokeBorder(FT_Glyph Glyph)
 
 void FTGlyph::Render(bool useDisplayLists)
 {
-	// TODO
+	// use display lists if enabled
+	if (useDisplayLists)
+	{
+		glCallList(DisplayList);
+		return;
+	}
+
+	glBindTexture(GL_TEXTURE_2D, Texture);
+	glPushMatrix();
+
+	// move to top left glyph position
+	glTranslatef(BitmapCoords.Left, BitmapCoords.Top, 0);
+
+	// draw glyph texture
+	glBegin(GL_QUADS);
+
+	// top right
+	glTexCoord2f(TexOffset.X, 0);
+	glVertex2f(BitmapCoords.Width, 0);
+
+	// top left
+	glTexCoord2f(0, 0);
+	glVertex2f(0, 0);
+
+	// bottom left
+	glTexCoord2f(0, TexOffset.Y);
+	glVertex2f(0, -BitmapCoords.Height);
+
+	// bottom right
+	glTexCoord2f(TexOffset.X, TexOffset.Y);
+	glVertex2f(BitmapCoords.Width, -BitmapCoords.Height);
+	glEnd();
+
+	glPopMatrix();
 }
 
 void FTGlyph::RenderReflection()
 {
-	// TODO
+	const float CutOff = 0.6f;
+
+	GLColor Color;
+	float Descender, UpperPos, TexUpperPos, TexLowerPos;
+
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D, Texture);
+	glGetFloatv(GL_CURRENT_COLOR, Color.vals);
+
+	// add extra space to the left of the glyph
+	glTranslatef(BitmapCoords.Left, 0, 0);
+
+	Descender = Font->GetDescender();
+
+	// The upper position of the glyph, if CutOff is 1.0, it is fFont.Ascender.
+	// If CutOff is set to 0.5 only half of the glyph height is displayed.
+	UpperPos = Descender + Font->GetHeight() * CutOff;
+
+	// the glyph texture's height is just the height of the glyph but not the font
+	// height. Setting a color for the upper and lower bounds of the glyph results
+	// in different color gradients. So we have to set the color values for the
+	// descender and ascender (as we have a cutoff, for the upper-pos here) as
+	// these positions are font but not glyph specific.
+
+	// To get the texture positions we have to enhance the texture at the top and
+	// bottom by the amount from the top to ascender (rather upper-pos here) and
+	// from the bottom (Height-Top) to descender. Then we have to convert those
+	// heights to texture coordinates by dividing by the bitmap Height and
+	// removing the power-of-2 padding space by multiplying with fTexOffset.Y
+	// (as fBitmapCoords.Height corresponds to fTexOffset.Y and not 1.0).
+	TexUpperPos = -(UpperPos - BitmapCoords.Top) / BitmapCoords.Height * TexOffset.Y;
+	TexLowerPos = (-(Font->GetDescender() + BitmapCoords.Height - BitmapCoords.Top) /
+					BitmapCoords.Height + 1) * TexOffset.Y;
+
+	// draw glyph texture
+	glBegin(GL_QUADS);
+	// top right
+	glColor4f(Color.R, Color.G, Color.B, 0);
+	glTexCoord2f(TexOffset.X, TexUpperPos);
+	glVertex2f(BitmapCoords.Width, UpperPos);
+
+	// top left
+	glTexCoord2f(0, TexUpperPos);
+	glVertex2f(0, UpperPos);
+
+	// bottom left
+	glColor4f(Color.R, Color.G, Color.B, Color.A - 0.3f);
+	glTexCoord2f(0, TexLowerPos);
+	glVertex2f(0, Descender);
+
+	// bottom right
+	glTexCoord2f(TexOffset.X, TexLowerPos);
+	glVertex2f(BitmapCoords.Width, Descender);
+	glEnd();
+
+	glPopMatrix();
+
+	// restore old color
+	// Note: glPopAttrib(GL_CURRENT_BIT)/glPopAttrib() is much slower then
+	// glGetFloatv(GL_CURRENT_COLOR, ...)/glColor4fv(...)
+	glColor4fv(Color.vals);
 }
 
 const FontPosition& FTGlyph::GetAdvance()
@@ -885,7 +978,7 @@ CachedFont::CachedFont(const path& filename)
 Glyph * CachedFont::GetGlyph(TCHAR ch)
 {
 	Glyph * glyph = Cache.GetGlyph(ch);
-	if (glyph == NULL)
+	if (glyph != NULL)
 		return glyph;
 
 	glyph = LoadGlyph(ch);
@@ -1067,7 +1160,7 @@ void FTOutlineFont::DrawUnderline(const tstring& line)
 	glPopMatrix();
 }
 
-void FTOutlineFont::Render(const tstring& line)
+void FTOutlineFont::Render(const tstring& line, bool reflectionPass)
 {
 	GLColor currentColor, outlineColor;
 
@@ -1082,14 +1175,14 @@ void FTOutlineFont::Render(const tstring& line)
 	// setup and render outline font
 	glColor4fv(outlineColor.vals);
 	glPushMatrix();
-	OutlineFont->Render(line);
+	OutlineFont->Render(line, reflectionPass);
 	glPopMatrix();
 
 	// setup and render inner font
 	glColor4fv(currentColor.vals);
 	glTranslatef(Outset, Outset, 0.0f);
 	glPushMatrix();
-	InnerFont->Render(line);
+	InnerFont->Render(line, reflectionPass);
 	glPopMatrix();
 }
 
@@ -1243,7 +1336,105 @@ Glyph * FTFont::LoadGlyph(TCHAR ch)
 FontBounds FTFont::BBoxLines(const LineArray& lines, bool advance)
 {
 	FontBounds result = { 0.0f, 0.0f, 0.0f, 0.0f };
-	// TODO
+	FTGlyph * PrevGlyph = NULL;
+	FT_Vector KernDelta;
+	float UnderlinePos;
+
+	// Reset global bounds
+	result.Left = FLT_MAX;
+	result.Bottom = FLT_MAX;
+
+	// display text
+	for (size_t LineIndex = 0; LineIndex < lines.size(); LineIndex++)
+	{
+		// get next text line
+		const tstring& TextLine = lines[LineIndex];
+		float LineYOffset = -LineSpacing * LineIndex;
+		FontBounds LineBounds;
+
+		// reset line bounds
+		LineBounds.Left = LineBounds.Bottom = FLT_MAX;
+		LineBounds.Right = LineBounds.Top = 0;
+
+		// for each glyph image, compute its bounding box
+		for (size_t CharIndex = 0; CharIndex < TextLine.size(); CharIndex++)
+		{
+			FTGlyph * Glyph = (FTGlyph *) GetGlyph(TextLine[CharIndex]);
+			if (Glyph != NULL)
+			{
+				// get kerning
+				if (UseKerning && FT_HAS_KERNING(Face->Face) && PrevGlyph != NULL)
+				{
+					FT_Get_Kerning(Face->Face, PrevGlyph->CharIndex, Glyph->CharIndex,
+						FT_KERNING_UNSCALED, &KernDelta);
+					LineBounds.Right = LineBounds.Right + KernDelta.x * Face->FontUnitScale.X;
+				}
+
+				// update left bound (must be done before right bound is updated)
+				if (LineBounds.Right + Glyph->Bounds.Left < LineBounds.Left)
+					LineBounds.Left = LineBounds.Right + Glyph->Bounds.Left;
+
+				// update right bound
+				if (CharIndex < TextLine.size() || // not the last character
+					(TextLine[CharIndex] == ' ') ||      // on space char (Bounds.Right = 0)
+					advance)                             // or in advance mode
+				{
+					// add advance && glyph spacing
+					LineBounds.Right += Glyph->Advance.X + GlyphSpacing;
+				}
+				else
+				{
+					// add glyph's right bound
+					LineBounds.Right += Glyph->Bounds.Right;
+				}
+
+				// update bottom && top bounds
+				if (Glyph->Bounds.Bottom < LineBounds.Bottom)
+					LineBounds.Bottom = Glyph->Bounds.Bottom;
+
+				if (Glyph->Bounds.Top > LineBounds.Top)
+					LineBounds.Top = Glyph->Bounds.Top;
+			}
+
+			PrevGlyph = Glyph;
+		}
+
+		// handle italic font style
+		if (Style & fsItalic)
+		{
+			LineBounds.Left += LineBounds.Bottom * cShearFactor;
+			LineBounds.Right += LineBounds.Top * cShearFactor;
+		}
+
+		// handle underlined font style
+		if (Style & fsUnderline)
+		{
+			UnderlinePos = GetUnderlinePosition();
+			if (UnderlinePos < LineBounds.Bottom)
+				LineBounds.Bottom = UnderlinePos;
+		}
+
+		// add line offset
+		LineBounds.Bottom = LineBounds.Bottom + LineYOffset;
+		LineBounds.Top = LineBounds.Top + LineYOffset;
+
+		// adjust global bounds
+		if (result.Left > LineBounds.Left)
+			result.Left = LineBounds.Left;
+		if (result.Right < LineBounds.Right)
+			result.Right = LineBounds.Right;
+		if (result.Bottom > LineBounds.Bottom)
+			result.Bottom = LineBounds.Bottom;
+		if (result.Top < LineBounds.Top)
+			result.Top = LineBounds.Top;
+  }
+
+	// if left or bottom bound was not set, set them to 0
+	if (result.Left == FLT_MAX)
+		result.Left = 0.0f;
+	if (result.Bottom == FLT_MAX)
+		result.Bottom = 0.0f;
+
 	return result;
 }
 
@@ -1279,9 +1470,37 @@ float FTFont::GetDescender()
 	return Face->Face->descender * Face->FontUnitScale.Y;
 }
 
-void FTFont::Render(const tstring& text)
+void FTFont::Render(const tstring& text, bool reflectionPass /*= false*/)
 {
-	// TODO
+	FTGlyph * PrevGlyph = NULL;
+
+	// draw current line
+	for (size_t CharIndex = 0; CharIndex < text.size(); CharIndex++)
+	{
+		FTGlyph * Glyph = (FTGlyph *) GetGlyph(text[CharIndex]);
+		if (Glyph != NULL)
+		{
+			// get kerning
+			if (UseKerning
+				&& FT_HAS_KERNING(Face->Face)
+				&& PrevGlyph != NULL)
+			{
+				FT_Vector KernDelta;
+				FT_Get_Kerning(Face->Face, PrevGlyph->CharIndex, Glyph->CharIndex,
+							   FT_KERNING_UNSCALED, &KernDelta);
+				glTranslatef(KernDelta.x * Face->FontUnitScale.X, 0, 0);
+			}
+
+			if (reflectionPass)
+				Glyph->RenderReflection();
+			else
+				Glyph->Render(UseDisplayLists);
+
+			glTranslatef(Glyph->Advance.X + GlyphSpacing, 0.0f, 0.0f);
+		}
+
+		PrevGlyph = Glyph;
+	}
 }
 
 FTFont::~FTFont()
