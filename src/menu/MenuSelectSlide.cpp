@@ -37,13 +37,14 @@ MenuSelectSlide::MenuSelectSlide() : pData(NULL)
 
 	Colorized = ColorizedSBG = false;
 
-	ColRGB.R = ColRGB.G = ColRGB.B = 1.0f;
-	DColRGB.R = DColRGB.G = DColRGB.B = 1.0f;
-	TColRGB.R = TDColRGB.G = SBGColRGB.B = 1.0f;
-	SBGDColRGB.R = STColRGB.G = STDColRGB.B = 1.0f;
-
-	Int = DInt = TInt = TDInt = 1.0f;
-	SBGInt = SBGDInt = STInt = STDInt = 1.0f;
+	Int = ColRGB.R = ColRGB.G = ColRGB.B = 1.0f;
+	DInt = DColRGB.R = DColRGB.G = DColRGB.B = 1.0f;
+	TInt = TColRGB.R = TColRGB.G = TColRGB.B = 1.0f;
+	TDInt = TDColRGB.R = TDColRGB.G = TDColRGB.B = 1.0f;
+	STInt = STColRGB.R = STColRGB.G = STColRGB.B = 1.0f;
+	STDInt = STDColRGB.R = STDColRGB.G = STDColRGB.B = 1.0f;
+	SBGInt = SBGColRGB.R = SBGColRGB.G = SBGColRGB.B = 1.0f;
+	SBGDInt = SBGDColRGB.R = SBGDColRGB.G = SBGDColRGB.B = 1.0f;
 
 	ShowArrows = false;
 	OneItemOnly = false;
@@ -204,10 +205,10 @@ void MenuSelectSlide::Draw()
 	}
 	else
 	{
-		DeselectTextureSBG.X = Tex.X;
-		DeselectTextureSBG.Y = Tex.Y;
-		DeselectTextureSBG.W = Tex.W;
-		DeselectTextureSBG.H = Tex.H;
+		DeselectTextureSBG.X = TexSBG.X;
+		DeselectTextureSBG.Y = TexSBG.Y;
+		DeselectTextureSBG.W = TexSBG.W;
+		DeselectTextureSBG.H = TexSBG.H;
 		DeselectTextureSBG.Draw();
 	}
 
