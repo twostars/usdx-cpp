@@ -73,6 +73,22 @@ bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 			case SDLK_BACKSPACE:
 				return false;
 
+			case SDLK_DOWN:
+				InteractInc();
+				break;
+
+			case SDLK_UP:
+				InteractDec();
+				break;
+
+			case SDLK_RIGHT:
+				InteractNext();
+				break;
+
+			case SDLK_LEFT:
+				InteractPrev();
+				break;
+
 			case SDLK_RETURN:
 				switch (SelInteraction)
 				{

@@ -158,6 +158,7 @@ void Menu::SetInteraction(int num)
 		assert(newNum >= 0 && newNum < (int) Buttons.size());
 		index = Buttons[newNum].Parent - 1;
 		assert(index >= 0 && index < (int) ButtonCollections.size());
+		Buttons[newNum].SetSelected(true);
 		ButtonCollections[index].SetSelected(true);
 		break;
 	}
@@ -519,7 +520,7 @@ int Menu::AddButton(const ThemeButton& themeButton)
 			{
 				assert(!Interactions.empty());
 
-				Interactions[Interactions.size() - 1].Type = InteractionType::itBCollectionChild;
+ 				Interactions[Interactions.size() - 1].Type = InteractionType::itBCollectionChild;
 				button.Visible = false;
 				
 				for (std::vector<MenuText>::iterator itr = button.Texts.begin(); itr != button.Texts.end(); ++itr)
@@ -1133,9 +1134,15 @@ bool Menu::IsSelectable(uint32 index)
 	case InteractionType::itBCollectionChild:
 		assert(interact.Num >= 0 && interact.Num < (int) Buttons.size());
 		assert(Buttons[interact.Num].Parent - 1 >= 0 && Buttons[interact.Num].Parent - 1 < (int) ButtonCollections.size());
-		return (ButtonCollections[Buttons[interact.Num].Parent - 1].FirstChild - 1 == index) 
-			&& (interact.Type != InteractionType::itBCollectionChild 
-				|| Buttons[interact.Num].Parent != Buttons[interact.Num].Parent);
+		if (ButtonCollections[Buttons[interact.Num].Parent - 1].FirstChild - 1 != index)
+			return false;
+
+		if ((interact.Type != InteractionType::itBCollectionChild
+			|| Buttons[interact.Num].Parent != Buttons[Interactions[SelInteraction].Num].Parent))
+			return true;
+
+		return false;
+
 	}
 
 	return true; // should this default to false? officially it defaults to true.
@@ -1171,8 +1178,7 @@ void Menu::InteractPrev()
 	// change interaction as long as it's needed
 	do
 	{
-		selInt = (selInt - 1) % Interactions.size();
-		if (selInt < 0)
+		if (--selInt < 0)
 			selInt = Interactions.size() - 1;
 
 		// If no Interaction is selectable simply select next
@@ -1203,7 +1209,7 @@ void Menu::InteractInc()
 
 	case InteractionType::itBCollectionChild:
 		// Select next button in collection
-		num = 0;
+		num = 1;
 		for (std::vector<MenuButton>::iterator itr = Buttons.begin(); itr != Buttons.end(); ++itr, ++num)
 		{
 			value = (SelInteraction + num) % Buttons.size();
