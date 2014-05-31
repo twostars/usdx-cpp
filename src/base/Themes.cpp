@@ -423,7 +423,7 @@ void Themes::LoadTheme(ThemeEntry * theme, eColor color)
 	LoadThemeText(Score->TextArtistTitle, _T("ScoreTextArtistTitle"));
 
 	#define F(format, ...) \
-		_sntprintf(buff, sizeof(buff) / sizeof(buff[0]), format, __VA_ARGS__)
+		_sntprintf(buff, SDL_arraysize(buff), format, __VA_ARGS__)
 
 	for (int playerNo = 1; playerNo <= MAX_PLAYERS; playerNo++)
 	{

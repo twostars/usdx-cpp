@@ -26,6 +26,11 @@
 
 class ScreenOptionsLyrics : public Menu
 {
+public:
+	ScreenOptionsLyrics();
+	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual void OnShow();
+	void SaveAndReturn();
 };
 
 #endif
