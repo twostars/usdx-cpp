@@ -727,9 +727,177 @@ void FitImage(SDL_Surface *& imgSurface, uint32 width, uint32 height)
 	g_surfaces.insert(imgSurface);
 }
 
+// returns hue within the range 0.0--6.0 but shl 10,  i.e. times 1024
+uint32 ColorToHue(const uint32 color)
+{
+	uint8 r, g, b, min, max, delta;
+	double hue;
+
+	// extract the colors
+	// division by 255 is omitted, since it is implicitly done when dividing by delta
+	r = ((color & 0x00ff0000) >> 16);
+	g = ((color & 0x0000ff00) >> 8);
+	b =  (color & 0x000000ff);
+
+	min = r;
+	if (g < min) min = g;
+	if (b < min) min = b;
+
+	max = r;
+	if (g > max) max = g;
+	if (b > max) max = b;
+
+	// calc hue
+	delta = max - min;
+	if (delta == 0)
+		return 0;
+
+	// The division by delta is done separately afterwards.
+	if (max == r) hue = g - b;
+	else if (max == g) hue = 2.0 * delta + b - r;
+	else if (max == b) hue = 4.0 * delta + r - g;
+
+	hue /= delta;
+	if (hue < 0.0)
+		hue += 6.0;
+
+	// * 1024 is shl 10
+	return (uint32) (hue * 1024);
+}
+
 void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
 {
-	// TODO
+	uint8 * pixels = static_cast<uint8 *>(imgSurface->pixels);
+	size_t pixelCount = imgSurface->w * imgSurface->h;
+	uint8 bpp = imgSurface->format->BytesPerPixel;
+
+	// Ensure the size of a pixel is 4 bytes.
+	// It should always be 4...
+	if (bpp != 4)
+		sLog.Error(_T("ColorizeImage"), _T("The pixel size should be 4, but it is %d)"), bpp);
+
+	// Check whether the new color is white, grey or black
+	// because a greyscale must be created in a different way.
+	uint32 r = ((newColor & 0x00ff0000) >> 16);
+	uint32 g = ((newColor & 0x0000ff00) >> 8);
+	uint32 b =  (newColor & 0x000000ff);
+
+	// Greyscale image
+	if (r == g && g == b)
+	{
+		// According to these recommendations (ITU-R BT.709-5)
+		// the conversion parameters for rgb to greyscale are
+		// 0.299, 0.587, 0.114
+		for (size_t pixelIndex = 0; pixelIndex < pixelCount; pixelIndex++)
+		{
+#ifdef BIG_ENDIAN
+			float greyReal = 0.299f*pixels[3] + 0.587f*pixels[2] + 0.114f*pixels[1];
+#else
+			float greyReal = 0.299f*pixels[0] + 0.587f*pixels[1] + 0.114f*pixels[2];
+#endif
+
+			uint8 grey = (uint8) Round(greyReal);
+
+#ifdef BIG_ENDIAN
+			pixels[3] = grey;
+			pixels[2] = grey;
+			pixels[1] = grey;
+#else
+			pixels[0] = grey;
+			pixels[1] = grey;
+			pixels[2] = grey;
+#endif
+
+			pixels += bpp;
+		}
+
+		// Done handling greyscale images.
+		return;
+	}
+
+	uint32 hue = ColorToHue(newColor); // hue is shl 10
+	uint32 f = hue & 0x3ff; // f is the decimal part of hue
+	uint32 hueInteger = hue >> 10;
+
+	for (size_t pixelIndex = 0; pixelIndex < pixelCount; pixelIndex++)
+	{
+		// uses fixed point math
+		// shl 10 is used for divisions
+
+		// get color values
+		uint8 r, g, b;
+
+#ifdef BIG_ENDIAN
+		r = pixels[3];
+		g = pixels[2];
+		b = pixels[1];
+#else
+		r = pixels[0];
+		g = pixels[1];
+		b = pixels[2];
+#endif
+
+		// calculate luminance and saturation from rgb
+		uint32 max = r;
+		if (g > max) max = g;
+		if (b > max) max = b;
+
+		// the color is black
+		if (max == 0)
+		{
+#ifdef BIG_ENDIAN
+			memset(pixels + 1, 0, 3);
+#else
+			memset(pixels, 0, 3);
+#endif
+			pixels += bpp;
+			continue;
+		}
+
+		uint32 min = r;
+		if (g < min) min = g;
+		if (b < min) min = b;
+
+		// the color is white
+		if (min == 255)
+		{
+#ifdef BIG_ENDIAN
+			memset(pixels + 1, 255, 3);
+#else
+			memset(pixels, 255, 3);
+#endif
+			pixels += bpp;
+			continue;
+		}
+
+		// all other colors except black and white
+		uint32 delta = max - min;
+		uint32 sat = (delta << 10) / max;
+		uint32 p = (max * (1024 - sat)) >> 10;
+		uint32 q = (max * (1024 - ((sat *  f) >> 10))) >> 10;
+		uint32 t = (max * (1024 - ((sat * (1024 - f)) >> 10))) >> 10;
+
+		switch (hueInteger)
+		{
+			case 0: r = max, g = t, b = p; break; // (v,t,p)
+			case 1: r = q, g = max, b = p; break; // (q,v,p)
+			case 2: r = p, g = max, b = t; break; // (p,v,t)
+			case 3: r = p, g = q, b = max; break; // (p,q,v)
+			case 4: r = t, g = p, b = max; break; // (t,p,v)
+			case 5: r = max, g = p, b = q; break; // (v,p,q)
+		}
+
+#ifdef BIG_ENDIAN
+		pixels[3] = (uint8) (r);
+		pixels[2] = (uint8) (g);
+		pixels[1] = (uint8) (b);
+#else
+		pixels[0] = (uint8) (r);
+		pixels[1] = (uint8) (g);
+		pixels[2] = (uint8) (b);
+#endif
+		pixels += bpp;
+	}
 }
 
 void glColorRGB(const RGB& color)
