@@ -28,9 +28,6 @@
     <Filter Include="lib\bass">
       <UniqueIdentifier>{8b647093-d7e0-453d-aa22-e9a195107eea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lib\fft">
-      <UniqueIdentifier>{f1a02e19-738d-4036-857c-c7b473954832}</UniqueIdentifier>
-    </Filter>
     <Filter Include="lib\FreeImage">
       <UniqueIdentifier>{77d71dc0-e1f7-475e-ba58-d832c9e89fdb}</UniqueIdentifier>
     </Filter>
@@ -45,9 +42,6 @@
     </Filter>
     <Filter Include="lib\midi">
       <UniqueIdentifier>{c05bd3c5-9d8b-4162-a358-1aeba4d7144b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\other">
-      <UniqueIdentifier>{ee860f94-115e-4196-bd8f-e923cf0845b3}</UniqueIdentifier>
     </Filter>
     <Filter Include="lib\portmixer">
       <UniqueIdentifier>{2fb9ff18-f78b-4875-be8c-e92e1bf844bf}</UniqueIdentifier>
@@ -71,12 +65,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\base\Main.cpp">
       <Filter>src\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lib\fft\FFT.cpp">
-      <Filter>lib\fft</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lib\other\DirWatch.cpp">
-      <Filter>lib\other</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\base\Music.cpp">
       <Filter>src\base</Filter>

@@ -62,8 +62,6 @@
     <ClCompile Include="..\..\src\base\Time.cpp" />
     <ClCompile Include="..\..\src\base\UnicodeUtils.cpp" />
     <ClCompile Include="..\..\src\base\XMLSong.cpp" />
-    <ClCompile Include="..\..\src\lib\fft\FFT.cpp" />
-    <ClCompile Include="..\..\src\lib\other\DirWatch.cpp" />
     <ClCompile Include="..\..\src\lib\simpleini\ConvertUTF.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
