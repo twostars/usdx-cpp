@@ -92,12 +92,8 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>$(SolutionDir)..\..\build\$(Configuration);$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -110,13 +106,13 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\src\lib\libsdl\include;..\..\src\lib\libpng;..\..\src\lib\libjpeg\src;..\..\src\lib\libjpeg\dists\msvc2012;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HAVE_LIBC;_DEBUG;WIN32;_WINDOWS;LOAD_BMP;LOAD_JPG;LOAD_JPG_DYNAMIC="libjpeg-9.dll";LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNG_DYNAMIC="libpng16-16.dll";PNG_USE_DLL;ZLIB_DLL;</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\libpng;..\..\src\lib\libjpeg\src;..\..\src\lib\libjpeg\dists\msvc2012;</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -186,12 +182,12 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\..\src\lib\libsdl\include;..\..\src\lib\libpng;..\..\src\lib\libjpeg\src;..\..\src\lib\libjpeg\dists\msvc2012;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HAVE_LIBC;NDEBUG;WIN32;_WINDOWS;LOAD_BMP;LOAD_JPG;LOAD_JPG_DYNAMIC="libjpeg-9.dll";LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNG_DYNAMIC="libpng16-16.dll";PNG_USE_DLL;ZLIB_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalIncludeDirectories>..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\libpng;..\..\src\lib\libjpeg\src;..\..\src\lib\libjpeg\dists\msvc2012;</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
