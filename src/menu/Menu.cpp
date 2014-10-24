@@ -879,14 +879,13 @@ void Menu::CheckFadeToCallback(bool value)
 	}
 }
 
-bool Menu::DrawBG()
+void Menu::DrawBG()
 {
 	assert(Background != NULL);
 	Background->Draw();
-	return true;
 }
 
-bool Menu::DrawFG()
+void Menu::DrawFG()
 {
 	for (std::vector<MenuStatic>::iterator itr = Statics.begin(); itr != Statics.end(); ++itr)
 		(*itr).Draw();
@@ -902,13 +901,12 @@ bool Menu::DrawFG()
 
 	for (std::vector<MenuSelectSlide>::iterator itr = SelectSlides.begin(); itr != SelectSlides.end(); ++itr)
 		(*itr).Draw();
-
-	return true;
 }
 
-bool Menu::Draw()
+void Menu::Draw()
 {
-	return DrawBG() && DrawFG();
+	DrawBG();
+	DrawFG();
 }
 
 bool Menu::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)

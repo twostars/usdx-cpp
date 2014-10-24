@@ -187,9 +187,9 @@ public:
 	void CheckFadeTo(Menu* screen, const TCHAR * message);
 	static void CheckFadeToCallback(bool value);
 
-	virtual bool DrawBG();
-	virtual bool DrawFG();
-	virtual bool Draw();
+	virtual void DrawBG();
+	virtual void DrawFG();
+	virtual void Draw();
 	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	virtual bool ParseMouse(int mouseButton, bool btnDown, float x, float y);
 	bool InRegion(float x, float y, const MouseOverRect& rect);
