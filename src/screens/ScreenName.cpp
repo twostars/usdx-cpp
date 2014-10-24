@@ -68,11 +68,8 @@ bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 	if (!pressedDown)
 		return true;
 
-	// TODO: Verify this is correct. Not familiar with pascal's syntax so this might be wrong.
 	uint16 modState = SDL_GetModState()
-		& (KMOD_LSHIFT + KMOD_RSHIFT
-		+ KMOD_LCTRL + KMOD_RCTRL
-		+ KMOD_LALT + KMOD_RALT);
+		& (KMOD_SHIFT | KMOD_CTRL | KMOD_ALT);
 
 	// TODO: Append name text to the selected button
 	// This needs to be handled differently because of SDL2
