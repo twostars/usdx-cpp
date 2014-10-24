@@ -866,14 +866,14 @@ void FTGlyph::Render(bool useDisplayLists)
 	glPushMatrix();
 
 	// move to top left glyph position
-	glTranslatef(BitmapCoords.Left, BitmapCoords.Top, 0);
+	glTranslated(BitmapCoords.Left, BitmapCoords.Top, 0);
 
 	// draw glyph texture
 	glBegin(GL_QUADS);
 
 	// top right
 	glTexCoord2f(TexOffset.X, 0);
-	glVertex2f(BitmapCoords.Width, 0);
+	glVertex2i(BitmapCoords.Width, 0);
 
 	// top left
 	glTexCoord2f(0, 0);
@@ -881,11 +881,11 @@ void FTGlyph::Render(bool useDisplayLists)
 
 	// bottom left
 	glTexCoord2f(0, TexOffset.Y);
-	glVertex2f(0, -BitmapCoords.Height);
+	glVertex2i(0, -BitmapCoords.Height);
 
 	// bottom right
 	glTexCoord2f(TexOffset.X, TexOffset.Y);
-	glVertex2f(BitmapCoords.Width, -BitmapCoords.Height);
+	glVertex2i(BitmapCoords.Width, -BitmapCoords.Height);
 
 	glEnd();
 
@@ -897,14 +897,15 @@ void FTGlyph::RenderReflection()
 	const float CutOff = 0.6f;
 
 	GLColor Color;
-	float Descender, UpperPos, TexUpperPos, TexLowerPos;
+	float Descender;
+	double UpperPos, TexUpperPos, TexLowerPos;
 
 	glPushMatrix();
 	glBindTexture(GL_TEXTURE_2D, Texture);
 	glGetFloatv(GL_CURRENT_COLOR, Color.vals);
 
 	// add extra space to the left of the glyph
-	glTranslatef(BitmapCoords.Left, 0, 0);
+	glTranslated(BitmapCoords.Left, 0.0, 0.0);
 
 	Descender = Font->GetDescender();
 
@@ -932,21 +933,21 @@ void FTGlyph::RenderReflection()
 	glBegin(GL_QUADS);
 	// top right
 	glColor4f(Color.R, Color.G, Color.B, 0);
-	glTexCoord2f(TexOffset.X, TexUpperPos);
-	glVertex2f(BitmapCoords.Width, UpperPos);
+	glTexCoord2d(TexOffset.X, TexUpperPos);
+	glVertex2d(BitmapCoords.Width, UpperPos);
 
 	// top left
-	glTexCoord2f(0, TexUpperPos);
-	glVertex2f(0, UpperPos);
+	glTexCoord2d(0.0, TexUpperPos);
+	glVertex2d(0.0, UpperPos);
 
 	// bottom left
 	glColor4f(Color.R, Color.G, Color.B, Color.A - 0.3f);
-	glTexCoord2f(0, TexLowerPos);
-	glVertex2f(0, Descender);
+	glTexCoord2d(0.0, TexLowerPos);
+	glVertex2f(0.0f, Descender);
 
 	// bottom right
-	glTexCoord2f(TexOffset.X, TexLowerPos);
-	glVertex2f(BitmapCoords.Width, Descender);
+	glTexCoord2d(TexOffset.X, TexLowerPos);
+	glVertex2f((GLfloat) BitmapCoords.Width, Descender);
 	glEnd();
 
 	glPopMatrix();
