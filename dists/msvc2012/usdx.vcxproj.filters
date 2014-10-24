@@ -437,15 +437,6 @@
     <ClInclude Include="..\..\src\lib\bass\c\bass.h">
       <Filter>lib\bass</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\lib\FreeImage\FreeBitmap.h">
-      <Filter>lib\FreeImage</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\lib\FreeImage\FreeImage.h">
-      <Filter>lib\FreeImage</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\lib\freetype\freetype.h">
-      <Filter>lib\FreeType</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\base\Main.h">
       <Filter>src\base</Filter>
     </ClInclude>

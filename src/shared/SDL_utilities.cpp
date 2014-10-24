@@ -24,7 +24,7 @@
 #include "SDL_utilities.h"
 
 // List applicable display modes for the specified display.
-// NOTE: Unlike the original SDL_ListModes(), be sure to free the returned memory.
+// NOTE: Unlike the original SDL_ListModes(), the caller must free the returned memory.
 SDL_Rect **
 SDL_ListModes(int displayIndex)
 {
