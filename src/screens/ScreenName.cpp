@@ -49,18 +49,18 @@ void ScreenName::OnShow()
 	for (int player = 0; player < MAX_PLAYERS; player++)
 		Buttons[player].Texts[0].SetText(sIni.Name[player]);
 
-	// TODO
-	// for (int player = 0; player < PlayersPlayer; player++)
-	// {
-	//	Buttons[player].Visible = true;
-	//	Buttons[player].Selectable = true;
-	// }
+	int players = sIni.Players + 1;
+	for (int player = 0; player < players; player++)
+	{
+		Buttons[player].Visible = true;
+		Buttons[player].Selectable = true;
+	}
 
-	// for (int player = PlayersPlayer + 1; player < MAX_PLAYERS; player++)
-	// {
-	//	Buttons[player].Visible = false;
-	//	Buttons[player].Selectable = false;
-	// }
+	for (int player = players; player < MAX_PLAYERS; player++)
+	{
+		Buttons[player].Visible = false;
+		Buttons[player].Selectable = false;
+	}
 }
 
 bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
