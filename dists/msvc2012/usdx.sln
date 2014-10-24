@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio Express 2012 for Windows Desktop
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "usdx", "usdx.vcxproj", "{82A899DA-591E-4A3F-997C-0B276628766F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2BD5534E-00E2-4BEA-AC96-D9A92EA24696} = {2BD5534E-00E2-4BEA-AC96-D9A92EA24696}
