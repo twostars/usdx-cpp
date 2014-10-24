@@ -84,8 +84,7 @@ bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 	{
 		size_t index = pressedKey - SDLK_F1;
 		tstring buttonText = selectedButton.Texts[0].GetText();
-		// TODO: Verify this is correct.
-		if (modState == KMOD_ALT)
+		if (modState & KMOD_ALT)
 			sIni.NameTemplate[index] = buttonText;
 		else
 			buttonText = sIni.NameTemplate[index];
