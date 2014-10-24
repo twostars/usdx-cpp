@@ -43,7 +43,9 @@
 
 #include "../screens/ScreenPopup.h"
 
-void CheckEvents();
+void CheckEvents(float & mouseX, float & mouseY);
+void OnKeyDownEvent(SDL_Keycode keyCode);
+void OnMouseEvent(int mouseBtn, bool mouseDown, float mouseX, float mouseY);
 void DoQuit();
 
 /* globals */
@@ -304,6 +306,7 @@ void usdxMainLoop()
 	bool done = false;
 	uint32 ticksCurrent, ticksBeforeFrame;
 	int32 delay;
+	float mouseX = 0.0f, mouseY = 0.0f;
 
 	// For some reason this seems to be needed with the SDL timer functions.
 	CountSkipTime();
@@ -317,7 +320,7 @@ void usdxMainLoop()
 		//	sJoystick.Update();
 
 		// Check keyboard events
-		CheckEvents();
+		CheckEvents(mouseX, mouseY);
 
 		// Display
 		done = !sDisplay.Draw();
@@ -333,7 +336,7 @@ void usdxMainLoop()
 	} while (!done);
 }
 
-void CheckEvents()
+void CheckEvents(float & mouseX, float & mouseY)
 {
 	SDL_Event event;
 	bool mouseDown;
@@ -354,7 +357,7 @@ void CheckEvents()
 				case SDL_WINDOWEVENT_MAXIMIZED:
 					if (event.window.data1 == 0
 						|| event.window.data2 == 0)
-						return;
+						continue;
 
 					ScreenW = event.window.data1;
 					ScreenH = event.window.data2;
@@ -398,20 +401,15 @@ void CheckEvents()
 			break;
 
 		case SDL_KEYDOWN:
-			// If there is a visible popup then let it handle input instead of the underlying screen
-			// should be done in a way to be sure the topmost popup has preference (maybe error, then check)
-			if (UIPopupError != NULL && UIPopupError->Visible)
-				UIPopupError->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
-			else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
-				UIPopupInfo->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
-			else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
-				UIPopupCheck->ParseInput(event.key.keysym.sym, event.key.keysym.sym, true);
-			else
-			{
-				// if screen wants to exit
-				if (!sDisplay.ParseInput(event.key.keysym.sym, event.key.keysym.sym, true))
-					DoQuit();
-			}
+			OnKeyDownEvent(event.key.keysym.sym);
+			break;
+
+		case SDL_MOUSEWHEEL:
+			if (event.wheel.y == 0)
+				continue;
+
+			mouseDown = true;
+			mouseBtn = (event.wheel.y < 0 ? SDL_BUTTON_WHEELDOWN : SDL_BUTTON_WHEELUP);
 			break;
 
 		case SDL_JOYAXISMOTION:
@@ -429,24 +427,47 @@ void CheckEvents()
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 			case SDL_MOUSEMOTION:
-				// Drop input when changing screens
-				if (sDisplay.NextScreen == NULL)
-				{
-					if (UIPopupError != NULL && UIPopupError->Visible)
-						UIPopupError->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
-					else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
-						UIPopupInfo->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
-					else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
-						UIPopupCheck->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y);
-					else
-					{
-						if (!sDisplay.CurrentScreen->ParseMouse(mouseBtn, mouseDown, (float) event.button.x, (float) event.button.y))
-							DoQuit();
-					}
-				}
+				mouseX = (float) event.button.x;
+				mouseY = (float) event.button.y;
+				OnMouseEvent(mouseBtn, mouseDown, mouseX, mouseY);
+				break;
+
+			case SDL_MOUSEWHEEL:
+				OnMouseEvent(mouseBtn, mouseDown, mouseX, mouseY);
 				break;
 		}
 	}
+}
+
+void OnKeyDownEvent(SDL_Keycode keyCode)
+{
+	// If there is a visible popup then let it handle input instead of the underlying screen
+	// should be done in a way to be sure the topmost popup has preference (maybe error, then check)
+	if (UIPopupError != NULL && UIPopupError->Visible)
+		UIPopupError->ParseInput(keyCode, keyCode, true);
+	else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
+		UIPopupInfo->ParseInput(keyCode, keyCode, true);
+	else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
+		UIPopupCheck->ParseInput(keyCode, keyCode, true);
+	// if screen wants to exit
+	else if (!sDisplay.ParseInput(keyCode, keyCode, true))
+		DoQuit();
+}
+
+void OnMouseEvent(int mouseBtn, bool mouseDown, float mouseX, float mouseY)
+{
+	// Drop input when changing screens
+	if (sDisplay.NextScreen != NULL)
+		return;
+
+	if (UIPopupError != NULL && UIPopupError->Visible)
+		UIPopupError->ParseMouse(mouseBtn, mouseDown, mouseX, mouseY);
+	else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
+		UIPopupInfo->ParseMouse(mouseBtn, mouseDown, mouseX, mouseY);
+	else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
+		UIPopupCheck->ParseMouse(mouseBtn, mouseDown, mouseX, mouseY);
+	else if (!sDisplay.CurrentScreen->ParseMouse(mouseBtn, mouseDown, mouseX, mouseY))
+		DoQuit();
 }
 
 void DoQuit()

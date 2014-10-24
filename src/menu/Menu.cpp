@@ -975,9 +975,8 @@ bool Menu::ParseMouse(int mouseButton, bool btnDown, float x, float y)
 					}
 					break;
 
-				/*
-				// FIXME: As of SDL1.3/2, the mouse wheel is no longer considered a button.
-				// It has its own event which needs to be handled.
+				// NOTE: As of SDL1.3/2, the mouse wheel is no longer considered a button; 
+				// it has its own event which needs to be (and is) handled. These are user events.
 
 				// Forward on select slide with mousewheel
 				case SDL_BUTTON_WHEELDOWN:
@@ -990,7 +989,6 @@ bool Menu::ParseMouse(int mouseButton, bool btnDown, float x, float y)
 					if (interact.Type == InteractionType::itSelectSlide)
 						action = maLeft;
 					break;
-				*/
 				}
 			}
 

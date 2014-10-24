@@ -39,6 +39,12 @@
 #define SDL_OPENGL          0x04000000
 /*@}*//*Surface flags*/
 
+enum SDLUserEvents
+{
+	SDL_BUTTON_WHEELDOWN = SDL_USEREVENT,
+	SDL_BUTTON_WHEELUP
+};
+
 SDL_Rect ** SDL_ListModes(int displayIndex);
 
 #endif
