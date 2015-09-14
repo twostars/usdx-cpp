@@ -41,13 +41,13 @@ extern CMDParams Params;
 
 // constants for screen transition
 // time in milliseconds
-const float FADE_DURATION = 400.0f;
+static const float FADE_DURATION = 400.0f;
 
 // constants for software cursor effects
 // time in milliseconds
-const int CURSOR_FADE_IN_TIME = 500;      // seconds the fade in effect lasts
-const int CURSOR_FADE_OUT_TIME = 2000;    // seconds the fade out effect lasts
-const int CURSOR_AUTOHIDE_TIME = 5000;   // seconds until auto fade out starts if there is no mouse movement
+static const uint32 CURSOR_FADE_IN_TIME = 500;      // seconds the fade in effect lasts
+static const uint32 CURSOR_FADE_OUT_TIME = 2000;    // seconds the fade out effect lasts
+static const uint32 CURSOR_AUTOHIDE_TIME = 5000;   // seconds until auto fade out starts if there is no mouse movement
 
 Display::Display()
 // create events for plugins
@@ -300,9 +300,10 @@ void Display::UpdateCursorFade()
 	// fade in on movement (or button press) if not first movement
 	if (!CursorVisible && CursorLastMove != 0)
 	{
-		CursorLastMove = ticks;
 		if (CursorFade)
-			CursorLastMove -= (uint32) Round(1.0 * (CURSOR_FADE_IN_TIME * (1 - ticks - CursorLastMove) / CURSOR_FADE_OUT_TIME));
+			CursorLastMove -= (uint32_t) Round(1.0 * (CURSOR_FADE_IN_TIME * (1 - (ticks - CursorLastMove)) / CURSOR_FADE_OUT_TIME));
+		else
+			CursorLastMove = ticks;
 
 		CursorVisible = true;
 		CursorFade = true;
