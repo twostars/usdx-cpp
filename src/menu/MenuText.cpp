@@ -68,6 +68,7 @@ void MenuText::Create(float x, float y, float w, uint32 style,
 	ReflectionSpacing = reflectionSpacing;
 	Selected = false;
 	SelectBlink = false;
+	Visible = true;
 	STicks = 0;
 }
 
