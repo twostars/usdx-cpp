@@ -27,7 +27,6 @@
 #include "Texture.h"
 
 void Initialize3D(const TCHAR * windowTitle);
-void LoadOpenGLExtensions();
 void LoadFontTextures();
 void UnloadFontTextures();
 void LoadLoadingScreen();
@@ -69,11 +68,6 @@ extern int ScreenW, ScreenH;
 extern int Screens, ScreenAct, ScreenX;
 
 extern bool Fullscreen;
-
-extern PFNGLCOPYTEXSUBIMAGE3DPROC	glCopyTexSubImage3D;
-extern PFNGLDRAWRANGEELEMENTSPROC	glDrawRangeElements;
-extern PFNGLTEXIMAGE3DPROC			glTexImage3D;
-extern PFNGLTEXSUBIMAGE3DPROC		glTexSubImage3D;
 
 // Screens
 extern class ScreenLoading			* UILoading;

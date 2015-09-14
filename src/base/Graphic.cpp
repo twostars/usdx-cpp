@@ -156,11 +156,6 @@ bool PboSupported = false;
 typedef std::set<Menu *> ScreenCollection;
 ScreenCollection		g_screenCollection;
 
-PFNGLCOPYTEXSUBIMAGE3DPROC	glCopyTexSubImage3D;
-PFNGLDRAWRANGEELEMENTSPROC	glDrawRangeElements;
-PFNGLTEXIMAGE3DPROC			glTexImage3D;
-PFNGLTEXSUBIMAGE3DPROC		glTexSubImage3D;
-
 static const struct SDL_PixelFormat PixelFmt_RGBA =
 {
 	/*format:*/         SDL_PIXELFORMAT_RGBA8888,
@@ -325,9 +320,6 @@ void Initialize3D(const TCHAR * windowTitle)
 	// Create an OpenGL context
 	GLContext = SDL_GL_CreateContext(Screen);
 
-	// Load extensions
-	LoadOpenGLExtensions();
-
 	// Hide cursor
 	SDL_ShowCursor(0);
 
@@ -375,35 +367,6 @@ void Initialize3D(const TCHAR * windowTitle)
 	sLog.Benchmark(2, _T("Loading screens"));
 
 	sLog.Status(_T("Initialize3D"), _T("Finished"));
-}
-
-class OpenGL12
-{
-public:
-	static bool Load()
-	{
-		sLog.Status(_T("OpenGL"), _T("Loading OpenGL 1.2 extensions..."));
-
-		glCopyTexSubImage3D = (PFNGLCOPYTEXSUBIMAGE3DPROC) SDL_GL_GetProcAddress("glCopyTexSubImage3D");
-		glDrawRangeElements = (PFNGLDRAWRANGEELEMENTSPROC) SDL_GL_GetProcAddress("glDrawRangeElements");
-		glTexImage3D        = (PFNGLTEXIMAGE3DPROC       ) SDL_GL_GetProcAddress("glTexImage3D");
-		glTexSubImage3D     = (PFNGLTEXSUBIMAGE3DPROC    ) SDL_GL_GetProcAddress("glTexSubImage3D");
-
-		if (glCopyTexSubImage3D == NULL
-			|| glDrawRangeElements == NULL
-			|| glTexImage3D == NULL
-			|| glTexSubImage3D == NULL)
-			return false;
-
-		sLog.Status(_T("OpenGL"), _T("Loaded OpenGL 1.2 extensions."));
-		return true;
-	}
-};
-
-void LoadOpenGLExtensions()
-{
-	if (!OpenGL12::Load())
-		return sLog.Critical(_T("LoadOpenGLExtensions"), _T("Unable to load OpenGL 1.2"));
 }
 
 void LoadFontTextures()
