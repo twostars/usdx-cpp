@@ -37,6 +37,7 @@
 #include "Music.h"
 #include "Graphic.h"
 #include "TextureMgr.h"
+#include "Database.h"
 
 #include "../menu/Display.h"
 #include "../menu/Menu.h"
@@ -182,13 +183,13 @@ int usdxMain(int argc, TCHAR ** argv)
 		// Score saving
 		sLog.BenchmarkStart(1);
 		sLog.Status(_T("Loading database"), _T("Initialization"));
-		// new Database();
+		new Database();
 		if (ScoreFile.empty())
 		{
 			Platform::GetGameUserPath(&ScoreFile);
 			ScoreFile /= _T("Ultrastar.db");
 		}
-		// sDatabase.Init(ScoreFile);
+		sDatabase.Init(ScoreFile);
 		sLog.BenchmarkEnd(1);
 		sLog.Benchmark(1, _T("Loading database"));
 
@@ -278,7 +279,7 @@ int usdxMain(int argc, TCHAR ** argv)
 	// delete Joystick::getSingletonPtr();
 	// delete EffectManager::getSingletonPtr();
 	// delete PlaylistManager::getSingletonPtr();
-	// delete Database::getSingletonPtr();
+	delete Database::getSingletonPtr();
 	// delete CatSongs::getSingletonPtr();
 	// delete Songs::getSingletonPtr();
 	// delete CatCovers::getSingletonPtr();

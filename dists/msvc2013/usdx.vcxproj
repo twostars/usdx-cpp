@@ -154,6 +154,7 @@
     <ClInclude Include="..\..\src\base\CommandLine.h" />
     <ClInclude Include="..\..\src\base\Common.h" />
     <ClInclude Include="..\..\src\base\Config.h" />
+    <ClInclude Include="..\..\src\base\Database.h" />
     <ClInclude Include="..\..\src\base\Font.h" />
     <ClInclude Include="..\..\src\base\Graphic.h" />
     <ClInclude Include="..\..\src\base\Ini.h" />
@@ -294,12 +295,12 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;HAVE_LIBC;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/fp:except- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;..\..\src\lib\SDL_ttf\external\freetype-2.4.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;..\..\src\lib\SDL_ttf\external\freetype-2.4.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;freetype6.lib;Lua.lib;winmm.lib;version.lib;Imm32.lib;OpenGL32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;freetype6.lib;Lua.lib;sqlite3.lib;winmm.lib;version.lib;Imm32.lib;OpenGL32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
@@ -320,14 +321,14 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;HAVE_LIBC;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/fp:except- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;..\..\src\lib\SDL_ttf\external\freetype-2.4.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;..\..\src\lib\SDL_ttf\external\freetype-2.4.12\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;freetype6.lib;Lua.lib;winmm.lib;version.lib;Imm32.lib;OpenGL32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;freetype6.lib;Lua.lib;sqlite3.lib;winmm.lib;version.lib;Imm32.lib;OpenGL32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>

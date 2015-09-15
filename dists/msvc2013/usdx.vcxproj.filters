@@ -698,6 +698,9 @@
     <ClInclude Include="..\..\src\base\Font.h">
       <Filter>src\base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\base\Database.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\res\ultrastardx.rc">

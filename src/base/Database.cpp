@@ -21,3 +21,40 @@
  */
 
 #include "stdafx.h"
+#include "Database.h"
+#include "Log.h"
+#include <sqlite/sqlite3.h>
+
+initialiseSingleton(Database);
+
+Database::Database()
+	: _database(NULL)
+{
+}
+
+bool Database::Init(path& scorePath)
+{
+	// TODO: Clean this up to accept paths as UTF-16 (i.e. via sqlite3_open_v2).
+	int r = sqlite3_open(scorePath.generic_string().c_str(), &_database);
+	if (r != 0)
+	{
+		sLog.Critical(_T("Database"), _T("Unable to open sqlite3 database: %s (%d)"), scorePath.c_str(), r);
+		return false;
+	}
+
+	return true;
+}
+
+void Database::Close()
+{
+	if (_database != NULL)
+	{
+		sqlite3_close(_database);
+		_database = NULL;
+	}
+}
+
+Database::~Database()
+{
+	Close();
+}
