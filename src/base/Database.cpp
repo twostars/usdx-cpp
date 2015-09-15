@@ -28,33 +28,39 @@
 initialiseSingleton(Database);
 
 Database::Database()
-	: _database(NULL)
 {
 }
 
-bool Database::Init(path& scorePath)
+bool Database::Init(const path& scorePath)
 {
-	// TODO: Clean this up to accept paths as UTF-16 (i.e. via sqlite3_open_v2).
-	int r = sqlite3_open(scorePath.generic_string().c_str(), &_database);
-	if (r != 0)
+	try
 	{
-		sLog.Critical(_T("Database"), _T("Unable to open sqlite3 database: %s (%d)"), scorePath.c_str(), r);
-		return false;
+		sLog.Status(_T("Database::Init"), _T("Initializing database: '%s'"), scorePath.generic_string().c_str());
+
+		int r = _database.Open(scorePath);
+		if (r != SQLITE_OK)
+		{
+			sLog.Critical(_T("Database"),
+				_T("Unable to open sqlite3 database: %s (%d - ") _T(ANSI_FORMAT) _T(")"),
+				scorePath.c_str(), r, _database.ErrMsg());
+			return false;
+		}
+
+		_database.Initialize();
+		return true;
+	}
+	catch (const Sqlite3NoRowsException& e)
+	{
+		_tprintf(_T("Sqlite3NoRowsException occurred: ") _T(ANSI_FORMAT) _T("\n"), e.what());
+	}
+	catch (const Sqlite3Exception& e)
+	{
+		_tprintf(_T("Sqlite3Exception occurred: ") _T(ANSI_FORMAT) _T("\n"), e.what());
 	}
 
-	return true;
-}
-
-void Database::Close()
-{
-	if (_database != NULL)
-	{
-		sqlite3_close(_database);
-		_database = NULL;
-	}
+	return false;
 }
 
 Database::~Database()
 {
-	Close();
 }

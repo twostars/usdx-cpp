@@ -59,12 +59,14 @@
 #	define TSTRCASECMP	WSTRCASECMP
 #	define StrSplit		StrSplitW
 #	define strpos		strposW
+#	define ANSI_FORMAT	"%S"
 #else
 #	define tstring		std::string
 #	define tstring_ci	string_ci
 #	define TSTRCASECMP	STRCASECMP
 #	define StrSplit		StrSplitA
 #	define strpos		strposA
+#	define ANSI_FORMAT	"%s"
 #endif
 
 typedef tstring::size_type tsize_type;

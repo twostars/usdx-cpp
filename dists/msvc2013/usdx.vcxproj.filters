@@ -432,6 +432,12 @@
     <ClCompile Include="..\..\src\screens\ScreenOptionsGame.cpp">
       <Filter>src\screens</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\base\UsdxDatabase.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shared\Sqlite3Database.cpp">
+      <Filter>src\shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lib\bass\c\bass.h">
@@ -700,6 +706,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\base\Database.h">
       <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\base\UsdxDatabase.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shared\Sqlite3Database.h">
+      <Filter>src\shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

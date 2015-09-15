@@ -2,16 +2,17 @@
 #define _DATABASE_H
 #pragma once
 
+#include "UsdxDatabase.h"
+
 class Database : public Singleton<Database>
 {
 public:
 	Database();
-	bool Init(path& scorePath);
-	void Close();
+	bool Init(const path& scorePath);
 	~Database();
 
 private:
-	struct sqlite3 * _database;
+	UsdxDatabase _database;
 };
 
 #define sDatabase (Database::getSingleton())

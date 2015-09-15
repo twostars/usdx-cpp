@@ -264,13 +264,17 @@ int usdxMain(int argc, TCHAR ** argv)
 		sLog.Status(_T("Main loop"), _T("Initialization"));
 		usdxMainLoop();
 	}
-	catch (CriticalException& e)
+	catch (const CriticalException& e)
 	{
 		_tprintf(_T("Critical exception occurred: %s\n"), e.twhat());
 	}
+	catch (const std::exception& e)
+	{
+		_tprintf(_T("Unhandled exception occurred: ") _T(ANSI_FORMAT) _T("\n"), e.what());
+	}
 	catch (...)
 	{
-		_tprintf(_T("Unhandled exception occurred\n"));
+		_tprintf(_T("Unhandled exception occurred.\n"));
 	}
 
 	FreeGfxResources();

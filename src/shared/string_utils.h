@@ -27,9 +27,22 @@
 #if defined(WIN32)
 #	define STRCASECMP	_stricmp
 #	define WSTRCASECMP	_wcsicmp
+#	define I64FMT "%016I64X"
+#	define I64FMTD "%I64u"
+#	define SI64FMTD "%I64d"
+#	define atoll _atoi64
 #else
 #	define STRCASECMP	strcasecmp
 #	define WSTRCASECMP	wcscasecmp
+#	if defined(PRIu64) && defined(PRId64)
+#		define I64FMT "%016" PRIx64
+#		define I64FMTD "%" PRIu64
+#		define SI64FMTD "%" PRId64
+#	else
+#		define I64FMT "%016llX"
+#		define I64FMTD "%llu"
+#		define SI64FMTD "%lld"
+#	endif
 #endif
 
 struct string_ci
