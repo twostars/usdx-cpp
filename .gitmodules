@@ -16,9 +16,6 @@
 [submodule "src/lib/projectM"]
 	path = src/lib/projectM
 	url = http://git.code.sf.net/p/projectm/code
-[submodule "src/lib/sqlite"]
-	path = src/lib/sqlite
-	url = http://repo.or.cz/r/sqlite.git
 [submodule "src/lib/simpleini"]
 	path = src/lib/simpleini
 	url = https://github.com/brofield/simpleini
