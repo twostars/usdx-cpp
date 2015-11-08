@@ -35,13 +35,13 @@ bool Database::Init(const path& scorePath)
 {
 	try
 	{
-		sLog.Status(_T("Database::Init"), _T("Initializing database: '%s'"), scorePath.generic_string().c_str());
+		sLog.Status("Database::Init", "Initializing database: '%s'", scorePath.generic_string().c_str());
 
 		int r = _database.Open(scorePath);
 		if (r != SQLITE_OK)
 		{
-			sLog.Critical(_T("Database"),
-				_T("Unable to open sqlite3 database: %s (%d - ") _T(ANSI_FORMAT) _T(")"),
+			sLog.Critical("Database",
+				"Unable to open sqlite3 database: %s (%d - %s",
 				scorePath.c_str(), r, _database.ErrMsg());
 			return false;
 		}
@@ -51,11 +51,11 @@ bool Database::Init(const path& scorePath)
 	}
 	catch (const Sqlite3NoRowsException& e)
 	{
-		_tprintf(_T("Sqlite3NoRowsException occurred: ") _T(ANSI_FORMAT) _T("\n"), e.what());
+		printf("Sqlite3NoRowsException occurred: %s\n", e.what());
 	}
 	catch (const Sqlite3Exception& e)
 	{
-		_tprintf(_T("Sqlite3Exception occurred: ") _T(ANSI_FORMAT) _T("\n"), e.what());
+		printf("Sqlite3Exception occurred: %s\n", e.what());
 	}
 
 	return false;

@@ -28,9 +28,9 @@ struct SkinEntry
 {
 	path Path;
 	path FileName;
-	tstring Theme;
-	tstring Name;
-	tstring Creator;
+	std::string Theme;
+	std::string Name;
+	std::string Creator;
 	eColor  DefaultColor;
 };
 
@@ -43,16 +43,16 @@ public:
 	void LoadHeader(const path& iniFile);
 	void LoadSkin(SkinEntry * skin, eColor color);
 
-	SkinEntry* LookupSkinForTheme(const tstring& themeName);
-	SkinEntry* LookupSkinForTheme(const tstring& skinName, const tstring& themeName);
-	const path* GetTextureFileName(const tstring& textureName);
-	const path* GetTextureFileName(const TCHAR * fmt, ...);
+	SkinEntry* LookupSkinForTheme(const std::string& themeName);
+	SkinEntry* LookupSkinForTheme(const std::string& skinName, const std::string& themeName);
+	const path* GetTextureFileName(const std::string& textureName);
+	const path* GetTextureFileName(const char * fmt, ...);
 
 	~Skins();
 
 private:
-	typedef std::multimap<tstring, SkinEntry, tstring_ci> SkinEntryMap;
-	typedef std::map<tstring, tstring, tstring_ci> SkinThemeMap;
+	typedef std::multimap<std::string, SkinEntry, string_ci> SkinEntryMap;
+	typedef std::map<std::string, std::string, string_ci> SkinThemeMap;
 
 	SkinEntryMap _skins;
 	SkinThemeMap _skinThemeMap;
@@ -62,7 +62,7 @@ public:
 	path SkinPath;
 	eColor SkinColor;
 
-	typedef std::map<tstring, path, tstring_ci> SkinTextureMap;
+	typedef std::map<std::string, path, string_ci> SkinTextureMap;
 	SkinTextureMap SkinTextures;
 };
 

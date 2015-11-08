@@ -23,14 +23,14 @@
 #include "stdafx.h"
 #include "Platform.h"
 
-bool Platform::TerminateIfAlreadyRunning(const TCHAR * windowTitle)
+bool Platform::TerminateIfAlreadyRunning(const char * windowTitle)
 {
 	return false;
 }
 
-void Platform::ShowMessage(const TCHAR * message, MessageType messageType)
+void Platform::ShowMessage(const char * message, MessageType messageType)
 {
-	_tprintf(_T("%s\n"), message);
+	printf("%s\n", message);
 }
 
 void Platform::DetectLocalExecution()
@@ -50,7 +50,7 @@ void Platform::GetUserHomeDir(path * outPath)
 	struct passwd *pw = getpwuid(uid);
  
 	if (pw == NULL)
-		throw CriticalException(_T("Failed to identify user's home directory."));
+		throw CriticalException("Failed to identify user's home directory.");
 
 	*outPath = pw->pw_dir;
 }
@@ -58,7 +58,7 @@ void Platform::GetUserHomeDir(path * outPath)
 void Platform::GetLogPath(path * outPath)
 {
 	GetUserHomeDir(outPath);
-	*outPath /= _T("Library/Logs/UltraStar Deluxe");
+	*outPath /= "Library/Logs/UltraStar Deluxe";
 }
 
 void Platform::GetGameSharedPath(path * outPath)
@@ -81,7 +81,7 @@ void Platform::GetGameUserPath(path * outPath)
 void Platform::GetMusicPath(path * outPath)
 {
 	GetUserHomeDir(outPath);
-	*outPath /= _T("Music/UltraStar Deluxe");
+	*outPath /= "Music/UltraStar Deluxe";
 }
 
 bool Platform::IsPathReadonly(const path * requestedPath)

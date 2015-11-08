@@ -71,19 +71,11 @@ bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 	uint16 modState = SDL_GetModState()
 		& (KMOD_SHIFT | KMOD_CTRL | KMOD_ALT);
 
-	// TODO: Append name text to the selected button
-	// This needs to be handled differently because of SDL2
-	// if (IsPrintableChar(charCode))
-	// {
-	//	Buttons[SelInteraction].Texts[0].Text += (tstring) charCode;
-	//	return true;
-	// }
-
 	MenuButton& selectedButton = Buttons[SelInteraction];
 	if (pressedKey >= SDLK_F1 && pressedKey <= SDLK_F12)
 	{
 		size_t index = pressedKey - SDLK_F1;
-		tstring buttonText = selectedButton.Texts[0].GetText();
+		std::string buttonText = selectedButton.Texts[0].GetText();
 		if (modState & KMOD_ALT)
 			sIni.NameTemplate[index] = buttonText;
 		else
@@ -140,6 +132,26 @@ bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 
 	return true;
 }
+
+bool ScreenName::ParseTextInput(Uint32 inputType, SDL_Event * event)
+{
+	// TODO: Append name text to the selected button
+	// This needs to be handled differently because of SDL2
+	// if (IsPrintableChar(charCode))
+	// {
+	//	Buttons[SelInteraction].Texts[0].Text += (std::string) charCode;
+	//	return true;
+	// }
+
+	if (inputType == SDL_TEXTINPUT)
+	{
+		auto& menuText = Buttons[SelInteraction].Texts[0];
+		menuText.SetText(menuText.GetText() + event->text.text);
+	}
+
+	return true;
+}
+
 
 void ScreenName::SetAnimationProgress(float progress)
 {

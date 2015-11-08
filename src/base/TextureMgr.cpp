@@ -61,7 +61,7 @@ Texture TextureMgr::CreateTexture(
 #endif
 
 	tex.TexNum = ActTex;
-	tex.Name = texturePath->native();
+	tex.Name = texturePath->generic_string();
 	tex.Alpha = 1.0f;
 
 	return tex;
@@ -105,7 +105,7 @@ Texture TextureMgr::GetTexture(
 		return tex;
 	}
 
-	tex.Name = texturePath->native(); /* hack */
+	tex.Name = texturePath->generic_string(); /* hack */
 	textureIndex = FindTexture(tex, textureType, color);
 
 	/* Pull thumbnail/cache texture */
@@ -145,8 +145,8 @@ Texture TextureMgr::LoadTexture(
 	SDL_Surface * texSurface = LoadSurfaceFromFile(*texturePath);
 	if (texSurface == NULL)
 	{
-		sLog.Error(_T("TextureMgr::LoadTexture"), _T("Could not load texture '%s' with type '%s'"),
-			texturePath->native().c_str(), Enum2String(textureType).c_str());
+		sLog.Error("TextureMgr::LoadTexture", "Could not load texture '%s' with type '%s'",
+			texturePath->generic_string().c_str(), Enum2String(textureType).c_str());
 		return tex;
 	}
 
@@ -222,7 +222,7 @@ Texture TextureMgr::LoadTexture(
 	tex.TexNum = ActTex;
 	tex.TexW = (tex.W / newWidth);
 	tex.TexH = (tex.H / newHeight);
-	tex.Name = texturePath->native();
+	tex.Name = texturePath->generic_string();
 	tex.Alpha = 1.0f;
 
 	UnloadSurface(texSurface);
@@ -238,7 +238,7 @@ int TextureMgr::FindTexture(
 		TextureEntry& currentTex = (*itr);
 		if (currentTex.Type == textureType
 			&& !currentTex.Name.empty()
-			&& currentTex.Name.native() == tex.Name
+			&& currentTex.Name.generic_string() == tex.Name
 			// Colorized textures must match in their color
 			&& (currentTex.Type != TextureType::Colorized || currentTex.Color == color))
 			return index;
@@ -252,7 +252,7 @@ void TextureMgr::UnloadTexture(
 	uint32 color /*= 0*/, bool fromCache /*= false*/)
 {
 	Texture lookupTex;
-	lookupTex.Name = texturePath->native(); // hack
+	lookupTex.Name = texturePath->generic_string(); // hack
 	int textureNo = FindTexture(lookupTex, textureType, color);
 	if (textureNo <= 0)
 		return;

@@ -49,7 +49,7 @@ struct RGB
 {
 	float R, G, B;
 
-	void Load(const TCHAR * source);
+	void Load(const char * source);
 	void Sqrt(const RGB& rhs);
 
 	void Set(uint8 r, uint8 g, uint8 b);

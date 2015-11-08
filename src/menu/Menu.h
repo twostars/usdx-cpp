@@ -126,11 +126,11 @@ public:
 
 	// Text
 	int AddText(const ThemeText& themeText);
-	int AddText(float x, float y, const tstring& text);
+	int AddText(float x, float y, const std::string& text);
 	int AddText(float x, float y, uint32 style, float size, 
-		const RGB& colRGB, const tstring& text);
+		const RGB& colRGB, const std::string& text);
 	int AddText(float x, float y, float w, uint32 style, float size, 
-		const RGB& colRGB, int align, const tstring& text,
+		const RGB& colRGB, int align, const std::string& text,
 		bool reflection, float reflectionSpacing, float z);
 
 	// Button
@@ -149,18 +149,18 @@ public:
 		float reflectionSpacing = 0.0f,
 		float deselectReflectionSpacing = 0.0f);
 	void ClearButtons();
-	void AddButtonText(float addX, float addY, const tstring& addText);
+	void AddButtonText(float addX, float addY, const std::string& addText);
 	void AddButtonText(float addX, float addY, const RGB& colRGB, 
-		const tstring& addText);
+		const std::string& addText);
 	void AddButtonText(float addX, float addY, const RGB& colRGB, 
-		int font, int size, int align, const tstring& addText);
+		int font, int size, int align, const std::string& addText);
 	void AddButtonText(MenuButton& button, 
 		float addX, float addY, const RGB& colRGB, 
-		int font, int size, int align, const tstring& addText);
+		int font, int size, int align, const std::string& addText);
 
 	// Select slide
 	int AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, uint32 * pData, 
-		const tstring* values, size_t valueCount);
+		const std::string* values, size_t valueCount);
 	int AddSelectSlide(float x, float y, float w, float h, float skipX, float sbgw,
 		const RGB& colRGB,     float intensity,
 		const RGB& dColRGB,    float dIntensity,
@@ -174,23 +174,24 @@ public:
 		eTextureType textureType,
 		const path* sbgFilename,
 		eTextureType sbgTextureType,
-		const tstring& caption, uint32 * pData);
-	void AddSelectSlideOption(const tstring& addText);
-	void AddSelectSlideOption(uint32 selectNum, const tstring& addText);
+		const std::string& caption, uint32 * pData);
+	void AddSelectSlideOption(const std::string& addText);
+	void AddSelectSlideOption(uint32 selectNum, const std::string& addText);
 	void UpdateSelectSlideOptions(const ThemeSelectSlide& themeSelectSlide, uint32 selectNo, 
-		const std::vector<tstring>& values, int data);
+		const std::vector<std::string>& values, int data);
 
 	void FadeTo(Menu* screen);
 	void FadeTo(Menu* screen, /*AudioPlaybackStream*/void * playbackStream); // TODO
 
 	// Popup hack
-	void CheckFadeTo(Menu* screen, const TCHAR * message);
+	void CheckFadeTo(Menu* screen, const char * message);
 	static void CheckFadeToCallback(bool value);
 
 	virtual void DrawBG();
 	virtual void DrawFG();
 	virtual void Draw();
 	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual bool ParseTextInput(Uint32 inputType, SDL_Event * event);
 	virtual bool ParseMouse(int mouseButton, bool btnDown, float x, float y);
 	bool InRegion(float x, float y, const MouseOverRect& rect);
 	int InteractAt(float x, float y);

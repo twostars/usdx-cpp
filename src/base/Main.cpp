@@ -47,6 +47,7 @@
 void CheckEvents(float & mouseX, float & mouseY);
 void OnKeyDownEvent(SDL_Keycode keyCode);
 void OnMouseEvent(int mouseBtn, bool mouseDown, float mouseX, float mouseY);
+void OnTextInputEvent(Uint32 inputType, SDL_Event * event);
 void DoQuit();
 
 /* globals */
@@ -58,11 +59,11 @@ CMDParams Params;
 
 const int MAINTHREAD_EXEC_EVENT = SDL_USEREVENT + 2;
 
-int usdxMain(int argc, TCHAR ** argv)
+int usdxMain(int argc, char ** argv)
 {
 	try
 	{
-		const TCHAR * windowTitle = USDXVersionStr();
+		const char * windowTitle = USDXVersionStr();
 
 		if (Platform::TerminateIfAlreadyRunning(windowTitle))
 			return 1;
@@ -73,6 +74,8 @@ int usdxMain(int argc, TCHAR ** argv)
 		// initialize SDL
 		// without SDL_INIT_TIMER SDL_GetTicks() might return strange values
 		SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
+
+		SDL_StartTextInput();
 
 		// create LuaCore first so other classes can register their events
 		new LuaCore();
@@ -89,33 +92,33 @@ int usdxMain(int argc, TCHAR ** argv)
 
 		// Language
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Initialize Paths"), _T("Initialization"));
+		sLog.Status("Initialize Paths", "Initialization");
 		InitializePaths();
-		sLog.Status(_T("Load Language"), _T("Initialization"));
+		sLog.Status("Load Language", "Initialization");
 		new Language();
 
 		// Add const values
-		sLanguage.AddConst(_T("US_VERSION"), USDXVersionStr());
+		sLanguage.AddConst("US_VERSION", USDXVersionStr());
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading Language"));
+		sLog.Benchmark(1, "Loading Language");
 
 		// Skins
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Loading Skin List"), _T("Initialization"));
+		sLog.Status("Loading Skin List", "Initialization");
 		new Skins();
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading Skin List"));
+		sLog.Benchmark(1, "Loading Skin List");
 
 		// Themes
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Loading Theme List"), _T("Initialization"));
+		sLog.Status("Loading Theme List", "Initialization");
 		new Themes();
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading Theme List"));
+		sLog.Benchmark(1, "Loading Theme List");
 
 		// INI file
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Loading INI"), _T("Initialization"));
+		sLog.Status("Loading INI", "Initialization");
 		new Ini();
 		sIni.Load();
 
@@ -127,122 +130,122 @@ int usdxMain(int argc, TCHAR ** argv)
 			sLanguage.ChangeLanguage(sIni.LanguageName);
 		
 		// It is possible that this is the first run, so create an .ini file if necessary.
-		sLog.Status(_T("Writing INI"), _T("Initialization"));
+		sLog.Status("Writing INI", "Initialization");
 		sIni.Save();
 
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading INI"));
+		sLog.Benchmark(1, "Loading INI");
 
 		// Sound
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Initialize Sound"), _T("Initialization"));
+		sLog.Status("Initialize Sound", "Initialization");
 		InitializeSound(); // TODO
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Initializing Sound"));
+		sLog.Benchmark(1, "Initializing Sound");
 
 		// Lyrics engine with media reference timer
 		// new LyricsState();
 		
 		// Theme
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Load Theme"), _T("Initialization"));
+		sLog.Status("Load Theme", "Initialization");
 		sThemes.LoadTheme(sIni.Theme, sIni.ThemeColor);
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading Theme"));
+		sLog.Benchmark(1, "Loading Theme");
 
 		// Covers cache
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Creating Covers cache"), _T("Initialization"));
+		sLog.Status("Creating Covers cache", "Initialization");
 		// new Covers();
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading Covers cache"));
+		sLog.Benchmark(1, "Loading Covers cache");
 
 		// Category covers
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Creating Category Covers array"), _T("Initialization"));
+		sLog.Status("Creating Category Covers array", "Initialization");
 		// new CatCovers();
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading Category Covers array"));
+		sLog.Benchmark(1, "Loading Category Covers array");
 
 		// Songs
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Creating song array"), _T("Initialization"));
+		sLog.Status("Creating song array", "Initialization");
 		// new Songs();
-		sLog.Status(_T("Creating 2nd song array"), _T("Initialization"));
+		sLog.Status("Creating 2nd song array", "Initialization");
 		// new CatSongs();
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading songs"));
+		sLog.Benchmark(1, "Loading songs");
 
 		// Graphics
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Initialize 3D"), _T("Initialization"));
+		sLog.Status("Initialize 3D", "Initialization");
 		Initialize3D(windowTitle);
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Initializing 3D"));
+		sLog.Benchmark(1, "Initializing 3D");
 
 		// Score saving
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Loading database"), _T("Initialization"));
+		sLog.Status("Loading database", "Initialization");
 		new Database();
 		if (ScoreFile.empty())
 		{
 			Platform::GetGameUserPath(&ScoreFile);
-			ScoreFile /= _T("Ultrastar.db");
+			ScoreFile /= "Ultrastar.db";
 		}
 		sDatabase.Init(ScoreFile);
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading database"));
+		sLog.Benchmark(1, "Loading database");
 
 		// Playlist manager
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Playlist manager"), _T("Initialization"));
+		sLog.Status("Playlist manager", "Initialization");
 		// new PlaylistManager();
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading playlist manager"));
+		sLog.Benchmark(1, "Loading playlist manager");
 
 		// Effect manager (for the twinkling golden stars and such)
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Effect manager"), _T("Initialization"));
+		sLog.Status("Effect manager", "Initialization");
 		// new EffectManager();
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading effect manager"));
+		sLog.Benchmark(1, "Loading effect manager");
 
 		// Joypad
 		if (sIni.Joypad || Params.Joypad)
 		{
 			sLog.BenchmarkStart(1);
-			sLog.Status(_T("Joystick"), _T("Initialization"));
+			sLog.Status("Joystick", "Initialization");
 			// new Joystick();
 			sLog.BenchmarkEnd(1);
-			sLog.Benchmark(1, _T("Loading joystick"));
+			sLog.Benchmark(1, "Loading joystick");
 		}
 
 		// Party manager
 		sLog.BenchmarkStart(1);
-		sLog.Status(_T("Party manager"), _T("Initialization"));
+		sLog.Status("Party manager", "Initialization");
 		// new PartyGame();
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading party manager"));
+		sLog.Benchmark(1, "Loading party manager");
 
 		// Lua
 		sLog.BenchmarkStart(1);
-		// sLuaCore.RegisterModule(_T("Log"),        LuaLog_Lib_f);
-		// sLuaCore.RegisterModule(_T("Gl"),         LuaGl_Lib_f);
-		// sLuaCore.RegisterModule(_T("TextGl"),     LuaTextGl_Lib_f);
-		// sLuaCore.RegisterModule(_T("Party"),      LuaParty_Lib_f);
-		// sLuaCore.RegisterModule(_T("ScreenSing"), LuaScreenSing_Lib_f);
+		// sLuaCore.RegisterModule("Log",        LuaLog_Lib_f);
+		// sLuaCore.RegisterModule("Gl",         LuaGl_Lib_f);
+		// sLuaCore.RegisterModule("TextGl",     LuaTextGl_Lib_f);
+		// sLuaCore.RegisterModule("Party",      LuaParty_Lib_f);
+		// sLuaCore.RegisterModule("ScreenSing", LuaScreenSing_Lib_f);
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Initializing LuaCore"));
+		sLog.Benchmark(1, "Initializing LuaCore");
 
 		// Lua plugins
 		sLog.BenchmarkStart(1);
 		sLuaCore.LoadPlugins();
 		sLog.BenchmarkEnd(1);
-		sLog.Benchmark(1, _T("Loading Lua plugins"));
+		sLog.Benchmark(1, "Loading Lua plugins");
 		sLuaCore.DumpPlugins();
 
 		sLog.BenchmarkEnd(0);
-		sLog.Benchmark(0, _T("Loading time"));
+		sLog.Benchmark(0, "Loading time");
 
 		// Prepare software cursor
 		sDisplay.SetCursor();
@@ -255,26 +258,26 @@ int usdxMain(int argc, TCHAR ** argv)
 		int badPlayer = AudioInputProcessor::ValidateSettings();
 		if (badPlayer >= 0)
 		{
-			ScreenPopupError::ShowPopup(sLanguage.TranslateFormat(_T("ERROR_PLAYER_DEVICE_ASSIGNMENT"), BadPlayer + 1);
+			ScreenPopupError::ShowPopup(__TFormat("ERROR_PLAYER_DEVICE_ASSIGNMENT", BadPlayer + 1);
 			sDisplay.CurrentScreen->FadeTo(&ScreenOptionsRecord);
 		}
 		*/
 
 		// Start main loop
-		sLog.Status(_T("Main loop"), _T("Initialization"));
+		sLog.Status("Main loop", "Initialization");
 		usdxMainLoop();
 	}
 	catch (const CriticalException& e)
 	{
-		_tprintf(_T("Critical exception occurred: %s\n"), e.twhat());
+		printf("Critical exception occurred: %s\n", e.what());
 	}
 	catch (const std::exception& e)
 	{
-		_tprintf(_T("Unhandled exception occurred: ") _T(ANSI_FORMAT) _T("\n"), e.what());
+		printf("Unhandled exception occurred: %s\n", e.what());
 	}
 	catch (...)
 	{
-		_tprintf(_T("Unhandled exception occurred.\n"));
+		printf("Unhandled exception occurred.\n");
 	}
 
 	FreeGfxResources();
@@ -297,6 +300,7 @@ int usdxMain(int argc, TCHAR ** argv)
 	delete Log::getSingletonPtr();
 	delete LuaCore::getSingletonPtr();
 
+	SDL_StopTextInput();
 	SDL_Quit();
 
 	return 0;
@@ -423,6 +427,11 @@ void CheckEvents(float & mouseX, float & mouseY)
 		case SDL_JOYBUTTONDOWN:
 			break;
 
+		case SDL_TEXTINPUT:
+		case SDL_TEXTEDITING:
+			sDisplay.ParseTextInput(event.type, &event);
+			break;
+
 		case MAINTHREAD_EXEC_EVENT:
 			break;
 		}
@@ -471,7 +480,22 @@ void OnMouseEvent(int mouseBtn, bool mouseDown, float mouseX, float mouseY)
 		UIPopupInfo->ParseMouse(mouseBtn, mouseDown, mouseX, mouseY);
 	else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
 		UIPopupCheck->ParseMouse(mouseBtn, mouseDown, mouseX, mouseY);
-	else if (!sDisplay.CurrentScreen->ParseMouse(mouseBtn, mouseDown, mouseX, mouseY))
+	else if (!sDisplay.ParseMouse(mouseBtn, mouseDown, mouseX, mouseY))
+		DoQuit();
+}
+
+void OnTextInputEvent(Uint32 inputType, SDL_Event * event)
+{
+	// If there is a visible popup then let it handle input instead of the underlying screen
+	// should be done in a way to be sure the topmost popup has preference (maybe error, then check)
+	if (UIPopupError != NULL && UIPopupError->Visible)
+		UIPopupError->ParseTextInput(inputType, event);
+	else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
+		UIPopupInfo->ParseTextInput(inputType, event);
+	else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
+		UIPopupCheck->ParseTextInput(inputType, event);
+	// if screen wants to exit
+	else if (!sDisplay.ParseTextInput(inputType, event))
 		DoQuit();
 }
 
@@ -480,7 +504,7 @@ void DoQuit()
 	// If question option is enabled then show exit popup
 	if (sIni.AskBeforeDel)
 	{
-		sDisplay.CurrentScreen->CheckFadeTo(NULL, _T("MSG_QUIT_USDX"));
+		sDisplay.CurrentScreen->CheckFadeTo(NULL, "MSG_QUIT_USDX");
 		return;
 	}
 

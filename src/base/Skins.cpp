@@ -52,8 +52,8 @@ void Skins::LoadList()
 		{
 			const path& p = itr->path();
 			if (!is_directory(p)
-				|| p.filename() == _T(".")
-				|| p.filename() == _T(".."))
+				|| p.filename() == "."
+				|| p.filename() == "..")
 				continue;
 
 			ParseDir(p);
@@ -61,7 +61,7 @@ void Skins::LoadList()
 	}
 	catch (filesystem_error)
 	{
-		sLog.Critical(_T("Skins::LoadList"), _T("Could not access themes directory %s."), 
+		sLog.Critical("Skins::LoadList", "Could not access themes directory %s.", 
 			ThemePath.native().c_str());
 	}
 }
@@ -74,7 +74,7 @@ void Skins::ParseDir(const path& dir)
 		const path& p = itr->path();
 		if (is_directory(p)
 			|| !p.has_extension()
-			|| p.extension() != _T(".ini"))
+			|| p.extension() != ".ini")
 			continue;
 
 		LoadHeader(p);
@@ -83,33 +83,33 @@ void Skins::ParseDir(const path& dir)
 
 void Skins::LoadHeader(const path& iniFile)
 {
-	CSimpleIni ini(true);
+	CSimpleIniA ini(true);
 	SI_Error result = ini.LoadFile(iniFile.native().c_str());
 	if (result != SI_OK)
 	{
-		return sLog.Warn(_T("Skins::LoadHeader"), _T("Failed to load INI (%s)."), 
+		return sLog.Warn("Skins::LoadHeader", "Failed to load INI (%s).", 
 			iniFile.native().c_str());
 	}
 
 	SkinEntry skin;
-	const TCHAR * creator;
+	const char * creator;
 
 	skin.Path			= iniFile.branch_path();
 	skin.FileName		= iniFile;
-	skin.Theme			= ini.GetValue(_T("Skin"), _T("Theme"), _T(""));
-	skin.Name			= ini.GetValue(_T("Skin"), _T("Name"), _T(""));
+	skin.Theme			= ini.GetValue("Skin", "Theme", "");
+	skin.Name			= ini.GetValue("Skin", "Name", "");
 
 	// Attempt to lookup skin's creator.
 	// NOTE: Current USDX loads "Creator", but older skins use "Author".
 	// Attempt to fallback to "Author" if "Creator" isn't found.
-	creator				= ini.GetValue(_T("Skin"), _T("Creator"));
+	creator				= ini.GetValue("Skin", "Creator");
 	if (creator == NULL)
-		creator			= ini.GetValue(_T("Skin"), _T("Author"), _T(""));
+		creator			= ini.GetValue("Skin", "Author", "");
 
 	skin.Creator		= creator;
 
 	// Parse color names (stored as, for example, "Blue")
-	skin.DefaultColor	= LOOKUP_ENUM_VALUE(Color, _T("Skin"), _T("Color"), Color::Blue);
+	skin.DefaultColor	= LOOKUP_ENUM_VALUE(Color, "Skin", "Color", Color::Blue);
 
 	_skins.insert(std::make_pair(skin.Name, skin));
 	if (!skin.Theme.empty())
@@ -118,29 +118,29 @@ void Skins::LoadHeader(const path& iniFile)
 
 void Skins::LoadSkin(SkinEntry * skin, eColor color)
 {
-	CSimpleIni ini(true);
+	CSimpleIniA ini(true);
 
 	SI_Error result = ini.LoadFile(skin->FileName.native().c_str());
 	if (result != SI_OK)
 	{
-		return sLog.Warn(_T("Skins::LoadSkin"), _T("Failed to load INI (%s)."), 
+		return sLog.Warn("Skins::LoadSkin", "Failed to load INI (%s).", 
 			skin->FileName.c_str());
 	}
 
-	const TCHAR * section = _T("Textures");
+	const char * section = "Textures";
 	
 	SkinColor = color;
 	SkinPath = skin->Path;
 
-	const CSimpleIni::TKeyVal * sectionKeys = ini.GetSection(section);
+	const CSimpleIniA::TKeyVal * sectionKeys = ini.GetSection(section);
 	if (sectionKeys == NULL)
 		return;
 
-	for (CSimpleIni::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
+	for (CSimpleIniA::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
 		SkinTextures.insert(std::make_pair(itr->first.pItem, SkinPath / path(itr->second)));
 }
 
-SkinEntry* Skins::LookupSkinForTheme(const tstring& themeName)
+SkinEntry* Skins::LookupSkinForTheme(const std::string& themeName)
 {
 	SkinThemeMap::const_iterator itr = _skinThemeMap.find(themeName);
 	if (itr == _skinThemeMap.end())
@@ -149,7 +149,7 @@ SkinEntry* Skins::LookupSkinForTheme(const tstring& themeName)
 	return LookupSkinForTheme(itr->second, themeName);
 }
 
-SkinEntry* Skins::LookupSkinForTheme(const tstring& skinName, const tstring& themeName)
+SkinEntry* Skins::LookupSkinForTheme(const std::string& skinName, const std::string& themeName)
 {
 	std::pair<SkinEntryMap::iterator, SkinEntryMap::iterator> range
 		= _skins.equal_range(skinName);
@@ -163,19 +163,19 @@ SkinEntry* Skins::LookupSkinForTheme(const tstring& skinName, const tstring& the
 	return NULL;
 }
 
-const path* Skins::GetTextureFileName(const tstring& textureName)
+const path* Skins::GetTextureFileName(const std::string& textureName)
 {
 	SkinTextureMap::const_iterator itr = SkinTextures.find(textureName);
 	return (itr == SkinTextures.end() ? NULL : &itr->second);
 }
 
-const path* Skins::GetTextureFileName(const TCHAR * fmt, ...)
+const path* Skins::GetTextureFileName(const char * fmt, ...)
 {
-	TCHAR buffer[1024];
-	tstring filename;
+	char buffer[1024];
+	std::string filename;
 	va_list args;
 	va_start(args, fmt);
-	_vsntprintf(buffer, 1024, fmt, args);
+	vsnprintf(buffer, 1024, fmt, args);
 	va_end(args);
 
 	filename = buffer;

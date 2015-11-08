@@ -49,13 +49,29 @@ path ScreenshotsPath;
 PathSet SongPaths;
 PathSet CoverPaths;
 
-INLINE const TCHAR * GetPath(path& path) { return path.native().c_str(); }
+INLINE std::string GetPath(path& path) {
+	return path.generic_string();
+}
 
-const TCHAR * GetConfigFile()  { return GetPath(ConfigFile); }
-const TCHAR * GetScoreFile()   { return GetPath(ScoreFile); }
+std::string GetConfigFile() {
+	return GetPath(ConfigFile);
+}
 
-void AddSongPath(path& path) { if (!path.empty()) SongPaths.insert(path); }
-void AddCoverPath(path& path) { if (!path.empty()) CoverPaths.insert(path); }
+std::string GetScoreFile() {
+	return GetPath(ScoreFile);
+}
+
+void AddSongPath(path& path)
+{
+	if (!path.empty())
+		SongPaths.insert(path);
+}
+
+void AddCoverPath(path& path)
+{
+	if (!path.empty())
+		CoverPaths.insert(path);
+}
 
 bool FindPath(path& resultPath, const path& requestedPath, bool needsWritePermission)
 {
@@ -86,7 +102,7 @@ void InitializePaths()
 	{
 		Params.NoLog = true;
 
-		sLog.Warn(_T("InitializePaths"), _T("Log directory (%s) is not available."), 
+		sLog.Warn("InitializePaths", "Log directory (%s) is not available.", 
 			LogPath.native().c_str());
 	}
 
@@ -107,7 +123,7 @@ void InitializePaths()
 	// Screenshot directory (must be writable)
 	if (!FindPath(ScreenshotsPath, UserPath / SCREENSHOT_DIR, true))
 	{
-		sLog.Warn(_T("InitializePaths"), _T("Screenshot directory (%s) is not available."),
+		sLog.Warn("InitializePaths", "Screenshot directory (%s) is not available.",
 			ScreenshotsPath.native().c_str());
 	}
 

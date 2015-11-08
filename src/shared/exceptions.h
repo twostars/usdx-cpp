@@ -31,20 +31,20 @@ public:
 	{
 	}
 
-	void SetMessage(const TCHAR * format, va_list args)
+	void SetMessage(const char * format, va_list args)
 	{
-		TCHAR buffer[1024];
-		_vsntprintf(buffer, 1024, format, args);
+		char buffer[1024];
+		_vsnprintf(buffer, 1024, format, args);
 		_message = buffer;
 	}
 
-	const TCHAR * twhat() const
+	const char * what() const
 	{
 		return _message.c_str();
 	}
 
 private:
-	tstring _message;
+	std::string _message;
 };
 
 
@@ -52,7 +52,7 @@ private:
 class name : public base \
 { \
 public: \
-	name(const TCHAR * format, ...) : base() \
+	name(const char * format, ...) : base() \
 	{ \
 		va_list args; \
 		va_start(args, format); \

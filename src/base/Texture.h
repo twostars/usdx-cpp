@@ -40,7 +40,7 @@ public:
 	float  TexX1, TexY1;
 	float  TexX2, TexY2;
 	float  Alpha;
-	tstring Name; // experimental for handling cache images. maybe it's useful for dynamic skins
+	std::string Name; // experimental for handling cache images. maybe it's useful for dynamic skins
 
 	Texture()
 	{

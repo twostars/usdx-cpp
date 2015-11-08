@@ -56,10 +56,10 @@ RGB GetSystemColor(eColor color)
 
 // Load RGB in "n n n" format
 // e.g. 255 255 255
-void RGB::Load(const TCHAR * source)
+void RGB::Load(const char * source)
 {
 	uint32 r, g, b;
-	_stscanf(source, _T("%u %u %u"), &r, &g, &b);
+	sscanf(source, "%u %u %u", &r, &g, &b);
 	Set((uint8) r, (uint8) g, (uint8) b);
 }
 

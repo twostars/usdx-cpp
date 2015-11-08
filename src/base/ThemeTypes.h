@@ -30,16 +30,16 @@ struct ThemeBackground
 {
 	eBackgroundType BGType;
 	RGB Color;
-	tstring Tex;
+	std::string Tex;
 	float Alpha;
 };
 
 // Default background for screens without a theme
 const ThemeBackground DEFAULT_BACKGROUND =
 {
-	/* BGType: */ BackgroundType::Color, 
-	/* Color : */ { 1.0f, 1.0f, 1.0f }, 
-	/* Tex   : */ _T(""), 
+	/* BGType: */ BackgroundType::Color,
+	/* Color : */ { 1.0f, 1.0f, 1.0f },
+	/* Tex   : */ "",
 	/* Alpha : */ 1.0f
 };
 
@@ -48,9 +48,9 @@ struct ThemeStatic
 	int X, Y;
 	float Z;
 	int W, H;
-	tstring Color;
+	std::string Color;
 	RGB ColRGB;
-	tstring Tex;
+	std::string Tex;
 	eTextureType Type;
 	float TexX1, TexY1;
 	float TexX2, TexY2;
@@ -66,12 +66,12 @@ struct ThemeText
 {
 	int X, Y, W;
 	float Z;
-	tstring Color;
+	std::string Color;
 	RGB ColRGB;
 	int Font;
 	int Size;
 	int Align;
-	tstring Text;
+	std::string Text;
 
 	// Reflection
 	bool Reflection;
@@ -86,13 +86,13 @@ struct ThemeButton
 	int X, Y;
 	float Z;
 	int W, H;
-	tstring Color;
+	std::string Color;
 	RGB ColRGB;
 	float Int; // intensity
-	tstring DColor;
+	std::string DColor;
 	RGB DColRGB;
 	float DInt; // intensity
-	tstring Tex;
+	std::string Tex;
 	eTextureType Type;
 
 	bool Visible;
@@ -106,7 +106,7 @@ struct ThemeButton
 	bool Fade;
 	bool FadeText;
 	float DeselectReflectionSpacing;
-	tstring FadeTex;
+	std::string FadeTex;
 	int FadeTexPos;
 
 	// Button collection
@@ -124,9 +124,9 @@ typedef std::vector<ThemeButtonCollection> AThemeButtonCollection;
 
 struct ThemeSelectSlide
 {
-	tstring Tex;
+	std::string Tex;
 	eTextureType Type;
-	tstring TexSBG;
+	std::string TexSBG;
 	eTextureType TypeSBG;
 	int X, Y, W, H;
 	float Z;
@@ -136,7 +136,7 @@ struct ThemeSelectSlide
 	bool ShowArrows;
 	bool OneItemOnly;
 
-	tstring Text;
+	std::string Text;
 
 	RGB ColRGB;
 	float Int; // intensity

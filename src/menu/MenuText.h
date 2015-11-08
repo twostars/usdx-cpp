@@ -29,7 +29,7 @@ class MenuText
 private:
 	struct ParseData
 	{
-		tsize_type			NextPos,	// next pos of a space etc
+		size_t				NextPos,	// next pos of a space etc
 							LastPos,	// last pos "
 							LastBreak,	// pos of last break
 							FirstWord;	// is first word after break?
@@ -39,31 +39,33 @@ private:
 
 public:
 	MenuText();
-	MenuText(float x, float y, const tstring& text);
+	MenuText(float x, float y, const std::string& text);
 	MenuText(float x, float y, float w, uint32 style, 
-		float size, const RGB& rgb, int align, const tstring& text, 
+		float size, const RGB& rgb, int align, const std::string& text, 
 		bool reflection, float reflectionSpacing, 
 		float z);
 
 	void Create(float x, float y, float w, uint32 style,
-				float size, const RGB& rgb, int align, const tstring& text,
+				float size, const RGB& rgb, int align, const std::string& text,
 				bool reflection, float reflectionSpacing,
 				float z);
 
 	void EnableBlinkingCursor();
 	void SetSelected(bool value);
-	void SetText(const tstring& text);
+	void SetText(const std::string& text);
 
 private:
 	bool GetNextPos(ParseData& data);
-	void AddBreak(ParseData& data, tsize_type from, tsize_type to);
+	void AddBreak(ParseData& data, size_t from, size_t to);
 
 public:
 	void DeleteLastLetter();
 	void Draw();
 
 	INLINE bool IsSelected() { return Selected; }
-	INLINE const tstring& GetText() { return TextString; }
+	INLINE const std::string& GetText() const {
+		return TextString;
+	}
 
 	float X, Y, Z;
 	float MoveX, MoveY; // modifier for position that doesn't affect the real coordinate
@@ -81,10 +83,10 @@ public:
 
 protected:
 	bool Selected;
-	tstring TextString;
+	std::string TextString;
 
 public:
-	std::vector<tstring> TextTiles;
+	std::vector<std::string> TextTiles;
 
 	uint32 STicks;
 	bool SelectBlink;

@@ -37,21 +37,21 @@ MenuBackgroundTexture::MenuBackgroundTexture(const ThemeBackground* themedSettin
 	if (themedSettings->Tex.empty())
 	{
 		if (!isOptionalTexture)
-			throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): No texture name present."));
+			throw MenuBackgroundException("MenuBackgroundTexture::MenuBackgroundTexture(): No texture name present.");
 	}
 	else
 	{
 		texFilename = sSkins.GetTextureFileName(themedSettings->Tex);
 		if (texFilename == NULL)
 		{
-			throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not found."), 
+			throw MenuBackgroundException("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not found.", 
 				themedSettings->Tex.c_str());
 		}
 
 		Tex = sTextureMgr.GetTexture(texFilename, TextureType::Plain);
 		if (Tex.TexNum == 0)
-			throw MenuBackgroundException(_T("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not loaded."),
-			texFilename->native().c_str());
+			throw MenuBackgroundException("MenuBackgroundTexture::MenuBackgroundTexture(): Texture (%s) not loaded.",
+			texFilename->generic_string().c_str());
 	}
 }
 

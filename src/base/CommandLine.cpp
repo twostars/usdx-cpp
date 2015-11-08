@@ -43,41 +43,41 @@ enum
 	OPT_SONGPATH, OPT_CONFIGFILE, OPT_SCOREFILE
 };
 
-CSimpleOpt::SOption g_rgOptions[] =
+CSimpleOptA::SOption g_rgOptions[] =
 {
-	{ OPT_HELP,			_T("-?"),			SO_NONE },
-	{ OPT_HELP,			_T("-h"),			SO_NONE },
-	{ OPT_HELP,			_T("-help"),		SO_NONE },
-	{ OPT_HELP,			_T("--help"),		SO_NONE },
-	{ OPT_DEBUG,		_T("-d"),			SO_NONE },
-	{ OPT_DEBUG,		_T("-debug"),		SO_NONE },
-	{ OPT_DEBUG,		_T("--debug"),		SO_NONE },
-	{ OPT_BENCHMARK,	_T("-benchmark"),	SO_NONE },
-	{ OPT_BENCHMARK,	_T("--benchmark"),	SO_NONE },
-	{ OPT_NOLOG,		_T("-nolog"),		SO_NONE },
-	{ OPT_NOLOG,		_T("--nolog"),		SO_NONE },
-	{ OPT_FULLSCREEN,	_T("-fullscreen"),	SO_NONE },
-	{ OPT_FULLSCREEN,	_T("--fullscreen"),	SO_NONE },
-	{ OPT_WINDOWED,		_T("-window"),		SO_NONE }, /* legacy */
-	{ OPT_WINDOWED,		_T("--window"),		SO_NONE }, /* legacy */
-	{ OPT_WINDOWED,		_T("-windowed"),	SO_NONE },
-	{ OPT_WINDOWED,		_T("--windowed"),	SO_NONE },
-	{ OPT_JOYPAD,		_T("-joypad"),		SO_NONE },
-	{ OPT_JOYPAD,		_T("--joypad"),		SO_NONE },
-	{ OPT_DEPTH,		_T("-depth"),		SO_OPT },
-	{ OPT_DEPTH,		_T("--depth"),		SO_OPT },
-	{ OPT_SCREENS,		_T("-screens"),		SO_OPT },
-	{ OPT_SCREENS,		_T("--screens"),	SO_OPT },
-	{ OPT_LANGUAGE,		_T("-language"),	SO_OPT },
-	{ OPT_LANGUAGE,		_T("--language"),	SO_OPT },
-	{ OPT_RESOLUTION,	_T("-resolution"),	SO_OPT },
-	{ OPT_RESOLUTION,	_T("--resolution"),	SO_OPT },
-	{ OPT_SONGPATH,		_T("-songpath"),	SO_OPT },
-	{ OPT_SONGPATH,		_T("--songpath"),	SO_OPT },
-	{ OPT_CONFIGFILE,	_T("-configfile"),	SO_OPT },
-	{ OPT_CONFIGFILE,	_T("--configfile"),	SO_OPT },
-	{ OPT_SCOREFILE,	_T("-scorefile"),	SO_OPT },
-	{ OPT_SCOREFILE,	_T("--scorefile"),	SO_OPT },
+	{ OPT_HELP,			"-?",			SO_NONE },
+	{ OPT_HELP,			"-h",			SO_NONE },
+	{ OPT_HELP,			"-help",		SO_NONE },
+	{ OPT_HELP,			"--help",		SO_NONE },
+	{ OPT_DEBUG,		"-d",			SO_NONE },
+	{ OPT_DEBUG,		"-debug",		SO_NONE },
+	{ OPT_DEBUG,		"--debug",		SO_NONE },
+	{ OPT_BENCHMARK,	"-benchmark",	SO_NONE },
+	{ OPT_BENCHMARK,	"--benchmark",	SO_NONE },
+	{ OPT_NOLOG,		"-nolog",		SO_NONE },
+	{ OPT_NOLOG,		"--nolog",		SO_NONE },
+	{ OPT_FULLSCREEN,	"-fullscreen",	SO_NONE },
+	{ OPT_FULLSCREEN,	"--fullscreen",	SO_NONE },
+	{ OPT_WINDOWED,		"-window",		SO_NONE }, /* legacy */
+	{ OPT_WINDOWED,		"--window",		SO_NONE }, /* legacy */
+	{ OPT_WINDOWED,		"-windowed",	SO_NONE },
+	{ OPT_WINDOWED,		"--windowed",	SO_NONE },
+	{ OPT_JOYPAD,		"-joypad",		SO_NONE },
+	{ OPT_JOYPAD,		"--joypad",		SO_NONE },
+	{ OPT_DEPTH,		"-depth",		SO_OPT },
+	{ OPT_DEPTH,		"--depth",		SO_OPT },
+	{ OPT_SCREENS,		"-screens",		SO_OPT },
+	{ OPT_SCREENS,		"--screens",	SO_OPT },
+	{ OPT_LANGUAGE,		"-language",	SO_OPT },
+	{ OPT_LANGUAGE,		"--language",	SO_OPT },
+	{ OPT_RESOLUTION,	"-resolution",	SO_OPT },
+	{ OPT_RESOLUTION,	"--resolution",	SO_OPT },
+	{ OPT_SONGPATH,		"-songpath",	SO_OPT },
+	{ OPT_SONGPATH,		"--songpath",	SO_OPT },
+	{ OPT_CONFIGFILE,	"-configfile",	SO_OPT },
+	{ OPT_CONFIGFILE,	"--configfile",	SO_OPT },
+	{ OPT_SCOREFILE,	"-scorefile",	SO_OPT },
+	{ OPT_SCOREFILE,	"--scorefile",	SO_OPT },
 
 	SO_END_OF_OPTIONS
 };
@@ -88,30 +88,30 @@ CMDParams::CMDParams() :
 {
 }
 
-static const TCHAR * GetLastErrorText(int nError) 
+static const char * GetLastErrorText(int nError) 
 {
 	switch (nError)
 	{
-	case SO_SUCCESS:            return _T("Success");
-	case SO_OPT_INVALID:        return _T("Unrecognized option");
-	case SO_OPT_MULTIPLE:       return _T("Option matched multiple strings");
-	case SO_ARG_INVALID:        return _T("Option does not accept argument");
-	case SO_ARG_INVALID_TYPE:   return _T("Invalid argument format");
-	case SO_ARG_MISSING:        return _T("Required argument is missing");
-	case SO_ARG_INVALID_DATA:   return _T("Invalid argument data");
-	default:                    return _T("Unknown error");
+	case SO_SUCCESS:            return "Success";
+	case SO_OPT_INVALID:        return "Unrecognized option";
+	case SO_OPT_MULTIPLE:       return "Option matched multiple strings";
+	case SO_ARG_INVALID:        return "Option does not accept argument";
+	case SO_ARG_INVALID_TYPE:   return "Invalid argument format";
+	case SO_ARG_MISSING:        return "Required argument is missing";
+	case SO_ARG_INVALID_DATA:   return "Invalid argument data";
+	default:                    return "Unknown error";
 	}
 }
 
-void CMDParams::Load(int argc, TCHAR ** argv)
+void CMDParams::Load(int argc, char ** argv)
 {
-	CSimpleOpt args(argc, argv, g_rgOptions, SO_O_NOERR | SO_O_EXACT | SO_O_ICASE);
+	CSimpleOptA args(argc, argv, g_rgOptions, SO_O_NOERR | SO_O_EXACT | SO_O_ICASE);
 
 	while (args.Next())
 	{
 		if (args.LastError() != SO_SUCCESS)
 		{
-			_tprintf(_T("%s: '%s' (use --help to get command line help)\n"),
+			printf("%s: '%s' (use --help to get command line help)\n",
 				GetLastErrorText(args.LastError()), args.OptionText());
 			continue;
 		}
@@ -147,13 +147,13 @@ void CMDParams::Load(int argc, TCHAR ** argv)
 			break;
 
 		case OPT_DEPTH:
-			Depth = _ttoi(args.OptionArg());
+			Depth = atoi(args.OptionArg());
 			if (Depth != 16 && Depth != 32)
 				Depth = 32;
 			break;
 
 		case OPT_SCREENS:
-			Screens = _ttoi(args.OptionArg());
+			Screens = atoi(args.OptionArg());
 			if (Screens < 1)
 				Screens = 1;
 			break;
@@ -183,24 +183,24 @@ void CMDParams::Load(int argc, TCHAR ** argv)
 
 void CMDParams::ShowUsage()
 {
-	_tprintf(
-		_T("Usage: ultrastardeluxe.exe [OPTIONS]\n")
-		_T("\n")
-		_T("-d  -debug  --debug       Enables debug.\n")
-		_T("-benchmark  --benchmark   Enables performance benchmarking.\n")
-		_T("-nolog      --nolog       Disables logging.\n")
-		_T("-fullscreen --fullscreen  Starts in fullscreen mode.\n")
-		_T("-windowed   --windowed    Starts in windowed mode.\n")
-		_T("-joypad     --joypad      Enables joypad support.\n")
-		_T("-depth      --depth       Sets the screen depth (set to either 16 or 32).\n")
-		_T("-screens    --screens     Sets the number of screens to use.\n")
-		_T("-language   --language    Sets the language to use.\n")
-		_T("-resolution --resolution  Sets the resolution to use.\n")
-		_T("-songpath   --songpath    Sets the song path to use.\n")
-		_T("-configfile --configfile  Sets the config file to use.\n")
-		_T("-scorefile  --scorefile   Sets the score file to use.\n")
-		_T("\n")
-		_T("-?  -h  -help  --help     Output this help.\n")
-		_T("\n")
+	printf(
+		"Usage: ultrastardeluxe.exe [OPTIONS]\n"
+		"\n"
+		"-d  -debug  --debug       Enables debug.\n"
+		"-benchmark  --benchmark   Enables performance benchmarking.\n"
+		"-nolog      --nolog       Disables logging.\n"
+		"-fullscreen --fullscreen  Starts in fullscreen mode.\n"
+		"-windowed   --windowed    Starts in windowed mode.\n"
+		"-joypad     --joypad      Enables joypad support.\n"
+		"-depth      --depth       Sets the screen depth (set to either 16 or 32).\n"
+		"-screens    --screens     Sets the number of screens to use.\n"
+		"-language   --language    Sets the language to use.\n"
+		"-resolution --resolution  Sets the resolution to use.\n"
+		"-songpath   --songpath    Sets the song path to use.\n"
+		"-configfile --configfile  Sets the config file to use.\n"
+		"-scorefile  --scorefile   Sets the score file to use.\n"
+		"\n"
+		"-?  -h  -help  --help     Output this help.\n"
+		"\n"
 	);
 }

@@ -26,14 +26,12 @@
 
 #if defined(WIN32)
 #	define STRCASECMP	_stricmp
-#	define WSTRCASECMP	_wcsicmp
 #	define I64FMT "%016I64X"
 #	define I64FMTD "%I64u"
 #	define SI64FMTD "%I64d"
 #	define atoll _atoi64
 #else
 #	define STRCASECMP	strcasecmp
-#	define WSTRCASECMP	wcscasecmp
 #	if defined(PRIu64) && defined(PRId64)
 #		define I64FMT "%016" PRIx64
 #		define I64FMTD "%" PRIu64
@@ -52,31 +50,14 @@ struct string_ci
 	}
 };
 
-struct wstring_ci
-{
-	bool operator() (const std::wstring& str1, const std::wstring& str2) const {
-		return WSTRCASECMP(str1.c_str(), str2.c_str()) < 0;
-	}
-};
-
 INLINE void strtolower(std::string& str)
 {
 	std::transform(str.begin(), str.end(), str.begin(), tolower);
 }
 
-INLINE void strtolower(std::wstring& str)
-{
-	std::transform(str.begin(), str.end(), str.begin(), towlower);
-}
-
 INLINE void strtoupper(std::string& str)
 {
 	std::transform(str.begin(), str.end(), str.begin(), toupper);
-}
-
-INLINE void strtoupper(std::wstring& str)
-{
-	std::transform(str.begin(), str.end(), str.begin(), towupper);
 }
 
 template<int (&F)(int)> int safe_ctype(unsigned char c) { return F(c); } 
@@ -116,12 +97,9 @@ STRING_TYPE& trim(STRING_TYPE &s)
 #endif
 
 // Extracts resolution dimensions in the standard format (e.g. 1920x1080) from a string.
-bool ExtractResolution(const tstring& str, int* w, int* h);
+bool ExtractResolution(const std::string& str, int* w, int* h);
 
-int strposA(const char * haystack, const char * needle); 
-int strposW(const wchar_t* haystack, const wchar_t* needle);
-
-void StrSplitA(const std::string& src, const std::string& sep, std::vector<std::string> * result);
-void StrSplitW(const std::wstring& src, const std::wstring& sep, std::vector<std::wstring> * result);
+int strpos(const char * haystack, const char * needle); 
+void StrSplit(const std::string& src, const std::string& sep, std::vector<std::string> * result);
 
 #endif

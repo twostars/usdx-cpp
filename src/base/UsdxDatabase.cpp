@@ -8,11 +8,10 @@
 	0 = USDX 1.01 or no database
 	01 = USDX 1.1
 */
-// TODO: make these proper constants
-#define cDBVersion 01 // 0.1
-#define cUS_Scores "us_scores"
-#define cUS_Songs "us_songs"
-#define cUS_Statistics_Info "us_statistics_info"
+const int cDBVersion = 01; // 0.1
+static const char cUS_Scores[] = "us_scores";
+static const char cUS_Songs[] = "us_songs";
+static const char * cUS_Statistics_Info = "us_statistics_info";
 
 void UsdxDatabase::Initialize()
 {
@@ -20,15 +19,15 @@ void UsdxDatabase::Initialize()
 	// needed in the conversion from 1.01 to 1.1
 	if (!TableExists(cUS_Statistics_Info))
 	{
-		sLog.Info(_T("Database::Init"), _T("Outdated song database found - missing table ") _T(cUS_Statistics_Info));
+		sLog.Info("Database::Init", "Outdated song database found - missing table %s", cUS_Statistics_Info);
 
-		Exec("CREATE TABLE IF NOT EXISTS [" cUS_Statistics_Info "] ([ResetTime] INTEGER);");
+		FormattedExec("CREATE TABLE IF NOT EXISTS [%s] ([ResetTime] INTEGER);", cUS_Statistics_Info);
 
 		// insert creation timestamp
 		time_t now = time(nullptr);
 		FormattedExec(
-			"INSERT INTO [" cUS_Statistics_Info "] ([ResetTime]) VALUES(" I64FMTD ");",
-			now);
+			"INSERT INTO [%s] ([ResetTime]) VALUES(" I64FMTD ");",
+			cUS_Statistics_Info, now);
 	}
 
 	// convert data from 1.01 to 1.1
@@ -38,8 +37,8 @@ void UsdxDatabase::Initialize()
 	if (version == 0 && TableExists(cUS_Scores))
 	{
 		// rename old tables - to be able to insert new table structures
-		Exec("ALTER TABLE " cUS_Scores " RENAME TO us_scores_101;");
-		Exec("ALTER TABLE " cUS_Songs " RENAME TO us_songs_101;");
+		FormattedExec("ALTER TABLE %s RENAME TO us_scores_101;", cUS_Scores);
+		FormattedExec("ALTER TABLE %s RENAME TO us_songs_101;", cUS_Songs);
 
 		finalizeConversion = true; // means: conversion has to be done!
 	}
@@ -55,37 +54,37 @@ void UsdxDatabase::Initialize()
 	// types are used (especially FieldAsInteger). Also take care to write the
 	// types in upper-case letters although SQLite does not care about this -
 	// SQLiteTable3 is very sensitive in this regard.
-	Exec(
-		"CREATE TABLE IF NOT EXISTS [" cUS_Scores "] ("
+	FormattedExec(
+		"CREATE TABLE IF NOT EXISTS [%s] ("
 		"[SongID] INTEGER NOT NULL, "
 		"[Difficulty] INTEGER NOT NULL, "
 		"[Player] TEXT NOT NULL, "
 		"[Score] INTEGER NOT NULL, "
 		"[Date] INTEGER NULL"
-		");");
+		");", cUS_Scores);
 
-	Exec(
-		"CREATE TABLE IF NOT EXISTS [" cUS_Songs "] ("
+	FormattedExec(
+		"CREATE TABLE IF NOT EXISTS [%s] ("
 		"[ID] INTEGER PRIMARY KEY, "
 		"[Artist] TEXT NOT NULL, "
 		"[Title] TEXT NOT NULL, "
 		"[TimesPlayed] INTEGER NOT NULL, "
 		"[Rating] INTEGER NULL"
-		");");
+		");", cUS_Songs);
 
 	// Add Date column to cUS_Scores
 	if (!ColumnExists(cUS_Scores, "Date"))
 	{
-		sLog.Info(_T("Database::Init"), _T("Adding column [Date] to ") _T(cUS_Scores));
-		Exec("ALTER TABLE " cUS_Scores " ADD COLUMN [Date] INTEGER NULL");
+		sLog.Info("Database::Init", "Adding column [Date] to %s", cUS_Scores);
+		FormattedExec("ALTER TABLE %s ADD COLUMN [Date] INTEGER NULL", cUS_Scores);
 	}
 
 	// Add Rating column to cUS_Songs
 	// Just for users of nightly builds and developers!
 	if (!ColumnExists(cUS_Songs, "Rating"))
 	{
-		sLog.Info(_T("Database::Init"), _T("Adding column [Rating] to ") _T(cUS_Songs));
-		Exec("ALTER TABLE " cUS_Songs " ADD COLUMN [Rating] INTEGER NULL");
+		sLog.Info("Database::Init", "Adding column [Rating] to %s", cUS_Songs);
+		FormattedExec("ALTER TABLE %s ADD COLUMN [Rating] INTEGER NULL", cUS_Songs);
 	}
 
 	// convert data from previous versions
@@ -103,29 +102,32 @@ void UsdxDatabase::ConvertFrom101To110()
 	if (!ColumnExists("us_scores_101", "Date"))
 	{
 		sLog.Info(
-			_T("UsdxDatabase::Convert101To110"),
-			_T("Outdated song database found - begin conversion from V1.01 to V1.1"));
+			"UsdxDatabase::Convert101To110",
+			"Outdated song database found - begin conversion from V1.01 to V1.1");
 
 		// insert old values into new tables
-		Exec(
-			"INSERT INTO " cUS_Scores " "
-			"SELECT SongID, Difficulty, Player, Score, 'NULL' FROM us_scores_101;");
+		FormattedExec(
+			"INSERT INTO %s "
+			"SELECT SongID, Difficulty, Player, Score, 'NULL' FROM us_scores_101;",
+			cUS_Scores);
 	}
 	else
 	{
 		sLog.Info(
-			_T("UsdxDatabase::Convert101To110"),
-			_T("Outdated song database found - begin conversion from V1.01 Challenge Mod to V1.1"));
+			"UsdxDatabase::Convert101To110",
+			"Outdated song database found - begin conversion from V1.01 Challenge Mod to V1.1");
 
 		// insert old values into new tables
-		Exec(
-			"INSERT INTO " cUS_Scores " "
-			"SELECT SongID, Difficulty, Player, Score, Date FROM us_scores_101;");
+		FormattedExec(
+			"INSERT INTO %s "
+			"SELECT SongID, Difficulty, Player, Score, Date FROM us_scores_101;",
+			cUS_Scores);
 	}
 
-	Exec(
-		"INSERT INTO " cUS_Songs " "
-		"SELECT ID, Artist, Title, TimesPlayed, 'NULL' FROM us_songs_101;");
+	FormattedExec(
+		"INSERT INTO %s "
+		"SELECT ID, Artist, Title, TimesPlayed, 'NULL' FROM us_songs_101;",
+		cUS_Songs);
 
 	/*
     // now we have to convert all the texts for unicode support:

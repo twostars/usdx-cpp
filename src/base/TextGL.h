@@ -36,9 +36,9 @@ enum FontType
 
 void BuildFonts();
 void KillFonts();
-float glTextWidth(const tstring& text);
-void glPrint(const TCHAR * format, ...);
-void glPrint(const tstring& text);
+float glTextWidth(const std::string& text);
+void glPrint(const char * format, ...);
+void glPrint(const std::string& text);
 void ResetFont();
 void SetFontPos(float X, float Y);
 void SetFontZ(float Z);

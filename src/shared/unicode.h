@@ -24,51 +24,17 @@
 #define _UNICODE_H
 #pragma once
 
-// Windows has the tchar header, with various per-build typedefs.
-#if defined(_WIN32)
-
-#	include <tchar.h>
-
-// Other operating systems don't have the header, so define everything for ANSI.
-#else 
-
-#	define TCHAR		char
-#	define _T(x)		x
-#	define tstring		std::string
-#	define _tprintf		printf
-#	define _stscanf		sscanf
-#	define _ttoi		atoi
-#	define _tfopen		fopen
-#	define _ftprintf	fprintf
-#	define _snprintf	snprintf
-#	define _sntprintf	_snprintf
-#	define _vsntprintf  vsnprintf
-#	define _tcschr		strchr
-#	define _tcscmp		strcmp
-#	define TCHAR		char
-
+#if !defined(WIN32)
+#define _snprintf	snprintf
 #endif
 
-#define TSTR(str) _T(#str)
-#define TSTRINGIFY(str) TSTR(str)
+#define __T(id) sLanguage.Translate(id)
 
-// NOTE: Use the preprocessor instead of typedefing to avoid strict type-checks
-#ifdef UNICODE
-#	define tstring		std::wstring
-#	define tstring_ci	wstring_ci
-#	define TSTRCASECMP	WSTRCASECMP
-#	define StrSplit		StrSplitW
-#	define strpos		strposW
-#	define ANSI_FORMAT	"%S"
-#else
-#	define tstring		std::string
-#	define tstring_ci	string_ci
-#	define TSTRCASECMP	STRCASECMP
-#	define StrSplit		StrSplitA
-#	define strpos		strposA
-#	define ANSI_FORMAT	"%s"
+#if defined(_MSC_VER) && _MSC_VER < 1900
+#define snprintf(buf, len, format, ...) _snprintf_s(buf, len,len, format, __VA_ARGS__)
 #endif
 
-typedef tstring::size_type tsize_type;
+#define _STR(str) #str
+#define STRINGIFY(str) _STR(str)
 
 #endif

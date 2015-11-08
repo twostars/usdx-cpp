@@ -28,12 +28,12 @@
 
 static size_t ActiveFont;
 static std::vector<GLFont> Fonts;
-static const tstring FontNames[] =
+static const std::string FontNames[] =
 {
-	_T("Normal"), _T("Bold"), _T("Outline1"), _T("Outline2"), _T("BoldHighRes")
+	"Normal", "Bold", "Outline1", "Outline2", "BoldHighRes"
 };
 
-path FindFontFile(const tstring& filename)
+path FindFontFile(const std::string& filename)
 {
 	path result = FontPath / filename;
 	// if path does not exist, try as an absolute path
@@ -43,14 +43,14 @@ path FindFontFile(const tstring& filename)
 	return result;
 }
 
-void AddFontFallbacks(CSimpleIni& ini, ScalableFont * font)
+void AddFontFallbacks(CSimpleIniA& ini, ScalableFont * font)
 {
-	const tstring baseKey = _T("File");
+	const std::string baseKey = "File";
 	// Evaluate the ini file's 'Fallbacks' section
 	for (int i = 1; i <= 10; i++)
 	{
-		tstring key = baseKey + boost::lexical_cast<tstring>(i);
-		tstring fontFilename = ini.GetValue(_T("Fallbacks"), key.c_str(), _T(""));
+		std::string key = baseKey + boost::lexical_cast<std::string>(i);
+		std::string fontFilename = ini.GetValue("Fallbacks", key.c_str(), "");
 		if (fontFilename.empty())
 			continue;
 
@@ -64,7 +64,7 @@ void AddFontFallbacks(CSimpleIni& ini, ScalableFont * font)
 		}
 		catch (FontException& ex)
 		{
-			sLog.Error(_T("AddFontFallbacks"), ex.twhat());
+			sLog.Error("AddFontFallbacks", ex.what());
 		}
 	}
 }
@@ -75,11 +75,11 @@ void BuildFonts()
 	ActiveFont = 0;
 	Fonts.assign(SDL_arraysize(FontNames), GLFont());
 
-	CSimpleIni ini(true);
+	CSimpleIniA ini(true);
 	path iniPath = FontPath / FONTS_FILE;
 	SI_Error result = ini.LoadFile(iniPath.c_str());
 	if (result != SI_OK)
-		return sLog.Debug(_T("BuildFonts"), _T("Failed to load config."));
+		return sLog.Debug("BuildFonts", "Failed to load config.");
 
 	try
 	{
@@ -87,13 +87,13 @@ void BuildFonts()
 		{
 			GLFont& font = Fonts[i];
 
-			const tstring section = _T("Font_") + FontNames[i];
-			tstring fontFile = ini.GetValue(section.c_str(), _T("File"), _T(""));
+			const std::string section = "Font_" + FontNames[i];
+			std::string fontFile = ini.GetValue(section.c_str(), "File", "");
 			path fontPath = FindFontFile(fontFile);
 
-			long fontMaxResolution = ini.GetLongValue(section.c_str(), _T("MaxResolution"), 64);
-			bool fontPrecache = ini.GetBoolValue(section.c_str(), _T("PreCache"), true);
-			float fontOutline = (float) ini.GetDoubleValue(section.c_str(), _T("Outline"), 0.0);
+			long fontMaxResolution = ini.GetLongValue(section.c_str(), "MaxResolution", 64);
+			bool fontPrecache = ini.GetBoolValue(section.c_str(), "PreCache", true);
+			float fontOutline = (float) ini.GetDoubleValue(section.c_str(), "Outline", 0.0);
 
 			// Create either outlined or normal font
 			if (fontOutline > 0.0f)
@@ -103,24 +103,24 @@ void BuildFonts()
 					fontPath, (int) fontMaxResolution, fontOutline, true, fontPrecache);
 
 				outlineFont->SetOutlineColor(
-					(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorR"), 0.0),
-					(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorG"), 0.0),
-					(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorB"), 0.0),
-					(float) ini.GetDoubleValue(section.c_str(), _T("OutlineColorA"), -1.0)
+					(float) ini.GetDoubleValue(section.c_str(), "OutlineColorR", 0.0),
+					(float) ini.GetDoubleValue(section.c_str(), "OutlineColorG", 0.0),
+					(float) ini.GetDoubleValue(section.c_str(), "OutlineColorB", 0.0),
+					(float) ini.GetDoubleValue(section.c_str(), "OutlineColorA", -1.0)
 					);
 				font.Font = outlineFont;
 				font.Outlined = true;
 			}
 			else
 			{
-				float fontEmbolden = (float) ini.GetDoubleValue(section.c_str(), _T("Embolden"), 0.0);
+				float fontEmbolden = (float) ini.GetDoubleValue(section.c_str(), "Embolden", 0.0);
 				font.Font = new FTScalableFont(
 					fontPath, fontMaxResolution, fontEmbolden, true, fontPrecache);
 				font.Outlined = false;
 			}
 
-			font.Font->GlyphSpacing = (float) ini.GetDoubleValue(section.c_str(), _T("GlyphSpacing"), 0.0);
-			font.Font->Stretch = (float) ini.GetDoubleValue(section.c_str(), _T("Stretch"), 1.0);
+			font.Font->GlyphSpacing = (float) ini.GetDoubleValue(section.c_str(), "GlyphSpacing", 0.0);
+			font.Font->Stretch = (float) ini.GetDoubleValue(section.c_str(), "Stretch", 1.0);
 			font.Font->Init();
 
 			AddFontFallbacks(ini, font.Font);
@@ -128,7 +128,7 @@ void BuildFonts()
 	}
 	catch (FontException& ex)
 	{
-		sLog.Critical(_T("BuildFonts"), ex.twhat());
+		sLog.Critical("BuildFonts", ex.what());
 	}
 }
 
@@ -139,27 +139,27 @@ void KillFonts()
 }
 
 // Returns text width
-float glTextWidth(const tstring& text)
+float glTextWidth(const std::string& text)
 {
 	FontBounds bounds = Fonts[ActiveFont].Font->BBox(text, true);
 	return bounds.Right - bounds.Left;
 }
 
 // Custom OpenGL print routine
-void glPrint(const TCHAR * format, ...)
+void glPrint(const char * format, ...)
 {
-	TCHAR buffer[1024];
-	tstring text;
+	char buffer[1024];
+	std::string text;
 	va_list args;
 	va_start(args, format);
-	_vsntprintf(buffer, 1024, format, args);
+	vsnprintf(buffer, 1024, format, args);
 	va_end(args);
 	text = buffer;
 
 	glPrint(text);
 }
 
-void glPrint(const tstring& text)
+void glPrint(const std::string& text)
 {
 	GLFont& font = Fonts[ActiveFont];
 	glPushMatrix();

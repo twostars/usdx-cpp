@@ -24,7 +24,7 @@
 #define _MAIN_H
 #pragma once
 
-int usdxMain(int argc, TCHAR ** argv);
+int usdxMain(int argc, char ** argv);
 void usdxMainLoop();
 
 #endif

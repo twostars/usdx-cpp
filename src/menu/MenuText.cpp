@@ -28,13 +28,13 @@
 MenuText::MenuText()
 {
 	RGB rgbDefault = { 0.0f, 0.0f, 0.0f };
-	tstring textDefault;
+	std::string textDefault;
 	float sizeDefault = 30.0f;
 
 	Create(0, 0, 0, ftNormal, sizeDefault, rgbDefault, 0, textDefault, false, 0.0f, 0.0f);
 }
 
-MenuText::MenuText(float x, float y, const tstring& text)
+MenuText::MenuText(float x, float y, const std::string& text)
 {
 	RGB rgbDefault = { 0.0f, 0.0f, 0.0f };
 	float sizeDefault = 30.0f;
@@ -43,7 +43,7 @@ MenuText::MenuText(float x, float y, const tstring& text)
 }
 
 MenuText::MenuText(float x, float y, float w, uint32 style, 
-				   float size, const RGB& rgb, int align, const tstring& text, 
+				   float size, const RGB& rgb, int align, const std::string& text, 
 				   bool reflection, float reflectionSpacing, 
 				   float z)
 {
@@ -51,7 +51,7 @@ MenuText::MenuText(float x, float y, float w, uint32 style,
 }
 
 void MenuText::Create(float x, float y, float w, uint32 style,
-					  float size, const RGB& rgb, int align, const tstring& text,
+					  float size, const RGB& rgb, int align, const std::string& text,
 					  bool reflection, float reflectionSpacing,
 					  float z)
 {
@@ -93,7 +93,7 @@ void MenuText::SetSelected(bool value)
  * @param	text	The text.
  */
 
-void MenuText::SetText(const tstring& text)
+void MenuText::SetText(const std::string& text)
 {
 	TextString = text;
 	EnableBlinkingCursor();
@@ -103,7 +103,7 @@ void MenuText::SetText(const tstring& text)
 
 	// Break out now if there is no need to create tiles
 	if (W <= 0 
-		&& _tcschr(text.c_str(), _T('\n')) == NULL)
+		&& strchr(text.c_str(), '\n') == NULL)
 	{
 		TextTiles.push_back(text);
 		return;
@@ -140,7 +140,7 @@ void MenuText::SetText(const tstring& text)
 				else
 				{
 					// TODO
-					throw NotImplementedException(_T("MenuText::SetMenuText(): First word after break, break within the word. [1]"));
+					throw NotImplementedException("MenuText::SetMenuText(): First word after break, break within the word. [1]");
 				}
 			}
 
@@ -162,7 +162,7 @@ void MenuText::SetText(const tstring& text)
 			else
 			{
 				// TODO
-				throw NotImplementedException(_T("MenuText::SetMenuText(): First word after break, break within the word. [2]"));
+				throw NotImplementedException("MenuText::SetMenuText(): First word after break, break within the word. [2]");
 			}
 		}
 
@@ -181,12 +181,12 @@ bool MenuText::GetNextPos(ParseData& data)
 
 	// Next space (if width is given)
 	if (W > 0)
-		T1 = strpos(TextString.c_str() + data.LastPos + 1, _T(" "));
+		T1 = strpos(TextString.c_str() + data.LastPos + 1, " ");
 	else
 		T1 = TextString.length();
 
 	// Next break
-	T2 = strpos(TextString.c_str() + data.LastPos + 1, _T("\n"));
+	T2 = strpos(TextString.c_str() + data.LastPos + 1, "\n");
 
 	if (T1 < 0)
 		T1 = TextString.length();
@@ -204,7 +204,7 @@ bool MenuText::GetNextPos(ParseData& data)
 	return (data.NextPos != 0);
 }
 
-void MenuText::AddBreak(ParseData& data, tsize_type from, tsize_type to)
+void MenuText::AddBreak(ParseData& data, size_t from, size_t to)
 {
 	if (!data.IsBreak && (to - from) < 1)
 		return;
@@ -254,9 +254,9 @@ void MenuText::Draw()
 
     // draw text as many strings
 	Y2 = Y + MoveY;
-	for (std::vector<tstring>::iterator itr = TextTiles.begin(); itr != TextTiles.end(); ++itr)
+	for (std::vector<std::string>::iterator itr = TextTiles.begin(); itr != TextTiles.end(); ++itr)
 	{
-		tstring Text2 = (*itr);
+		std::string Text2 = (*itr);
 		if (!(Selected && SelectBlink)
 			|| ((itr + 1) != TextTiles.end()))
 			;

@@ -33,8 +33,8 @@ class Platform
 public:
 	static void Init();
 
-	static bool TerminateIfAlreadyRunning(const TCHAR * windowTitle);
-	static void ShowMessage(const TCHAR * message, MessageType messageType);
+	static bool TerminateIfAlreadyRunning(const char * windowTitle);
+	static void ShowMessage(const char * message, MessageType messageType);
 
 	static void DetectLocalExecution();
 	static void GetExecutionDir(path * outPath);

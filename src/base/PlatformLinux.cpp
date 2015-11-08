@@ -31,14 +31,14 @@
 
 using namespace boost::filesystem;
 
-bool Platform::TerminateIfAlreadyRunning(const TCHAR * windowTitle)
+bool Platform::TerminateIfAlreadyRunning(const char * windowTitle)
 {
 	return false;
 }
 
-void Platform::ShowMessage(const TCHAR * message, MessageType messageType)
+void Platform::ShowMessage(const char * message, MessageType messageType)
 {
-	_tprintf(_T("%s\n"), message);
+	printf("%s\n", message);
 }
 
 /**
@@ -72,7 +72,7 @@ void Platform::GetUserHomeDir(path * outPath)
 	struct passwd *pw = getpwuid(uid);
  
 	if (pw == NULL)
-		throw CriticalException(_T("Failed to identify user's home directory."));
+		throw CriticalException("Failed to identify user's home directory.");
 
 	*outPath = pw->pw_dir;
 }
@@ -100,7 +100,7 @@ void Platform::GetGameUserPath(path * outPath)
 		return GetExecutionDir(outPath);
 
 	GetUserHomeDir(outPath);
-	*outPath /= _T(".") USDX_IDENTIFIER;
+	*outPath /= "." USDX_IDENTIFIER;
 }
 
 void Platform::GetMusicPath(path * outPath)

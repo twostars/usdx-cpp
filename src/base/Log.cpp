@@ -34,10 +34,10 @@ extern CMDParams Params;
 initialiseSingleton(Log);
 
 #define BUILD_VA_BUFFER(formatBuffer, formatArg, buffer, bufferSize) \
-	TCHAR buffer[bufferSize]; \
+	char buffer[bufferSize]; \
 	va_list ap; \
 	va_start(ap, formatArg); \
-	_vsntprintf(buffer, bufferSize, formatBuffer, ap); \
+	vsnprintf(buffer, bufferSize, formatBuffer, ap); \
 	va_end(ap)
 
 Log::Log() :
@@ -60,31 +60,31 @@ void Log::BenchmarkEnd(int benchmarkNo)
 	_benchmarkTimeLength[benchmarkNo] = USTime.GetTime() - _benchmarkTimeStart[benchmarkNo];
 }
 
-void Log::Benchmark(int benchmarkNo, const TCHAR * message, ...)
+void Log::Benchmark(int benchmarkNo, const char * message, ...)
 {
 	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	// TODO
 }
 
-void Log::Msg(int level, const TCHAR * message)
+void Log::Msg(int level, const char * message)
 {
-	TCHAR buffer[1024] = {0};
+	char buffer[1024] = {0};
 
 	if (level <= GetLogLevel()
 		|| level <= GetLogFileLevel())
 	{
 		if (level < LOG_LEVEL_CRITICAL_MAX)
-			_sntprintf(buffer, 1024, _T("CRITICAL: %s"), message);
+			snprintf(buffer, 1024, "CRITICAL: %s", message);
 		else if (level < LOG_LEVEL_ERROR_MAX)
-			_sntprintf(buffer, 1024, _T("ERROR:    %s"), message);
+			snprintf(buffer, 1024, "ERROR:    %s", message);
 		else if (level < LOG_LEVEL_WARN_MAX)
-			_sntprintf(buffer, 1024, _T("WARN:     %s"), message);
+			snprintf(buffer, 1024, "WARN:     %s", message);
 		else if (level < LOG_LEVEL_STATUS_MAX)
-			_sntprintf(buffer, 1024, _T("STATUS:   %s"), message);
+			snprintf(buffer, 1024, "STATUS:   %s", message);
 		else if (level < LOG_LEVEL_INFO_MAX)
-			_sntprintf(buffer, 1024, _T("INFO:     %s"), message);
+			snprintf(buffer, 1024, "INFO:     %s", message);
 		else
-			_sntprintf(buffer, 1024, _T("DEBUG:    %s"), message);
+			snprintf(buffer, 1024, "DEBUG:    %s", message);
 
 		if (level <= GetLogLevel())
 			DebugWriteLn(buffer);
@@ -100,54 +100,54 @@ void Log::Msg(int level, const TCHAR * message)
 	}
 }
 
-void Log::Msg(int level, const TCHAR * context, const TCHAR * message)
+void Log::Msg(int level, const char * context, const char * message)
 {
-	TCHAR buffer[1024] = {0};
-	_sntprintf(buffer, 1024, _T("[%s] %s"), context, message);
+	char buffer[1024] = {0};
+	snprintf(buffer, 1024, "[%s] %s", context, message);
 	Msg(level, buffer);
 }
 
-void Log::Debug(const TCHAR * context, const TCHAR * message, ...)
+void Log::Debug(const char * context, const char * message, ...)
 {
 	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_DEBUG, context, buffer);
 }
 
-void Log::Info(const TCHAR * context, const TCHAR * message, ...)
+void Log::Info(const char * context, const char * message, ...)
 {
 	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_INFO, context, buffer);
 }
 
-void Log::Status(const TCHAR * context, const TCHAR * message, ...)
+void Log::Status(const char * context, const char * message, ...)
 {
 	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_STATUS, context, buffer);
 }
 
-void Log::Warn(const TCHAR * context, const TCHAR * message, ...)
+void Log::Warn(const char * context, const char * message, ...)
 {
 	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_WARN, context, buffer);
 }
 
-void Log::Error(const TCHAR * message)
+void Log::Error(const char * message)
 {
 	Msg(LOG_LEVEL_ERROR, message);
 }
 
-void Log::Error(const TCHAR * context, const TCHAR * message, ...)
+void Log::Error(const char * context, const char * message, ...)
 {
 	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_ERROR, context, buffer);
 }
 
-void Log::Critical(const TCHAR * message)
+void Log::Critical(const char * message)
 {
 	Msg(LOG_LEVEL_CRITICAL, message);
 }
 
-void Log::Critical(const TCHAR * context, const TCHAR * message, ...)
+void Log::Critical(const char * context, const char * message, ...)
 {
 	BUILD_VA_BUFFER(message, message, buffer, 1024);
 	Msg(LOG_LEVEL_CRITICAL, context, buffer);
@@ -158,12 +158,12 @@ void Log::Voice(int soundNo)
 	// TODO
 }
 
-void Log::Buffer(const TCHAR * buffer, const size_t length, const path& filename)
+void Log::Buffer(const char * buffer, const size_t length, const path& filename)
 {
-	FILE * fp = _tfopen(filename.native().c_str(), _T("a"));
+	FILE * fp = fopen(filename.generic_string().c_str(), "a");
 	if (fp == NULL)
 	{
-		Error(_T("LogBuffer"), _T("Failed to log buffer to file."));
+		Error("LogBuffer", "Failed to log buffer to file.");
 		return;
 	}
 
@@ -171,17 +171,17 @@ void Log::Buffer(const TCHAR * buffer, const size_t length, const path& filename
 	fclose(fp);
 }
 
-void Log::LogToFile(const TCHAR * message)
+void Log::LogToFile(const char * message)
 {
 	if (Params.NoLog)
 		return;
 
 	if (_logFile == NULL)
 	{
-		_logFile = _tfopen(LOG_FILE, _T("a"));
+		_logFile = fopen(LOG_FILE, "a");
 		if (_logFile == NULL)
 		{
-			DebugWriteLn(_T("Failed to write to log file."));
+			DebugWriteLn("Failed to write to log file.");
 			return;
 		}
 
@@ -189,21 +189,21 @@ void Log::LogToFile(const TCHAR * message)
 		time_t unixTime = time(NULL);
 		tm localTime = *localtime(&unixTime);
 
-		_ftprintf(_logFile, _T("Logging started\n"));
-		_ftprintf(_logFile, _T("Date: %02u/%02u/%04u Time: %02u:%02u\n"),
+		fprintf(_logFile, "Logging started\n");
+		fprintf(_logFile, "Date: %02u/%02u/%04u Time: %02u:%02u\n",
 			localTime.tm_mday, localTime.tm_mon + 1, 1900 + localTime.tm_year,
 			localTime.tm_hour, localTime.tm_min);
-		_ftprintf(_logFile, _T("-------------------\n"));
+		fprintf(_logFile, "-------------------\n");
 	}
 
-	_ftprintf(_logFile, _T("%s\n"), message);
+	fprintf(_logFile, "%s\n", message);
 	fflush(_logFile);
 }
 
-void Log::DebugWriteLn(const TCHAR * message)
+void Log::DebugWriteLn(const char * message)
 {
 	if (Params.Debug)
-		_tprintf(_T("%s\n"), message);
+		printf("%s\n", message);
 }
 
 Log::~Log()

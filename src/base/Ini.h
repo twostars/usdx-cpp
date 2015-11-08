@@ -27,7 +27,7 @@
 typedef std::map<int, int> ChannelToPlayerMap;
 struct InputDeviceConfig
 {
-	tstring Name;    // Name of the input device.
+	std::string Name;    // Name of the input device.
 	int     Input;   // Index of the input source to use for recording.
 	int     Latency; // Latency in ms, or LATENCY_AUTODETECT for default.
 
@@ -55,8 +55,8 @@ static const int LATENCY_AUTODETECT = -1; // for field Latency
 	ini.SetValue(section, key, Enum2String(value).c_str())
 
 typedef std::pair<int, int> ResolutionWH;
-typedef std::map<ResolutionWH, tstring> ResolutionMap;
-typedef std::map<tstring, ResolutionWH, tstring_ci> ReverseResolutionMap;
+typedef std::map<ResolutionWH, std::string> ResolutionMap;
+typedef std::map<std::string, ResolutionWH, string_ci> ReverseResolutionMap;
 
 // User configuration
 class Ini : public Singleton<Ini>
@@ -90,23 +90,23 @@ public:
 	void LoadPaths();
 	void SavePaths();
 
-	uint32 GetResolutionID(const tstring& resName) { return GetListIndex(ResolutionNameList, resName); }
+	uint32 GetResolutionID(const std::string& resName) { return GetListIndex(ResolutionNameList, resName); }
 
 private:
 	void AddResolution(int width, int height);
 
 public:
-	tstring Name[MAX_PROFILE_NAMES];
+	std::string Name[MAX_PROFILE_NAMES];
 
 	// Templates for names
-	tstring NameTeam[MAX_TEAMS];
-	tstring NameTemplate[MAX_PROFILE_NAMES];
+	std::string NameTeam[MAX_TEAMS];
+	std::string NameTemplate[MAX_PROFILE_NAMES];
 
 	// Game
 	int Players;
 	eDifficultyType Difficulty;
 	uint32 Language;
-	tstring LanguageName;
+	std::string LanguageName;
 	eSwitch Tabs;
 	eSwitch TabsAtStartup;
 	eSortingType Sorting;
@@ -180,13 +180,13 @@ public:
 	OptionList       ResolutionNameList;
 
 private:
-	CSimpleIni ini;
+	CSimpleIniA ini;
 };
 
 #define sIni (Ini::getSingleton())
 
-extern const tstring IPlayers[5];
+extern const std::string IPlayers[5];
 extern const int IPlayersVals[5];
-extern const tstring IDepth[2];
+extern const std::string IDepth[2];
 
 #endif

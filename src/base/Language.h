@@ -24,9 +24,9 @@
 #define _LANGUAGE_H
 #pragma once
 
-#define DEFAULT_LANGUAGE _T("English")
+#define DEFAULT_LANGUAGE "English"
 
-typedef std::map<tstring, tstring> LanguageEntryMap;
+typedef std::map<std::string, std::string> LanguageEntryMap;
 
 class Language : public Singleton<Language>
 {
@@ -34,12 +34,12 @@ public:
 	Language();
 	void LoadList();
 	OptionList& GetLanguageSet() { return _langSet; }
-	void ChangeLanguage(const tstring& language);
-	uint32 GetLanguageID(const tstring& language) { return GetListIndex(_langSet, language); }
-	const tstring& GetLanguageByID(uint32 id) { return _langSet[id]; }
-	void AddConst(const tstring& id, const tstring& text);
-	const tstring Translate(const tstring& id);
-	const tstring Translate(const TCHAR* id);
+	void ChangeLanguage(const std::string& language);
+	uint32 GetLanguageID(const std::string& language) { return GetListIndex(_langSet, language); }
+	const std::string& GetLanguageByID(uint32 id) { return _langSet[id]; }
+	void AddConst(const std::string& id, const std::string& text);
+	const std::string Translate(const std::string& id);
+	const std::string Translate(const char* id);
 	void TranslateOptionValues();
 	~Language();
 
@@ -53,62 +53,62 @@ private:
 
 #define sLanguage (Language::getSingleton())
 
-extern tstring IDifficultyTranslated[3];
-extern tstring ITabsTranslated[2];
+extern std::string IDifficultyTranslated[3];
+extern std::string ITabsTranslated[2];
 
-extern tstring ISortingTranslated[7];
+extern std::string ISortingTranslated[7];
 
-extern tstring IDebugTranslated[2];
+extern std::string IDebugTranslated[2];
 
-extern tstring IFullScreenTranslated[2];
-extern tstring IVisualizerTranslated[3];
+extern std::string IFullScreenTranslated[2];
+extern std::string IVisualizerTranslated[3];
 
-extern tstring IBackgroundMusicTranslated[2];
-extern tstring ISingWindowTranslated[2];
+extern std::string IBackgroundMusicTranslated[2];
+extern std::string ISingWindowTranslated[2];
 
-extern tstring IOscilloscopeTranslated[2];
+extern std::string IOscilloscopeTranslated[2];
 
-extern tstring ISpectrumTranslated[2];
-extern tstring ISpectrographTranslated[2];
-extern tstring IMovieSizeTranslated[3];
-extern tstring IVideoPreviewTranslated[2];
-extern tstring IVideoEnabledTranslated[2];
+extern std::string ISpectrumTranslated[2];
+extern std::string ISpectrographTranslated[2];
+extern std::string IMovieSizeTranslated[3];
+extern std::string IVideoPreviewTranslated[2];
+extern std::string IVideoEnabledTranslated[2];
 
-extern tstring IClickAssistTranslated[2];
-extern tstring IBeatClickTranslated[2];
-extern tstring ISavePlaybackTranslated[2];
+extern std::string IClickAssistTranslated[2];
+extern std::string IBeatClickTranslated[2];
+extern std::string ISavePlaybackTranslated[2];
 
-extern tstring IVoicePassthroughTranslated[2];
+extern std::string IVoicePassthroughTranslated[2];
 
-extern tstring ISyncToTranslated[3];
+extern std::string ISyncToTranslated[3];
 
-extern tstring IAudioOutputBufferSizeTranslated[10];
-extern tstring IAudioInputBufferSizeTranslated[10];
+extern std::string IAudioOutputBufferSizeTranslated[10];
+extern std::string IAudioInputBufferSizeTranslated[10];
 
-extern tstring IPreviewVolumeTranslated[11];
-extern tstring IPreviewFadingTranslated[6];
+extern std::string IPreviewVolumeTranslated[11];
+extern std::string IPreviewFadingTranslated[6];
 
-extern tstring ILyricsFontTranslated[3];
-extern tstring ILyricsEffectTranslated[5];
-extern tstring INoteLinesTranslated[2];
+extern std::string ILyricsFontTranslated[3];
+extern std::string ILyricsEffectTranslated[5];
+extern std::string INoteLinesTranslated[2];
 
-extern tstring IColorTranslated[9];
+extern std::string IColorTranslated[9];
 
 // Advanced
-extern tstring ILoadAnimationTranslated[2];
-extern tstring IEffectSingTranslated[2];
-extern tstring IScreenFadeTranslated[2];
-extern tstring IAskBeforeDelTranslated[2];
-extern tstring IOnSongClickTranslated[3];
+extern std::string ILoadAnimationTranslated[2];
+extern std::string IEffectSingTranslated[2];
+extern std::string IScreenFadeTranslated[2];
+extern std::string IAskBeforeDelTranslated[2];
+extern std::string IOnSongClickTranslated[3];
 
-extern tstring ILineBonusTranslated[2];
-extern tstring IPartyPopupTranslated[2];
+extern std::string ILineBonusTranslated[2];
+extern std::string IPartyPopupTranslated[2];
 
-extern tstring IJoypadTranslated[2];
-extern tstring IMouseTranslated[3];
+extern std::string IJoypadTranslated[2];
+extern std::string IMouseTranslated[3];
 
 // Recording options
-extern tstring IChannelPlayerTranslated[7];
-extern tstring IMicBoostTranslated[4];
+extern std::string IChannelPlayerTranslated[7];
+extern std::string IMicBoostTranslated[4];
 
 #endif

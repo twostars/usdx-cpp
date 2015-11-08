@@ -36,7 +36,7 @@
 
 #include "../screens/screens.h"
 
-#define WINDOW_ICON _T("ultrastardx-icon.png")
+#define WINDOW_ICON "ultrastardx-icon.png"
 
 using namespace boost::filesystem;
 
@@ -250,16 +250,15 @@ static const struct SDL_PixelFormat PixelFmt_BGR =
 
 enum ImagePixelFormat { ipfRGBA, ipfRGB, ipfBGRA, ipfBGR };
 
-void Initialize3D(const TCHAR * windowTitle)
+void Initialize3D(const char * windowTitle)
 {
-	char * utf8Title;
 	SDL_Surface * icon;
 
 	// Set window title to applicable
-	sLog.Status(_T("SDL_InitSubSystem"), _T("Initialize3D"));
+	sLog.Status("SDL_InitSubSystem", "Initialize3D");
 
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
-		return sLog.Critical(_T("Initialize3D"), _T("SDL_InitSubSystem() failed."));
+		return sLog.Critical("Initialize3D", "SDL_InitSubSystem() failed.");
 
 	// Set screen/display count
 	if (Params.Screens > 0)
@@ -295,24 +294,22 @@ void Initialize3D(const TCHAR * windowTitle)
 	else
 		Fullscreen = (sIni.FullScreen == Switch::On);
 
-	sLog.Status(_T("Initialize3D"), _T("SDL_CreateWindow (%s)"), Fullscreen ? _T("fullscreen") : _T("windowed"));
+	sLog.Status("Initialize3D", "SDL_CreateWindow (%s)", Fullscreen ? "fullscreen" : "windowed");
 	uint32 flags = SDL_WINDOW_OPENGL;
 	if (Fullscreen)
 		flags |= SDL_WINDOW_FULLSCREEN;
 	else
 		flags |= SDL_WINDOW_RESIZABLE;
 
-	utf8Title = StringToUTF8(windowTitle);
-	Screen = SDL_CreateWindow(utf8Title, 
+	Screen = SDL_CreateWindow(windowTitle, 
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		resolution.first, resolution.second, 
 		flags
 	);
-	SDL_free(utf8Title);
 
 	if (Screen == NULL)
-		return sLog.Critical(_T("Initialize3D"), _T("SDL_CreateWindow() failed."));
+		return sLog.Critical("Initialize3D", "SDL_CreateWindow() failed.");
 
 	icon = LoadSurfaceFromFile(ResourcesPath / ICONS_DIR / WINDOW_ICON);
 	SDL_SetWindowIcon(Screen, icon);
@@ -333,16 +330,16 @@ void Initialize3D(const TCHAR * windowTitle)
 
 	new Display();
 
-	sLog.Status(_T("Initialize3D"), _T("Loading font textures"));
+	sLog.Status("Initialize3D", "Loading font textures");
 	LoadFontTextures();
 
-	sLog.Status(_T("Initialize3D"), _T("Loading load screen"));
+	sLog.Status("Initialize3D", "Loading load screen");
 	LoadLoadingScreen();
 
-	sLog.Status(_T("Initialize3D"), _T("Loading textures"));
+	sLog.Status("Initialize3D", "Loading textures");
 	LoadTextures();
 
-	sLog.Status(_T("Initialize3D"), _T("Loading screens"));
+	sLog.Status("Initialize3D", "Loading screens");
 	LoadScreens();
 
 	// TODO:
@@ -364,32 +361,32 @@ void Initialize3D(const TCHAR * windowTitle)
 	sDisplay.CurrentScreen->FadeTo(UIMain);
 
 	sLog.BenchmarkEnd(2);
-	sLog.Benchmark(2, _T("Loading screens"));
+	sLog.Benchmark(2, "Loading screens");
 
-	sLog.Status(_T("Initialize3D"), _T("Finished"));
+	sLog.Status("Initialize3D", "Finished");
 }
 
 void LoadFontTextures()
 {
-	sLog.Status(_T("LoadFontTextures"), _T("Building fonts"));
+	sLog.Status("LoadFontTextures", "Building fonts");
 	BuildFonts();
 }
 
 void UnloadFontTextures()
 {
-	sLog.Status(_T("UnloadFontTextures"), _T("Killing fonts"));
+	sLog.Status("UnloadFontTextures", "Killing fonts");
 	KillFonts();
 }
 
 #define LOAD_SCREEN(name) \
-	LoadScreen(UI ## name, _T(#name))
+	LoadScreen(UI ## name, #name)
 
 template <typename T>
-void LoadScreen(T *& p, TCHAR * name)
+void LoadScreen(T *& p, char * name)
 {
 	assert(p == NULL);
 	sLog.BenchmarkStart(3);
-	sLog.Benchmark(3, _T("====> Screen %s"), name);
+	sLog.Benchmark(3, "====> Screen %s", name);
 	p = new T();
 	sLog.BenchmarkEnd(3);
 
@@ -415,77 +412,77 @@ void LoadTextures()
 	RGB rgb;
 	uint32 Col;
 
-	sLog.Status(_T("LoadTextures"), _T("Loading textures"));
+	sLog.Status("LoadTextures", "Loading textures");
 	
 	// TODO: Do it once for each player...
 	for (int player = 1; player <= MAX_PLAYERS; player++)
 	{
-		sThemes.LoadColor(rgb, _T("P%dLight"), player);
+		sThemes.LoadColor(rgb, "P%dLight", player);
 		Col = 0x10000 * (uint32) Round(rgb.R * 255)
 			+ 0x100 * (uint32) Round(rgb.G * 255)
 			+ (uint32) Round(rgb.B * 255);
 
-		TexNoteLeft[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("GrayLeft")), TextureType::Colorized, Col);
-		TexNoteMid[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("GrayMid")), TextureType::Colorized, Col);
-		TexNoteRight[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("GrayRight")), TextureType::Colorized, Col);
+		TexNoteLeft[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("GrayLeft"), TextureType::Colorized, Col);
+		TexNoteMid[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("GrayMid"), TextureType::Colorized, Col);
+		TexNoteRight[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("GrayRight"), TextureType::Colorized, Col);
 
-		TexNoteBGLeft[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NotePlainLeft")), TextureType::Colorized, Col);
-		TexNoteBGMid[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NotePlainMid")), TextureType::Colorized, Col);
-		TexNoteBGRight[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NotePlainRight")), TextureType::Colorized, Col);
+		TexNoteBGLeft[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("NotePlainLeft"), TextureType::Colorized, Col);
+		TexNoteBGMid[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("NotePlainMid"), TextureType::Colorized, Col);
+		TexNoteBGRight[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("NotePlainRight"), TextureType::Colorized, Col);
 
-		TexNoteGlowLeft[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteBGLeft")), TextureType::Colorized, Col);
-		TexNoteGlowMid[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteBGMid")), TextureType::Colorized, Col);
-		TexNoteGlowRight[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteBGRight")), TextureType::Colorized, Col);
+		TexNoteGlowLeft[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("NoteBGLeft"), TextureType::Colorized, Col);
+		TexNoteGlowMid[player]		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("NoteBGMid"), TextureType::Colorized, Col);
+		TexNoteGlowRight[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("NoteBGRight"), TextureType::Colorized, Col);
 
 		// Backgrounds for the scores
-		TexScoreBG[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreBG")), TextureType::Colorized, Col);
+		TexScoreBG[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreBG"), TextureType::Colorized, Col);
 
 		// Line bonus score bar
-		TexScoreNoteBarLevelLight[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Light")), TextureType::Colorized, Col);
-		TexScoreNoteBarRoundLight[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Light_Round")), TextureType::Colorized, Col);
+		TexScoreNoteBarLevelLight[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreLevel_Light"), TextureType::Colorized, Col);
+		TexScoreNoteBarRoundLight[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreLevel_Light_Round"), TextureType::Colorized, Col);
 
 		// Note bar score bar
-		sThemes.LoadColor(rgb, _T("P%dDark"), player);
+		sThemes.LoadColor(rgb, "P%dDark", player);
 		Col = 0x10000 * (uint32) Round(rgb.R * 255)
 			+ 0x100 * (uint32) Round(rgb.G * 255)
 			+ (uint32) Round(rgb.B * 255);
 
-		TexScoreNoteBarLevelDark[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Dark")), TextureType::Colorized, Col);
-		TexScoreNoteBarRoundDark[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Dark_Round")), TextureType::Colorized, Col);
+		TexScoreNoteBarLevelDark[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreLevel_Dark"), TextureType::Colorized, Col);
+		TexScoreNoteBarRoundDark[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreLevel_Dark_Round"), TextureType::Colorized, Col);
 
 		// Golden notes score bar
-		sThemes.LoadColor(rgb, _T("P%dLightest"), player);
+		sThemes.LoadColor(rgb, "P%dLightest", player);
 		Col = 0x10000 * (uint32) Round(rgb.R * 255)
 			+ 0x100 * (uint32) Round(rgb.G * 255)
 			+ (uint32) Round(rgb.B * 255);
 
-		TexScoreNoteBarLevelLightest[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Lightest")), TextureType::Colorized, Col);
-		TexScoreNoteBarRoundLightest[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("ScoreLevel_Lightest_Round")), TextureType::Colorized, Col);
+		TexScoreNoteBarLevelLightest[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreLevel_Lightest"), TextureType::Colorized, Col);
+		TexScoreNoteBarRoundLightest[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreLevel_Lightest_Round"), TextureType::Colorized, Col);
 	}
 
-	TexNotePerfectStar	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NotePerfectStar")), TextureType::Transparent, 0);
-	TexNoteStar			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("NoteStar")), TextureType::Transparent, 0xFFFFFFFF);
-	TexBall				= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Ball")), TextureType::Transparent, 0xFFFF00FF); // TODO: Verify colour is correct
-	TexLyricHelpBar		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("LyricHelpBar")), TextureType::Transparent, 0xFFFF00FF);
+	TexNotePerfectStar	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("NotePerfectStar"), TextureType::Transparent, 0);
+	TexNoteStar			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("NoteStar"), TextureType::Transparent, 0xFFFFFFFF);
+	TexBall				= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("Ball"), TextureType::Transparent, 0xFFFF00FF); // TODO: Verify colour is correct
+	TexLyricHelpBar		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("LyricHelpBar"), TextureType::Transparent, 0xFFFF00FF);
 
-	TexSelectSArrowL	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Select_ArrowLeft")), TextureType::Transparent, 0);
-	TexSelectSArrowR	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Select_ArrowRight")), TextureType::Transparent, 0);
+	TexSelectSArrowL	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("Select_ArrowLeft"), TextureType::Transparent, 0);
+	TexSelectSArrowR	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("Select_ArrowRight"), TextureType::Transparent, 0);
 
-	TexCursorUnpressed	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Cursor")), TextureType::Transparent, 0);
+	TexCursorUnpressed	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("Cursor"), TextureType::Transparent, 0);
 
-	const path* tex		= sSkins.GetTextureFileName(_T("Cursor_Pressed"));
+	const path* tex		= sSkins.GetTextureFileName("Cursor_Pressed");
 	if (tex != NULL)
 		TexCursorPressed = sTextureMgr.LoadTexture(tex, TextureType::Transparent, 0);
 	else
 		TexCursorPressed.TexNum = 0;
 
 	// Timebar mod
-	TexTimeProgress	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("TimeBar")), TextureType::Plain, 0);
+	TexTimeProgress	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("TimeBar"), TextureType::Plain, 0);
 
 	// Singbar mod
-	TexSingBarBack	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("SingBarBack")), TextureType::Plain, 0);
-	TexSingBar		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("SingBarBar")), TextureType::Plain, 0);
-	TexSingBarFront	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("SingBarFront")), TextureType::Plain, 0);
+	TexSingBarBack	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("SingBarBack"), TextureType::Plain, 0);
+	TexSingBar		= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("SingBarBar"), TextureType::Plain, 0);
+	TexSingBarFront	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("SingBarFront"), TextureType::Plain, 0);
 
 	// Line bonus popup
 	for (int i = 0; i <= 8; i++)
@@ -522,12 +519,12 @@ void LoadTextures()
 			+ 0x100 * (uint32) Round(g * 255)
 			+ (uint32) Round(b * 255);
 
-		TexSingLineBonusBack[i] = sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("LineBonusBack")), TextureType::Colorized, Col);
+		TexSingLineBonusBack[i] = sTextureMgr.LoadTexture(sSkins.GetTextureFileName("LineBonusBack"), TextureType::Colorized, Col);
 	}
 
 	// Rating pictures that show a picture according to your rate
 	for (int i = 0; i < 8; i++)
-		TexScoreRatings[i] = sTextureMgr.LoadTexture(sSkins.GetTextureFileName(_T("Rating_%d"), i));
+		TexScoreRatings[i] = sTextureMgr.LoadTexture(sSkins.GetTextureFileName("Rating_%d", i));
 }
 
 void LoadScreens()
@@ -582,7 +579,7 @@ SDL_Surface * LoadSurfaceFromFile(const path& filename)
 		// need at least 2 characters, as we need to skip the . prefix
 		|| filename.extension().native().size() < 2)
 	{
-		sLog.Error(_T("LoadSurfaceFromFile"), _T("%s has no extension."), filename.native().c_str());
+		sLog.Error("LoadSurfaceFromFile", "%s has no extension.", filename.native().c_str());
 		return NULL;
 	}
 
@@ -737,7 +734,7 @@ void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
 	// Ensure the size of a pixel is 4 bytes.
 	// It should always be 4...
 	if (bpp != 4)
-		sLog.Error(_T("ColorizeImage"), _T("The pixel size should be 4, but it is %d)"), bpp);
+		sLog.Error("ColorizeImage", "The pixel size should be 4, but it is %d.", bpp);
 
 	// Check whether the new color is white, grey or black
 	// because a greyscale must be created in a different way.

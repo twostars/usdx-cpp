@@ -31,13 +31,13 @@ struct ThemeEntry
 {
 	path Path;
 	path FileName;
-	tstring Theme;
-	tstring Name;
-	tstring Creator;
+	std::string Theme;
+	std::string Name;
+	std::string Creator;
 	struct SkinEntry * DefaultSkin;
 };
 
-#define DEFAULT_THEME _T("DELUXE")
+#define DEFAULT_THEME "DELUXE"
 
 class Themes : public Singleton<Themes>
 {
@@ -51,23 +51,23 @@ public:
 	void LoadHeader(const path& iniFile);
 	void LoadTheme(ThemeEntry * theme, eColor color);
 	void LoadColors();
-	void LoadColor(RGB& rgb, const tstring& color);
-	void LoadColor(RGB& rgb, const TCHAR* fmt, ...);
+	void LoadColor(RGB& rgb, const std::string& color);
+	void LoadColor(RGB& rgb, const char* fmt, ...);
 
-	void LoadThemeBasic(ThemeBasic * theme, const tstring& name);
-	void LoadThemeBackground(ThemeBackground& themeBackground, const tstring& name);
-	void LoadThemeText(ThemeText& themeText, const tstring& name);
-	void LoadThemeTexts(AThemeText& themeTextCollection, const tstring& name);
-	void LoadThemeStatic(ThemeStatic& themeStatic, const tstring& name);
-	void LoadThemeStatics(AThemeStatic& themeStaticCollection, const tstring& name);
-	void LoadThemeButton(ThemeButton& themeButton, const tstring& name, AThemeButtonCollection* themeButtonCollection = NULL);
-	void LoadThemeButtonCollection(ThemeButtonCollection& themeButtonCollection, const tstring& name);
-	void LoadThemeButtonCollections(AThemeButtonCollection& themeButtonCollection, const tstring& name);
-	void LoadThemeSelectSlide(ThemeSelectSlide& themeSelectSlide, const tstring& name);
-	void LoadThemeEqualizer(ThemeEqualizer& themeEqualizer, const tstring& name);
+	void LoadThemeBasic(ThemeBasic * theme, const std::string& name);
+	void LoadThemeBackground(ThemeBackground& themeBackground, const std::string& name);
+	void LoadThemeText(ThemeText& themeText, const std::string& name);
+	void LoadThemeTexts(AThemeText& themeTextCollection, const std::string& name);
+	void LoadThemeStatic(ThemeStatic& themeStatic, const std::string& name);
+	void LoadThemeStatics(AThemeStatic& themeStaticCollection, const std::string& name);
+	void LoadThemeButton(ThemeButton& themeButton, const std::string& name, AThemeButtonCollection* themeButtonCollection = NULL);
+	void LoadThemeButtonCollection(ThemeButtonCollection& themeButtonCollection, const std::string& name);
+	void LoadThemeButtonCollections(AThemeButtonCollection& themeButtonCollection, const std::string& name);
+	void LoadThemeSelectSlide(ThemeSelectSlide& themeSelectSlide, const std::string& name);
+	void LoadThemeEqualizer(ThemeEqualizer& themeEqualizer, const std::string& name);
 
-	ThemeEntry * LookupTheme(tstring themeName);
-	ThemeEntry * LookupThemeDefault(tstring themeName, tstring defaultTheme);
+	ThemeEntry * LookupTheme(std::string themeName);
+	ThemeEntry * LookupThemeDefault(std::string themeName, std::string defaultTheme);
 
 	~Themes();
 
@@ -109,12 +109,12 @@ public:
 	#undef DECL_THEME
 
 private:
-	typedef std::map<tstring, ThemeEntry, tstring_ci> ThemeEntryMap;
-	typedef std::map<tstring, RGB, tstring_ci> ColorMap;
+	typedef std::map<std::string, ThemeEntry, string_ci> ThemeEntryMap;
+	typedef std::map<std::string, RGB, string_ci> ColorMap;
 
 	ThemeEntryMap _themes;
 	ColorMap _colors;
-	CSimpleIni ini;
+	CSimpleIniA ini;
 
 	ThemeBasic * _lastThemeBasic;
 };

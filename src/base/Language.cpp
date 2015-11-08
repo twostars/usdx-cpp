@@ -36,71 +36,71 @@ extern path LanguagesPath;
  * Translated options
  */
 
-tstring IDifficultyTranslated[]       = { _T("Easy"), _T("Medium"), _T("Hard") };
-tstring ITabsTranslated[]             = { _T("Off"), _T("On") };
+std::string IDifficultyTranslated[]       = { "Easy", "Medium", "Hard" };
+std::string ITabsTranslated[]             = { "Off", "On" };
 
-tstring ISortingTranslated[]          = { _T("Edition"), _T("Genre"), _T("Language"), _T("Folder"), _T("Title"), _T("Artist"), _T("Artist2") };
+std::string ISortingTranslated[]          = { "Edition", "Genre", "Language", "Folder", "Title", "Artist", "Artist2" };
 
-tstring IDebugTranslated[]            = { _T("Off"), _T("On") }; 
+std::string IDebugTranslated[]            = { "Off", "On" }; 
 
-tstring IFullScreenTranslated[]       = { _T("Off"), _T("On") };
-tstring IVisualizerTranslated[]       = { _T("Off"), _T("WhenNoVideo"), _T("On") };
+std::string IFullScreenTranslated[]       = { "Off", "On" };
+std::string IVisualizerTranslated[]       = { "Off", "WhenNoVideo", "On" };
 
-tstring IBackgroundMusicTranslated[]  = { _T("Off"), _T("On") };
-tstring ISingWindowTranslated[]       = { _T("Small"), _T("Big") };
+std::string IBackgroundMusicTranslated[]  = { "Off", "On" };
+std::string ISingWindowTranslated[]       = { "Small", "Big" };
 
-tstring IOscilloscopeTranslated[]     = { _T("Off"), _T("On") };
+std::string IOscilloscopeTranslated[]     = { "Off", "On" };
 
-tstring ISpectrumTranslated[]         = { _T("Off"), _T("On") };
-tstring ISpectrographTranslated[]     = { _T("Off"), _T("On") };
-tstring IMovieSizeTranslated[]        = { _T("Half"), _T("Full [Vid]"), _T("Full [BG+Vid]") };
-tstring IVideoPreviewTranslated[]     = { _T("Off"), _T("On") };
-tstring IVideoEnabledTranslated[]     = { _T("Off"), _T("On") };
+std::string ISpectrumTranslated[]         = { "Off", "On" };
+std::string ISpectrographTranslated[]     = { "Off", "On" };
+std::string IMovieSizeTranslated[]        = { "Half", "Full [Vid]", "Full [BG+Vid]" };
+std::string IVideoPreviewTranslated[]     = { "Off", "On" };
+std::string IVideoEnabledTranslated[]     = { "Off", "On" };
 
-tstring IClickAssistTranslated[]      = { _T("Off"), _T("On") };
-tstring IBeatClickTranslated[]        = { _T("Off"), _T("On") };
-tstring ISavePlaybackTranslated[]     = { _T("Off"), _T("On") };
+std::string IClickAssistTranslated[]      = { "Off", "On" };
+std::string IBeatClickTranslated[]        = { "Off", "On" };
+std::string ISavePlaybackTranslated[]     = { "Off", "On" };
 
-tstring IVoicePassthroughTranslated[] = { _T("Off"), _T("On") };
+std::string IVoicePassthroughTranslated[] = { "Off", "On" };
 
-tstring ISyncToTranslated[]           = { _T("Music"), _T("Lyrics"), _T("Off") };
+std::string ISyncToTranslated[]           = { "Music", "Lyrics", "Off" };
 
-tstring 
-	IAudioOutputBufferSizeTranslated[] = { _T("Auto"), _T("256"),  _T("512"),   _T("1024"),  _T("2048"), 
-	                                       _T("4096"), _T("8192"), _T("16384"), _T("32768"), _T("65536") };
+std::string 
+	IAudioOutputBufferSizeTranslated[] = { "Auto", "256",  "512",   "1024",  "2048", 
+	                                       "4096", "8192", "16384", "32768", "65536" };
 
-tstring
-	IAudioInputBufferSizeTranslated[] = { _T("Auto"), _T("256"),  _T("512"),   _T("1024"),  _T("2048"), 
-                                           _T("4096"), _T("8192"), _T("16384"), _T("32768"), _T("65536") };
+std::string
+	IAudioInputBufferSizeTranslated[] = { "Auto", "256",  "512",   "1024",  "2048", 
+                                           "4096", "8192", "16384", "32768", "65536" };
 
-tstring IPreviewVolumeTranslated[]    = { _T("Off"), _T("10%"), _T("20%"), _T("30%"), _T("40%"), _T("50%"), 
-	                                      _T("60%"), _T("70%"), _T("80%"), _T("90%"), _T("100%") };
+std::string IPreviewVolumeTranslated[]    = { "Off", "10%", "20%", "30%", "40%", "50%", 
+	                                      "60%", "70%", "80%", "90%", "100%" };
 
-tstring IPreviewFadingTranslated[]    = { _T("Off"), _T("1 Sec"), _T("2 Secs"), _T("3 Secs"), _T("4 Secs"), _T("5 Secs") };
+std::string IPreviewFadingTranslated[]    = { "Off", "1 Sec", "2 Secs", "3 Secs", "4 Secs", "5 Secs" };
 
-tstring ILyricsFontTranslated[]       = { _T("Plain"), _T("OLine1"), _T("OLine2") };
-tstring ILyricsEffectTranslated[]     = { _T("Simple"), _T("Zoom"), _T("Slide"), _T("Ball"), _T("Shift") };
-tstring INoteLinesTranslated[]        = { _T("Off"), _T("On") };
+std::string ILyricsFontTranslated[]       = { "Plain", "OLine1", "OLine2" };
+std::string ILyricsEffectTranslated[]     = { "Simple", "Zoom", "Slide", "Ball", "Shift" };
+std::string INoteLinesTranslated[]        = { "Off", "On" };
 
-tstring IColorTranslated[]            = { _T("Blue"), _T("Green"), _T("Pink"), _T("Red"), _T("Violet"), 
-	                                      _T("Orange"), _T("Yellow"), _T("Brown"), _T("Black") };
+std::string IColorTranslated[]            = { "Blue", "Green", "Pink", "Red", "Violet", 
+	                                      "Orange", "Yellow", "Brown", "Black" };
 
 // Advanced
-tstring ILoadAnimationTranslated[]    = { _T("Off"), _T("On") };
-tstring IEffectSingTranslated[]       = { _T("Off"), _T("On") };
-tstring IScreenFadeTranslated[]       = { _T("Off"), _T("On") };
-tstring IAskBeforeDelTranslated[]     = { _T("Off"), _T("On") };
-tstring IOnSongClickTranslated[]      = { _T("Sing"), _T("Select Players"), _T("Open Menu") };
+std::string ILoadAnimationTranslated[]    = { "Off", "On" };
+std::string IEffectSingTranslated[]       = { "Off", "On" };
+std::string IScreenFadeTranslated[]       = { "Off", "On" };
+std::string IAskBeforeDelTranslated[]     = { "Off", "On" };
+std::string IOnSongClickTranslated[]      = { "Sing", "Select Players", "Open Menu" };
 
-tstring ILineBonusTranslated[]        = { _T("Off"), _T("On") };
-tstring IPartyPopupTranslated[]       = { _T("Off"), _T("On") };
+std::string ILineBonusTranslated[]        = { "Off", "On" };
+std::string IPartyPopupTranslated[]       = { "Off", "On" };
 
-tstring IJoypadTranslated[]           = { _T("Off"), _T("On") };
-tstring IMouseTranslated[]            = { _T("Off"), _T("Hardware Cursor"), _T("Software Cursor") };
+std::string IJoypadTranslated[]           = { "Off", "On" };
+std::string IMouseTranslated[]            = { "Off", "Hardware Cursor", "Software Cursor" };
 
 // Recording options
-tstring IChannelPlayerTranslated[]    = { _T("Off"), _T("1"), _T("2"), _T("3"), _T("4"), _T("5"), _T("6") };
-tstring IMicBoostTranslated[]         = { _T("Off"), _T("+6dB"), _T("+12dB"), _T("+18dB") };
+std::string IChannelPlayerTranslated[]    = { "Off", "1", "2", "3", "4", "5", "6" };
+std::string IMicBoostTranslated[]         = { "Off", "+6dB", "+12dB", "+18dB" };
 
 Language::Language()
 {
@@ -118,10 +118,10 @@ void Language::LoadList()
 			const path& p = itr->path();
 			if (is_directory(p)
 				|| !p.has_extension()
-				|| p.extension() != _T(".ini"))
+				|| p.extension() != ".ini")
 				continue;
 
-			tstring languageName = p.filename().stem().native();
+			std::string languageName = p.filename().stem().generic_string();
 
 			// insert the new language name to the set
 			_langSet.push_back(languageName);
@@ -129,35 +129,37 @@ void Language::LoadList()
 	}
 	catch (filesystem_error)
 	{
-		sLog.Critical(_T("Language::LoadList"), _T("Could not access %s"), 
-			LanguagesPath.native().c_str());
+		sLog.Critical(
+			"Language::LoadList",
+			"Could not access %s", 
+			LanguagesPath.generic_string().c_str());
 	}
 
 	if (_langSet.empty())
-		sLog.Critical(_T("Could not load any language file."));
+		sLog.Critical("Could not load any language file.");
 
 	OptionList::const_iterator itr = std::find(_langSet.begin(), _langSet.end(), DEFAULT_LANGUAGE);
 	if (itr == _langSet.end())
-		sLog.Critical(_T("Default language (") DEFAULT_LANGUAGE _T(") does not exist."));
+		sLog.Critical("Default language (" DEFAULT_LANGUAGE ") does not exist.");
 }
 
-void Language::ChangeLanguage(const tstring& language)
+void Language::ChangeLanguage(const std::string& language)
 {
-	const TCHAR * sectionName = _T("Text");
+	const char * sectionName = "Text";
 
-	CSimpleIni ini(true);
+	CSimpleIniA ini(true);
 	path iniPath(LanguagesPath);
 	iniPath /= language;
-	iniPath.replace_extension(_T(".ini"));
+	iniPath.replace_extension(".ini");
 
 	SI_Error result = ini.LoadFile(iniPath.native().c_str());
 
 	if (result != SI_OK)
-		sLog.Critical(_T("Change language"), _T("Failed to set language to %s."), language.c_str());
+		sLog.Critical("Change language", "Failed to set language to %s.", language.c_str());
 
-	CSimpleIni::TNamesDepend keys;
+	CSimpleIniA::TNamesDepend keys;
 	ini.GetAllKeys(sectionName, keys);
-	for (CSimpleIni::TNamesDepend::const_iterator itr = keys.begin(); itr != keys.end(); ++itr)
+	for (CSimpleIniA::TNamesDepend::const_iterator itr = keys.begin(); itr != keys.end(); ++itr)
 		_langEntryMap[itr->pItem] = ini.GetValue(sectionName, itr->pItem);
 
 	// Update language name for config
@@ -169,12 +171,12 @@ void Language::ChangeLanguage(const tstring& language)
 	TranslateOptionValues();
 }
 
-void Language::AddConst(const tstring& id, const tstring& text)
+void Language::AddConst(const std::string& id, const std::string& text)
 {
 	_langConstEntryMap[id] = text;
 }
 
-const tstring Language::Translate(const tstring& id)
+const std::string Language::Translate(const std::string& id)
 {
 	LanguageEntryMap::iterator itr;
 
@@ -195,9 +197,9 @@ const tstring Language::Translate(const tstring& id)
 	return id;
 }
 
-const tstring Language::Translate(const TCHAR * id)
+const std::string Language::Translate(const char * id)
 {
-	tstring tmp = id;
+	std::string tmp = id;
 	return Translate(tmp);
 }
 
@@ -206,26 +208,26 @@ void Language::TranslateOptionValues()
 	// Translate language names.
 	_translatedLanguageNames.clear();
 	for (OptionList::const_iterator itr = _langSet.begin(); itr != _langSet.end(); ++itr)
-		_translatedLanguageNames[*itr] = Translate(_T("OPTION_VALUE_") + *itr);
+		_translatedLanguageNames[*itr] = Translate("OPTION_VALUE_" + *itr);
 
-	tstring switchOff = Translate(_T("OPTION_VALUE_OFF"));
-	tstring switchOn  = Translate(_T("OPTION_VALUE_ON"));
+	std::string switchOff = Translate("OPTION_VALUE_OFF");
+	std::string switchOn  = Translate("OPTION_VALUE_ON");
 
 	// Now translate the option values.
-	IDifficultyTranslated[DifficultyType::Easy]           = Translate(_T("OPTION_VALUE_EASY"));
-	IDifficultyTranslated[DifficultyType::Medium]         = Translate(_T("OPTION_VALUE_MEDIUM"));
-	IDifficultyTranslated[DifficultyType::Hard]           = Translate(_T("OPTION_VALUE_HARD"));
+	IDifficultyTranslated[DifficultyType::Easy]           = Translate("OPTION_VALUE_EASY");
+	IDifficultyTranslated[DifficultyType::Medium]         = Translate("OPTION_VALUE_MEDIUM");
+	IDifficultyTranslated[DifficultyType::Hard]           = Translate("OPTION_VALUE_HARD");
 
 	ITabsTranslated[Switch::Off]                          = switchOff;
 	ITabsTranslated[Switch::On]                           = switchOn;
 
-	ISortingTranslated[SortingType::Edition]              = Translate(_T("OPTION_VALUE_EDITION"));
-	ISortingTranslated[SortingType::Genre]                = Translate(_T("OPTION_VALUE_GENRE"));
-	ISortingTranslated[SortingType::Language]             = Translate(_T("OPTION_VALUE_LANGUAGE"));
-	ISortingTranslated[SortingType::Folder]               = Translate(_T("OPTION_VALUE_FOLDER"));
-	ISortingTranslated[SortingType::Title]                = Translate(_T("OPTION_VALUE_TITLE"));
-	ISortingTranslated[SortingType::Artist]               = Translate(_T("OPTION_VALUE_ARTIST"));
-	ISortingTranslated[SortingType::Artist2]              = Translate(_T("OPTION_VALUE_ARTIST2"));
+	ISortingTranslated[SortingType::Edition]              = Translate("OPTION_VALUE_EDITION");
+	ISortingTranslated[SortingType::Genre]                = Translate("OPTION_VALUE_GENRE");
+	ISortingTranslated[SortingType::Language]             = Translate("OPTION_VALUE_LANGUAGE");
+	ISortingTranslated[SortingType::Folder]               = Translate("OPTION_VALUE_FOLDER");
+	ISortingTranslated[SortingType::Title]                = Translate("OPTION_VALUE_TITLE");
+	ISortingTranslated[SortingType::Artist]               = Translate("OPTION_VALUE_ARTIST");
+	ISortingTranslated[SortingType::Artist2]              = Translate("OPTION_VALUE_ARTIST2");
 
 	IDebugTranslated[Switch::Off]                         = switchOff;
 	IDebugTranslated[Switch::On]                          = switchOn;
@@ -234,14 +236,14 @@ void Language::TranslateOptionValues()
 	IFullScreenTranslated[Switch::On]                     = switchOn;
 
 	IVisualizerTranslated[VisualizerOption::Off]          = switchOff;
-	IVisualizerTranslated[VisualizerOption::WhenNoVideo]  = Translate(_T("OPTION_VALUE_WHENNOVIDEO"));
+	IVisualizerTranslated[VisualizerOption::WhenNoVideo]  = Translate("OPTION_VALUE_WHENNOVIDEO");
 	IVisualizerTranslated[VisualizerOption::On]           = switchOn;
 
 	IBackgroundMusicTranslated[Switch::Off]               = switchOff;
 	IBackgroundMusicTranslated[Switch::On]                = switchOn;
 
-	ISingWindowTranslated[SingWindowType::Small]          = Translate(_T("OPTION_VALUE_SMALL"));
-	ISingWindowTranslated[SingWindowType::Big]            = Translate(_T("OPTION_VALUE_BIG"));
+	ISingWindowTranslated[SingWindowType::Small]          = Translate("OPTION_VALUE_SMALL");
+	ISingWindowTranslated[SingWindowType::Big]            = Translate("OPTION_VALUE_BIG");
 
 	IOscilloscopeTranslated[Switch::Off]                  = switchOff;
 	IOscilloscopeTranslated[Switch::On]                   = switchOn;
@@ -252,9 +254,9 @@ void Language::TranslateOptionValues()
 	ISpectrographTranslated[Switch::Off]                  = switchOff;
 	ISpectrographTranslated[Switch::On]                   = switchOn;
 
-	IMovieSizeTranslated[0]                               = Translate(_T("OPTION_VALUE_HALF"));
-	IMovieSizeTranslated[1]                               = Translate(_T("OPTION_VALUE_FULL_VID"));
-	IMovieSizeTranslated[2]                               = Translate(_T("OPTION_VALUE_FULL_VID_BG"));
+	IMovieSizeTranslated[0]                               = Translate("OPTION_VALUE_HALF");
+	IMovieSizeTranslated[1]                               = Translate("OPTION_VALUE_FULL_VID");
+	IMovieSizeTranslated[2]                               = Translate("OPTION_VALUE_FULL_VID_BG");
 
 	IVideoPreviewTranslated[Switch::Off]                  = switchOff;
 	IVideoPreviewTranslated[Switch::On]                   = switchOn;
@@ -274,32 +276,32 @@ void Language::TranslateOptionValues()
 	IVoicePassthroughTranslated[Switch::Off]              = switchOff;
 	IVoicePassthroughTranslated[Switch::On]               = switchOn;
 
-	ISyncToTranslated[SyncToType::Music]                  = Translate(_T("OPTION_VALUE_MUSIC"));
-	ISyncToTranslated[SyncToType::Lyrics]                 = Translate(_T("OPTION_VALUE_LYRICS"));
+	ISyncToTranslated[SyncToType::Music]                  = Translate("OPTION_VALUE_MUSIC");
+	ISyncToTranslated[SyncToType::Lyrics]                 = Translate("OPTION_VALUE_LYRICS");
 	ISyncToTranslated[SyncToType::Off]                    = switchOff;
 
-	ILyricsFontTranslated[LyricsFontType::Plain]          = Translate(_T("OPTION_VALUE_PLAIN"));
-	ILyricsFontTranslated[LyricsFontType::OLine1]         = Translate(_T("OPTION_VALUE_OLINE1"));
-	ILyricsFontTranslated[LyricsFontType::OLine2]         = Translate(_T("OPTION_VALUE_OLINE2"));
+	ILyricsFontTranslated[LyricsFontType::Plain]          = Translate("OPTION_VALUE_PLAIN");
+	ILyricsFontTranslated[LyricsFontType::OLine1]         = Translate("OPTION_VALUE_OLINE1");
+	ILyricsFontTranslated[LyricsFontType::OLine2]         = Translate("OPTION_VALUE_OLINE2");
 
-	ILyricsEffectTranslated[LyricsEffectType::Simple]     = Translate(_T("OPTION_VALUE_SIMPLE"));
-	ILyricsEffectTranslated[LyricsEffectType::Zoom]       = Translate(_T("OPTION_VALUE_ZOOM"));
-	ILyricsEffectTranslated[LyricsEffectType::Slide]      = Translate(_T("OPTION_VALUE_SLIDE"));
-	ILyricsEffectTranslated[LyricsEffectType::Ball]       = Translate(_T("OPTION_VALUE_BALL"));
-	ILyricsEffectTranslated[LyricsEffectType::Shift]      = Translate(_T("OPTION_VALUE_SHIFT"));
+	ILyricsEffectTranslated[LyricsEffectType::Simple]     = Translate("OPTION_VALUE_SIMPLE");
+	ILyricsEffectTranslated[LyricsEffectType::Zoom]       = Translate("OPTION_VALUE_ZOOM");
+	ILyricsEffectTranslated[LyricsEffectType::Slide]      = Translate("OPTION_VALUE_SLIDE");
+	ILyricsEffectTranslated[LyricsEffectType::Ball]       = Translate("OPTION_VALUE_BALL");
+	ILyricsEffectTranslated[LyricsEffectType::Shift]      = Translate("OPTION_VALUE_SHIFT");
 
 	INoteLinesTranslated[Switch::Off]                     = switchOff;
 	INoteLinesTranslated[Switch::On]                      = switchOn;
 
-	IColorTranslated[Color::Blue]                         = Translate(_T("OPTION_VALUE_BLUE"));
-	IColorTranslated[Color::Green]                        = Translate(_T("OPTION_VALUE_GREEN"));
-	IColorTranslated[Color::Pink]                         = Translate(_T("OPTION_VALUE_PINK"));
-	IColorTranslated[Color::Red]                          = Translate(_T("OPTION_VALUE_RED"));
-	IColorTranslated[Color::Violet]                       = Translate(_T("OPTION_VALUE_VIOLET"));
-	IColorTranslated[Color::Orange]                       = Translate(_T("OPTION_VALUE_ORANGE"));
-	IColorTranslated[Color::Yellow]                       = Translate(_T("OPTION_VALUE_YELLOW"));
-	IColorTranslated[Color::Brown]                        = Translate(_T("OPTION_VALUE_BROWN"));
-	IColorTranslated[Color::Black]                        = Translate(_T("OPTION_VALUE_BLACK"));
+	IColorTranslated[Color::Blue]                         = Translate("OPTION_VALUE_BLUE");
+	IColorTranslated[Color::Green]                        = Translate("OPTION_VALUE_GREEN");
+	IColorTranslated[Color::Pink]                         = Translate("OPTION_VALUE_PINK");
+	IColorTranslated[Color::Red]                          = Translate("OPTION_VALUE_RED");
+	IColorTranslated[Color::Violet]                       = Translate("OPTION_VALUE_VIOLET");
+	IColorTranslated[Color::Orange]                       = Translate("OPTION_VALUE_ORANGE");
+	IColorTranslated[Color::Yellow]                       = Translate("OPTION_VALUE_YELLOW");
+	IColorTranslated[Color::Brown]                        = Translate("OPTION_VALUE_BROWN");
+	IColorTranslated[Color::Black]                        = Translate("OPTION_VALUE_BLACK");
 
 	// Advanced
 	ILoadAnimationTranslated[Switch::Off]                 = switchOff;
@@ -314,9 +316,9 @@ void Language::TranslateOptionValues()
 	IAskBeforeDelTranslated[Switch::Off]                  = switchOff;
 	IAskBeforeDelTranslated[Switch::On]                   = switchOn;
 
-	IOnSongClickTranslated[SongClickType::Sing]           = Translate(_T("OPTION_VALUE_SING"));
-	IOnSongClickTranslated[SongClickType::SelectPlayers]  = Translate(_T("OPTION_VALUE_SELECT_PLAYERS"));
-	IOnSongClickTranslated[SongClickType::OpenMenu]       = Translate(_T("OPTION_VALUE_OPEN_MENU"));
+	IOnSongClickTranslated[SongClickType::Sing]           = Translate("OPTION_VALUE_SING");
+	IOnSongClickTranslated[SongClickType::SelectPlayers]  = Translate("OPTION_VALUE_SELECT_PLAYERS");
+	IOnSongClickTranslated[SongClickType::OpenMenu]       = Translate("OPTION_VALUE_OPEN_MENU");
 
 	ILineBonusTranslated[Switch::Off]                     = switchOff;
 	ILineBonusTranslated[Switch::On]                      = switchOn;
@@ -328,20 +330,20 @@ void Language::TranslateOptionValues()
 	IJoypadTranslated[Switch::On]                         = switchOn;
 
 	IMouseTranslated[0]                                   = switchOff;
-	IMouseTranslated[1]                                   = Translate(_T("OPTION_VALUE_HARDWARE_CURSOR"));
-	IMouseTranslated[2]                                   = Translate(_T("OPTION_VALUE_SOFTWARE_CURSOR"));
+	IMouseTranslated[1]                                   = Translate("OPTION_VALUE_HARDWARE_CURSOR");
+	IMouseTranslated[2]                                   = Translate("OPTION_VALUE_SOFTWARE_CURSOR");
 
-	IAudioOutputBufferSizeTranslated[0]                   = Translate(_T("OPTION_VALUE_AUTO"));
-	IAudioInputBufferSizeTranslated[0]                    = Translate(_T("OPTION_VALUE_AUTO"));
+	IAudioOutputBufferSizeTranslated[0]                   = Translate("OPTION_VALUE_AUTO");
+	IAudioInputBufferSizeTranslated[0]                    = Translate("OPTION_VALUE_AUTO");
 
 	// Song Preview
 	IPreviewVolumeTranslated[Switch::Off]                 = switchOff;
 	IPreviewFadingTranslated[Switch::Off]                 = switchOff;
-	IPreviewFadingTranslated[1]                           = _T("1 ") + Translate(_T("OPTION_VALUE_SEC"));
-	IPreviewFadingTranslated[2]                           = _T("2 ") + Translate(_T("OPTION_VALUE_SECS"));
-	IPreviewFadingTranslated[3]                           = _T("3 ") + Translate(_T("OPTION_VALUE_SECS"));
-	IPreviewFadingTranslated[4]                           = _T("4 ") + Translate(_T("OPTION_VALUE_SECS"));
-	IPreviewFadingTranslated[5]                           = _T("5 ") + Translate(_T("OPTION_VALUE_SECS"));
+	IPreviewFadingTranslated[1]                           = "1 " + Translate("OPTION_VALUE_SEC");
+	IPreviewFadingTranslated[2]                           = "2 " + Translate("OPTION_VALUE_SECS");
+	IPreviewFadingTranslated[3]                           = "3 " + Translate("OPTION_VALUE_SECS");
+	IPreviewFadingTranslated[4]                           = "4 " + Translate("OPTION_VALUE_SECS");
+	IPreviewFadingTranslated[5]                           = "5 " + Translate("OPTION_VALUE_SECS");
 
 	// Recording options
 	IChannelPlayerTranslated[Switch::Off]                 = switchOff;

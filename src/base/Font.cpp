@@ -105,9 +105,9 @@ void FontBase::ResetIntern()
 	ReflectionSpacing = 0.0f;
 }
 
-void FontBase::SplitLines(const tstring& string, LineArray& lines)
+void FontBase::SplitLines(const std::string& string, LineArray& lines)
 {
-	StrSplit(string, _T("\r"), &lines);
+	StrSplit(string, "\r", &lines);
 }
 
 void FontBase::PrintLines(const LineArray& lines, bool reflectionPass /*= false*/)
@@ -176,14 +176,14 @@ void FontBase::PrintLines(const LineArray& lines, bool reflectionPass /*= false*
 	glPopAttrib();
 }
 
-void FontBase::Print(const tstring& text)
+void FontBase::Print(const std::string& text)
 {
 	LineArray lines;
 	SplitLines(text, lines);
 	PrintLines(lines);
 }
 
-void FontBase::DrawUnderline(const tstring& line)
+void FontBase::DrawUnderline(const std::string& line)
 {
 	float	y1 = GetUnderlinePosition(),
 			y2 = y1 + GetUnderlineThickness();
@@ -191,7 +191,7 @@ void FontBase::DrawUnderline(const tstring& line)
 	glRectf(bounds.Left, y1, bounds.Right, y2);
 }
 
-FontBounds FontBase::BBox(const tstring& text, bool advance /*= true*/)
+FontBounds FontBase::BBox(const std::string& text, bool advance /*= true*/)
 {
 	LineArray lines;
 	SplitLines(text, lines);
@@ -273,7 +273,7 @@ FontBase * ScalableFont::ChooseMipmapFont()
 	}
 
 	if (result == NULL)
-		sLog.Critical(_T("ScalableFont::ChooseMipmapFont"), _T("No mipmap font available for desired level %d. Base font is '%s'."),
+		sLog.Critical("ScalableFont::ChooseMipmapFont", "No mipmap font available for desired level %d. Base font is '%s'.",
 		desiredLevel, BaseFont->Filename.c_str());
 
 	// since the mipmap font (if level > 0) is smaller than the base-font
@@ -420,9 +420,9 @@ void ScalableFont::PrintLines(const LineArray& lines, bool reflectionPass /*= fa
 	glPopMatrix();
 }
 
-void ScalableFont::Render(const tstring& text, bool reflectionPass)
+void ScalableFont::Render(const std::string& text, bool reflectionPass)
 {
-	sLog.Critical(_T("ScalableFont::Render"), _T("Unused method called. This should not be called.."));
+	sLog.Critical("ScalableFont::Render", "Unused method called. This should not be called..");
 }
 
 float ScalableFont::GetUnderlinePosition()
@@ -557,7 +557,7 @@ void FTFontFaceCache::UnloadFace(FTFontFace * face)
 		Faces.erase(itr);
 }
 
-FTGlyph::FTGlyph(FTFont * font, TCHAR ch, float outset, uint32 loadFlags)
+FTGlyph::FTGlyph(FTFont * font, char ch, float outset, uint32 loadFlags)
 	: DisplayList(NULL)
 {
 	Font = font;
@@ -604,11 +604,11 @@ void FTGlyph::CreateTexture(uint32 loadFlags)
 
 	// Load the glyph for our character
 	if (FT_Load_Glyph(Face->Face, CharIndex, loadFlags) != 0)
-		throw FontException(_T("FTGlyph::CreateTexture(): FT_Load_Glyph() failed for font '%s'."), Font->Filename.c_str());
+		throw FontException("FTGlyph::CreateTexture(): FT_Load_Glyph() failed for font '%s'.", Font->Filename.c_str());
 
 	// Move the face's glyph into a FT_Glyph object.
 	if (FT_Get_Glyph(Face->Face->glyph, &glyph) != 0)
-		throw FontException(_T("FTGlyph::CreateTexture(): FT_Get_Glyph() failed for font '%s'."), Font->Filename.c_str());
+		throw FontException("FTGlyph::CreateTexture(): FT_Get_Glyph() failed for font '%s'.", Font->Filename.c_str());
 
 	if (Outset > 0.0f)
 		StrokeBorder(glyph);
@@ -699,7 +699,7 @@ void FTGlyph::CreateTexture(uint32 loadFlags)
 			} break;
 
 			default:
-				throw FontException(_T("FTGlyph::CreateTexture(): Unhandled pixel format (%d)."), Bitmap->pixel_mode);
+				throw FontException("FTGlyph::CreateTexture(): Unhandled pixel format (%d).", Bitmap->pixel_mode);
 		}
 	}
 
@@ -783,7 +783,7 @@ void FTGlyph::StrokeBorder(FT_Glyph Glyph)
 
 	// extrude outer border
 	if (FT_Stroker_New(Glyph->library, &OuterStroker) != 0)
-		throw FontException(_T("FTGlyph::StrokeBorder(): FT_Stroker_New() failed for font '%s'."), Font->Filename.c_str());
+		throw FontException("FTGlyph::StrokeBorder(): FT_Stroker_New() failed for font '%s'.", Font->Filename.c_str());
 
 	FT_Stroker_Set(
 		OuterStroker,
@@ -795,7 +795,7 @@ void FTGlyph::StrokeBorder(FT_Glyph Glyph)
 	// similar to FT_Glyph_StrokeBorder(inner = FT_FALSE) but it is possible to
 	// use FT_Stroker_ExportBorder() afterwards to combine inner and outer borders
 	if (FT_Stroker_ParseOutline(OuterStroker, Outline, 0) != 0)
-		throw FontException(_T("FTGlyph::StrokeBorder(): FT_Stroker_ParseOutline() failed for font '%s'."), Font->Filename.c_str());
+		throw FontException("FTGlyph::StrokeBorder(): FT_Stroker_ParseOutline() failed for font '%s'.", Font->Filename.c_str());
 
 	FT_Stroker_GetBorderCounts(OuterStroker, OuterBorder, &OuterNumPoints, &OuterNumContours);
 
@@ -803,7 +803,7 @@ void FTGlyph::StrokeBorder(FT_Glyph Glyph)
 	if (UseStencil)
 	{
 		if (FT_Stroker_New(Glyph->library, &InnerStroker) != 0)
-			throw FontException(_T("FTGlyph::StrokeBorder(): FT_Stroker_New() failed for font '%s'."), Font->Filename.c_str());
+			throw FontException("FTGlyph::StrokeBorder(): FT_Stroker_New() failed for font '%s'.", Font->Filename.c_str());
 
 		FT_Stroker_Set(
 			InnerStroker,
@@ -813,7 +813,7 @@ void FTGlyph::StrokeBorder(FT_Glyph Glyph)
 			0);
 
 		if (FT_Stroker_ParseOutline(InnerStroker, Outline, 0) != 0)
-			throw FontException(_T("FTGlyph::StrokeBorder(): FT_Stroker_ParseOutline() failed for font '%s'."), Font->Filename.c_str());
+			throw FontException("FTGlyph::StrokeBorder(): FT_Stroker_ParseOutline() failed for font '%s'.", Font->Filename.c_str());
 
 		FT_Stroker_GetBorderCounts(InnerStroker, InnerBorder, &InnerNumPoints, &InnerNumContours);
 	}
@@ -833,7 +833,7 @@ void FTGlyph::StrokeBorder(FT_Glyph Glyph)
 	// resize glyph outline to hold inner and outer border
 	FT_Outline_Done(Glyph->library, Outline);
 	if (FT_Outline_New(Glyph->library, GlyphNumPoints, GlyphNumContours, Outline) != 0)
-		throw FontException(_T("FTGlyph::StrokeBorder(): FT_Outline_New() failed for font '%s'."), Font->Filename.c_str());
+		throw FontException("FTGlyph::StrokeBorder(): FT_Outline_New() failed for font '%s'.", Font->Filename.c_str());
 
 	Outline->n_points = 0;
 	Outline->n_contours = 0;
@@ -844,7 +844,7 @@ void FTGlyph::StrokeBorder(FT_Glyph Glyph)
 		FT_Stroker_ExportBorder(InnerStroker, InnerBorder, Outline);
 
 	if (FT_Outline_Check(Outline) != 0)
-		throw FontException(_T("FTGlyph::StrokeBorder(): FT_Stroker_ExportBorder() failed for font '%s'."), Font->Filename.c_str());
+		throw FontException("FTGlyph::StrokeBorder(): FT_Stroker_ExportBorder() failed for font '%s'.", Font->Filename.c_str());
 
 	if (InnerStroker != NULL)
 		FT_Stroker_Done(InnerStroker);
@@ -978,7 +978,7 @@ CachedFont::CachedFont(const path& filename)
 {
 }
 
-Glyph * CachedFont::GetGlyph(TCHAR ch)
+Glyph * CachedFont::GetGlyph(char ch)
 {
 	Glyph * glyph = Cache.GetGlyph(ch);
 	if (glyph != NULL)
@@ -997,7 +997,7 @@ void CachedFont::FlushCache(bool keepBaseSet)
 	Cache.FlushCache(keepBaseSet);
 }
 
-bool GlyphCache::AddGlyph(TCHAR ch, Glyph * glyph)
+bool GlyphCache::AddGlyph(char ch, Glyph * glyph)
 {
 	uint32 baseCode = (ch >> 8);
 	GlyphTable * glyphTable = FindGlyphTable(baseCode);
@@ -1021,7 +1021,7 @@ bool GlyphCache::AddGlyph(TCHAR ch, Glyph * glyph)
 	return false;
 }
 
-Glyph * GlyphCache::GetGlyph(TCHAR ch)
+Glyph * GlyphCache::GetGlyph(char ch)
 {
 	uint32 baseCode = (ch >> 8);
 	GlyphTable * glyphTable = FindGlyphTable(baseCode);
@@ -1082,14 +1082,14 @@ FTFontFace::FTFontFace(const path& filename, int size)
 void FTFontFace::Load()
 {
 	if (FT_New_Face(s_ftLibrary.GetLibrary(), Filename.generic_string().c_str(), 0, &Face) != 0)
-		throw FontException(_T("FTFontFace::Load(): Could not load font '%s'"), Filename.c_str());
+		throw FontException("FTFontFace::Load(): Could not load font '%s'", Filename.c_str());
 
 	// Support scalable fonts only
 	if (!FT_IS_SCALABLE(Face))
-		throw FontException(_T("FTFontFace::Load(): Font '%s' is not scalable."), Filename.c_str());
+		throw FontException("FTFontFace::Load(): Font '%s' is not scalable.", Filename.c_str());
 
 	if (FT_Set_Pixel_Sizes(Face, 0, Size) != 0)
-		throw FontException(_T("FTFontFace::Load(): Could not set pixel size for '%s' to %d."), Filename.c_str(), Size);
+		throw FontException("FTFontFace::Load(): Could not set pixel size for '%s' to %d.", Filename.c_str(), Size);
 
 	// Get scale factor for font unit to pixel size transformation
 	FontUnitScale.X = (float) Face->size->metrics.x_ppem / (float) Face->units_per_EM;
@@ -1137,7 +1137,7 @@ void FTOutlineFont::AddFallback(const path& filename)
 	InnerFont->AddFallback(filename);
 }
 
-void FTOutlineFont::DrawUnderline(const tstring& line)
+void FTOutlineFont::DrawUnderline(const std::string& line)
 {
 	GLColor currentColor, outlineColor;
 
@@ -1163,7 +1163,7 @@ void FTOutlineFont::DrawUnderline(const tstring& line)
 	glPopMatrix();
 }
 
-void FTOutlineFont::Render(const tstring& line, bool reflectionPass)
+void FTOutlineFont::Render(const std::string& line, bool reflectionPass)
 {
 	GLColor currentColor, outlineColor;
 
@@ -1322,7 +1322,7 @@ FTFont::FTFont(const path& filename,
 	// pre-cache some commonly used glyphs (' ' - '~')
 	if (preCache)
 	{
-		for (TCHAR ch = ' '; ch < '~'; ch++)
+		for (char ch = ' '; ch < '~'; ch++)
 		{
 			FTGlyph * glyph = new FTGlyph(this, ch, outset, loadFlags);
 			if (!Cache.AddGlyph(ch, glyph))
@@ -1331,7 +1331,7 @@ FTFont::FTFont(const path& filename,
 	}
 }
 
-Glyph * FTFont::LoadGlyph(TCHAR ch)
+Glyph * FTFont::LoadGlyph(char ch)
 {
 	return new FTGlyph(this, ch, Outset, LoadFlags);
 }
@@ -1351,7 +1351,7 @@ FontBounds FTFont::BBoxLines(const LineArray& lines, bool advance)
 	for (size_t LineIndex = 0; LineIndex < lines.size(); LineIndex++)
 	{
 		// get next text line
-		const tstring& TextLine = lines[LineIndex];
+		const std::string& TextLine = lines[LineIndex];
 		float LineYOffset = -LineSpacing * LineIndex;
 		FontBounds LineBounds;
 
@@ -1473,7 +1473,7 @@ float FTFont::GetDescender()
 	return Face->Face->descender * Face->FontUnitScale.Y;
 }
 
-void FTFont::Render(const tstring& text, bool reflectionPass /*= false*/)
+void FTFont::Render(const std::string& text, bool reflectionPass /*= false*/)
 {
 	FTGlyph * PrevGlyph = NULL;
 
@@ -1520,7 +1520,7 @@ FTFont::~FTFont()
 FreeType::FreeType()
 {
 	if (FT_Init_FreeType(&_ftLibrary) != 0)
-		throw FontException(_T("FT_Init_FreeType() failed"));
+		throw FontException("FT_Init_FreeType() failed");
 }
 
 FT_Library& FreeType::GetLibrary()

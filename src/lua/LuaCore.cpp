@@ -34,12 +34,12 @@ void LuaCore::LoadPlugins()
 	// TODO
 }
 
-void LuaCore::BrowseDir(TCHAR * directory)
+void LuaCore::BrowseDir(char * directory)
 {
 	// TODO
 }
 
-void LuaCore::LoadPlugin(TCHAR * filename)
+void LuaCore::LoadPlugin(char * filename)
 {
 	// TODO
 }
@@ -59,7 +59,7 @@ LuaPlugin * LuaCore::GetPluginById(int id)
     moduleName is the name the script needs to write in its require()
     functionList is an array of lua calling compatible functions.
 	*/
-void LuaCore::RegisterModule(const TCHAR * moduleName, luaL_Reg * functionList)
+void LuaCore::RegisterModule(const char * moduleName, luaL_Reg * functionList)
 {
 }
 

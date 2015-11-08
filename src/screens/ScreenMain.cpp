@@ -112,7 +112,7 @@ bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 							}
 						// }
 						//	else // show error message
-						//		UIPopupError->ShowPopup(sLanguage.Translate(_T("ERROR_NO_SONGS")));
+						//		UIPopupError->ShowPopup(__T("ERROR_NO_SONGS"));
 						break;
 
 					// Multi
@@ -131,7 +131,7 @@ bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 		//#if defined(UseMIDIPort)
 						FadeTo(UIEdit, /*SoundLib.Start*/ NULL); // TODO
 		//#else
-		//				UIPopupError->ShowPopup(sLanguage.Translate(_T("ERROR_NO_EDITOR")));
+		//				UIPopupError->ShowPopup(__T("ERROR_NO_EDITOR"));
 		//#endif
 						break;
 

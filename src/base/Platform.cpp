@@ -26,7 +26,7 @@
 
 bool Platform::s_useLocalDirs = false;
 
-int main(int argc, TCHAR ** argv)
+int main(int argc, char ** argv)
 {
 	return usdxMain(argc, argv);
 }

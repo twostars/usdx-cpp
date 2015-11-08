@@ -60,8 +60,8 @@ public:
 	ThemeText   TextDescription;
 	ThemeText   TextDescriptionLong;
 
-	tstring     Description[MAX_PLAYERS];
-	tstring     DescriptionLong[MAX_PLAYERS];
+	std::string     Description[MAX_PLAYERS];
+	std::string     DescriptionLong[MAX_PLAYERS];
 };
 
 class ThemeName : public ThemeBasic
@@ -167,7 +167,7 @@ public:
 	ThemeText   TextSongName;
 
 	// Line bonus translations
-	tstring     LineBonusText[9];
+	std::string     LineBonusText[9];
 
 	ThemeStatic PausePopup;
 };
@@ -244,7 +244,7 @@ public:
 	ThemeButton   ButtonExit;
 
 	ThemeText     TextDescription;
-	tstring       Description[8]; /* 8 buttons */
+	std::string       Description[8]; /* 8 buttons */
 };
 
 class ThemeOptionsGame : public ThemeBasic
@@ -334,8 +334,8 @@ public:
 
 	ThemeText        TextDescription;
 	ThemeText        TextDescriptionLong;
-	tstring          Description[MAX_PLAYERS];
-	tstring          DescriptionLong[MAX_PLAYERS];
+	std::string          Description[MAX_PLAYERS];
+	std::string          DescriptionLong[MAX_PLAYERS];
 };
 
 class ThemeErrorPopup : public ThemeBasic
@@ -374,10 +374,10 @@ public:
 	ThemeText        TextFound;
 
 	// Translated texts
-	tstring          SongsFound;
-	tstring          NoSongsFound;
-	tstring          CatText;
-	tstring          IType[3];
+	std::string          SongsFound;
+	std::string          NoSongsFound;
+	std::string          CatText;
+	std::string          IType[3];
 };
 
 class ThemePartyNewRound : public ThemeBasic
@@ -421,9 +421,9 @@ public:
 	{
 		bool           ChangeTextures;
 
-		tstring        Texture [MAX_TEAMS];
+		std::string        Texture [MAX_TEAMS];
 		eTextureType   Type    [MAX_TEAMS];
-		tstring        Color   [MAX_TEAMS];
+		std::string        Color   [MAX_TEAMS];
 	} DecoTextures;
 };
 
@@ -497,16 +497,16 @@ public:
 	ThemeText            TextPage;
 	AThemeText           TextList;
 
-	tstring              Description [MAX_PLAYERS_PER_TEAM];
-	tstring              DescriptionR[MAX_PLAYERS_PER_TEAM];
-	tstring              FormatStr   [MAX_PLAYERS_PER_TEAM];
-	tstring              PageStr;
+	std::string              Description [MAX_PLAYERS_PER_TEAM];
+	std::string              DescriptionR[MAX_PLAYERS_PER_TEAM];
+	std::string              FormatStr   [MAX_PLAYERS_PER_TEAM];
+	std::string              PageStr;
 };
 
 class ThemePlaylist /* not a proper theme */
 {
 public:
-	tstring CatText;
+	std::string CatText;
 };
 
 

@@ -73,7 +73,7 @@ Display::Display()
 	InitFadeTextures();
 
 	// set LastError for OSD to No Error
-	OSD_LastError = _T("No Errors");
+	OSD_LastError = "No Errors";
 
 	// software cursor default values
 	CursorLastMove = 0;
@@ -188,7 +188,7 @@ bool Display::Draw()
 
 						// TODO: Do we want to use an error string? I'd hate to want to include/link to glu.h for just that
 						// Might be helpful to dump a lookup table later...
-						sLog.Error(_T("Display::Draw"), _T("Fading disabled, OpenGL error code: 0x%X"), glError);
+						sLog.Error("Display::Draw", "Fading disabled, OpenGL error code: 0x%X", glError);
 					}
 
 					if (!BlackScreen 
@@ -453,11 +453,11 @@ void Display::DrawDebugInformation()
 
 	// fps
 	SetFontPos(695, 0);
-	glPrint(_T("FPS: %d"), LastFPS);
+	glPrint("FPS: %d", LastFPS);
 
 	// rspeed
 	SetFontPos(695, 13);
-	glPrint(_T("RSpeed: %d"), (uint32) ceil(1000 * GetTimeMid()));
+	glPrint("RSpeed: %d", (uint32) ceil(1000 * GetTimeMid()));
 
 	// lasterror
 	SetFontPos(695, 26);
@@ -473,6 +473,22 @@ bool Display::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDow
 		return NextScreen->ParseInput(pressedKey, keyCode, pressedDown);
 	else if (CurrentScreen != NULL)
 		return CurrentScreen->ParseInput(pressedKey, keyCode, pressedDown);
+
+	return true;
+}
+
+bool Display::ParseMouse(int mouseButton, bool btnDown, float x, float y)
+{
+	if (CurrentScreen != NULL)
+		return CurrentScreen->ParseMouse(mouseButton, btnDown, x, y);
+
+	return true;
+}
+
+bool Display::ParseTextInput(Uint32 inputType, SDL_Event * event)
+{
+	if (CurrentScreen != NULL)
+		return CurrentScreen->ParseTextInput(inputType, event);
 
 	return true;
 }

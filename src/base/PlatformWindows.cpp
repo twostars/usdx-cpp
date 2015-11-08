@@ -30,7 +30,7 @@
 
 using namespace boost::filesystem;
 
-int APIENTRY _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
+int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	BOOL attachedConsole = AttachConsole(ATTACH_PARENT_PROCESS);
 
@@ -48,25 +48,26 @@ int APIENTRY _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 	freopen("CON", "w", stdout);
 	freopen("CON", "w", stderr);
 
-	int result = usdxMain(__argc, __targv);
+	int result = usdxMain(__argc, __argv);
 
 #if defined(_DEBUG)
 	// blocks, so advise user what's going on.
 	if (attachedConsole)
-		_tprintf(_T("Please press any key to continue.\n"));
+		printf("Please press any key to continue.\n");
 #endif
 
 	FreeConsole();
 	return result;
 }
 
-bool Platform::TerminateIfAlreadyRunning(const TCHAR * windowTitle)
+bool Platform::TerminateIfAlreadyRunning(const char * windowTitle)
 {
-	HWND hWnd = FindWindow(NULL, windowTitle);
+	HWND hWnd = FindWindowA(NULL, windowTitle);
 	if (hWnd == NULL)
 		return false;
 
-	int dialogResult = MessageBox(NULL, _T("Another instance of UltraStar is already running. Continue?"),
+	int dialogResult = MessageBoxA(NULL,
+		"Another instance of UltraStar is already running. Continue?",
 		windowTitle, MB_ICONWARNING | MB_YESNO);
 
 	// Don't bother creating another instance, just exit.
@@ -77,7 +78,7 @@ bool Platform::TerminateIfAlreadyRunning(const TCHAR * windowTitle)
 	return false;
 }
 
-void Platform::ShowMessage(const TCHAR * message, MessageType messageType)
+void Platform::ShowMessage(const char * message, MessageType messageType)
 {
 	uint32 flags = 0;
 	switch (messageType)
@@ -95,7 +96,7 @@ void Platform::ShowMessage(const TCHAR * message, MessageType messageType)
 		break;
 	}
 
-	MessageBox(NULL, message, USDXVersionStr(), flags);
+	MessageBoxA(NULL, message, USDXVersionStr(), flags);
 }
 
 /**
@@ -136,7 +137,7 @@ void Platform::DetectLocalExecution()
 
 	// Can the config file be opened? 
 	// Create it if it doesn't exist.
-	FILE * fp = _tfopen(configFile.native().c_str(), _T("a"));
+	FILE * fp = fopen(configFile.generic_string().c_str(), "a");
 	if (fp != NULL)
 	{
 		s_useLocalDirs = true;
@@ -156,7 +157,7 @@ void Platform::DetectLocalExecution()
  */
 void Platform::GetSpecialPath(int csidl, path * outPath)
 {
-	TCHAR path[_MAX_PATH] = {0};
+	char path[_MAX_PATH] = {0};
 	if (SUCCEEDED(SHGetFolderPath(NULL, csidl, NULL, 0, (LPTSTR) &path)))
 		*outPath = path;
 }
@@ -191,19 +192,19 @@ void Platform::GetMusicPath(path * outPath)
 	Author: Aaron Ballman
 	http://blog.aaronballman.com/2011/08/how-to-check-access-rights/
 */ 
-bool HasAccessRights(LPCTSTR name, DWORD genericAccessRights)
+bool HasAccessRights(LPCSTR name, DWORD genericAccessRights)
 {
 	bool bRet = false;
 	DWORD length = 0;
 	SECURITY_INFORMATION requestedInformation 
 		= OWNER_SECURITY_INFORMATION | GROUP_SECURITY_INFORMATION | DACL_SECURITY_INFORMATION;
 
-	if (!GetFileSecurity(name, requestedInformation, NULL, NULL, &length)
+	if (!GetFileSecurityA(name, requestedInformation, NULL, NULL, &length)
 		&& ERROR_INSUFFICIENT_BUFFER == GetLastError())
 	{
 		PSECURITY_DESCRIPTOR security = static_cast<PSECURITY_DESCRIPTOR>(malloc(length));
 		if (security != NULL
-			&& GetFileSecurity(name, requestedInformation, security, length, &length))
+			&& GetFileSecurityA(name, requestedInformation, security, length, &length))
 		{
 			HANDLE hToken = NULL;
 			if (OpenProcessToken(
@@ -244,5 +245,5 @@ bool HasAccessRights(LPCTSTR name, DWORD genericAccessRights)
 
 bool Platform::IsPathReadonly(const path * requestedPath)
 {
-	return !HasAccessRights(requestedPath->native().c_str(), GENERIC_WRITE);
+	return !HasAccessRights(requestedPath->generic_string().c_str(), GENERIC_WRITE);
 }

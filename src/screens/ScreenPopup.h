@@ -29,7 +29,7 @@ class ScreenPopup : public Menu
 public:
 	ScreenPopup();
 	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
-	void ShowPopup(const tstring& msg);
+	void ShowPopup(const std::string& msg);
 
 	bool Visible;
 };
@@ -40,7 +40,7 @@ class ScreenPopupCheck : public ScreenPopup
 public:
 	ScreenPopupCheck();
 	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
-	void ShowPopup(const TCHAR * message, PopupCallback callback);
+	void ShowPopup(const char * message, PopupCallback callback);
 
 protected:
 	PopupCallback Callback;

@@ -55,12 +55,12 @@ protected:
 	bool Selected;
 
 private:
-	tstring AdjustOptionTextToFit(const tstring& optionText);
+	std::string AdjustOptionTextToFit(const std::string& optionText);
 
 public:
 	MenuText Text; // Main text describing option
 	std::vector<MenuText> TextOptions; // Texts in the position of possible options
-	std::vector<tstring>  TextOptionNames; // Names of the possible options
+	std::vector<std::string>  TextOptionNames; // Names of the possible options
 
 	Texture Tex;		// Select texture
 	Texture TexSBG;	// Selection background texture

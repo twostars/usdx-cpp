@@ -106,7 +106,7 @@
 							ENUMITEM(Auto)
 
 /* case insensitive comparison */
-#define IMPROVED_ENUM_COMPARATOR TSTRCASECMP
+#define IMPROVED_ENUM_COMPARATOR STRCASECMP
 #include <DefineImprovedEnum.h>
 
 #endif

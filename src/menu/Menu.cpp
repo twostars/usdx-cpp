@@ -35,34 +35,34 @@
 #include "../screens/ScreenPopup.h"
 #include "../screens/ScreenSing.h"
 
-static const TCHAR* s_supportedTextureExts[] =
+static const char * s_supportedTextureExts[] =
 {
-	_T(".png"),
-	_T(".bmp"),
-	_T(".jpg"),
-	_T(".jpeg"),
-	_T(".gif"),
-	_T(".pnm"),
-	_T(".ppm"),
-	_T(".pgm"),
-	_T(".pbm"),
-	_T(".xpm"),
-	_T(".lbm"),
-	_T(".pcx"),
-	_T(".tga"),
-	_T(".tiff"),
+	".png",
+	".bmp",
+	".jpg",
+	".jpeg",
+	".gif",
+	".pnm",
+	".ppm",
+	".pgm",
+	".pbm",
+	".xpm",
+	".lbm",
+	".pcx",
+	".tga",
+	".tiff",
 	NULL
 };
 
-static const TCHAR* s_supportedBackgroundVideoExts[] = 
+static const char * s_supportedBackgroundVideoExts[] = 
 {
-	_T(".avi"),
-	_T(".mov"),
-	_T(".divx"),
-	_T(".mpg"),
-	_T(".mp4"),
-	_T(".mpeg"),
-	_T(".m2v"),
+	".avi",
+	".mov",
+	".divx",
+	".mpg",
+	".mp4",
+	".mpeg",
+	".m2v",
 	NULL
 };
 
@@ -301,7 +301,7 @@ void Menu::AddBackground(const ThemeBackground& themedSettings)
 				if (textureFilename != NULL)
 				{
 					// Attempt to identify background type by file extension...
-					const TCHAR * ext = textureFilename->extension().native().c_str();
+					const char * ext = textureFilename->extension().generic_string().c_str();
 					if (IsInStringArrayI(ext, s_supportedTextureExts))
 						TryBGCreate<MenuBackgroundTexture>(themedSettings);
 					else if (IsInStringArrayI(ext, s_supportedBackgroundVideoExts))
@@ -353,7 +353,7 @@ void Menu::AddBackground(const ThemeBackground& themedSettings)
 
 void Menu::LogBackgroundException(const MenuBackgroundException& e)
 {
-	sLog.Error(_T("TryBGCreate"), e.twhat());
+	sLog.Error("TryBGCreate", e.what());
 }
 
 int Menu::AddStatic(const ThemeStatic& themeStatic)
@@ -434,7 +434,7 @@ int Menu::AddText(const ThemeText& themeText)
 		themeText.Z);
 }
 
-int Menu::AddText(float x, float y, const tstring& text)
+int Menu::AddText(float x, float y, const std::string& text)
 {
 	MenuText menuText(x, y, text);
 	Texts.push_back(menuText);
@@ -442,13 +442,13 @@ int Menu::AddText(float x, float y, const tstring& text)
 }
 
 int Menu::AddText(float x, float y, uint32 style, float size, 
-					const RGB& colRGB, const tstring& text)
+					const RGB& colRGB, const std::string& text)
 {
 	return AddText(x, y, 0.0f, style, size, colRGB, 0, text, false, 0.0f, 0.0f);
 }
 
 int Menu::AddText(float x, float y, float w, uint32 style, float size, 
-					const RGB& colRGB, int align, const tstring& text,
+					const RGB& colRGB, int align, const std::string& text,
 					bool reflection, float reflectionSpacing, float z)
 {
 	MenuText menuText(x, y, w, style, size, colRGB, align, text, reflection, reflectionSpacing, z);
@@ -616,14 +616,14 @@ void Menu::ClearButtons()
 	Buttons.clear();
 }
 
-void Menu::AddButtonText(float addX, float addY, const tstring& addText)
+void Menu::AddButtonText(float addX, float addY, const std::string& addText)
 {
 	RGB colRGB = {1.0f, 1.0f, 1.0f};
 	AddButtonText(addX, addY, colRGB, addText);
 }
 
 void Menu::AddButtonText(float addX, float addY, const RGB& colRGB, 
-						const tstring& addText)
+						const std::string& addText)
 {
 	if (Buttons.empty())
 		return;
@@ -636,7 +636,7 @@ void Menu::AddButtonText(float addX, float addY, const RGB& colRGB,
 }
 
 void Menu::AddButtonText(float addX, float addY, const RGB& colRGB, 
-						int font, int size, int align, const tstring& addText)
+						int font, int size, int align, const std::string& addText)
 {
 	if (Buttons.empty())
 		return;
@@ -647,7 +647,7 @@ void Menu::AddButtonText(float addX, float addY, const RGB& colRGB,
 
 void Menu::AddButtonText(MenuButton& button, 
 						float addX, float addY, const RGB& colRGB, 
-						int font, int size, int align, const tstring& addText)
+						int font, int size, int align, const std::string& addText)
 {
 	MenuText text(button.PosX + addX, button.PosY + addY, addText);
 	text.ColRGB = colRGB;
@@ -659,7 +659,7 @@ void Menu::AddButtonText(MenuButton& button,
 }
 
 int Menu::AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, uint32 * pData,
-	const tstring* values, size_t valueCount)
+	const std::string* values, size_t valueCount)
 {
 	int result = AddSelectSlide((float) themeSelectSlide.X, (float) themeSelectSlide.Y, 
 		(float) themeSelectSlide.W, (float) themeSelectSlide.H,
@@ -713,7 +713,7 @@ int Menu::AddSelectSlide(float x, float y, float w, float h, float skipX, float 
 	eTextureType textureType,
 	const path* sbgTexturePath,
 	eTextureType sbgTextureType,
-	const tstring& caption, uint32 * pData)
+	const std::string& caption, uint32 * pData)
 {
 	int slideNo = (int) SelectSlides.size();
 
@@ -815,23 +815,23 @@ int Menu::AddSelectSlide(float x, float y, float w, float h, float skipX, float 
 	return slideNo;
 }
 
-void Menu::AddSelectSlideOption(const tstring& addText)
+void Menu::AddSelectSlideOption(const std::string& addText)
 {
 	AddSelectSlideOption(SelectSlides.size() - 1, addText);
 }
 
-void Menu::AddSelectSlideOption(uint32 selectNum, const tstring& addText)
+void Menu::AddSelectSlideOption(uint32 selectNum, const std::string& addText)
 {
 	assert(selectNum < SelectSlides.size());
 	SelectSlides[selectNum].TextOptionNames.push_back(addText);
 }
 
 void Menu::UpdateSelectSlideOptions(const ThemeSelectSlide& themeSelectSlide, uint32 selectNum, 
-									const std::vector<tstring>& values, int data)
+									const std::vector<std::string>& values, int data)
 {
 	assert(selectNum < SelectSlides.size());
 	MenuSelectSlide& slide = SelectSlides[selectNum];
-	for (std::vector<tstring>::const_iterator itr = values.begin(); itr != values.end(); ++itr)
+	for (std::vector<std::string>::const_iterator itr = values.begin(); itr != values.end(); ++itr)
 		AddSelectSlideOption(selectNum, *itr);
 
 	slide.GenerateLines();
@@ -852,7 +852,7 @@ void Menu::FadeTo(Menu* screen, /*AudioPlaybackStream*/void * playbackStream)
 	// AudioPlayback.PlaySound(playbackStream);
 }
 
-void Menu::CheckFadeTo(Menu* screen, const TCHAR * message)
+void Menu::CheckFadeTo(Menu* screen, const char * message)
 {
 	sDisplay.Fade = 0.0f;
 	sDisplay.NextScreenWithCheck = screen;
@@ -910,6 +910,12 @@ void Menu::Draw()
 }
 
 bool Menu::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+{
+	/* do nothing */
+	return true;
+}
+
+bool Menu::ParseTextInput(Uint32 inputType, SDL_Event * event)
 {
 	/* do nothing */
 	return true;
@@ -1329,7 +1335,7 @@ void Menu::InteractPrevRow()
 void Menu::AddBox(float x, float y, float w, float h)
 {
 	RGB colRGB1 = {0.0f, 0.0f, 0.0f}, colRGB2 = {1.0f, 1.0f, 1.0f};
-	const path* textureFilename = sSkins.GetTextureFileName(_T("MainBar"));
+	const path* textureFilename = sSkins.GetTextureFileName("MainBar");
 
 	AddStatic(x,   y,   w,   h,   colRGB1, textureFilename, TextureType::Colorized);
 	AddStatic(x+2, y+2, w-4, h-4, colRGB2, textureFilename, TextureType::Colorized);

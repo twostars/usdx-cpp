@@ -24,7 +24,7 @@
 #define _LOG_H
 #pragma once
 
-#define LOG_FILE			_T("error.log")
+#define LOG_FILE			"error.log"
 #define MAX_BENCHMARK_COUNT	32
 
 enum LogLevel
@@ -56,27 +56,27 @@ public:
 
 	void BenchmarkStart(int benchmarkNo);
 	void BenchmarkEnd(int benchmarkNo);
-	void Benchmark(int benchmarkNo, const TCHAR * message, ...);
+	void Benchmark(int benchmarkNo, const char * message, ...);
 
-	void Msg(int level, const TCHAR * message);
-	void Msg(int level, const TCHAR * context, const TCHAR * message);
-	void Debug(const TCHAR * context, const TCHAR * message, ...);
-	void Info(const TCHAR * context, const TCHAR * message, ...);
-	void Status(const TCHAR * context, const TCHAR * message, ...);
-	void Warn(const TCHAR * context, const TCHAR * message, ...);
-	void Error(const TCHAR * message);
-	void Error(const TCHAR * context, const TCHAR * message, ...);
+	void Msg(int level, const char * message);
+	void Msg(int level, const char * context, const char * message);
+	void Debug(const char * context, const char * message, ...);
+	void Info(const char * context, const char * message, ...);
+	void Status(const char * context, const char * message, ...);
+	void Warn(const char * context, const char * message, ...);
+	void Error(const char * message);
+	void Error(const char * context, const char * message, ...);
 
 	// critical error (halt & messagebox)
-	void Critical(const TCHAR * message);
-	void Critical(const TCHAR * context, const TCHAR * message, ...);
+	void Critical(const char * message);
+	void Critical(const char * context, const char * message, ...);
 
 	void Voice(int soundNo);
-	void Buffer(const TCHAR * buffer, const size_t length, const path& filename);
+	void Buffer(const char * buffer, const size_t length, const path& filename);
 
-	void LogToFile(const TCHAR * message);
+	void LogToFile(const char * message);
 
-	void DebugWriteLn(const TCHAR * message);
+	void DebugWriteLn(const char * message);
 
 	INLINE void SetLogLevel(int level) { _logLevel = level; }
 	INLINE int GetLogLevel() { return _logLevel; }

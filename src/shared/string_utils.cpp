@@ -23,32 +23,32 @@
 #include "stdafx.h"
 
 // Extracts resolution dimensions in the standard format (e.g. 1920x1080) from a string.
-bool ExtractResolution(const tstring& str, int* w, int* h)
+bool ExtractResolution(const std::string& str, int* w, int* h)
 {
-	const TCHAR separator = _T('x');
+	const char separator = 'x';
 
 	assert(w != NULL && h != NULL);
 
 	// Make a lowercase copy of the string to check against.
-	tstring strCopy = str;
+	std::string strCopy = str;
 	strtolower(strCopy);
 
 	// Search the lowercase string for the resolution separator.
 	size_t pos = strCopy.find(separator);
-	if (pos == tstring::npos)
+	if (pos == std::string::npos)
 		return false;
 
 	// Read from the start until the first non-character digit (i.e. x)
-	*w = _ttoi(str.c_str());
+	*w = atoi(str.c_str());
 
 	// Read from the separator to the next non-character digit (e.g. null-terminator).
 	// Note that it ignores preleading spaces.
-	*h = _ttoi(str.c_str() + pos + 1);
+	*h = atoi(str.c_str() + pos + 1);
 
 	return true;
 }
 
-int strposA(const char * haystack, char * needle)
+int strpos(const char * haystack, const char * needle)
 {
 	const char * p = strstr(haystack, needle);
 	if (p)
@@ -57,42 +57,12 @@ int strposA(const char * haystack, char * needle)
 	return -1;
 }
 
-int strposW(const wchar_t * haystack, const wchar_t * needle)
-{
-	const wchar_t * p = wcsstr(haystack, needle);
-	if (p)
-		return p - haystack;
-
-	return -1;
-}
-
-void StrSplitA(const std::string& src, const std::string& sep, std::vector<std::string> * result)
+void StrSplit(const std::string& src, const std::string& sep, std::vector<std::string> * result)
 {
 	std::string s;
 	for (std::string::const_iterator i = src.begin(); i != src.end(); ++i)
 	{
 		if (sep.find(*i) != std::string::npos)
-		{
-			if (!s.empty())
-				result->push_back(s);
-			s.clear();
-		}
-		else
-		{
-			s += *i;
-		}
-	}
-
-	if (!s.empty()) 
-		result->push_back(s);
-}
-
-void StrSplitW(const std::wstring& src, const std::wstring& sep, std::vector<std::wstring> * result)
-{
-	std::wstring s;
-	for (std::wstring::const_iterator i = src.begin(); i != src.end(); ++i)
-	{
-		if (sep.find(*i) != std::wstring::npos)
 		{
 			if (!s.empty())
 				result->push_back(s);

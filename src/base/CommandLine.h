@@ -36,7 +36,7 @@ class CMDParams
 public:
 	CMDParams();
 
-	void Load(int argc, TCHAR ** argv);
+	void Load(int argc, char ** argv);
 	void ShowUsage();
 
 	bool		Debug;
@@ -49,8 +49,8 @@ public:
 	int			Depth;
 	int			Screens;
 
-	tstring		LanguageName;
-	tstring		Resolution;
+	std::string		LanguageName;
+	std::string		Resolution;
 };
 
 #endif

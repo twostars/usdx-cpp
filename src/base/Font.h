@@ -91,7 +91,7 @@ DECLARE_EXCEPTION(FontException, BaseException);
 class FontBase
 {
 public:
-	typedef std::vector<tstring> LineArray;
+	typedef std::vector<std::string> LineArray;
 
 	FontBase();
 	FontBase(const path& filename);
@@ -101,12 +101,12 @@ public:
 
 	virtual void Init() = 0;
 
-	virtual void SplitLines(const tstring& string, LineArray& lines);
+	virtual void SplitLines(const std::string& string, LineArray& lines);
 	virtual void PrintLines(const LineArray& lines, bool reflectionPass = false);
-	virtual void Print(const tstring& text);
-	virtual void DrawUnderline(const tstring& line);
-	virtual void Render(const tstring& line, bool reflectionPass) = 0;
-	virtual FontBounds BBox(const tstring& text, bool advance = true);
+	virtual void Print(const std::string& text);
+	virtual void DrawUnderline(const std::string& line);
+	virtual void Render(const std::string& line, bool reflectionPass) = 0;
+	virtual FontBounds BBox(const std::string& text, bool advance = true);
 	virtual FontBounds BBoxLines(const LineArray& lines, bool advance) = 0;
 
 	// Adds a new font that is used if the default font misses a glyph
@@ -160,8 +160,8 @@ public:
 	* Adds glyph with char-code ch to the cache.
 	* @returns true on success, false otherwise
 	*/
-	bool AddGlyph(TCHAR ch, Glyph * glyph);
-	Glyph * GetGlyph(TCHAR ch);
+	bool AddGlyph(char ch, Glyph * glyph);
+	Glyph * GetGlyph(char ch);
 
     /**
     * Finds a glyph-table storing cached glyphs with base-code BaseCode
@@ -227,7 +227,7 @@ public:
 	* Creates a glyph with char-code ch from font Font.
 	* @param loadFlags flags passed to FT_Load_Glyph()
 	*/
-	FTGlyph(FTFont * font, TCHAR ch, float outset, uint32 loadFlags);
+	FTGlyph(FTFont * font, char ch, float outset, uint32 loadFlags);
 
 	/**
 	* Creates an OpenGL texture (and display list) for the glyph.
@@ -263,7 +263,7 @@ public:
 
 	~FTGlyph();
 
-	TCHAR CharCode;				//**< Char code
+	char CharCode;				//**< Char code
 	FTFontFace * Face;			//**< Freetype face used for this glyph
 	FT_UInt CharIndex;			//**< Freetype specific char-index (<> char-code)
 	GLuint DisplayList;			//**< Display-list ID
@@ -288,8 +288,8 @@ public:
 	* Callback to create (load) a glyph with char code ch.
 	* Implemented by subclasses.
 	*/
-	virtual Glyph * LoadGlyph(TCHAR ch) = 0;
-	Glyph * GetGlyph(TCHAR ch);
+	virtual Glyph * LoadGlyph(char ch) = 0;
+	Glyph * GetGlyph(char ch);
 
 	void FlushCache(bool keepBaseSet);
 
@@ -324,7 +324,7 @@ public:
 	int GetMipmapLevel();
 
 	virtual void PrintLines(const LineArray& lines, bool reflectionPass = false);
-	virtual void Render(const tstring& text, bool reflectionPass);
+	virtual void Render(const std::string& text, bool reflectionPass);
 
 	virtual float GetUnderlinePosition();
 	virtual float GetUnderlineThickness();
@@ -363,7 +363,7 @@ public:
 	static FTFontFaceCache& GetFaceCache() { return s_fontFaceCache; }
 
 	/** @seealso CachedFont::LoadGlyph */
-	virtual Glyph * LoadGlyph(TCHAR ch);
+	virtual Glyph * LoadGlyph(char ch);
 
 	virtual FontBounds BBoxLines(const LineArray& lines, bool advance);
 	virtual void AddFallback(const path& filename);
@@ -374,7 +374,7 @@ public:
 	virtual float GetAscender();
 	virtual float GetDescender();
 
-	virtual void Render(const tstring& text, bool reflectionPass);
+	virtual void Render(const std::string& text, bool reflectionPass);
 
 	~FTFont();
 
@@ -436,8 +436,8 @@ public:
 	virtual void Init() {}
 	void ResetIntern();
 	virtual void AddFallback(const path& filename);
-	virtual void DrawUnderline(const tstring& line);
-	virtual void Render(const tstring& line, bool reflectionPass);
+	virtual void DrawUnderline(const std::string& line);
+	virtual void Render(const std::string& line, bool reflectionPass);
 	virtual FontBounds BBoxLines(const LineArray& lines, bool advance);
 
 	/**

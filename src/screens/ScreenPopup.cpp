@@ -61,7 +61,7 @@ bool ScreenPopup::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool presse
 	return result;
 }
 
-void ScreenPopup::ShowPopup(const tstring& msg)
+void ScreenPopup::ShowPopup(const std::string& msg)
 {
 	SetInteraction(0);
 	Visible = true;
@@ -69,7 +69,7 @@ void ScreenPopup::ShowPopup(const tstring& msg)
 
 	Texts[0].SetText(msg);
 	Buttons[0].Visible = true;
-	const tstring OK(_T("OK"));
+	const std::string OK("OK");
 	Buttons[0].Texts[0].SetText(OK); // TODO: Fix language reference
 }
 
@@ -84,11 +84,11 @@ ScreenPopupCheck::ScreenPopupCheck()
 
 	AddButton(theme->Button1);
 	if (Buttons[0].Texts.empty())
-		AddButtonText(14.0f, 20.0f, _T("Button 1"));
+		AddButtonText(14.0f, 20.0f, "Button 1");
 
 	AddButton(theme->Button2);
 	if (Buttons[1].Texts.empty())
-		AddButtonText(14.0f, 20.0f, _T("Button 2"));
+		AddButtonText(14.0f, 20.0f, "Button 2");
 
 	SetInteraction(0);
 }
@@ -132,21 +132,21 @@ bool ScreenPopupCheck::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool p
 	return result;
 }
 
-void ScreenPopupCheck::ShowPopup(const TCHAR * message, PopupCallback callback)
+void ScreenPopupCheck::ShowPopup(const char * message, PopupCallback callback)
 {
 	Visible = true;
 	Callback = callback;
 
-	Texts[0].SetText(sLanguage.Translate(message));
+	Texts[0].SetText(__T(message));
 
 	MenuButton& yesButton = Buttons[0];
 	MenuButton& noButton = Buttons[1];
 
 	yesButton.Visible = true;
-	yesButton.Texts[0].SetText(sLanguage.Translate(_T("SONG_MENU_YES")));
+	yesButton.Texts[0].SetText(__T("SONG_MENU_YES"));
 
 	noButton.Visible = true;
-	noButton.Texts[0].SetText(sLanguage.Translate(_T("SONG_MENU_NO")));
+	noButton.Texts[0].SetText(__T("SONG_MENU_NO"));
 
 	Background->OnShow();
 }
@@ -159,14 +159,14 @@ ScreenPopupError::ScreenPopupError() : ScreenPopup()
 	LoadFromTheme(theme);
 	AddButton(theme->Button1);
 	if (Buttons[0].Texts.empty())
-		AddButtonText(14.0f, 20.0f, _T("Button 1"));
+		AddButtonText(14.0f, 20.0f, "Button 1");
 
 	SetInteraction(0);
 
-	Texts[1].SetText(sLanguage.Translate(_T("MSG_ERROR_TITLE")));
+	Texts[1].SetText(__T("MSG_ERROR_TITLE"));
 }
 
 ScreenPopupInfo::ScreenPopupInfo() : ScreenPopupError()
 {
-	Texts[1].SetText(sLanguage.Translate(_T("MSG_INFO_TITLE")));
+	Texts[1].SetText(__T("MSG_INFO_TITLE"));
 }

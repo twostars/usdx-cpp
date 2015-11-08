@@ -132,8 +132,10 @@ void Themes::LoadList()
 
 	try
 	{
-		sLog.Status(_T("Themes::LoadList"), _T("Searching for themes in directory: %s"),
-			ThemePath.native().c_str());
+		sLog.Status(
+			"Themes::LoadList",
+			"Searching for themes in directory: %s",
+			ThemePath.generic_string().c_str());
 
 		// Clear the existing themes list.
 		_themes.clear();
@@ -143,62 +145,72 @@ void Themes::LoadList()
 			const path& p = itr->path();
 			if (is_directory(p)
 				|| !p.has_extension()
-				|| p.extension() != _T(".ini"))
+				|| p.extension() != ".ini")
 				continue;
 
-			sLog.Status(_T("Themes::LoadList"), _T("Found theme %s"),
-				p.stem().native().c_str());
+			sLog.Status(
+				"Themes::LoadList",
+				"Found theme %s",
+				p.stem().generic_string().c_str());
 
 			LoadHeader(p);
 		}
 	}
 	catch (filesystem_error)
 	{
-		sLog.Critical(_T("Themes::LoadList"), _T("Could not access themes directory (%s)"), 
-			ThemePath.native().c_str());
+		sLog.Critical(
+			"Themes::LoadList",
+			"Could not access themes directory (%s)", 
+			ThemePath.generic_string().c_str());
 	}
 }
 
 void Themes::LoadHeader(const path& iniFile)
 {
-	CSimpleIni ini(true);
+	CSimpleIniA ini(true);
 	SI_Error result = ini.LoadFile(iniFile.native().c_str());
 	if (result != SI_OK)
 	{
-		return sLog.Warn(_T("Themes::LoadHeader"), _T("Failed to load INI (%s)"),
-			iniFile.native().c_str());
+		return sLog.Warn(
+			"Themes::LoadHeader",
+			"Failed to load INI (%s)",
+			iniFile.generic_string().c_str());
 	}
 
-	const TCHAR * section = _T("Theme");
+	const char * section = "Theme";
 
 	ThemeEntry theme;
-	tstring themeVersion;
-	const TCHAR * creator;
+	std::string themeVersion;
+	const char * creator;
 
 	theme.Path = iniFile.branch_path();
 	theme.FileName = iniFile;
-	theme.Name = ini.GetValue(section, _T("Name"), _T("(no name)"));
-	themeVersion = ini.GetValue(section, _T("US_Version"), _T("no version"));
+	theme.Name = ini.GetValue(section, "Name", "(no name)");
+	themeVersion = ini.GetValue(section, "US_Version", "no version");
 
 	// Attempt to lookup theme's creator.
 	// NOTE: Current USDX loads "Creator", but older themes use "Author".
 	// Attempt to fallback to "Author" if "Creator" isn't found.
-	creator				= ini.GetValue(section, _T("Creator"));
+	creator				= ini.GetValue(section, "Creator");
 	if (creator == NULL)
-		creator			= ini.GetValue(section, _T("Author"), _T(""));
+		creator			= ini.GetValue(section, "Author", "");
 
 	theme.Creator		= creator;
 
 	if (themeVersion != USDX_THEME_VERSION)
 	{
-		return sLog.Warn(_T("Theme::LoadHeader"), _T("Wrong version (%s) for theme %s."),
+		return sLog.Warn(
+			"Theme::LoadHeader",
+			"Wrong version (%s) for theme %s.",
 			themeVersion.c_str(), theme.Name.c_str());
 	}
 
 	theme.DefaultSkin = sSkins.LookupSkinForTheme(theme.Name);
 	if (theme.DefaultSkin == NULL)
 	{
-		return sLog.Warn(_T("Theme::LoadHeader"), _T("Skin does not exist for theme %s."),
+		return sLog.Warn(
+			"Theme::LoadHeader",
+			"Skin does not exist for theme %s.",
 			theme.Name.c_str());
 	}
 
@@ -208,14 +220,16 @@ void Themes::LoadHeader(const path& iniFile)
 void Themes::LoadTheme(ThemeEntry * theme, eColor color)
 {
 	if (theme == NULL)
-		sLog.Critical(_T("Theme not set."));
+		sLog.Critical("Theme not set.");
 
-	sLog.Status(_T("Themes::LoadTheme"), _T("Loading: %s"), 
-		theme->FileName.native().c_str());
+	sLog.Status(
+		"Themes::LoadTheme",
+		"Loading: %s",
+		theme->FileName.generic_string().c_str());
 
 	SI_Error result = ini.LoadFile(theme->FileName.c_str());
 	if (result != SI_OK)
-		sLog.Critical(_T("Unable to load theme config file."));
+		sLog.Critical("Unable to load theme config file.");
 
 	CreateThemeObjects();
 
@@ -224,140 +238,140 @@ void Themes::LoadTheme(ThemeEntry * theme, eColor color)
 	LoadColors();
 
 	// Loading~
-	LoadThemeBasic(Loading, _T("Loading"));
-	LoadThemeText(Loading->TextLoading, _T("LoadingTextLoading"));
-	LoadThemeStatic(Loading->StaticAnimation, _T("LoadingStaticAnimation"));
+	LoadThemeBasic(Loading, "Loading");
+	LoadThemeText(Loading->TextLoading, "LoadingTextLoading");
+	LoadThemeStatic(Loading->StaticAnimation, "LoadingStaticAnimation");
 
 	// Main~
-	LoadThemeBasic(Main, _T("Main"));
-	LoadThemeText(Main->TextDescription, _T("MainTextDescription"));
-	LoadThemeText(Main->TextDescriptionLong, _T("MainTextDescriptionLong"));
-	LoadThemeButton(Main->ButtonSolo, _T("MainButtonSolo"));
-	LoadThemeButton(Main->ButtonMulti, _T("MainButtonMulti"));
-	LoadThemeButton(Main->ButtonStats, _T("MainButtonStats"));
-	LoadThemeButton(Main->ButtonEditor, _T("MainButtonEditor"));
-	LoadThemeButton(Main->ButtonOptions, _T("MainButtonOptions"));
-	LoadThemeButton(Main->ButtonExit, _T("MainButtonExit"));
+	LoadThemeBasic(Main, "Main");
+	LoadThemeText(Main->TextDescription, "MainTextDescription");
+	LoadThemeText(Main->TextDescriptionLong, "MainTextDescriptionLong");
+	LoadThemeButton(Main->ButtonSolo, "MainButtonSolo");
+	LoadThemeButton(Main->ButtonMulti, "MainButtonMulti");
+	LoadThemeButton(Main->ButtonStats, "MainButtonStats");
+	LoadThemeButton(Main->ButtonEditor, "MainButtonEditor");
+	LoadThemeButton(Main->ButtonOptions, "MainButtonOptions");
+	LoadThemeButton(Main->ButtonExit, "MainButtonExit");
 
 	// Main description translation
-	Main->Description[0]     = sLanguage.Translate(_T("SING_SING"));
-	Main->DescriptionLong[0] = sLanguage.Translate(_T("SING_SING_DESC"));
-	Main->Description[1]     = sLanguage.Translate(_T("SING_MULTI"));
-	Main->DescriptionLong[1] = sLanguage.Translate(_T("SING_MULTI_DESC"));
-	Main->Description[2]     = sLanguage.Translate(_T("SING_STATS"));
-	Main->DescriptionLong[2] = sLanguage.Translate(_T("SING_STATS_DESC"));
-	Main->Description[3]     = sLanguage.Translate(_T("SING_EDITOR"));
-	Main->DescriptionLong[3] = sLanguage.Translate(_T("SING_EDITOR_DESC"));
-	Main->Description[4]     = sLanguage.Translate(_T("SING_GAME_OPTIONS"));
-	Main->DescriptionLong[4] = sLanguage.Translate(_T("SING_GAME_OPTIONS_DESC"));
-	Main->Description[5]     = sLanguage.Translate(_T("SING_EXIT"));
-	Main->DescriptionLong[5] = sLanguage.Translate(_T("SING_EXIT_DESC"));
+	Main->Description[0]     = __T("SING_SING");
+	Main->DescriptionLong[0] = __T("SING_SING_DESC");
+	Main->Description[1]     = __T("SING_MULTI");
+	Main->DescriptionLong[1] = __T("SING_MULTI_DESC");
+	Main->Description[2]     = __T("SING_STATS");
+	Main->DescriptionLong[2] = __T("SING_STATS_DESC");
+	Main->Description[3]     = __T("SING_EDITOR");
+	Main->DescriptionLong[3] = __T("SING_EDITOR_DESC");
+	Main->Description[4]     = __T("SING_GAME_OPTIONS");
+	Main->DescriptionLong[4] = __T("SING_GAME_OPTIONS_DESC");
+	Main->Description[5]     = __T("SING_EXIT");
+	Main->DescriptionLong[5] = __T("SING_EXIT_DESC");
 
 	// Active description
 	Main->TextDescription.Text     = Main->Description[0];
 	Main->TextDescriptionLong.Text = Main->DescriptionLong[0];
 
 	// Name~
-	LoadThemeBasic(Name, _T("Name"));
+	LoadThemeBasic(Name, "Name");
 
 	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
-		TCHAR buff[20];
-		_sntprintf(buff, 20, _T("NameButtonPlayer%d"), i + 1);
+		char buff[20];
+		_snprintf(buff, 20, "NameButtonPlayer%d", i + 1);
 		LoadThemeButton(Name->ButtonPlayer[i], buff);
 	}
 	
 	// Level~
-	LoadThemeBasic(Level, _T("Level"));
-	LoadThemeButton(Level->ButtonEasy,   _T("LevelButtonEasy"));
-	LoadThemeButton(Level->ButtonMedium, _T("LevelButtonMedium"));
-	LoadThemeButton(Level->ButtonHard,   _T("LevelButtonHard"));
+	LoadThemeBasic(Level, "Level");
+	LoadThemeButton(Level->ButtonEasy,   "LevelButtonEasy");
+	LoadThemeButton(Level->ButtonMedium, "LevelButtonMedium");
+	LoadThemeButton(Level->ButtonHard,   "LevelButtonHard");
 
 	// Song~
-	LoadThemeBasic(Song, _T("Song"));
-	LoadThemeText(Song->TextArtist,   _T("SongTextArtist"));
-	LoadThemeText(Song->TextTitle,    _T("SongTextTitle"));
-	LoadThemeText(Song->TextNumber,   _T("SongTextNumber"));
+	LoadThemeBasic(Song, "Song");
+	LoadThemeText(Song->TextArtist,   "SongTextArtist");
+	LoadThemeText(Song->TextTitle,    "SongTextTitle");
+	LoadThemeText(Song->TextNumber,   "SongTextNumber");
 
 	// Video icon
-	LoadThemeStatic(Song->VideoIcon,  _T("SongVideoIcon"));
+	LoadThemeStatic(Song->VideoIcon,  "SongVideoIcon");
 
 	// Medley icons
-	LoadThemeStatic(Song->MedleyIcon, _T("SongMedleyIcon"));
-	LoadThemeStatic(Song->CalculatedMedleyIcon, _T("SongCalculatedMedleyIcon"));
+	LoadThemeStatic(Song->MedleyIcon, "SongMedleyIcon");
+	LoadThemeStatic(Song->CalculatedMedleyIcon, "SongCalculatedMedleyIcon");
 
 	// Show cat in top-left
-	LoadThemeStatic(Song->StaticCat,  _T("SongStaticCat"));
-	LoadThemeText(Song->TextCat,      _T("SongTextCat"));
+	LoadThemeStatic(Song->StaticCat,  "SongStaticCat");
+	LoadThemeText(Song->TextCat,      "SongTextCat");
 
 	// Load cover pos & size from theme
-	Song->Cover.X           = ini.GetLongValue(_T("SongCover"), _T("X"), 300);
-	Song->Cover.Y           = ini.GetLongValue(_T("SongCover"), _T("Y"), 190);
-	Song->Cover.W           = ini.GetLongValue(_T("SongCover"), _T("W"), 300);
-	Song->Cover.H           = ini.GetLongValue(_T("SongCover"), _T("H"), 200);
-	Song->Cover.Style       = ini.GetLongValue(_T("SongCover"), _T("Style"), 4);
-	Song->Cover.Reflections = ini.GetBoolValue(_T("SongCover"), _T("Reflections"), false);
+	Song->Cover.X           = ini.GetLongValue("SongCover", "X", 300);
+	Song->Cover.Y           = ini.GetLongValue("SongCover", "Y", 190);
+	Song->Cover.W           = ini.GetLongValue("SongCover", "W", 300);
+	Song->Cover.H           = ini.GetLongValue("SongCover", "H", 200);
+	Song->Cover.Style       = ini.GetLongValue("SongCover", "Style", 4);
+	Song->Cover.Reflections = ini.GetBoolValue("SongCover", "Reflections", false);
 
 	// Equalizer
-	LoadThemeEqualizer(Song->Equalizer, _T("SongEqualizer"));
+	LoadThemeEqualizer(Song->Equalizer, "SongEqualizer");
 
 	// Party & non-party specific statics & texts
-	LoadThemeStatics(Song->StaticParty, _T("SongStaticParty"));
-	LoadThemeTexts(Song->TextParty, _T("SongTextParty"));
-	LoadThemeStatics(Song->StaticNonParty, _T("SongStaticNonParty"));
-	LoadThemeTexts(Song->TextNonParty, _T("SongTextNonParty"));
+	LoadThemeStatics(Song->StaticParty, "SongStaticParty");
+	LoadThemeTexts(Song->TextParty, "SongTextParty");
+	LoadThemeStatics(Song->StaticNonParty, "SongStaticNonParty");
+	LoadThemeTexts(Song->TextNonParty, "SongTextNonParty");
 
 	// Party mode
 	for (int teamNo = 0; teamNo < MAX_TEAMS; teamNo++)
 	{
-		TCHAR buff[40];
+		char buff[40];
 
 		for (int jokerNo = 0; jokerNo < MAX_JOKERS; jokerNo++)
 		{
-			_sntprintf(buff, 40, _T("StaticTeam%dJoker%d"), teamNo + 1, jokerNo + 1);
+			snprintf(buff, 40, "StaticTeam%dJoker%d", teamNo + 1, jokerNo + 1);
 			LoadThemeStatic(Song->StaticTeamJoker[teamNo][jokerNo], buff);
 		}
 	}
 
 	// Lyric bar
-	LyricBar->UpperX = ini.GetLongValue(_T("SingLyricsUpperBar"), _T("X"), 0);
-	LyricBar->UpperW = ini.GetLongValue(_T("SingLyricsUpperBar"), _T("W"), 0);
-	LyricBar->UpperY = ini.GetLongValue(_T("SingLyricsUpperBar"), _T("Y"), 0);
-	LyricBar->UpperH = ini.GetLongValue(_T("SingLyricsUpperBar"), _T("H"), 0);
-	LyricBar->IndicatorYOffset = ini.GetLongValue(_T("SingLyricsUpperBar"), _T("IndicatorYOffset"), 0);
-	LyricBar->LowerX = ini.GetLongValue(_T("SingLyricsLowerBar"), _T("X"), 0);
-	LyricBar->LowerW = ini.GetLongValue(_T("SingLyricsLowerBar"), _T("W"), 0);
-	LyricBar->LowerY = ini.GetLongValue(_T("SingLyricsLowerBar"), _T("Y"), 0);
-	LyricBar->LowerH = ini.GetLongValue(_T("SingLyricsLowerBar"), _T("H"), 0);
+	LyricBar->UpperX = ini.GetLongValue("SingLyricsUpperBar", "X", 0);
+	LyricBar->UpperW = ini.GetLongValue("SingLyricsUpperBar", "W", 0);
+	LyricBar->UpperY = ini.GetLongValue("SingLyricsUpperBar", "Y", 0);
+	LyricBar->UpperH = ini.GetLongValue("SingLyricsUpperBar", "H", 0);
+	LyricBar->IndicatorYOffset = ini.GetLongValue("SingLyricsUpperBar", "IndicatorYOffset", 0);
+	LyricBar->LowerX = ini.GetLongValue("SingLyricsLowerBar", "X", 0);
+	LyricBar->LowerW = ini.GetLongValue("SingLyricsLowerBar", "W", 0);
+	LyricBar->LowerY = ini.GetLongValue("SingLyricsLowerBar", "Y", 0);
+	LyricBar->LowerH = ini.GetLongValue("SingLyricsLowerBar", "H", 0);
 
 	// Sing~
-	LoadThemeBasic(Sing, _T("Sing"));
+	LoadThemeBasic(Sing, "Sing");
 
 	// Time bar
-	LoadThemeStatic(Sing->StaticTimeProgress, _T("SingTimeProgress"));
-	LoadThemeText(Sing->TextTimeText, _T("SingTimeText"));
+	LoadThemeStatic(Sing->StaticTimeProgress, "SingTimeProgress");
+	LoadThemeText(Sing->TextTimeText, "SingTimeText");
 
 	// Moveable singbar
-	LoadThemeStatic(Sing->StaticP1SingBar, _T("SingP1SingBar"));
-	LoadThemeStatic(Sing->StaticP1TwoPSingBar, _T("SingP1TwoPSingBar"));
-	LoadThemeStatic(Sing->StaticP1ThreePSingBar, _T("SingP1ThreePSingBar"));
-	LoadThemeStatic(Sing->StaticP2RSingBar, _T("SingP2RSingBar"));
-	LoadThemeStatic(Sing->StaticP2MSingBar, _T("SingP2MSingBar"));
-	LoadThemeStatic(Sing->StaticP3SingBar, _T("SingP3SingBar"));
+	LoadThemeStatic(Sing->StaticP1SingBar, "SingP1SingBar");
+	LoadThemeStatic(Sing->StaticP1TwoPSingBar, "SingP1TwoPSingBar");
+	LoadThemeStatic(Sing->StaticP1ThreePSingBar, "SingP1ThreePSingBar");
+	LoadThemeStatic(Sing->StaticP2RSingBar, "SingP2RSingBar");
+	LoadThemeStatic(Sing->StaticP2MSingBar, "SingP2MSingBar");
+	LoadThemeStatic(Sing->StaticP3SingBar, "SingP3SingBar");
 
-	LoadThemeStatic(Sing->StaticP1, _T("SingP1Static"));
-	LoadThemeText(Sing->TextP1, _T("SingP1Text"));
-	LoadThemeStatic(Sing->StaticP1ScoreBG, _T("SingP1Static2"));
-	LoadThemeText(Sing->TextP1Score, _T("SingP1TextScore"));
+	LoadThemeStatic(Sing->StaticP1, "SingP1Static");
+	LoadThemeText(Sing->TextP1, "SingP1Text");
+	LoadThemeStatic(Sing->StaticP1ScoreBG, "SingP1Static2");
+	LoadThemeText(Sing->TextP1Score, "SingP1TextScore");
 
 	// This one is shown in 2/4 player mode if it exists.
 	// If not, the player equivalents are used.
-	if (ini.GetSectionSize(_T("SingP1TwoPTextScore")) > 0)
+	if (ini.GetSectionSize("SingP1TwoPTextScore") > 0)
 	{
-		LoadThemeStatic(Sing->StaticP1TwoP, _T("SingP1TwoPStatic"));
-		LoadThemeText(Sing->TextP1TwoP, _T("SingP1TwoPText"));
-		LoadThemeStatic(Sing->StaticP1TwoPScoreBG, _T("SingP1TwoPStatic2"));
-		LoadThemeText(Sing->TextP1TwoPScore, _T("SingP1TwoPTextScore"));
+		LoadThemeStatic(Sing->StaticP1TwoP, "SingP1TwoPStatic");
+		LoadThemeText(Sing->TextP1TwoP, "SingP1TwoPText");
+		LoadThemeStatic(Sing->StaticP1TwoPScoreBG, "SingP1TwoPStatic2");
+		LoadThemeText(Sing->TextP1TwoPScore, "SingP1TwoPTextScore");
 	}
 	else
 	{
@@ -369,12 +383,12 @@ void Themes::LoadTheme(ThemeEntry * theme, eColor color)
 
 	// This one is shown in 3/6 player mode if it exists.
 	// If not, the player equivalents are used.
-	if (ini.GetSectionSize(_T("SingP1ThreePTextScore")) > 0)
+	if (ini.GetSectionSize("SingP1ThreePTextScore") > 0)
 	{
-		LoadThemeStatic(Sing->StaticP1ThreeP, _T("SingP1ThreePStatic"));
-		LoadThemeText(Sing->TextP1ThreeP, _T("SingP1ThreeText"));
-		LoadThemeStatic(Sing->StaticP1ThreePScoreBG, _T("SingP1ThreePStatic2"));
-		LoadThemeText(Sing->TextP1ThreePScore, _T("SingP1ThreePTextScore"));
+		LoadThemeStatic(Sing->StaticP1ThreeP, "SingP1ThreePStatic");
+		LoadThemeText(Sing->TextP1ThreeP, "SingP1ThreeText");
+		LoadThemeStatic(Sing->StaticP1ThreePScoreBG, "SingP1ThreePStatic2");
+		LoadThemeText(Sing->TextP1ThreePScore, "SingP1ThreePTextScore");
 	}
 	else
 	{
@@ -384,408 +398,408 @@ void Themes::LoadTheme(ThemeEntry * theme, eColor color)
 		Sing->TextP1ThreePScore = Sing->TextP1Score;
 	}
 
-	LoadThemeStatic(Sing->StaticP2R, _T("SingP2RStatic"));
-	LoadThemeText(Sing->TextP2R, _T("SingP2RText"));
-	LoadThemeStatic(Sing->StaticP2RScoreBG, _T("SingP2RStatic2"));
-	LoadThemeText(Sing->TextP2RScore, _T("SingP2RTextScore"));
+	LoadThemeStatic(Sing->StaticP2R, "SingP2RStatic");
+	LoadThemeText(Sing->TextP2R, "SingP2RText");
+	LoadThemeStatic(Sing->StaticP2RScoreBG, "SingP2RStatic2");
+	LoadThemeText(Sing->TextP2RScore, "SingP2RTextScore");
 
-	LoadThemeStatic(Sing->StaticP2M, _T("SingP2MStatic"));
-	LoadThemeText(Sing->TextP2M, _T("SingP2MText"));
-	LoadThemeStatic(Sing->StaticP2MScoreBG, _T("SingP2MStatic2"));
-	LoadThemeText(Sing->TextP2MScore, _T("SingP2MTextScore"));
+	LoadThemeStatic(Sing->StaticP2M, "SingP2MStatic");
+	LoadThemeText(Sing->TextP2M, "SingP2MText");
+	LoadThemeStatic(Sing->StaticP2MScoreBG, "SingP2MStatic2");
+	LoadThemeText(Sing->TextP2MScore, "SingP2MTextScore");
 
-	LoadThemeStatic(Sing->StaticP3R, _T("SingP3RStatic"));
-	LoadThemeText(Sing->TextP3R, _T("SingP3RText"));
-	LoadThemeStatic(Sing->StaticP3RScoreBG, _T("SingP3RStatic2"));
-	LoadThemeText(Sing->TextP3RScore, _T("SingP3RTextScore"));
+	LoadThemeStatic(Sing->StaticP3R, "SingP3RStatic");
+	LoadThemeText(Sing->TextP3R, "SingP3RText");
+	LoadThemeStatic(Sing->StaticP3RScoreBG, "SingP3RStatic2");
+	LoadThemeText(Sing->TextP3RScore, "SingP3RTextScore");
 
-	LoadThemeStatic(Sing->StaticSongName, _T("SingSongNameStatic"));
-	LoadThemeText(Sing->TextSongName, _T("SingSongNameText"));
+	LoadThemeStatic(Sing->StaticSongName, "SingSongNameStatic");
+	LoadThemeText(Sing->TextSongName, "SingSongNameText");
 
 	// Line bonus texts
-	Sing->LineBonusText[0] = sLanguage.Translate(_T("POPUP_AWFUL"));
+	Sing->LineBonusText[0] = __T("POPUP_AWFUL");
 	Sing->LineBonusText[1] = Sing->LineBonusText[0];
-	Sing->LineBonusText[2] = sLanguage.Translate(_T("POPUP_POOR"));
-	Sing->LineBonusText[3] = sLanguage.Translate(_T("POPUP_BAD"));
-	Sing->LineBonusText[4] = sLanguage.Translate(_T("POPUP_NOTBAD"));
-	Sing->LineBonusText[5] = sLanguage.Translate(_T("POPUP_GOOD"));
-	Sing->LineBonusText[6] = sLanguage.Translate(_T("POPUP_GREAT"));
-	Sing->LineBonusText[7] = sLanguage.Translate(_T("POPUP_AWESOME"));
-	Sing->LineBonusText[8] = sLanguage.Translate(_T("POPUP_PERFECT"));
+	Sing->LineBonusText[2] = __T("POPUP_POOR");
+	Sing->LineBonusText[3] = __T("POPUP_BAD");
+	Sing->LineBonusText[4] = __T("POPUP_NOTBAD");
+	Sing->LineBonusText[5] = __T("POPUP_GOOD");
+	Sing->LineBonusText[6] = __T("POPUP_GREAT");
+	Sing->LineBonusText[7] = __T("POPUP_AWESOME");
+	Sing->LineBonusText[8] = __T("POPUP_PERFECT");
 
 	// Pause popup
-	LoadThemeStatic(Sing->PausePopup, _T("PausePopUpStatic"));
+	LoadThemeStatic(Sing->PausePopup, "PausePopUpStatic");
 
 	// Score~
-	LoadThemeBasic(Score, _T("Score"));
-	LoadThemeText(Score->TextArtist,      _T("ScoreTextArtist"));
-	LoadThemeText(Score->TextTitle,       _T("ScoreTextTitle"));
-	LoadThemeText(Score->TextArtistTitle, _T("ScoreTextArtistTitle"));
+	LoadThemeBasic(Score, "Score");
+	LoadThemeText(Score->TextArtist,      "ScoreTextArtist");
+	LoadThemeText(Score->TextTitle,       "ScoreTextTitle");
+	LoadThemeText(Score->TextArtistTitle, "ScoreTextArtistTitle");
 
 	#define F(format, ...) \
-		_sntprintf(buff, SDL_arraysize(buff), format, __VA_ARGS__)
+		snprintf(buff, SDL_arraysize(buff), format, __VA_ARGS__)
 
 	for (int playerNo = 1; playerNo <= MAX_PLAYERS; playerNo++)
 	{
-		TCHAR buff[40];
+		char buff[40];
 		int playerID = playerNo - 1;
 
 		#define P(format) \
 			F(format, playerNo)
 
-		P(_T("ScorePlayer%dStatic"));         LoadThemeStatics(Score->PlayerStatic[playerID], buff);
-		P(_T("ScorePlayer%dText"));           LoadThemeTexts(Score->PlayerTexts[playerID], buff);
+		P("ScorePlayer%dStatic");         LoadThemeStatics(Score->PlayerStatic[playerID], buff);
+		P("ScorePlayer%dText");           LoadThemeTexts(Score->PlayerTexts[playerID], buff);
 
-		P(_T("ScoreTextName%d"));             LoadThemeText(Score->TextName[playerID], buff);
-		P(_T("ScoreTextScore%d"));            LoadThemeText(Score->TextScore[playerID], buff);
-		P(_T("ScoreTextNotes%d"));            LoadThemeText(Score->TextNotes[playerID], buff);
-		P(_T("ScoreTextNotesScore%d"));       LoadThemeText(Score->TextNotesScore[playerID], buff);
-		P(_T("ScoreTextLineBonus%d"));        LoadThemeText(Score->TextLineBonus[playerID], buff);
-		P(_T("ScoreTextLineBonusScore%d"));   LoadThemeText(Score->TextLineBonusScore[playerID], buff);
-		P(_T("ScoreTextGoldenNotes%d"));      LoadThemeText(Score->TextGoldenNotes[playerID], buff);
-		P(_T("ScoreTextGoldenNotesScore%d")); LoadThemeText(Score->TextGoldenNotesScore[playerID], buff);
-		P(_T("ScoreTextTotal%d"));            LoadThemeText(Score->TextTotal[playerID], buff);
-		P(_T("ScoreTextTotalScore%d"));       LoadThemeText(Score->TextTotalScore[playerID], buff);
+		P("ScoreTextName%d");             LoadThemeText(Score->TextName[playerID], buff);
+		P("ScoreTextScore%d");            LoadThemeText(Score->TextScore[playerID], buff);
+		P("ScoreTextNotes%d");            LoadThemeText(Score->TextNotes[playerID], buff);
+		P("ScoreTextNotesScore%d");       LoadThemeText(Score->TextNotesScore[playerID], buff);
+		P("ScoreTextLineBonus%d");        LoadThemeText(Score->TextLineBonus[playerID], buff);
+		P("ScoreTextLineBonusScore%d");   LoadThemeText(Score->TextLineBonusScore[playerID], buff);
+		P("ScoreTextGoldenNotes%d");      LoadThemeText(Score->TextGoldenNotes[playerID], buff);
+		P("ScoreTextGoldenNotesScore%d"); LoadThemeText(Score->TextGoldenNotesScore[playerID], buff);
+		P("ScoreTextTotal%d");            LoadThemeText(Score->TextTotal[playerID], buff);
+		P("ScoreTextTotalScore%d");       LoadThemeText(Score->TextTotalScore[playerID], buff);
 
-		P(_T("ScoreStaticBoxLightest%d"));    LoadThemeStatic(Score->StaticBoxLightest[playerID], buff);
-		P(_T("ScoreStaticBoxLight%d"));       LoadThemeStatic(Score->StaticBoxLight[playerID], buff);
-		P(_T("ScoreStaticBoxDark%d"));        LoadThemeStatic(Score->StaticBoxDark[playerID], buff);
+		P("ScoreStaticBoxLightest%d");    LoadThemeStatic(Score->StaticBoxLightest[playerID], buff);
+		P("ScoreStaticBoxLight%d");       LoadThemeStatic(Score->StaticBoxLight[playerID], buff);
+		P("ScoreStaticBoxDark%d");        LoadThemeStatic(Score->StaticBoxDark[playerID], buff);
 
-		P(_T("ScoreStaticBackLevel%d"));      LoadThemeStatic(Score->StaticBackLevel[playerID], buff);
-		P(_T("ScoreStaticBackLevelRound%d")); LoadThemeStatic(Score->StaticBackLevelRound[playerID], buff);
-		P(_T("ScoreStaticLevel%d"));          LoadThemeStatic(Score->StaticLevel[playerID], buff);
-		P(_T("ScoreStaticLevelRound%d"));     LoadThemeStatic(Score->StaticLevelRound[playerID], buff);
-		P(_T("ScoreStaticPlayerIdBox%d"));    LoadThemeStatic(Score->StaticPlayerIdBox[playerID], buff);
+		P("ScoreStaticBackLevel%d");      LoadThemeStatic(Score->StaticBackLevel[playerID], buff);
+		P("ScoreStaticBackLevelRound%d"); LoadThemeStatic(Score->StaticBackLevelRound[playerID], buff);
+		P("ScoreStaticLevel%d");          LoadThemeStatic(Score->StaticLevel[playerID], buff);
+		P("ScoreStaticLevelRound%d");     LoadThemeStatic(Score->StaticLevelRound[playerID], buff);
+		P("ScoreStaticPlayerIdBox%d");    LoadThemeStatic(Score->StaticPlayerIdBox[playerID], buff);
 
-		P(_T("ScoreStaticRatingPicture%d"));  LoadThemeStatic(Score->StaticRatings[playerID], buff);
+		P("ScoreStaticRatingPicture%d");  LoadThemeStatic(Score->StaticRatings[playerID], buff);
 
 		#undef P
 	}
 
-	LoadThemeStatic(Score->StaticNavigate, _T("ScoreStaticNavigate"));
-	LoadThemeText(Score->TextNavigate, _T("ScoreTextNavigate"));
+	LoadThemeStatic(Score->StaticNavigate, "ScoreStaticNavigate");
+	LoadThemeText(Score->TextNavigate, "ScoreTextNavigate");
 	
 	// Top5~
-	LoadThemeBasic(Top5, _T("Top5"));
-	LoadThemeText(Top5->TextLevel, _T("Top5TextLevel"));
-	LoadThemeText(Top5->TextArtistTitle, _T("Top5TextArtistTitle"));
-	LoadThemeStatics(Top5->StaticNumber, _T("Top5StaticNumber"));
-	LoadThemeTexts(Top5->TextNumber, _T("Top5TextNumber"));
-	LoadThemeTexts(Top5->TextName, _T("Top5TextName"));
-	LoadThemeTexts(Top5->TextScore, _T("Top5TextScore"));
-	LoadThemeTexts(Top5->TextDate, _T("Top5TextDate"));
+	LoadThemeBasic(Top5, "Top5");
+	LoadThemeText(Top5->TextLevel, "Top5TextLevel");
+	LoadThemeText(Top5->TextArtistTitle, "Top5TextArtistTitle");
+	LoadThemeStatics(Top5->StaticNumber, "Top5StaticNumber");
+	LoadThemeTexts(Top5->TextNumber, "Top5TextNumber");
+	LoadThemeTexts(Top5->TextName, "Top5TextName");
+	LoadThemeTexts(Top5->TextScore, "Top5TextScore");
+	LoadThemeTexts(Top5->TextDate, "Top5TextDate");
 
 	// Options~
-	LoadThemeBasic(Options, _T("Options"));
-	LoadThemeButton(Options->ButtonGame, _T("OptionsButtonGame"));
-	LoadThemeButton(Options->ButtonGraphics, _T("OptionsButtonGraphics"));
-	LoadThemeButton(Options->ButtonSound, _T("OptionsButtonSound"));
-	LoadThemeButton(Options->ButtonLyrics, _T("OptionsButtonLyrics"));
-	LoadThemeButton(Options->ButtonThemes, _T("OptionsButtonThemes"));
-	LoadThemeButton(Options->ButtonRecord, _T("OptionsButtonRecord"));
-	LoadThemeButton(Options->ButtonAdvanced, _T("OptionsButtonAdvanced"));
-	LoadThemeButton(Options->ButtonExit, _T("OptionsButtonExit"));
-	LoadThemeText(Options->TextDescription, _T("OptionsTextDescription"));
+	LoadThemeBasic(Options, "Options");
+	LoadThemeButton(Options->ButtonGame, "OptionsButtonGame");
+	LoadThemeButton(Options->ButtonGraphics, "OptionsButtonGraphics");
+	LoadThemeButton(Options->ButtonSound, "OptionsButtonSound");
+	LoadThemeButton(Options->ButtonLyrics, "OptionsButtonLyrics");
+	LoadThemeButton(Options->ButtonThemes, "OptionsButtonThemes");
+	LoadThemeButton(Options->ButtonRecord, "OptionsButtonRecord");
+	LoadThemeButton(Options->ButtonAdvanced, "OptionsButtonAdvanced");
+	LoadThemeButton(Options->ButtonExit, "OptionsButtonExit");
+	LoadThemeText(Options->TextDescription, "OptionsTextDescription");
 
-	Options->Description[0] = sLanguage.Translate(_T("SING_OPTIONS_GAME_DESC"));
-	Options->Description[1] = sLanguage.Translate(_T("SING_OPTIONS_GRAPHICS_DESC"));
-	Options->Description[2] = sLanguage.Translate(_T("SING_OPTIONS_SOUND_DESC"));
-	Options->Description[3] = sLanguage.Translate(_T("SING_OPTIONS_LYRICS_DESC"));
-	Options->Description[4] = sLanguage.Translate(_T("SING_OPTIONS_THEMES_DESC"));
-	Options->Description[5] = sLanguage.Translate(_T("SING_OPTIONS_RECORD_DESC"));
-	Options->Description[6] = sLanguage.Translate(_T("SING_OPTIONS_ADVANCED_DESC"));
-	Options->Description[7] = sLanguage.Translate(_T("SING_OPTIONS_EXIT"));
+	Options->Description[0] = __T("SING_OPTIONS_GAME_DESC");
+	Options->Description[1] = __T("SING_OPTIONS_GRAPHICS_DESC");
+	Options->Description[2] = __T("SING_OPTIONS_SOUND_DESC");
+	Options->Description[3] = __T("SING_OPTIONS_LYRICS_DESC");
+	Options->Description[4] = __T("SING_OPTIONS_THEMES_DESC");
+	Options->Description[5] = __T("SING_OPTIONS_RECORD_DESC");
+	Options->Description[6] = __T("SING_OPTIONS_ADVANCED_DESC");
+	Options->Description[7] = __T("SING_OPTIONS_EXIT");
 
 	// Set active description
 	Options->TextDescription.Text = Options->Description[0];
 
 	// Options: game~
-	LoadThemeBasic(OptionsGame, _T("OptionsGame"));
-	LoadThemeSelectSlide(OptionsGame->SelectPlayers, _T("OptionsGameSelectPlayers"));
-	LoadThemeSelectSlide(OptionsGame->SelectDifficulty, _T("OptionsGameSelectDifficulty"));
-	LoadThemeSelectSlide(OptionsGame->SelectLanguage, _T("OptionsGameSelectSlideLanguage"));
-	LoadThemeSelectSlide(OptionsGame->SelectTabs, _T("OptionsGameSelectTabs"));
-	LoadThemeSelectSlide(OptionsGame->SelectSorting, _T("OptionsGameSelectSlideSorting"));
-	LoadThemeSelectSlide(OptionsGame->SelectDebug, _T("OptionsGameSelectDebug"));
-	LoadThemeButton(OptionsGame->ButtonExit, _T("OptionsGameButtonExit"));
+	LoadThemeBasic(OptionsGame, "OptionsGame");
+	LoadThemeSelectSlide(OptionsGame->SelectPlayers, "OptionsGameSelectPlayers");
+	LoadThemeSelectSlide(OptionsGame->SelectDifficulty, "OptionsGameSelectDifficulty");
+	LoadThemeSelectSlide(OptionsGame->SelectLanguage, "OptionsGameSelectSlideLanguage");
+	LoadThemeSelectSlide(OptionsGame->SelectTabs, "OptionsGameSelectTabs");
+	LoadThemeSelectSlide(OptionsGame->SelectSorting, "OptionsGameSelectSlideSorting");
+	LoadThemeSelectSlide(OptionsGame->SelectDebug, "OptionsGameSelectDebug");
+	LoadThemeButton(OptionsGame->ButtonExit, "OptionsGameButtonExit");
 
 	// Options: graphics~
-	LoadThemeBasic(OptionsGraphics, _T("OptionsGraphics"));
-	LoadThemeSelectSlide(OptionsGraphics->SelectFullscreen, _T("OptionsGraphicsSelectFullscreen"));
-	LoadThemeSelectSlide(OptionsGraphics->SelectResolution, _T("OptionsGraphicsSelectSlideResolution"));
-	LoadThemeSelectSlide(OptionsGraphics->SelectDepth, _T("OptionsGraphicsSelectDepth"));
-	LoadThemeSelectSlide(OptionsGraphics->SelectVisualizer, _T("OptionsGraphicsSelectVisualizer"));
-	LoadThemeSelectSlide(OptionsGraphics->SelectOscilloscope, _T("OptionsGraphicsSelectOscilloscope"));
-	LoadThemeSelectSlide(OptionsGraphics->SelectLineBonus, _T("OptionsGraphicsSelectLineBonus"));
-	LoadThemeSelectSlide(OptionsGraphics->SelectMovieSize, _T("OptionsGraphicsSelectMovieSize"));
-	LoadThemeButton(OptionsGraphics->ButtonExit, _T("OptionsGraphicsButtonExit"));
+	LoadThemeBasic(OptionsGraphics, "OptionsGraphics");
+	LoadThemeSelectSlide(OptionsGraphics->SelectFullscreen, "OptionsGraphicsSelectFullscreen");
+	LoadThemeSelectSlide(OptionsGraphics->SelectResolution, "OptionsGraphicsSelectSlideResolution");
+	LoadThemeSelectSlide(OptionsGraphics->SelectDepth, "OptionsGraphicsSelectDepth");
+	LoadThemeSelectSlide(OptionsGraphics->SelectVisualizer, "OptionsGraphicsSelectVisualizer");
+	LoadThemeSelectSlide(OptionsGraphics->SelectOscilloscope, "OptionsGraphicsSelectOscilloscope");
+	LoadThemeSelectSlide(OptionsGraphics->SelectLineBonus, "OptionsGraphicsSelectLineBonus");
+	LoadThemeSelectSlide(OptionsGraphics->SelectMovieSize, "OptionsGraphicsSelectMovieSize");
+	LoadThemeButton(OptionsGraphics->ButtonExit, "OptionsGraphicsButtonExit");
 
 	// Options: sound~
-	LoadThemeBasic(OptionsSound, _T("OptionsSound"));
-	LoadThemeSelectSlide(OptionsSound->SelectBackgroundMusic, _T("OptionsSoundSelectBackgroundMusic"));
-	LoadThemeSelectSlide(OptionsSound->SelectMicBoost, _T("OptionsSoundSelectMicBoost"));
-	LoadThemeSelectSlide(OptionsSound->SelectClickAssist, _T("OptionsSoundSelectClickAssist"));
-	LoadThemeSelectSlide(OptionsSound->SelectBeatClick, _T("OptionsSoundSelectBeatClick"));
-	LoadThemeSelectSlide(OptionsSound->SelectThreshold, _T("OptionsSoundSelectThreshold"));
-	LoadThemeSelectSlide(OptionsSound->SelectSlidePreviewVolume, _T("OptionsSoundSelectSlidePreviewVolume"));
-	LoadThemeSelectSlide(OptionsSound->SelectSlidePreviewFading, _T("OptionsSoundSelectSlidePreviewFading"));
-	LoadThemeSelectSlide(OptionsSound->SelectSlideVoicePassthrough, _T("OptionsSoundSelectVoicePassthrough"));
-	LoadThemeButton(OptionsSound->ButtonExit, _T("OptionsSoundButtonExit"));
+	LoadThemeBasic(OptionsSound, "OptionsSound");
+	LoadThemeSelectSlide(OptionsSound->SelectBackgroundMusic, "OptionsSoundSelectBackgroundMusic");
+	LoadThemeSelectSlide(OptionsSound->SelectMicBoost, "OptionsSoundSelectMicBoost");
+	LoadThemeSelectSlide(OptionsSound->SelectClickAssist, "OptionsSoundSelectClickAssist");
+	LoadThemeSelectSlide(OptionsSound->SelectBeatClick, "OptionsSoundSelectBeatClick");
+	LoadThemeSelectSlide(OptionsSound->SelectThreshold, "OptionsSoundSelectThreshold");
+	LoadThemeSelectSlide(OptionsSound->SelectSlidePreviewVolume, "OptionsSoundSelectSlidePreviewVolume");
+	LoadThemeSelectSlide(OptionsSound->SelectSlidePreviewFading, "OptionsSoundSelectSlidePreviewFading");
+	LoadThemeSelectSlide(OptionsSound->SelectSlideVoicePassthrough, "OptionsSoundSelectVoicePassthrough");
+	LoadThemeButton(OptionsSound->ButtonExit, "OptionsSoundButtonExit");
 
 	// Options: lyrics~
-	LoadThemeBasic(OptionsLyrics, _T("OptionsLyrics"));
-	LoadThemeSelectSlide(OptionsLyrics->SelectLyricsFont, _T("OptionsLyricsSelectLyricsFont"));
-	LoadThemeSelectSlide(OptionsLyrics->SelectLyricsEffect, _T("OptionsLyricsSelectLyricsEffect"));
-	LoadThemeSelectSlide(OptionsLyrics->SelectNoteLines, _T("OptionsLyricsSelectNoteLines"));
-	LoadThemeButton(OptionsLyrics->ButtonExit, _T("OptionsLyricsButtonExit"));
+	LoadThemeBasic(OptionsLyrics, "OptionsLyrics");
+	LoadThemeSelectSlide(OptionsLyrics->SelectLyricsFont, "OptionsLyricsSelectLyricsFont");
+	LoadThemeSelectSlide(OptionsLyrics->SelectLyricsEffect, "OptionsLyricsSelectLyricsEffect");
+	LoadThemeSelectSlide(OptionsLyrics->SelectNoteLines, "OptionsLyricsSelectNoteLines");
+	LoadThemeButton(OptionsLyrics->ButtonExit, "OptionsLyricsButtonExit");
 	
 	// Options: themes~
-	LoadThemeBasic(OptionsThemes, _T("OptionsThemes"));
-	LoadThemeSelectSlide(OptionsThemes->SelectTheme, _T("OptionsThemesSelectTheme"));
-	LoadThemeSelectSlide(OptionsThemes->SelectSkin, _T("OptionsThemesSelectSkin"));
-	LoadThemeSelectSlide(OptionsThemes->SelectColor, _T("OptionsThemesSelectColor"));
-	LoadThemeButton(OptionsThemes->ButtonExit, _T("OptionsThemesButtonExit"));
+	LoadThemeBasic(OptionsThemes, "OptionsThemes");
+	LoadThemeSelectSlide(OptionsThemes->SelectTheme, "OptionsThemesSelectTheme");
+	LoadThemeSelectSlide(OptionsThemes->SelectSkin, "OptionsThemesSelectSkin");
+	LoadThemeSelectSlide(OptionsThemes->SelectColor, "OptionsThemesSelectColor");
+	LoadThemeButton(OptionsThemes->ButtonExit, "OptionsThemesButtonExit");
 
 	// Options: record~
-	LoadThemeBasic(OptionsRecord, _T("OptionsRecord"));
-	LoadThemeSelectSlide(OptionsRecord->SelectSlideCard, _T("OptionsRecordSelectSlideCard"));
-	LoadThemeSelectSlide(OptionsRecord->SelectSlideInput, _T("OptionsRecordSelectSlideInput"));
-	LoadThemeSelectSlide(OptionsRecord->SelectSlideChannel, _T("OptionsRecordSelectSlideChannel"));
-	LoadThemeButton(OptionsRecord->ButtonExit, _T("OptionsRecordButtonExit"));
+	LoadThemeBasic(OptionsRecord, "OptionsRecord");
+	LoadThemeSelectSlide(OptionsRecord->SelectSlideCard, "OptionsRecordSelectSlideCard");
+	LoadThemeSelectSlide(OptionsRecord->SelectSlideInput, "OptionsRecordSelectSlideInput");
+	LoadThemeSelectSlide(OptionsRecord->SelectSlideChannel, "OptionsRecordSelectSlideChannel");
+	LoadThemeButton(OptionsRecord->ButtonExit, "OptionsRecordButtonExit");
 
 	// Options: advanced~
-	LoadThemeBasic(OptionsAdvanced, _T("OptionsAdvanced"));
-	LoadThemeSelectSlide(OptionsAdvanced->SelectLoadAnimation, _T("OptionsAdvancedSelectLoadAnimation"));
-	LoadThemeSelectSlide(OptionsAdvanced->SelectScreenFade, _T("OptionsAdvancedSelectScreenFade"));
-	LoadThemeSelectSlide(OptionsAdvanced->SelectEffectSing, _T("OptionsAdvancedSelectEffectSing"));
-	LoadThemeSelectSlide(OptionsAdvanced->SelectLineBonus, _T("OptionsAdvancedSelectLineBonus"));
-	LoadThemeSelectSlide(OptionsAdvanced->SelectOnSongClick, _T("OptionsAdvancedSelectSlideOnSongClick"));
-	LoadThemeSelectSlide(OptionsAdvanced->SelectAskBeforeDel, _T("OptionsAdvancedSelectAskBeforeDel"));
-	LoadThemeSelectSlide(OptionsAdvanced->SelectPartyPopup, _T("OptionsAdvancedSelectPartyPopup"));
-	LoadThemeButton(OptionsAdvanced->ButtonExit, _T("OptionsAdvancedButtonExit"));
+	LoadThemeBasic(OptionsAdvanced, "OptionsAdvanced");
+	LoadThemeSelectSlide(OptionsAdvanced->SelectLoadAnimation, "OptionsAdvancedSelectLoadAnimation");
+	LoadThemeSelectSlide(OptionsAdvanced->SelectScreenFade, "OptionsAdvancedSelectScreenFade");
+	LoadThemeSelectSlide(OptionsAdvanced->SelectEffectSing, "OptionsAdvancedSelectEffectSing");
+	LoadThemeSelectSlide(OptionsAdvanced->SelectLineBonus, "OptionsAdvancedSelectLineBonus");
+	LoadThemeSelectSlide(OptionsAdvanced->SelectOnSongClick, "OptionsAdvancedSelectSlideOnSongClick");
+	LoadThemeSelectSlide(OptionsAdvanced->SelectAskBeforeDel, "OptionsAdvancedSelectAskBeforeDel");
+	LoadThemeSelectSlide(OptionsAdvanced->SelectPartyPopup, "OptionsAdvancedSelectPartyPopup");
+	LoadThemeButton(OptionsAdvanced->ButtonExit, "OptionsAdvancedButtonExit");
 
 	// Edit menu~
-	LoadThemeBasic(Edit, _T("Edit"));
-	LoadThemeButton(Edit->ButtonConvert, _T("EditButtonConvert"));
-	LoadThemeButton(Edit->ButtonExit, _T("EditButtonExit"));
-	LoadThemeText(Edit->TextDescription, _T("EditTextDescription"));
+	LoadThemeBasic(Edit, "Edit");
+	LoadThemeButton(Edit->ButtonConvert, "EditButtonConvert");
+	LoadThemeButton(Edit->ButtonExit, "EditButtonExit");
+	LoadThemeText(Edit->TextDescription, "EditTextDescription");
 
-	Edit->Description[0] = sLanguage.Translate(_T("SING_EDIT_BUTTON_DESCRIPTION_CONVERT"));
-	Edit->Description[1] = sLanguage.Translate(_T("SING_EDIT_BUTTON_DESCRIPTION_EXIT"));
+	Edit->Description[0] = __T("SING_EDIT_BUTTON_DESCRIPTION_CONVERT");
+	Edit->Description[1] = __T("SING_EDIT_BUTTON_DESCRIPTION_EXIT");
 
 	// Set active description
 	Edit->TextDescription.Text = Edit->Description[0];
 
 	// Error popup~
-	LoadThemeBasic(ErrorPopup, _T("ErrorPopup"));
-	LoadThemeButton(ErrorPopup->Button1, _T("ErrorPopupButton1"));
-	LoadThemeText(ErrorPopup->TextError, _T("ErrorPopupText"));
+	LoadThemeBasic(ErrorPopup, "ErrorPopup");
+	LoadThemeButton(ErrorPopup->Button1, "ErrorPopupButton1");
+	LoadThemeText(ErrorPopup->TextError, "ErrorPopupText");
 
 	// Check popup~
-	LoadThemeBasic(CheckPopup, _T("CheckPopup"));
-	LoadThemeButton(CheckPopup->Button1, _T("CheckPopupButton1"));
-	LoadThemeButton(CheckPopup->Button2, _T("CheckPopupButton2"));
-	LoadThemeText(CheckPopup->TextCheck, _T("CheckPopupText"));
+	LoadThemeBasic(CheckPopup, "CheckPopup");
+	LoadThemeButton(CheckPopup->Button1, "CheckPopupButton1");
+	LoadThemeButton(CheckPopup->Button2, "CheckPopupButton2");
+	LoadThemeText(CheckPopup->TextCheck, "CheckPopupText");
 	
 	// Song menu~
-	LoadThemeBasic(SongMenu, _T("SongMenu"));
-	LoadThemeButton(SongMenu->Button1, _T("SongMenuButton1"));
-	LoadThemeButton(SongMenu->Button2, _T("SongMenuButton2"));
-	LoadThemeButton(SongMenu->Button3, _T("SongMenuButton3"));
-	LoadThemeButton(SongMenu->Button4, _T("SongMenuButton4"));
-	LoadThemeSelectSlide(SongMenu->SelectSlide3, _T("SongMenuSelectSlide3"));
-	LoadThemeText(SongMenu->TextMenu, _T("SongMenuTextMenu"));
+	LoadThemeBasic(SongMenu, "SongMenu");
+	LoadThemeButton(SongMenu->Button1, "SongMenuButton1");
+	LoadThemeButton(SongMenu->Button2, "SongMenuButton2");
+	LoadThemeButton(SongMenu->Button3, "SongMenuButton3");
+	LoadThemeButton(SongMenu->Button4, "SongMenuButton4");
+	LoadThemeSelectSlide(SongMenu->SelectSlide3, "SongMenuSelectSlide3");
+	LoadThemeText(SongMenu->TextMenu, "SongMenuTextMenu");
 
 	// Song JumpTo~
-	LoadThemeBasic(SongJumpTo, _T("SongJumpTo"));
-	LoadThemeButton(SongJumpTo->ButtonSearchText, _T("SongJumpToButtonSearchText"));
-	LoadThemeSelectSlide(SongJumpTo->SelectSlideType, _T("SongJumpToSelectSlideType"));
-	LoadThemeText(SongJumpTo->TextFound, _T("SongJumpToTextFound"));
+	LoadThemeBasic(SongJumpTo, "SongJumpTo");
+	LoadThemeButton(SongJumpTo->ButtonSearchText, "SongJumpToButtonSearchText");
+	LoadThemeSelectSlide(SongJumpTo->SelectSlideType, "SongJumpToSelectSlideType");
+	LoadThemeText(SongJumpTo->TextFound, "SongJumpToTextFound");
 
 	// Translations
-	SongJumpTo->IType[0] = sLanguage.Translate(_T("SONG_JUMPTO_TYPE1"));
-	SongJumpTo->IType[1] = sLanguage.Translate(_T("SONG_JUMPTO_TYPE2"));
-	SongJumpTo->IType[2] = sLanguage.Translate(_T("SONG_JUMPTO_TYPE3"));
-	SongJumpTo->SongsFound = sLanguage.Translate(_T("SONG_JUMPTO_SONGSFOUND"));
-	SongJumpTo->NoSongsFound = sLanguage.Translate(_T("SONG_JUMPTO_NOSONGSFOUND"));
-	SongJumpTo->CatText = sLanguage.Translate(_T("SONG_JUMPTO_CATTEXT"));
+	SongJumpTo->IType[0] = __T("SONG_JUMPTO_TYPE1");
+	SongJumpTo->IType[1] = __T("SONG_JUMPTO_TYPE2");
+	SongJumpTo->IType[2] = __T("SONG_JUMPTO_TYPE3");
+	SongJumpTo->SongsFound = __T("SONG_JUMPTO_SONGSFOUND");
+	SongJumpTo->NoSongsFound = __T("SONG_JUMPTO_NOSONGSFOUND");
+	SongJumpTo->CatText = __T("SONG_JUMPTO_CATTEXT");
 
 	// Party: new round~
-	LoadThemeBasic(PartyNewRound, _T("PartyNewRound"));
+	LoadThemeBasic(PartyNewRound, "PartyNewRound");
 
-	LoadThemeText(PartyNewRound->TextNextRound, _T("PartyNewRoundTextNextRound"));
-	LoadThemeText(PartyNewRound->TextNextRoundNo, _T("PartyNewRoundTextNextRoundNo"));
+	LoadThemeText(PartyNewRound->TextNextRound, "PartyNewRoundTextNextRound");
+	LoadThemeText(PartyNewRound->TextNextRoundNo, "PartyNewRoundTextNextRoundNo");
 
 	for (int roundNo = 0; roundNo < MAX_ROUNDS; roundNo++)
 	{
-		TCHAR buff[40];
+		char buff[40];
 
-		F(_T("PartyNewRoundTextRound%d"), roundNo + 1);
+		F("PartyNewRoundTextRound%d", roundNo + 1);
 		LoadThemeText(PartyNewRound->TextRound[roundNo], buff);
 
-		F(_T("PartyNewRoundTextWinner%d"), roundNo + 1);
+		F("PartyNewRoundTextWinner%d", roundNo + 1);
 		LoadThemeText(PartyNewRound->TextWinner[roundNo], buff);
 
-		F(_T("PartyNewRoundStaticRound%d"), roundNo + 1);
+		F("PartyNewRoundStaticRound%d", roundNo + 1);
 		LoadThemeStatic(PartyNewRound->StaticRound[roundNo], buff);
 	}
 
 	for (int teamNo = 0; teamNo < MAX_TEAMS; teamNo++)
 	{
 		ThemePartyNewRound::Team& team = PartyNewRound->Teams[teamNo];
-		TCHAR buff[40];
+		char buff[40];
 
-		F(_T("PartyNewRoundTextNextPlayer%d"), teamNo + 1);
+		F("PartyNewRoundTextNextPlayer%d", teamNo + 1);
 		LoadThemeText(team.TextNextPlayer, buff);
 
-		F(_T("PartyNewRoundStaticNextPlayer%d"), teamNo + 1);
+		F("PartyNewRoundStaticNextPlayer%d", teamNo + 1);
 		LoadThemeStatic(team.StaticNextPlayer, buff);
 
-		F(_T("PartyNewRoundTextScoreTeam%d"), teamNo + 1);
+		F("PartyNewRoundTextScoreTeam%d", teamNo + 1);
 		LoadThemeText(team.TextScore, buff);
 
-		F(_T("PartyNewRoundTextNameTeam%d"), teamNo + 1);
+		F("PartyNewRoundTextNameTeam%d", teamNo + 1);
 		LoadThemeText(team.TextName, buff);
 
-		F(_T("PartyNewRoundTextTeam%dPlayers"), teamNo + 1);
+		F("PartyNewRoundTextTeam%dPlayers", teamNo + 1);
 		LoadThemeText(team.TextPlayers, buff);
 
-		F(_T("PartyNewRoundStaticTeam%d"), teamNo + 1);
+		F("PartyNewRoundStaticTeam%d", teamNo + 1);
 		LoadThemeStatic(team.StaticTeam, buff);
 	}
 
 	// Party: score~
-	LoadThemeBasic(PartyScore, _T("PartyScore"));
-	LoadThemeText(PartyScore->TextWinner, _T("PartyScoreTextWinner"));
+	LoadThemeBasic(PartyScore, "PartyScore");
+	LoadThemeText(PartyScore->TextWinner, "PartyScoreTextWinner");
 
 	for (int teamNo = 0; teamNo < MAX_TEAMS; teamNo++)
 	{
 		ThemePartyScore::Team& team = PartyScore->Teams[teamNo];
-		TCHAR buff[40];
+		char buff[40];
 
-		F(_T("PartyScoreTextScoreTeam%d"), teamNo + 1);
+		F("PartyScoreTextScoreTeam%d", teamNo + 1);
 		LoadThemeText(team.TextScore, buff);
 
-		F(_T("PartyScoreTextNameTeam%d"), teamNo + 1);
+		F("PartyScoreTextNameTeam%d", teamNo + 1);
 		LoadThemeText(team.TextName, buff);
 
-		F(_T("PartyScoreStaticTeam%d"), teamNo + 1);
+		F("PartyScoreStaticTeam%d", teamNo + 1);
 		LoadThemeStatic(team.StaticTeam, buff);
 
-		F(_T("PartyScoreStaticTeam%dBG"), teamNo + 1);
+		F("PartyScoreStaticTeam%dBG", teamNo + 1);
 		LoadThemeStatic(team.StaticTeamBG, buff);
 
-		F(_T("PartyScoreStaticTeam%dDeco"), teamNo + 1);
+		F("PartyScoreStaticTeam%dDeco", teamNo + 1);
 		LoadThemeStatic(team.StaticTeamDeco, buff);
 	}
 
-	PartyScore->DecoTextures.ChangeTextures = ini.GetBoolValue(_T("PartyScoreDecoTextures"), _T("ChangeTextures"), false);
+	PartyScore->DecoTextures.ChangeTextures = ini.GetBoolValue("PartyScoreDecoTextures", "ChangeTextures", false);
 
-	PartyScore->DecoTextures.Texture[0] = ini.GetValue(_T("PartyScoreDecoTextures"), _T("FirstTexture"), _T(""));
-	PartyScore->DecoTextures.Type   [0] = LOOKUP_ENUM_VALUE(TextureType, _T("PartyScoreDecoTextures"), _T("FirstTyp"), TextureType::Colorized);
-	PartyScore->DecoTextures.Color  [0] = ini.GetValue(_T("PartyScoreDecoTextures"), _T("FirstColor"), _T("Black"));
+	PartyScore->DecoTextures.Texture[0] = ini.GetValue("PartyScoreDecoTextures", "FirstTexture", "");
+	PartyScore->DecoTextures.Type   [0] = LOOKUP_ENUM_VALUE(TextureType, "PartyScoreDecoTextures", "FirstTyp", TextureType::Colorized);
+	PartyScore->DecoTextures.Color  [0] = ini.GetValue("PartyScoreDecoTextures", "FirstColor", "Black");
 
-	PartyScore->DecoTextures.Texture[1] = ini.GetValue(_T("PartyScoreDecoTextures"), _T("SecondTexture"), _T(""));
-	PartyScore->DecoTextures.Type   [1] = LOOKUP_ENUM_VALUE(TextureType, _T("PartyScoreDecoTextures"), _T("SecondTyp"), TextureType::Colorized);
-	PartyScore->DecoTextures.Color  [1] = ini.GetValue(_T("PartyScoreDecoTextures"), _T("SecondColor"), _T("Black"));
+	PartyScore->DecoTextures.Texture[1] = ini.GetValue("PartyScoreDecoTextures", "SecondTexture", "");
+	PartyScore->DecoTextures.Type   [1] = LOOKUP_ENUM_VALUE(TextureType, "PartyScoreDecoTextures", "SecondTyp", TextureType::Colorized);
+	PartyScore->DecoTextures.Color  [1] = ini.GetValue("PartyScoreDecoTextures", "SecondColor", "Black");
 
-	PartyScore->DecoTextures.Texture[2] = ini.GetValue(_T("PartyScoreDecoTextures"), _T("ThirdTexture"), _T(""));
-	PartyScore->DecoTextures.Type   [2] = LOOKUP_ENUM_VALUE(TextureType, _T("PartyScoreDecoTextures"), _T("ThirdTyp"), TextureType::Colorized);
-	PartyScore->DecoTextures.Color  [2] = ini.GetValue(_T("PartyScoreDecoTextures"), _T("ThirdColor"), _T("Black"));
+	PartyScore->DecoTextures.Texture[2] = ini.GetValue("PartyScoreDecoTextures", "ThirdTexture", "");
+	PartyScore->DecoTextures.Type   [2] = LOOKUP_ENUM_VALUE(TextureType, "PartyScoreDecoTextures", "ThirdTyp", TextureType::Colorized);
+	PartyScore->DecoTextures.Color  [2] = ini.GetValue("PartyScoreDecoTextures", "ThirdColor", "Black");
 
 	// Party: options~
-	LoadThemeBasic(PartyOptions, _T("PartyOptions"));
-	LoadThemeSelectSlide(PartyOptions->SelectLevel,     _T("PartyOptionsSelectLevel"));
-	LoadThemeSelectSlide(PartyOptions->SelectPlaylist,  _T("PartyOptionsSelectPlaylist"));
-	LoadThemeSelectSlide(PartyOptions->SelectPlaylist2, _T("PartyOptionsSelectPlaylist2"));
+	LoadThemeBasic(PartyOptions, "PartyOptions");
+	LoadThemeSelectSlide(PartyOptions->SelectLevel,     "PartyOptionsSelectLevel");
+	LoadThemeSelectSlide(PartyOptions->SelectPlaylist,  "PartyOptionsSelectPlaylist");
+	LoadThemeSelectSlide(PartyOptions->SelectPlaylist2, "PartyOptionsSelectPlaylist2");
 
 	// Party: player~
-	LoadThemeBasic(PartyPlayer, _T("PartyPlayer"));
-	LoadThemeSelectSlide(PartyPlayer->SelectTeams, _T("PartyPlayerSelectTeams"));
+	LoadThemeBasic(PartyPlayer, "PartyPlayer");
+	LoadThemeSelectSlide(PartyPlayer->SelectTeams, "PartyPlayerSelectTeams");
 
 	for (int teamNo = 0, playerNo = 0; teamNo < MAX_TEAMS; teamNo++)
 	{
 		ThemePartyPlayer::Team& team = PartyPlayer->Teams[teamNo];
-		TCHAR buff[40];
+		char buff[40];
 
-		F(_T("PartyPlayerTeam%dName"), teamNo + 1);
+		F("PartyPlayerTeam%dName", teamNo + 1);
 		LoadThemeButton(team.TeamName, buff);
 
-		F(_T("PartyPlayerSelectPlayers%d"), teamNo + 1);
+		F("PartyPlayerSelectPlayers%d", teamNo + 1);
 		LoadThemeSelectSlide(team.SelectPlayers, buff);
 
 		for (int i = 0; i < MAX_PLAYERS_PER_TEAM; i++, playerNo++)
 		{
-			F(_T("PartyPlayerPlayer%dName"), playerNo + 1);
+			F("PartyPlayerPlayer%dName", playerNo + 1);
 			LoadThemeButton(team.PlayerName[i], buff);
 		}
 	}
 
 	// Party: rounds~
-	LoadThemeBasic(PartyRounds, _T("PartyRounds"));
+	LoadThemeBasic(PartyRounds, "PartyRounds");
 
-	LoadThemeSelectSlide(PartyRounds->SelectRoundCount, _T("PartyRoundsSelectRoundCount"));
+	LoadThemeSelectSlide(PartyRounds->SelectRoundCount, "PartyRoundsSelectRoundCount");
 	for (int roundNo = 0; roundNo < MAX_ROUNDS; roundNo++)
 	{
-		TCHAR buff[40];
-		F(_T("PartyRoundsSelectRound%d"), roundNo + 1);
+		char buff[40];
+		F("PartyRoundsSelectRound%d", roundNo + 1);
 		LoadThemeSelectSlide(PartyRounds->SelectRound[roundNo], buff);
 	}
 
 	// Stat: main~
-	LoadThemeBasic(StatMain, _T("StatMain"));
-	LoadThemeButton(StatMain->ButtonScores, _T("StatMainButtonScores"));
-	LoadThemeButton(StatMain->ButtonSingers, _T("StatMainButtonSingers"));
-	LoadThemeButton(StatMain->ButtonSongs, _T("StatMainButtonSongs"));
-	LoadThemeButton(StatMain->ButtonBands, _T("StatMainButtonBands"));
-	LoadThemeButton(StatMain->ButtonExit, _T("StatMainButtonExit"));
-	LoadThemeText(StatMain->TextOverview, _T("StatMainTextOverview"));
+	LoadThemeBasic(StatMain, "StatMain");
+	LoadThemeButton(StatMain->ButtonScores, "StatMainButtonScores");
+	LoadThemeButton(StatMain->ButtonSingers, "StatMainButtonSingers");
+	LoadThemeButton(StatMain->ButtonSongs, "StatMainButtonSongs");
+	LoadThemeButton(StatMain->ButtonBands, "StatMainButtonBands");
+	LoadThemeButton(StatMain->ButtonExit, "StatMainButtonExit");
+	LoadThemeText(StatMain->TextOverview, "StatMainTextOverview");
 
 	// Stat: detail~
-	LoadThemeBasic(StatDetail, _T("StatDetail"));
-	LoadThemeButton(StatDetail->ButtonNext, _T("StatDetailButtonNext"));
-	LoadThemeButton(StatDetail->ButtonPrev, _T("StatDetailButtonPrev"));
-	LoadThemeButton(StatDetail->ButtonReverse, _T("StatDetailButtonReverse"));
-	LoadThemeButton(StatDetail->ButtonExit, _T("StatDetailButtonExit"));
-	LoadThemeText(StatDetail->TextDescription, _T("StatDetailTextDescription"));
-	LoadThemeText(StatDetail->TextPage, _T("StatDetailTextPage"));
-	LoadThemeTexts(StatDetail->TextList, _T("StatDetailTextList"));
+	LoadThemeBasic(StatDetail, "StatDetail");
+	LoadThemeButton(StatDetail->ButtonNext, "StatDetailButtonNext");
+	LoadThemeButton(StatDetail->ButtonPrev, "StatDetailButtonPrev");
+	LoadThemeButton(StatDetail->ButtonReverse, "StatDetailButtonReverse");
+	LoadThemeButton(StatDetail->ButtonExit, "StatDetailButtonExit");
+	LoadThemeText(StatDetail->TextDescription, "StatDetailTextDescription");
+	LoadThemeText(StatDetail->TextPage, "StatDetailTextPage");
+	LoadThemeTexts(StatDetail->TextList, "StatDetailTextList");
 
 	// Translate texts
-	StatDetail->Description[0] = sLanguage.Translate(_T("STAT_DESC_SCORES"));
-	StatDetail->Description[1] = sLanguage.Translate(_T("STAT_DESC_SINGERS"));
-	StatDetail->Description[2] = sLanguage.Translate(_T("STAT_DESC_SONGS"));
-	StatDetail->Description[3] = sLanguage.Translate(_T("STAT_DESC_BANDS"));
+	StatDetail->Description[0] = __T("STAT_DESC_SCORES");
+	StatDetail->Description[1] = __T("STAT_DESC_SINGERS");
+	StatDetail->Description[2] = __T("STAT_DESC_SONGS");
+	StatDetail->Description[3] = __T("STAT_DESC_BANDS");
 
-	StatDetail->DescriptionR[0] = sLanguage.Translate(_T("STAT_DESC_SCORES_REVERSED"));
-	StatDetail->DescriptionR[1] = sLanguage.Translate(_T("STAT_DESC_SINGERS_REVERSED"));
-	StatDetail->DescriptionR[2] = sLanguage.Translate(_T("STAT_DESC_SONGS_REVERSED"));
-	StatDetail->DescriptionR[3] = sLanguage.Translate(_T("STAT_DESC_BANDS_REVERSED"));
+	StatDetail->DescriptionR[0] = __T("STAT_DESC_SCORES_REVERSED");
+	StatDetail->DescriptionR[1] = __T("STAT_DESC_SINGERS_REVERSED");
+	StatDetail->DescriptionR[2] = __T("STAT_DESC_SONGS_REVERSED");
+	StatDetail->DescriptionR[3] = __T("STAT_DESC_BANDS_REVERSED");
 
-	StatDetail->FormatStr[0] = sLanguage.Translate(_T("STAT_FORMAT_SCORES"));
-	StatDetail->FormatStr[1] = sLanguage.Translate(_T("STAT_FORMAT_SINGERS"));
-	StatDetail->FormatStr[2] = sLanguage.Translate(_T("STAT_FORMAT_SONGS"));
-	StatDetail->FormatStr[3] = sLanguage.Translate(_T("STAT_FORMAT_BANDS"));
+	StatDetail->FormatStr[0] = __T("STAT_FORMAT_SCORES");
+	StatDetail->FormatStr[1] = __T("STAT_FORMAT_SINGERS");
+	StatDetail->FormatStr[2] = __T("STAT_FORMAT_SONGS");
+	StatDetail->FormatStr[3] = __T("STAT_FORMAT_BANDS");
 
-	StatDetail->PageStr = sLanguage.Translate(_T("STAT_PAGE"));
+	StatDetail->PageStr = __T("STAT_PAGE");
 
 	// Playlist translations~
-	Playlist->CatText = sLanguage.Translate(_T("PLAYLIST_CATTEXT"));
+	Playlist->CatText = __T("PLAYLIST_CATTEXT");
 
 #undef F
 }
 
 void Themes::LoadColors()
 {
-	const TCHAR * section = _T("Colors");
-	const CSimpleIni::TKeyVal * sectionKeys = ini.GetSection(section);
+	const char * section = "Colors";
+	const CSimpleIniA::TKeyVal * sectionKeys = ini.GetSection(section);
 
 	// Clear color map
 	_colors.clear();
 
 	if (sectionKeys != NULL)
 	{
-		for (CSimpleIni::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
+		for (CSimpleIniA::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
 		{
 			RGB rgb;
 			rgb.Load(itr->second);
@@ -801,9 +815,9 @@ void Themes::LoadColors()
 	skinRGB[1].Sqrt(skinRGB[0]);
 	skinRGB[2].Sqrt(skinRGB[1]);
 
-	_colors.insert(std::make_pair(_T("ColorDark"),     skinRGB[0]));
-	_colors.insert(std::make_pair(_T("ColorLight"),    skinRGB[1]));
-	_colors.insert(std::make_pair(_T("ColorLightest"), skinRGB[2]));
+	_colors.insert(std::make_pair("ColorDark",     skinRGB[0]));
+	_colors.insert(std::make_pair("ColorLight",    skinRGB[1]));
+	_colors.insert(std::make_pair("ColorLightest", skinRGB[2]));
 
 	eColor playerColours[MAX_PLAYERS] = 
 	{
@@ -814,25 +828,25 @@ void Themes::LoadColors()
 	for (int i = 1; i <= MAX_PLAYERS; i++)
 	{
 		RGB playerRGB[3];
-		TCHAR name[20];
+		char name[20];
 
 		// Dark (0), Light (1), Lightest (2)
 		playerRGB[0] = GetSystemColor(playerColours[i - 1]);
 		playerRGB[1].Sqrt(playerRGB[0]);
 		playerRGB[2].Sqrt(playerRGB[1]);
 
-		_sntprintf(name, 20, _T("P%dDark"), i);
+		snprintf(name, 20, "P%dDark", i);
 		_colors.insert(std::make_pair(name, playerRGB[0]));
 
-		_sntprintf(name, 20, _T("P%dLight"), i);
+		snprintf(name, 20, "P%dLight", i);
 		_colors.insert(std::make_pair(name, playerRGB[1]));
 
-		_sntprintf(name, 20, _T("P%dLightest"), i);
+		snprintf(name, 20, "P%dLightest", i);
 		_colors.insert(std::make_pair(name, playerRGB[2]));
 	}
 }
 
-void Themes::LoadColor(RGB& rgb, const tstring& color)
+void Themes::LoadColor(RGB& rgb, const std::string& color)
 {
 	ColorMap::iterator itr = _colors.find(color);
 	if (itr != _colors.end())
@@ -841,82 +855,82 @@ void Themes::LoadColor(RGB& rgb, const tstring& color)
 		rgb.R = rgb.G = rgb.B = 0.0f;
 }
 
-void Themes::LoadColor(RGB& rgb, const TCHAR * fmt, ...)
+void Themes::LoadColor(RGB& rgb, const char * fmt, ...)
 {
-	TCHAR buffer[1024];
-	tstring color;
+	char buffer[1024];
+	std::string color;
 	va_list args;
 	va_start(args, fmt);
-	_vsntprintf(buffer, 1024, fmt, args);
+	vsnprintf(buffer, 1024, fmt, args);
 	va_end(args);
 
 	color = buffer;
 	LoadColor(rgb, color);
 }
 
-void Themes::LoadThemeBasic(ThemeBasic * theme, const tstring& name)
+void Themes::LoadThemeBasic(ThemeBasic * theme, const std::string& name)
 {
 	LoadThemeBackground(theme->Background, name);
-	LoadThemeTexts(theme->Text, name + _T("Text"));
-	LoadThemeStatics(theme->Static, name + _T("Static"));
-	LoadThemeButtonCollections(theme->ButtonCollection, name + _T("ButtonCollection"));
+	LoadThemeTexts(theme->Text, name + "Text");
+	LoadThemeStatics(theme->Static, name + "Static");
+	LoadThemeButtonCollections(theme->ButtonCollection, name + "ButtonCollection");
 
 	_lastThemeBasic = theme;
 }
 
-void Themes::LoadThemeBackground(ThemeBackground& themeBackground, const tstring& name)
+void Themes::LoadThemeBackground(ThemeBackground& themeBackground, const std::string& name)
 {
-	const tstring tmp = name + _T("Background");
-	const TCHAR * section = tmp.c_str();
+	const std::string tmp = name + "Background";
+	const char * section = tmp.c_str();
 
-	themeBackground.BGType  = LOOKUP_ENUM_VALUE(BackgroundType, section, _T("Type"), BackgroundType::Auto);
-	themeBackground.Tex     = ini.GetValue(section, _T("Tex"), _T(""));
-	themeBackground.Color.R = (float) ini.GetDoubleValue(section, _T("ColR"), 1.0);
-	themeBackground.Color.G = (float) ini.GetDoubleValue(section, _T("ColG"), 1.0);
-	themeBackground.Color.B = (float) ini.GetDoubleValue(section, _T("ColB"), 1.0);
-	themeBackground.Alpha   = (float) ini.GetDoubleValue(section, _T("Alpha"), 1.0);
+	themeBackground.BGType  = LOOKUP_ENUM_VALUE(BackgroundType, section, "Type", BackgroundType::Auto);
+	themeBackground.Tex     = ini.GetValue(section, "Tex", "");
+	themeBackground.Color.R = (float) ini.GetDoubleValue(section, "ColR", 1.0);
+	themeBackground.Color.G = (float) ini.GetDoubleValue(section, "ColG", 1.0);
+	themeBackground.Color.B = (float) ini.GetDoubleValue(section, "ColB", 1.0);
+	themeBackground.Alpha   = (float) ini.GetDoubleValue(section, "Alpha", 1.0);
 }
 
-void Themes::LoadThemeText(ThemeText& themeText, const tstring& name)
+void Themes::LoadThemeText(ThemeText& themeText, const std::string& name)
 {
-	const TCHAR * section = name.c_str();
+	const char * section = name.c_str();
 
-	themeText.X = ini.GetLongValue(section, _T("X"));
-	themeText.Y = ini.GetLongValue(section, _T("Y"));
-	themeText.W = ini.GetLongValue(section, _T("W"));
-	themeText.Z = (float) ini.GetDoubleValue(section, _T("Z"));
+	themeText.X = ini.GetLongValue(section, "X");
+	themeText.Y = ini.GetLongValue(section, "Y");
+	themeText.W = ini.GetLongValue(section, "W");
+	themeText.Z = (float) ini.GetDoubleValue(section, "Z");
 
 	themeText.ColRGB.R 
-		= (float) ini.GetDoubleValue(section, _T("ColR"));
+		= (float) ini.GetDoubleValue(section, "ColR");
 
 	themeText.ColRGB.G 
-		= (float) ini.GetDoubleValue(section, _T("ColG"));
+		= (float) ini.GetDoubleValue(section, "ColG");
 
 	themeText.ColRGB.B
-		= (float) ini.GetDoubleValue(section, _T("ColB"));
+		= (float) ini.GetDoubleValue(section, "ColB");
 
-	themeText.Font = ini.GetLongValue(section, _T("Font"), ftNormal); 
-	themeText.Size = ini.GetLongValue(section, _T("Size"));
-	themeText.Align = ini.GetLongValue(section, _T("Align"));
+	themeText.Font = ini.GetLongValue(section, "Font", ftNormal); 
+	themeText.Size = ini.GetLongValue(section, "Size");
+	themeText.Align = ini.GetLongValue(section, "Align");
 
-	themeText.Text = sLanguage.Translate(ini.GetValue(section, _T("Text"), _T("")));
-	themeText.Color = ini.GetValue(section, _T("Color"), _T(""));
+	themeText.Text = __T(ini.GetValue(section, "Text", ""));
+	themeText.Color = ini.GetValue(section, "Color", "");
 
 	// Reflection
-	themeText.Reflection = ini.GetBoolValue(section, _T("Reflection"), false);
+	themeText.Reflection = ini.GetBoolValue(section, "Reflection", false);
 	themeText.ReflectionSpacing
-		= (float) ini.GetDoubleValue(section, _T("ReflectionSpacing"), 15.0);
+		= (float) ini.GetDoubleValue(section, "ReflectionSpacing", 15.0);
 
 	LoadColor(themeText.ColRGB, themeText.Color);
 }
 
-void Themes::LoadThemeTexts(AThemeText& themeTextCollection, const tstring& name)
+void Themes::LoadThemeTexts(AThemeText& themeTextCollection, const std::string& name)
 {
 	int sectionNo = 1;
-	tstring tempName;
+	std::string tempName;
 	themeTextCollection.clear();
 	while (ini.GetSectionSize((tempName 
-		= (name + boost::lexical_cast<tstring>(sectionNo))).c_str()) > 0)
+		= (name + boost::lexical_cast<std::string>(sectionNo))).c_str()) > 0)
 	{
 		themeTextCollection.push_back(ThemeText());
 		LoadThemeText(themeTextCollection[sectionNo - 1], tempName);
@@ -924,42 +938,42 @@ void Themes::LoadThemeTexts(AThemeText& themeTextCollection, const tstring& name
 	}
 }
 
-void Themes::LoadThemeStatic(ThemeStatic& themeStatic, const tstring& name)
+void Themes::LoadThemeStatic(ThemeStatic& themeStatic, const std::string& name)
 {
-	const TCHAR * section = name.c_str();
+	const char * section = name.c_str();
 
-	themeStatic.Tex = ini.GetValue(section, _T("Tex"), _T(""));
+	themeStatic.Tex = ini.GetValue(section, "Tex", "");
 
-	themeStatic.X = ini.GetLongValue(section, _T("X"));
-	themeStatic.Y = ini.GetLongValue(section, _T("Y"));
-	themeStatic.Z = (float) ini.GetDoubleValue(section, _T("Z"));
+	themeStatic.X = ini.GetLongValue(section, "X");
+	themeStatic.Y = ini.GetLongValue(section, "Y");
+	themeStatic.Z = (float) ini.GetDoubleValue(section, "Z");
 
-	themeStatic.W = ini.GetLongValue(section, _T("W"));
-	themeStatic.H = ini.GetLongValue(section, _T("H"));
+	themeStatic.W = ini.GetLongValue(section, "W");
+	themeStatic.H = ini.GetLongValue(section, "H");
 
-	themeStatic.Type = LOOKUP_ENUM_VALUE(TextureType, section, _T("Type"), TextureType::Plain);
-	themeStatic.Color = ini.GetValue(section, _T("Color"), _T(""));
+	themeStatic.Type = LOOKUP_ENUM_VALUE(TextureType, section, "Type", TextureType::Plain);
+	themeStatic.Color = ini.GetValue(section, "Color", "");
 
 	// Reflection
-	themeStatic.Reflection = ini.GetBoolValue(section, _T("Reflection"), false);
+	themeStatic.Reflection = ini.GetBoolValue(section, "Reflection", false);
 	themeStatic.ReflectionSpacing
-		= (float) ini.GetDoubleValue(section, _T("ReflectionSpacing"), 15.0);
+		= (float) ini.GetDoubleValue(section, "ReflectionSpacing", 15.0);
 
-	themeStatic.TexX1 = (float) ini.GetDoubleValue(section, _T("TexX1"), 0.0);
-	themeStatic.TexY1 = (float) ini.GetDoubleValue(section, _T("TexY1"), 0.0);
-	themeStatic.TexX2 = (float) ini.GetDoubleValue(section, _T("TexX1"), 1.0);
-	themeStatic.TexY2 = (float) ini.GetDoubleValue(section, _T("TexX2"), 1.0);
+	themeStatic.TexX1 = (float) ini.GetDoubleValue(section, "TexX1", 0.0);
+	themeStatic.TexY1 = (float) ini.GetDoubleValue(section, "TexY1", 0.0);
+	themeStatic.TexX2 = (float) ini.GetDoubleValue(section, "TexX1", 1.0);
+	themeStatic.TexY2 = (float) ini.GetDoubleValue(section, "TexX2", 1.0);
 
 	LoadColor(themeStatic.ColRGB, themeStatic.Color);
 }
 
-void Themes::LoadThemeStatics(AThemeStatic& themeStaticCollection, const tstring& name)
+void Themes::LoadThemeStatics(AThemeStatic& themeStaticCollection, const std::string& name)
 {
 	int sectionNo = 1;
-	tstring tempName;
+	std::string tempName;
 	themeStaticCollection.clear();
 	while (ini.GetSectionSize((tempName 
-		= (name + boost::lexical_cast<tstring>(sectionNo))).c_str()) > 0)
+		= (name + boost::lexical_cast<std::string>(sectionNo))).c_str()) > 0)
 	{
 		themeStaticCollection.push_back(ThemeStatic());
 		LoadThemeStatic(themeStaticCollection[sectionNo - 1], tempName);
@@ -967,7 +981,7 @@ void Themes::LoadThemeStatics(AThemeStatic& themeStaticCollection, const tstring
 	}
 }
 
-void Themes::LoadThemeButton(ThemeButton& themeButton, const tstring& name, AThemeButtonCollection* themeButtonCollection /*= NULL*/)
+void Themes::LoadThemeButton(ThemeButton& themeButton, const std::string& name, AThemeButtonCollection* themeButtonCollection /*= NULL*/)
 {
 	if (ini.GetSectionSize(name.c_str()) == 0)
 	{
@@ -975,53 +989,53 @@ void Themes::LoadThemeButton(ThemeButton& themeButton, const tstring& name, AThe
 		return;
 	}
 
-	const TCHAR * section = name.c_str();
+	const char * section = name.c_str();
 
-	themeButton.Visible = ini.GetBoolValue(section, _T("Visible"), true);
+	themeButton.Visible = ini.GetBoolValue(section, "Visible", true);
 
-	themeButton.Tex = ini.GetValue(section, _T("Tex"), _T(""));
-	themeButton.X = ini.GetLongValue(section, _T("X"));
-	themeButton.Y = ini.GetLongValue(section, _T("Y"));
-	themeButton.Z = (float) ini.GetDoubleValue(section, _T("Z"));
-	themeButton.W = ini.GetLongValue(section, _T("W"));
-	themeButton.H = ini.GetLongValue(section, _T("H"));
-	themeButton.Type = LOOKUP_ENUM_VALUE(TextureType, section, _T("Type"), TextureType::Plain);
+	themeButton.Tex = ini.GetValue(section, "Tex", "");
+	themeButton.X = ini.GetLongValue(section, "X");
+	themeButton.Y = ini.GetLongValue(section, "Y");
+	themeButton.Z = (float) ini.GetDoubleValue(section, "Z");
+	themeButton.W = ini.GetLongValue(section, "W");
+	themeButton.H = ini.GetLongValue(section, "H");
+	themeButton.Type = LOOKUP_ENUM_VALUE(TextureType, section, "Type", TextureType::Plain);
 
 	// Reflection
-	themeButton.Reflection = ini.GetBoolValue(section, _T("Reflection"), false);
+	themeButton.Reflection = ini.GetBoolValue(section, "Reflection", false);
 	themeButton.ReflectionSpacing
-		= (float) ini.GetDoubleValue(section, _T("ReflectionSpacing"), 15.0);
+		= (float) ini.GetDoubleValue(section, "ReflectionSpacing", 15.0);
 
-	themeButton.ColRGB.R  = (float) ini.GetDoubleValue(section, _T("ColR"),  1.0);
-	themeButton.ColRGB.G  = (float) ini.GetDoubleValue(section, _T("ColG"),  1.0);
-	themeButton.ColRGB.B  = (float) ini.GetDoubleValue(section, _T("ColB"),  1.0);
-	themeButton.Int       = (float) ini.GetDoubleValue(section, _T("Int"),   1.0);
-	themeButton.DColRGB.R = (float) ini.GetDoubleValue(section, _T("DColR"), 1.0);
-	themeButton.DColRGB.G = (float) ini.GetDoubleValue(section, _T("DColG"), 1.0);
-	themeButton.DColRGB.B = (float) ini.GetDoubleValue(section, _T("DColB"), 1.0);
-	themeButton.DInt      = (float) ini.GetDoubleValue(section, _T("DInt"), 1.0);
+	themeButton.ColRGB.R  = (float) ini.GetDoubleValue(section, "ColR",  1.0);
+	themeButton.ColRGB.G  = (float) ini.GetDoubleValue(section, "ColG",  1.0);
+	themeButton.ColRGB.B  = (float) ini.GetDoubleValue(section, "ColB",  1.0);
+	themeButton.Int       = (float) ini.GetDoubleValue(section, "Int",   1.0);
+	themeButton.DColRGB.R = (float) ini.GetDoubleValue(section, "DColR", 1.0);
+	themeButton.DColRGB.G = (float) ini.GetDoubleValue(section, "DColG", 1.0);
+	themeButton.DColRGB.B = (float) ini.GetDoubleValue(section, "DColB", 1.0);
+	themeButton.DInt      = (float) ini.GetDoubleValue(section, "DInt", 1.0);
 
-	themeButton.Color = ini.GetValue(section, _T("Color"), _T(""));
-	themeButton.DColor = ini.GetValue(section, _T("DColor"), _T(""));
+	themeButton.Color = ini.GetValue(section, "Color", "");
+	themeButton.DColor = ini.GetValue(section, "DColor", "");
 
 	LoadColor(themeButton.ColRGB, themeButton.Color);
 	LoadColor(themeButton.DColRGB, themeButton.DColor);
 
 	// Fade
-	themeButton.SelectH    = ini.GetLongValue(section, _T("SelectH"), themeButton.H);
-	themeButton.SelectW    = ini.GetLongValue(section, _T("SelectW"), themeButton.W);
+	themeButton.SelectH    = ini.GetLongValue(section, "SelectH", themeButton.H);
+	themeButton.SelectW    = ini.GetLongValue(section, "SelectW", themeButton.W);
 	themeButton.DeselectReflectionSpacing
-		= (float) ini.GetDoubleValue(section, _T("DeSelectReflectionSpacing"), themeButton.ReflectionSpacing);
-	themeButton.Fade       = ini.GetBoolValue(section, _T("Fade"), false);
-	themeButton.FadeText   = ini.GetBoolValue(section, _T("FadeText"), false);
-	themeButton.FadeTex    = ini.GetValue(section, _T("FadeTex"), _T(""));
-	themeButton.FadeTexPos = ini.GetLongValue(section, _T("FadeTexPos"), 0);
+		= (float) ini.GetDoubleValue(section, "DeSelectReflectionSpacing", themeButton.ReflectionSpacing);
+	themeButton.Fade       = ini.GetBoolValue(section, "Fade", false);
+	themeButton.FadeText   = ini.GetBoolValue(section, "FadeText", false);
+	themeButton.FadeTex    = ini.GetValue(section, "FadeTex", "");
+	themeButton.FadeTexPos = ini.GetLongValue(section, "FadeTexPos", 0);
 
 	if (themeButton.FadeTexPos > 4)      themeButton.FadeTexPos = 4;
 	else if (themeButton.FadeTexPos < 0) themeButton.FadeTexPos = 0;
 
 	// Button collection
-	size_t parent = ini.GetLongValue(section, _T("Parent"), 0);
+	size_t parent = ini.GetLongValue(section, "Parent", 0);
 
 	AThemeButtonCollection * collection;
 
@@ -1044,13 +1058,13 @@ void Themes::LoadThemeButton(ThemeButton& themeButton, const tstring& name, AThe
 	}
 
 	// Read button texts
-	int len = ini.GetLongValue(section, _T("Texts"), 0);
+	int len = ini.GetLongValue(section, "Texts", 0);
 	themeButton.Text.assign(len, ThemeText());
 	for (int i = 1; i <= len; i++)
-		LoadThemeText(themeButton.Text[i - 1], name + _T("Text") + boost::lexical_cast<tstring>(i));
+		LoadThemeText(themeButton.Text[i - 1], name + "Text" + boost::lexical_cast<std::string>(i));
 }
 
-void Themes::LoadThemeButtonCollection(ThemeButtonCollection& themeButtonCollection, const tstring& name)
+void Themes::LoadThemeButtonCollection(ThemeButtonCollection& themeButtonCollection, const std::string& name)
 {
 	// Default child count to 0
 	themeButtonCollection.ChildCount = 0;
@@ -1059,20 +1073,20 @@ void Themes::LoadThemeButtonCollection(ThemeButtonCollection& themeButtonCollect
 	LoadThemeButton(themeButtonCollection.Style, name);
 
 	// Load other attributes
-	int firstChild = ini.GetLongValue(name.c_str(), _T("FirstChild"), 0);
+	int firstChild = ini.GetLongValue(name.c_str(), "FirstChild", 0);
 	if (firstChild <= 0 || firstChild >= MAX_CHILDREN)
 		themeButtonCollection.FirstChild = 0;
 	else
 		themeButtonCollection.FirstChild = firstChild;
 }
 
-void Themes::LoadThemeButtonCollections(AThemeButtonCollection& themeButtonCollection, const tstring& name)
+void Themes::LoadThemeButtonCollections(AThemeButtonCollection& themeButtonCollection, const std::string& name)
 {
 	int sectionNo = 1;
-	tstring tempName;
+	std::string tempName;
 	themeButtonCollection.clear();
 	while (ini.GetSectionSize((tempName 
-		= (name + boost::lexical_cast<tstring>(sectionNo))).c_str()) > 0)
+		= (name + boost::lexical_cast<std::string>(sectionNo))).c_str()) > 0)
 	{
 		themeButtonCollection.push_back(ThemeButtonCollection());
 		LoadThemeButtonCollection(themeButtonCollection[sectionNo - 1], tempName);
@@ -1080,76 +1094,76 @@ void Themes::LoadThemeButtonCollections(AThemeButtonCollection& themeButtonColle
 	}
 }
 
-void Themes::LoadThemeSelectSlide(ThemeSelectSlide& themeSelectSlide, const tstring& name)
+void Themes::LoadThemeSelectSlide(ThemeSelectSlide& themeSelectSlide, const std::string& name)
 {
-	const TCHAR * section = name.c_str();
+	const char * section = name.c_str();
 
-	themeSelectSlide.Text = sLanguage.Translate(ini.GetValue(section, _T("Text"), _T("")));
+	themeSelectSlide.Text = __T(ini.GetValue(section, "Text", ""));
 
-	themeSelectSlide.Tex = ini.GetValue(section, _T("Tex"), _T(""));
-	themeSelectSlide.Type = LOOKUP_ENUM_VALUE(TextureType, section, _T("Type"), TextureType::Plain);
+	themeSelectSlide.Tex = ini.GetValue(section, "Tex", "");
+	themeSelectSlide.Type = LOOKUP_ENUM_VALUE(TextureType, section, "Type", TextureType::Plain);
 
-	themeSelectSlide.TexSBG = ini.GetValue(section, _T("TexSBG"), _T(""));
-	themeSelectSlide.TypeSBG = LOOKUP_ENUM_VALUE(TextureType, section, _T("TypeSBG"), TextureType::Plain);
+	themeSelectSlide.TexSBG = ini.GetValue(section, "TexSBG", "");
+	themeSelectSlide.TypeSBG = LOOKUP_ENUM_VALUE(TextureType, section, "TypeSBG", TextureType::Plain);
 
-	themeSelectSlide.X = ini.GetLongValue(section, _T("X"), 0);
-	themeSelectSlide.Y = ini.GetLongValue(section, _T("Y"), 0);
-	themeSelectSlide.Z = (float) ini.GetDoubleValue(section, _T("Z"), 0.0);
-	themeSelectSlide.W = ini.GetLongValue(section, _T("W"), 0);
-	themeSelectSlide.H = ini.GetLongValue(section, _T("H"), 0);
+	themeSelectSlide.X = ini.GetLongValue(section, "X", 0);
+	themeSelectSlide.Y = ini.GetLongValue(section, "Y", 0);
+	themeSelectSlide.Z = (float) ini.GetDoubleValue(section, "Z", 0.0);
+	themeSelectSlide.W = ini.GetLongValue(section, "W", 0);
+	themeSelectSlide.H = ini.GetLongValue(section, "H", 0);
 
-	themeSelectSlide.TextSize = ini.GetLongValue(section, _T("TextSize"), 30);
-	themeSelectSlide.SkipX = ini.GetLongValue(section, _T("SkipX"), 0);
-	themeSelectSlide.SBGW = ini.GetLongValue(section, _T("SBGW"), 400);
+	themeSelectSlide.TextSize = ini.GetLongValue(section, "TextSize", 30);
+	themeSelectSlide.SkipX = ini.GetLongValue(section, "SkipX", 0);
+	themeSelectSlide.SBGW = ini.GetLongValue(section, "SBGW", 400);
 
-	LoadColor(themeSelectSlide.ColRGB, ini.GetValue(section, _T("Color"), _T("")));
-	themeSelectSlide.Int = (float) ini.GetDoubleValue(section, _T("Int"), 1.0);
+	LoadColor(themeSelectSlide.ColRGB, ini.GetValue(section, "Color", ""));
+	themeSelectSlide.Int = (float) ini.GetDoubleValue(section, "Int", 1.0);
 
-	LoadColor(themeSelectSlide.DColRGB, ini.GetValue(section, _T("DColor"), _T("")));
-	themeSelectSlide.DInt = (float) ini.GetDoubleValue(section, _T("DInt"), 1.0);
+	LoadColor(themeSelectSlide.DColRGB, ini.GetValue(section, "DColor", ""));
+	themeSelectSlide.DInt = (float) ini.GetDoubleValue(section, "DInt", 1.0);
 
-	LoadColor(themeSelectSlide.TColRGB, ini.GetValue(section, _T("TColor"), _T("")));
-	themeSelectSlide.TInt = (float) ini.GetDoubleValue(section, _T("TInt"), 1.0);
+	LoadColor(themeSelectSlide.TColRGB, ini.GetValue(section, "TColor", ""));
+	themeSelectSlide.TInt = (float) ini.GetDoubleValue(section, "TInt", 1.0);
 
-	LoadColor(themeSelectSlide.TDColRGB, ini.GetValue(section, _T("TDColor"), _T("")));
-	themeSelectSlide.TDInt = (float) ini.GetDoubleValue(section, _T("TDInt"), 1.0);
+	LoadColor(themeSelectSlide.TDColRGB, ini.GetValue(section, "TDColor", ""));
+	themeSelectSlide.TDInt = (float) ini.GetDoubleValue(section, "TDInt", 1.0);
 
-	LoadColor(themeSelectSlide.SBGColRGB, ini.GetValue(section, _T("SBGColor"), _T("")));
-	themeSelectSlide.SBGInt = (float) ini.GetDoubleValue(section, _T("SBGInt"), 1.0);
+	LoadColor(themeSelectSlide.SBGColRGB, ini.GetValue(section, "SBGColor", ""));
+	themeSelectSlide.SBGInt = (float) ini.GetDoubleValue(section, "SBGInt", 1.0);
 
-	LoadColor(themeSelectSlide.SBGDColRGB, ini.GetValue(section, _T("SBGDColor"), _T("")));
-	themeSelectSlide.SBGDInt = (float) ini.GetDoubleValue(section, _T("SBGDInt"), 1.0);
+	LoadColor(themeSelectSlide.SBGDColRGB, ini.GetValue(section, "SBGDColor", ""));
+	themeSelectSlide.SBGDInt = (float) ini.GetDoubleValue(section, "SBGDInt", 1.0);
 
-	LoadColor(themeSelectSlide.STColRGB, ini.GetValue(section, _T("STColor"), _T("")));
-	themeSelectSlide.STInt = (float) ini.GetDoubleValue(section, _T("STInt"), 1.0);
+	LoadColor(themeSelectSlide.STColRGB, ini.GetValue(section, "STColor", ""));
+	themeSelectSlide.STInt = (float) ini.GetDoubleValue(section, "STInt", 1.0);
 
-	LoadColor(themeSelectSlide.STDColRGB, ini.GetValue(section, _T("STDColor"), _T("")));
-	themeSelectSlide.STDInt = (float) ini.GetDoubleValue(section, _T("STDInt"), 1.0);
+	LoadColor(themeSelectSlide.STDColRGB, ini.GetValue(section, "STDColor", ""));
+	themeSelectSlide.STDInt = (float) ini.GetDoubleValue(section, "STDInt", 1.0);
 
-	themeSelectSlide.ShowArrows = ini.GetBoolValue(section, _T("ShowArrays"), false);
-	themeSelectSlide.OneItemOnly = ini.GetBoolValue(section, _T("OneItemOnly"), false);
+	themeSelectSlide.ShowArrows = ini.GetBoolValue(section, "ShowArrays", false);
+	themeSelectSlide.OneItemOnly = ini.GetBoolValue(section, "OneItemOnly", false);
 }
 
-void Themes::LoadThemeEqualizer(ThemeEqualizer& themeEqualizer, const tstring& name)
+void Themes::LoadThemeEqualizer(ThemeEqualizer& themeEqualizer, const std::string& name)
 {
-	const TCHAR * section = name.c_str();
+	const char * section = name.c_str();
 
-	themeEqualizer.Visible = ini.GetBoolValue(section, _T("Visible"), false);
-	themeEqualizer.Direction = ini.GetBoolValue(section, _T("Direction"), false);
-	themeEqualizer.Alpha = (float) ini.GetDoubleValue(section, _T("Alpha"), 1.0);
-	themeEqualizer.Space = ini.GetLongValue(section, _T("Space"), 1);
-	themeEqualizer.X = ini.GetLongValue(section, _T("X"), 0);
-	themeEqualizer.Y = ini.GetLongValue(section, _T("Y"), 0);
-	themeEqualizer.Z = (float) ini.GetDoubleValue(section, _T("Z"), 1.0);
-	themeEqualizer.W = ini.GetLongValue(section, _T("PieceW"), 8);
-	themeEqualizer.H = ini.GetLongValue(section, _T("PieceH"), 8);
-	themeEqualizer.Bands = ini.GetLongValue(section, _T("Bands"), 5);
-	themeEqualizer.Length = ini.GetLongValue(section, _T("Length"), 12);
-	themeEqualizer.Reflection = ini.GetBoolValue(section, _T("Reflection"), false);
+	themeEqualizer.Visible = ini.GetBoolValue(section, "Visible", false);
+	themeEqualizer.Direction = ini.GetBoolValue(section, "Direction", false);
+	themeEqualizer.Alpha = (float) ini.GetDoubleValue(section, "Alpha", 1.0);
+	themeEqualizer.Space = ini.GetLongValue(section, "Space", 1);
+	themeEqualizer.X = ini.GetLongValue(section, "X", 0);
+	themeEqualizer.Y = ini.GetLongValue(section, "Y", 0);
+	themeEqualizer.Z = (float) ini.GetDoubleValue(section, "Z", 1.0);
+	themeEqualizer.W = ini.GetLongValue(section, "PieceW", 8);
+	themeEqualizer.H = ini.GetLongValue(section, "PieceH", 8);
+	themeEqualizer.Bands = ini.GetLongValue(section, "Bands", 5);
+	themeEqualizer.Length = ini.GetLongValue(section, "Length", 12);
+	themeEqualizer.Reflection = ini.GetBoolValue(section, "Reflection", false);
 	themeEqualizer.ReflectionSpacing
-		= (float) ini.GetDoubleValue(section, _T("ReflectionSpacing"), 15.0);
+		= (float) ini.GetDoubleValue(section, "ReflectionSpacing", 15.0);
 
-	LoadColor(themeEqualizer.ColRGB, ini.GetValue(section, _T("Color"), _T("Black")));
+	LoadColor(themeEqualizer.ColRGB, ini.GetValue(section, "Color", "Black"));
 }
 
 /**
@@ -1159,7 +1173,7 @@ void Themes::LoadThemeEqualizer(ThemeEqualizer& themeEqualizer, const tstring& n
  *
  * @return	NULL if it fails, else a pointer to the associated ThemeEntry.
  */
-ThemeEntry * Themes::LookupTheme(tstring themeName)
+ThemeEntry * Themes::LookupTheme(std::string themeName)
 {
 	ThemeEntryMap::const_iterator itr = _themes.find(themeName);
 	return (itr == _themes.end() ? NULL : (ThemeEntry *)&itr->second);
@@ -1176,7 +1190,7 @@ ThemeEntry * Themes::LookupTheme(tstring themeName)
  *
  * @return	NULL if it fails, else a pointer to the associated ThemeEntry.
  */
-ThemeEntry * Themes::LookupThemeDefault(tstring themeName, tstring defaultTheme)
+ThemeEntry * Themes::LookupThemeDefault(std::string themeName, std::string defaultTheme)
 {
 	ThemeEntry * result = LookupTheme(themeName);
 	if (result != NULL)

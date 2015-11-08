@@ -22,7 +22,7 @@
 
 #include "stdafx.h"
 
-bool IsInStringArray(const TCHAR * needle, const TCHAR ** haystackArray)
+bool IsInStringArray(const char * needle, const char ** haystackArray)
 {
 	if (needle == NULL || *needle == 0
 		|| haystackArray == NULL || *haystackArray == 0)
@@ -31,7 +31,7 @@ bool IsInStringArray(const TCHAR * needle, const TCHAR ** haystackArray)
 	uint32 i = 0;
 	while (haystackArray[i] != NULL)
 	{
-		if (_tcscmp(haystackArray[i], needle) == 0)
+		if (strcmp(haystackArray[i], needle) == 0)
 			return true;
 
 		i++;
@@ -40,7 +40,7 @@ bool IsInStringArray(const TCHAR * needle, const TCHAR ** haystackArray)
 	return false;
 }
 
-bool IsInStringArrayI(const TCHAR * needle, const TCHAR ** haystackArray)
+bool IsInStringArrayI(const char * needle, const char ** haystackArray)
 {
 	if (needle == NULL || *needle == 0
 		|| haystackArray == NULL || *haystackArray == 0)
@@ -49,7 +49,7 @@ bool IsInStringArrayI(const TCHAR * needle, const TCHAR ** haystackArray)
 	uint32 i = 0;
 	while (haystackArray[i] != NULL)
 	{
-		if (TSTRCASECMP(haystackArray[i], needle) == 0)
+		if (STRCASECMP(haystackArray[i], needle) == 0)
 			return true;
 
 		i++;
@@ -58,7 +58,7 @@ bool IsInStringArrayI(const TCHAR * needle, const TCHAR ** haystackArray)
 	return false;
 }
 
-uint32 GetListIndex(OptionList& list, const tstring & val)
+uint32 GetListIndex(OptionList& list, const std::string & val)
 {
 	// TODO: This is not especially efficient, this needs to be reworked.
 	for (size_t i = 0; i < list.size(); i++)

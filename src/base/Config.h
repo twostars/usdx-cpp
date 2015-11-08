@@ -35,10 +35,10 @@ const int VERSION_RELEASE = 1;
 #define   USDX_VERSION_MAJOR     1
 #define	  USDX_VERSION_MINOR     1
 #define   USDX_VERSION_RELEASE   0
-#define   USDX_VERSION_STATE     _T("")
-#define   USDX_IDENTIFIER        _T("ultrastardx")
-#define   USDX_STRING            _T("UltraStar Deluxe")
-#define   USDX_THEME_VERSION     _T("USD 110")
+#define   USDX_VERSION_STATE     ""
+#define   USDX_IDENTIFIER        "ultrastardx"
+#define   USDX_STRING            "UltraStar Deluxe"
+#define   USDX_THEME_VERSION     "USD 110"
 
 #define   MAX_PROFILE_NAMES      12
 #define   MAX_PLAYERS            6
@@ -87,10 +87,10 @@ const int VERSION_RELEASE = 1;
 
 #define USDXShortVersionStr()	(USDX_STRING USDX_VERSION_STATE)
 
-#define USDXVersionStr()		(USDX_STRING _T(" V") \
-								TSTRINGIFY(USDX_VERSION_MAJOR) _T(".") \
-								TSTRINGIFY(USDX_VERSION_MINOR) _T(".") \
-								TSTRINGIFY(USDX_VERSION_RELEASE) \
+#define USDXVersionStr()		(USDX_STRING " V" \
+								STRINGIFY(USDX_VERSION_MAJOR) "." \
+								STRINGIFY(USDX_VERSION_MINOR) "." \
+								STRINGIFY(USDX_VERSION_RELEASE) \
 								USDX_VERSION_STATE)
 
 #endif

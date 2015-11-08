@@ -230,7 +230,7 @@ void MenuSelectSlide::GenerateLines()
 	SetFontStyle(ftNormal); /* Text.Style */
 	SetFontSize(Text.Size);
 
-	for (std::vector<tstring>::const_iterator itr = TextOptionNames.begin(); itr != TextOptionNames.end(); ++itr)
+	for (std::vector<std::string>::const_iterator itr = TextOptionNames.begin(); itr != TextOptionNames.end(); ++itr)
 	{
 		float len = glTextWidth(*itr);
 		if (len > maxLen)
@@ -324,9 +324,9 @@ MouseClickAction MenuSelectSlide::OnClick(float x, float y)
 }
 
 // Cuts the text if it is too long to fit on the select background
-tstring MenuSelectSlide::AdjustOptionTextToFit(const tstring& optionText)
+std::string MenuSelectSlide::AdjustOptionTextToFit(const std::string& optionText)
 {
-	tstring result = optionText;
+	std::string result = optionText;
 	float maxLen;
 	size_t len;
 
@@ -351,7 +351,7 @@ tstring MenuSelectSlide::AdjustOptionTextToFit(const tstring& optionText)
 				--len;
 			} while  ((optionText[len] & 0x80) == 0);
 
-			result = optionText.substr(0, len) + _T("..");
+			result = optionText.substr(0, len) + "..";
 		}
 	}
 

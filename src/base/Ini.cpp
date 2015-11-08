@@ -38,56 +38,56 @@ extern PathSet SongPaths;
  * Options
  */
 
-const tstring IPlayers[]          = { _T("1"), _T("2"), _T("3"), _T("4"), _T("6") };
+const std::string IPlayers[]          = { "1", "2", "3", "4", "6" };
 const int IPlayersVals[]          = {     1,       2,       3,       4,       6   };
 
-const tstring IScreens[]          = { _T("1"), _T("2") };
+const std::string IScreens[]          = { "1", "2" };
 
-const tstring IDepth[]            = { _T("16 bit"), _T("32 bit") };
-const tstring IVisualizer[]       = { _T("Off"), _T("WhenNoVideo"), _T("On") };
+const std::string IDepth[]            = { "16 bit", "32 bit" };
+const std::string IVisualizer[]       = { "Off", "WhenNoVideo", "On" };
 
-const tstring ITextureSize[]      = { _T("64"), _T("128"), _T("256"), _T("512") };
+const std::string ITextureSize[]      = { "64", "128", "256", "512" };
 const int ITextureSizeVals[]      = {     64,       128,       256,       512   };
 
-const tstring IMovieSize[]        = { _T("Half"), _T("Full [Vid]"), _T("Full [BG+Vid]") };
+const std::string IMovieSize[]        = { "Half", "Full [Vid]", "Full [BG+Vid]" };
 
-const tstring IThreshold[]        = { _T("5%"), _T("10%"), _T("15%"), _T("20%") };
+const std::string IThreshold[]        = { "5%", "10%", "15%", "20%" };
 const float IThresholdVals[]      = { 0.05f, 0.10f,  0.15f,  0.20f };
 
-const tstring ISyncTo[]           = { _T("Music"), _T("Lyrics"), _T("Off") };
+const std::string ISyncTo[]           = { "Music", "Lyrics", "Off" };
 
-const tstring 
-	IAudioOutputBufferSize[]      = { _T("Auto"), _T("256"),  _T("512"),   _T("1024"),  _T("2048"), 
-	                                  _T("4096"), _T("8192"), _T("16384"), _T("32768"), _T("65536") };
+const std::string 
+	IAudioOutputBufferSize[]      = { "Auto", "256",  "512",   "1024",  "2048", 
+	                                  "4096", "8192", "16384", "32768", "65536" };
 const int 
 	IAudioOutputBufferSizeVals[]  = {    0,           256,        512,         1024,        2048,
 	                                     4096,        8192,       16384,       32768,       65536 };
 
-const tstring
-	IAudioInputBufferSize[]       = { _T("Auto"), _T("256"),  _T("512"),   _T("1024"),  _T("2048"), 
-                                      _T("4096"), _T("8192"), _T("16384"), _T("32768"), _T("65536") };
+const std::string
+	IAudioInputBufferSize[]       = { "Auto", "256",  "512",   "1024",  "2048", 
+                                      "4096", "8192", "16384", "32768", "65536" };
 const int
 	IAudioInputBufferSizeVals[]   = {    0,           256,        512,         1024,        2048,
 	                                     4096,        8192,       16384,       32768,       65536 };
 
 // Song Preview
-const tstring IPreviewVolume[]    = { _T("Off"), _T("10%"), _T("20%"), _T("30%"), _T("40%"), _T("50%"), 
-	                                             _T("60%"), _T("70%"), _T("80%"), _T("90%"), _T("100%") };
+const std::string IPreviewVolume[]    = { "Off", "10%", "20%", "30%", "40%", "50%", 
+	                                             "60%", "70%", "80%", "90%", "100%" };
 const float IPreviewVolumeVals[]  = {    0.0f,      0.10f,     0.20f,     0.30f,     0.40f,     0.50f,  
 	                                                0.60f,     0.70f,     0.80f,     0.90f,     1.00f };
 
-const tstring IPreviewFading[]    = { _T("Off"), _T("1 Sec"), _T("2 Secs"), _T("3 Secs"), _T("4 Secs"), _T("5 Secs") };
+const std::string IPreviewFading[]    = { "Off", "1 Sec", "2 Secs", "3 Secs", "4 Secs", "5 Secs" };
 const int IPreviewFadingVals[]    = {     0,         1,           2,            3,            4,            5        };
 
 // Advanced
-const tstring IMouse[]            = { _T("Off"), _T("Hardware Cursor"), _T("Software Cursor") };
+const std::string IMouse[]            = { "Off", "Hardware Cursor", "Software Cursor" };
 
 // Recording options
-const tstring IChannelPlayer[]    = { _T("Off"), _T("1"), _T("2"), _T("3"), _T("4"), _T("5"), _T("6") };
-const tstring IMicBoost[]         = { _T("Off"), _T("+6dB"), _T("+12dB"), _T("+18dB") };
+const std::string IChannelPlayer[]    = { "Off", "1", "2", "3", "4", "5", "6" };
+const std::string IMicBoost[]         = { "Off", "+6dB", "+12dB", "+18dB" };
 
 const ResolutionWH DefaultResolution(800, 600);
-const TCHAR *      DefaultResolutionName = _T("800x600");
+const char *      DefaultResolutionName = "800x600";
 
 Ini::Ini()
 	: ini(true)
@@ -162,13 +162,13 @@ Ini::Ini()
 
 void Ini::Load()
 {
-	const TCHAR * iniPath = GetConfigFile();
+	const std::string iniPath = GetConfigFile();
 
-	sLog.Status(_T("Ini::Load"), _T("Using config: %s"), iniPath);
+	sLog.Status("Ini::Load", "Using config: %s", iniPath.c_str());
 
-	SI_Error result = ini.LoadFile(iniPath);
+	SI_Error result = ini.LoadFile(iniPath.c_str());
 	if (result != SI_OK)
-		return sLog.Debug(_T("Ini::Load"), _T("Failed to load config."));
+		return sLog.Debug("Ini::Load", "Failed to load config.");
 
 	LoadProfileSettings();
 	LoadGameSettings();
@@ -182,7 +182,7 @@ void Ini::Load()
 	LoadThemes();
 	LoadPaths();
 
-	sLog.Status(_T("Ini::Load"), _T("Loaded config."));
+	sLog.Status("Ini::Load", "Loaded config.");
 }
 
 void Ini::Save()
@@ -204,12 +204,12 @@ void Ini::Save()
 
 void Ini::SaveToFile()
 {
-	const TCHAR * iniFile = GetConfigFile();
-	SI_Error result = ini.SaveFile(iniFile);
+	const std::string iniFile = GetConfigFile();
+	SI_Error result = ini.SaveFile(iniFile.c_str());
 	if (result != SI_OK)
-		sLog.Error(_T("Ini::SaveToFile"), _T("Failed to save config to file: %s"), iniFile);
+		sLog.Error("Ini::SaveToFile", "Failed to save config to file: %s", iniFile.c_str());
 	else
-		sLog.Status(_T("Ini::SaveToFile"), _T("Saved config to file: %s"), iniFile);
+		sLog.Status("Ini::SaveToFile", "Saved config to file: %s", iniFile.c_str());
 }
 
 void Ini::LoadProfileSettings()
@@ -217,28 +217,28 @@ void Ini::LoadProfileSettings()
 	// Load profile names/templates
 	for (int i = 0; i < MAX_PROFILE_NAMES; i++)
 	{
-		TCHAR key[8], defaultName[10];
+		char key[8], defaultName[10];
 
-		_sntprintf(key, 8, _T("P%d"), i + 1);
-		_sntprintf(defaultName, 10, _T("Player%d"), i + 1);
+		snprintf(key, 8, "P%d", i + 1);
+		snprintf(defaultName, 10, "Player%d", i + 1);
 
-		Name[i] = ini.GetValue(_T("Name"), key, defaultName);
+		Name[i] = ini.GetValue("Name", key, defaultName);
 
-		_sntprintf(key, 8, _T("Name%d"), i + 1);
-		_sntprintf(defaultName, 10, _T("Name%d"), i + 1);
+		snprintf(key, 8, "Name%d", i + 1);
+		snprintf(defaultName, 10, "Name%d", i + 1);
 
-		NameTemplate[i] = ini.GetValue(_T("NameTemplate"), key, defaultName);
+		NameTemplate[i] = ini.GetValue("NameTemplate", key, defaultName);
 	}
 
 	// Load team name templates
 	for (int i = 0; i < MAX_TEAMS; i++)
 	{
-		TCHAR key[4], defaultName[10];
+		char key[4], defaultName[10];
 
-		_sntprintf(key, 4, _T("T%d"), i + 1);
-		_sntprintf(defaultName, 10, _T("Team%d"), i + 1);
+		snprintf(key, 4, "T%d", i + 1);
+		snprintf(defaultName, 10, "Team%d", i + 1);
 
-		NameTeam[i] =  ini.GetValue(_T("NameTeam"), key, defaultName);
+		NameTeam[i] =  ini.GetValue("NameTeam", key, defaultName);
 	}
 }
 
@@ -247,80 +247,80 @@ void Ini::SaveProfileSettings()
 	// Save profile names/templates
 	for (int i = 0; i < MAX_PROFILE_NAMES; i++)
 	{
-		TCHAR key[8];
+		char key[8];
 
-		_sntprintf(key, 8, _T("P%d"), i + 1);
-		ini.SetValue(_T("Name"), key, Name[i].c_str());
+		snprintf(key, 8, "P%d", i + 1);
+		ini.SetValue("Name", key, Name[i].c_str());
 
-		_sntprintf(key, 8, _T("Name%d"), i + 1);
-		ini.SetValue(_T("NameTemplate"), key, NameTemplate[i].c_str());
+		snprintf(key, 8, "Name%d", i + 1);
+		ini.SetValue("NameTemplate", key, NameTemplate[i].c_str());
 	}
 
 	// Save team name templates
 	for (int i = 0; i < MAX_TEAMS; i++)
 	{
-		TCHAR key[4];
+		char key[4];
 
-		_sntprintf(key, 4, _T("T%d"), i + 1);
-		ini.SetValue(_T("NameTeam"), key, NameTeam[i].c_str());
+		snprintf(key, 4, "T%d", i + 1);
+		ini.SetValue("NameTeam", key, NameTeam[i].c_str());
 	}
 }
 
 void Ini::LoadGameSettings()
 {
-	static const TCHAR * section = _T("Game");
+	static const char * section = "Game";
 
-	Players       = LOOKUP_ARRAY_INDEX(IPlayers,        section, _T("Players"), 0);
-	Difficulty    = LOOKUP_ENUM_VALUE(DifficultyType,   section, _T("Difficulty"), DifficultyType::Easy);
-	LanguageName  = ini.GetValue(section, _T("Language"), DEFAULT_LANGUAGE);
+	Players       = LOOKUP_ARRAY_INDEX(IPlayers,        section, "Players", 0);
+	Difficulty    = LOOKUP_ENUM_VALUE(DifficultyType,   section, "Difficulty", DifficultyType::Easy);
+	LanguageName  = ini.GetValue(section, "Language", DEFAULT_LANGUAGE);
 	Language      = sLanguage.GetLanguageID(LanguageName);
 
-	Tabs          = LOOKUP_ENUM_VALUE(Switch,            section, _T("Tabs"), Switch::Off);
+	Tabs          = LOOKUP_ENUM_VALUE(Switch,            section, "Tabs", Switch::Off);
 	TabsAtStartup = Tabs;
 
-	Sorting       = LOOKUP_ENUM_VALUE(SortingType,       section, _T("Sorting"), SortingType::Edition);
-	Debug         = LOOKUP_ENUM_VALUE(Switch,            section, _T("Debug"), Switch::Off);
+	Sorting       = LOOKUP_ENUM_VALUE(SortingType,       section, "Sorting", SortingType::Edition);
+	Debug         = LOOKUP_ENUM_VALUE(Switch,            section, "Debug", Switch::Off);
 }
 
 void Ini::SaveGameSettings()
 {
-	static const TCHAR * section = _T("Game");
+	static const char * section = "Game";
 
 	// Set the language name.
 	LanguageName = sLanguage.GetLanguageByID(Language);
 
-	ini.SetValue(section, _T("Players"), IPlayers[Players].c_str());
-	ini.SetValue(section, _T("Difficulty"), Enum2String(Difficulty).c_str());
-	ini.SetValue(section, _T("Language"), LanguageName.c_str());
+	ini.SetValue(section, "Players", IPlayers[Players].c_str());
+	ini.SetValue(section, "Difficulty", Enum2String(Difficulty).c_str());
+	ini.SetValue(section, "Language", LanguageName.c_str());
 
-	SAVE_ENUM_VALUE(section, _T("Tabs"), Tabs);
-	SAVE_ENUM_VALUE(section, _T("Sorting"), Sorting);
-	SAVE_ENUM_VALUE(section, _T("Debug"), Debug);
+	SAVE_ENUM_VALUE(section, "Tabs", Tabs);
+	SAVE_ENUM_VALUE(section, "Sorting", Sorting);
+	SAVE_ENUM_VALUE(section, "Debug", Debug);
 }
 
 void Ini::LoadGraphicsSettings()
 {
-	static const TCHAR * section = _T("Graphics");
+	static const char * section = "Graphics";
 
-	Screens       = LOOKUP_ARRAY_INDEX(IScreens,        section, _T("Screens"), 0 /* 1 */);
-	FullScreen    = LOOKUP_ENUM_VALUE(Switch,           section, _T("FullScreen"), Switch::On);
-	Depth         = LOOKUP_ARRAY_INDEX(IDepth,          section, _T("Depth"), 1 /* 32-bit */);
+	Screens       = LOOKUP_ARRAY_INDEX(IScreens,        section, "Screens", 0 /* 1 */);
+	FullScreen    = LOOKUP_ENUM_VALUE(Switch,           section, "FullScreen", Switch::On);
+	Depth         = LOOKUP_ARRAY_INDEX(IDepth,          section, "Depth", 1 /* 32-bit */);
 
 	// TextureSize (aka CachedCoverSize)
-	TextureSize   = LOOKUP_ARRAY_INDEX(ITextureSize,    section, _T("TextureSize"), 0);
-	SingWindow    = LOOKUP_ENUM_VALUE(SingWindowType,   section, _T("SingWindow"), SingWindowType::Big);
-	Oscilloscope  = LOOKUP_ENUM_VALUE(Switch,           section, _T("Oscilloscope"), Switch::Off);
-	Spectrum      = LOOKUP_ENUM_VALUE(Switch,           section, _T("Spectrum"), Switch::Off);
-	Spectrograph  = LOOKUP_ENUM_VALUE(Switch,           section, _T("Spectrograph"), Switch::Off);
-	MovieSize     = LOOKUP_ARRAY_INDEX(IMovieSize,      section, _T("MovieSize"), 2);
-	VideoPreview  = LOOKUP_ENUM_VALUE(Switch,           section, _T("VideoPreview"), Switch::On);
-	VideoEnabled  = LOOKUP_ENUM_VALUE(Switch,           section, _T("VideoEnabled"), Switch::On);
+	TextureSize   = LOOKUP_ARRAY_INDEX(ITextureSize,    section, "TextureSize", 0);
+	SingWindow    = LOOKUP_ENUM_VALUE(SingWindowType,   section, "SingWindow", SingWindowType::Big);
+	Oscilloscope  = LOOKUP_ENUM_VALUE(Switch,           section, "Oscilloscope", Switch::Off);
+	Spectrum      = LOOKUP_ENUM_VALUE(Switch,           section, "Spectrum", Switch::Off);
+	Spectrograph  = LOOKUP_ENUM_VALUE(Switch,           section, "Spectrograph", Switch::Off);
+	MovieSize     = LOOKUP_ARRAY_INDEX(IMovieSize,      section, "MovieSize", 2);
+	VideoPreview  = LOOKUP_ENUM_VALUE(Switch,           section, "VideoPreview", Switch::On);
+	VideoEnabled  = LOOKUP_ENUM_VALUE(Switch,           section, "VideoEnabled", Switch::On);
 	VisualizerOption
-                  = LOOKUP_ENUM_VALUE(VisualizerOption, section, _T("Visualization"), VisualizerOption::Off);
+                  = LOOKUP_ENUM_VALUE(VisualizerOption, section, "Visualization", VisualizerOption::Off);
 
 	LoadScreenModes();
 
-	tstring resName = ini.GetValue(section, _T("Resolution"), DefaultResolutionName);
+	std::string resName = ini.GetValue(section, "Resolution", DefaultResolutionName);
 
 	ReverseResolutionMap::const_iterator itr = ResolutionNameMap.find(resName);
 	if (itr != ResolutionNameMap.end())
@@ -330,7 +330,7 @@ void Ini::LoadGraphicsSettings()
 	else // not found, use default resolution.
 	{
 		Resolution = DefaultResolution;
-		sLog.Warn(_T("Video"), _T("Invalid resolution specified (%s)."),
+		sLog.Warn("Video", "Invalid resolution specified (%s).",
 			resName.c_str());
 
 		// Don't use fullscreen in this case.
@@ -340,32 +340,32 @@ void Ini::LoadGraphicsSettings()
 	// Get the selected resolution's ID for option configuration/selection.
 	SelectedResolution = GetResolutionID(resName);
 
-	sLog.Status(_T("Video"), _T("Using resolution: %u x %u."), 
+	sLog.Status("Video", "Using resolution: %u x %u.", 
 		Resolution.first, Resolution.second);
 }
 
 void Ini::SaveGraphicsSettings()
 {
-	static const TCHAR * section = _T("Graphics");
+	static const char * section = "Graphics";
 
-	ini.SetValue(section, _T("Screens"), IScreens[Screens].c_str());
-	SAVE_ENUM_VALUE(section, _T("FullScreen"), FullScreen);
-	ini.SetValue(section, _T("Depth"), IDepth[Depth].c_str());
+	ini.SetValue(section, "Screens", IScreens[Screens].c_str());
+	SAVE_ENUM_VALUE(section, "FullScreen", FullScreen);
+	ini.SetValue(section, "Depth", IDepth[Depth].c_str());
 
 	// TextureSize (aka CachedCoverSize)
-	ini.SetValue(section, _T("TextureSize"), ITextureSize[TextureSize].c_str());
-	SAVE_ENUM_VALUE(section, _T("SingWindow"), SingWindow);
-	SAVE_ENUM_VALUE(section, _T("Oscilloscope"), Oscilloscope);
-	SAVE_ENUM_VALUE(section, _T("Spectrum"), Spectrum);
-	SAVE_ENUM_VALUE(section, _T("Spectrograph"), Spectrograph);
-	ini.SetValue(section, _T("MovieSize"), IMovieSize[MovieSize].c_str());
-	SAVE_ENUM_VALUE(section, _T("VideoPreview"), VideoPreview);
-	SAVE_ENUM_VALUE(section, _T("VideoEnabled"), VideoEnabled);
+	ini.SetValue(section, "TextureSize", ITextureSize[TextureSize].c_str());
+	SAVE_ENUM_VALUE(section, "SingWindow", SingWindow);
+	SAVE_ENUM_VALUE(section, "Oscilloscope", Oscilloscope);
+	SAVE_ENUM_VALUE(section, "Spectrum", Spectrum);
+	SAVE_ENUM_VALUE(section, "Spectrograph", Spectrograph);
+	ini.SetValue(section, "MovieSize", IMovieSize[MovieSize].c_str());
+	SAVE_ENUM_VALUE(section, "VideoPreview", VideoPreview);
+	SAVE_ENUM_VALUE(section, "VideoEnabled", VideoEnabled);
 
-	SAVE_ENUM_VALUE(section, _T("Visualization"), VisualizerOption);
+	SAVE_ENUM_VALUE(section, "Visualization", VisualizerOption);
 
-	tstring selectedResolution = ResolutionNameList[SelectedResolution];
-	ini.SetValue(section, _T("Resolution"), selectedResolution.c_str());
+	std::string selectedResolution = ResolutionNameList[SelectedResolution];
+	ini.SetValue(section, "Resolution", selectedResolution.c_str());
 }
 
 void Ini::LoadScreenModes()
@@ -416,154 +416,154 @@ void Ini::LoadScreenModes()
 	for (ResolutionMap::iterator itr = LoadedResolutions.begin(); itr != LoadedResolutions.end(); ++itr)
 		ResolutionNameList.push_back(itr->second);
 
-	sLog.Status(_T("Video"), _T("Loaded resolutions: %u"), LoadedResolutions.size());
+	sLog.Status("Video", "Loaded resolutions: %u", LoadedResolutions.size());
 }
 
 void Ini::AddResolution(int width, int height)
 {
 	ResolutionWH resolution(width, height);
-	TCHAR buffer[32];
+	char buffer[32];
 
-	_sntprintf(buffer, 32, _T("%ux%u"), width, height);
+	snprintf(buffer, 32, "%ux%u", width, height);
 
 	LoadedResolutions.insert(std::make_pair(resolution, buffer));
 	ResolutionNameMap.insert(std::make_pair(buffer, resolution));
 
-	sLog.Status(_T("Video"), _T("Loaded resolution: %d x %d"), width, height);
+	sLog.Status("Video", "Loaded resolution: %d x %d", width, height);
 }
 
 void Ini::LoadSoundSettings()
 {
-	static const TCHAR * section = _T("Sound");
+	static const char * section = "Sound";
 
-	ClickAssist   = LOOKUP_ENUM_VALUE(Switch,            section, _T("ClickAssist"), Switch::Off);
-	BeatClick     = LOOKUP_ENUM_VALUE(Switch,            section, _T("BeatClick"), Switch::Off);
-	SavePlayback  = LOOKUP_ENUM_VALUE(Switch,            section, _T("SavePlayback"), Switch::Off);
-	PreviewVolume = LOOKUP_ARRAY_INDEX(IPreviewVolume,   section, _T("PreviewVolume"), 7 /* 100% */);
-	PreviewFading = LOOKUP_ARRAY_INDEX(IPreviewFading,   section, _T("PreviewFading"), 3 /* 3 sec */);
+	ClickAssist   = LOOKUP_ENUM_VALUE(Switch,            section, "ClickAssist", Switch::Off);
+	BeatClick     = LOOKUP_ENUM_VALUE(Switch,            section, "BeatClick", Switch::Off);
+	SavePlayback  = LOOKUP_ENUM_VALUE(Switch,            section, "SavePlayback", Switch::Off);
+	PreviewVolume = LOOKUP_ARRAY_INDEX(IPreviewVolume,   section, "PreviewVolume", 7 /* 100% */);
+	PreviewFading = LOOKUP_ARRAY_INDEX(IPreviewFading,   section, "PreviewFading", 3 /* 3 sec */);
 	BackgroundMusic
-	              = LOOKUP_ENUM_VALUE(Switch,            section, _T("BackgroundMusic"), Switch::On);
+	              = LOOKUP_ENUM_VALUE(Switch,            section, "BackgroundMusic", Switch::On);
 	AudioOutputBufferSizeIndex
-	              = LOOKUP_ARRAY_INDEX(IAudioOutputBufferSize, section, _T("AudioOutputBufferSize"), 0);
+	              = LOOKUP_ARRAY_INDEX(IAudioOutputBufferSize, section, "AudioOutputBufferSize", 0);
 	VoicePassthrough 
-	         	  = LOOKUP_ENUM_VALUE(Switch,            section, _T("VoicePassthrough"), Switch::Off);
+	         	  = LOOKUP_ENUM_VALUE(Switch,            section, "VoicePassthrough", Switch::Off);
 }
 
 void Ini::SaveSoundSettings()
 {
-	static const TCHAR * section = _T("Sound");
+	static const char * section = "Sound";
 
-	SAVE_ENUM_VALUE(section, _T("ClickAssist"), ClickAssist);
-	SAVE_ENUM_VALUE(section, _T("BeatClick"), BeatClick);
-	SAVE_ENUM_VALUE(section, _T("SavePlayback"), SavePlayback);
-	ini.SetValue(section, _T("PreviewVolume"), IPreviewVolume[PreviewVolume].c_str());
-	ini.SetValue(section, _T("PreviewFading"), IPreviewFading[PreviewFading].c_str());
-	SAVE_ENUM_VALUE(section, _T("BackgroundMusic"), BackgroundMusic);
-	ini.SetValue(section, _T("AudioOutputBufferSize"), IAudioOutputBufferSize[AudioOutputBufferSizeIndex].c_str());
-	SAVE_ENUM_VALUE(section, _T("VoicePassthrough"), VoicePassthrough);
+	SAVE_ENUM_VALUE(section, "ClickAssist", ClickAssist);
+	SAVE_ENUM_VALUE(section, "BeatClick", BeatClick);
+	SAVE_ENUM_VALUE(section, "SavePlayback", SavePlayback);
+	ini.SetValue(section, "PreviewVolume", IPreviewVolume[PreviewVolume].c_str());
+	ini.SetValue(section, "PreviewFading", IPreviewFading[PreviewFading].c_str());
+	SAVE_ENUM_VALUE(section, "BackgroundMusic", BackgroundMusic);
+	ini.SetValue(section, "AudioOutputBufferSize", IAudioOutputBufferSize[AudioOutputBufferSizeIndex].c_str());
+	SAVE_ENUM_VALUE(section, "VoicePassthrough", VoicePassthrough);
 }
 
 void Ini::LoadLyricsSettings()
 {
-	static const TCHAR * section = _T("Lyrics");
+	static const char * section = "Lyrics";
 
-	LyricsFont    = LOOKUP_ENUM_VALUE(LyricsFontType,    section, _T("LyricsFont"), LyricsFontType::Plain);
-	LyricsEffect  = LOOKUP_ENUM_VALUE(LyricsEffectType,  section, _T("LyricsEffect"), LyricsEffectType::Shift);
-	NoteLines     = LOOKUP_ENUM_VALUE(Switch,            section, _T("NoteLines"), Switch::On);
+	LyricsFont    = LOOKUP_ENUM_VALUE(LyricsFontType,    section, "LyricsFont", LyricsFontType::Plain);
+	LyricsEffect  = LOOKUP_ENUM_VALUE(LyricsEffectType,  section, "LyricsEffect", LyricsEffectType::Shift);
+	NoteLines     = LOOKUP_ENUM_VALUE(Switch,            section, "NoteLines", Switch::On);
 
 	DefaultEncoding
-	              = LOOKUP_ENUM_VALUE(Encoding,          section, _T("Encoding"), Encoding::Auto);
+	              = LOOKUP_ENUM_VALUE(Encoding,          section, "Encoding", Encoding::Auto);
 }
 
 void Ini::SaveLyricsSettings()
 {
-	static const TCHAR * section = _T("Lyrics");
+	static const char * section = "Lyrics";
 
-	SAVE_ENUM_VALUE(section, _T("LyricsFont"), LyricsFont);
-	SAVE_ENUM_VALUE(section, _T("LyricsEffect"), LyricsEffect);
-	SAVE_ENUM_VALUE(section, _T("NoteLines"), NoteLines);
-	SAVE_ENUM_VALUE(section, _T("DefaultEncoding"), DefaultEncoding);
+	SAVE_ENUM_VALUE(section, "LyricsFont", LyricsFont);
+	SAVE_ENUM_VALUE(section, "LyricsEffect", LyricsEffect);
+	SAVE_ENUM_VALUE(section, "NoteLines", NoteLines);
+	SAVE_ENUM_VALUE(section, "DefaultEncoding", DefaultEncoding);
 }
 
 void Ini::LoadAdvancedSettings()
 {
-	static const TCHAR * section = _T("Advanced");
+	static const char * section = "Advanced";
 
-	LoadAnimation = LOOKUP_ENUM_VALUE(Switch,            section, _T("LoadAnimation"), Switch::On);
-	ScreenFade    = LOOKUP_ENUM_VALUE(Switch,            section, _T("ScreenFade"), Switch::On);
+	LoadAnimation = LOOKUP_ENUM_VALUE(Switch,            section, "LoadAnimation", Switch::On);
+	ScreenFade    = LOOKUP_ENUM_VALUE(Switch,            section, "ScreenFade", Switch::On);
 	AskBeforeDel
-	              = LOOKUP_ENUM_VALUE(Switch,            section, _T("AskBeforeDel"), Switch::On);
-	OnSongClick   = LOOKUP_ENUM_VALUE(SongClickType,     section, _T("OnSongClick"), SongClickType::Sing);
-	LineBonus     = LOOKUP_ENUM_VALUE(Switch,            section, _T("LineBonus"), Switch::On);
-	PartyPopup    = LOOKUP_ENUM_VALUE(Switch,            section, _T("PartyPopup"), Switch::On);
-	SyncTo        = LOOKUP_ENUM_VALUE(SyncToType,        section, _T("SyncTo"), SyncToType::Music);
+	              = LOOKUP_ENUM_VALUE(Switch,            section, "AskBeforeDel", Switch::On);
+	OnSongClick   = LOOKUP_ENUM_VALUE(SongClickType,     section, "OnSongClick", SongClickType::Sing);
+	LineBonus     = LOOKUP_ENUM_VALUE(Switch,            section, "LineBonus", Switch::On);
+	PartyPopup    = LOOKUP_ENUM_VALUE(Switch,            section, "PartyPopup", Switch::On);
+	SyncTo        = LOOKUP_ENUM_VALUE(SyncToType,        section, "SyncTo", SyncToType::Music);
 }
 
 void Ini::SaveAdvancedSettings()
 {
-	static const TCHAR * section = _T("Advanced");
+	static const char * section = "Advanced";
 
-	SAVE_ENUM_VALUE(section, _T("LoadAnimation"), LoadAnimation);
-	SAVE_ENUM_VALUE(section, _T("ScreenFade"), ScreenFade);
-	SAVE_ENUM_VALUE(section, _T("AskBeforeDel"), AskBeforeDel);
+	SAVE_ENUM_VALUE(section, "LoadAnimation", LoadAnimation);
+	SAVE_ENUM_VALUE(section, "ScreenFade", ScreenFade);
+	SAVE_ENUM_VALUE(section, "AskBeforeDel", AskBeforeDel);
 
-	SAVE_ENUM_VALUE(section, _T("OnSongClick"), OnSongClick);
-	SAVE_ENUM_VALUE(section, _T("LineBonus"), LineBonus);
-	SAVE_ENUM_VALUE(section, _T("PartyPopup"), PartyPopup);
-	SAVE_ENUM_VALUE(section, _T("SyncTo"), SyncTo);
+	SAVE_ENUM_VALUE(section, "OnSongClick", OnSongClick);
+	SAVE_ENUM_VALUE(section, "LineBonus", LineBonus);
+	SAVE_ENUM_VALUE(section, "PartyPopup", PartyPopup);
+	SAVE_ENUM_VALUE(section, "SyncTo", SyncTo);
 }
 
 void Ini::LoadControllerSettings()
 {
-	static const TCHAR * section = _T("Controller");
+	static const char * section = "Controller";
 
-	Joypad        = LOOKUP_ENUM_VALUE(Switch,            section, _T("Joypad"), Params.Joypad ? Switch::On : Switch::Off);
-	Mouse         = LOOKUP_ARRAY_INDEX(IMouse,           section, _T("Mouse"), Params.Joypad ? 0 /* off */ : 2 /* software cursor */);
+	Joypad        = LOOKUP_ENUM_VALUE(Switch,            section, "Joypad", Params.Joypad ? Switch::On : Switch::Off);
+	Mouse         = LOOKUP_ARRAY_INDEX(IMouse,           section, "Mouse", Params.Joypad ? 0 /* off */ : 2 /* software cursor */);
 }
 
 void Ini::SaveControllerSettings()
 {
-	static const TCHAR * section = _T("Controller");
+	static const char * section = "Controller";
 
-	SAVE_ENUM_VALUE(section, _T("Joypad"), Joypad);
-	ini.SetValue(section, _T("Mouse"), IMouse[Mouse].c_str());
+	SAVE_ENUM_VALUE(section, "Joypad", Joypad);
+	ini.SetValue(section, "Mouse", IMouse[Mouse].c_str());
 }
 
 void Ini::LoadInputDeviceConfig()
 {
-	static const tstring deviceNameKey(_T("DeviceName"));
-	const TCHAR * section = _T("Record");
+	static const std::string deviceNameKey("DeviceName");
+	const char * section = "Record";
 
 	// Clear the device map
 	InputDevices.clear();
 
-	const CSimpleIni::TKeyVal * sectionKeys = ini.GetSection(section);
+	const CSimpleIniA::TKeyVal * sectionKeys = ini.GetSection(section);
 	if (sectionKeys == NULL)
 		return;
 
-	for (CSimpleIni::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
+	for (CSimpleIniA::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
 	{
-		tstring key = itr->first.pItem;
+		std::string key = itr->first.pItem;
 		if (key.length() < deviceNameKey.length()
 			|| key.substr(0, deviceNameKey.length()) != deviceNameKey)
 			continue;
 
-		TCHAR buff[20];
+		char buff[20];
 		int deviceNo;
-		_stscanf(key.c_str(), _T("%10s[%d]"), buff, &deviceNo);
+		sscanf(key.c_str(), "%10s[%d]", buff, &deviceNo);
 
 		InputDeviceConfig device;
 		device.Name = itr->second;
 
-		_sntprintf(buff, 20, _T("Input[%d]"), deviceNo);
+		snprintf(buff, 20, "Input[%d]", deviceNo);
 		device.Input = ini.GetLongValue(section, buff, 0);
 
-		_sntprintf(buff, 20, _T("Latency[%d]"), deviceNo);
+		snprintf(buff, 20, "Latency[%d]", deviceNo);
 		device.Latency = ini.GetLongValue(section, buff, LATENCY_AUTODETECT);
 
 		for (int channelIndex = 0; ; channelIndex++)
 		{
-			_sntprintf(buff, 20, _T("Channel%d[%d]"), channelIndex + 1, deviceNo);
+			snprintf(buff, 20, "Channel%d[%d]", channelIndex + 1, deviceNo);
 			int channelPlayer = ini.GetLongValue(section, buff, -1);
 			if (channelPlayer < 0)
 				break;
@@ -577,7 +577,7 @@ void Ini::LoadInputDeviceConfig()
 
 void Ini::SaveInputDeviceConfig()
 {
-	const TCHAR * section = _T("Record");
+	const char * section = "Record";
 
 	// Remove entire recording device section.
 	// As we still have the config file loaded in memory,
@@ -589,24 +589,24 @@ void Ini::SaveInputDeviceConfig()
 		itr != InputDevices.end();
 		++itr)
 	{
-		TCHAR buff[20];
+		char buff[20];
 		const InputDeviceConfig& device = itr->second;
 		int deviceNo = itr->first;
 
-		_sntprintf(buff, 20, _T("DeviceName[%d]"), deviceNo);
+		snprintf(buff, 20, "DeviceName[%d]", deviceNo);
 		ini.SetValue(section, buff, device.Name.c_str());
 
-		_sntprintf(buff, 20, _T("Input[%d]"), deviceNo);
+		snprintf(buff, 20, "Input[%d]", deviceNo);
 		ini.SetLongValue(section, buff, device.Input);
 
-		_sntprintf(buff, 20, _T("Latency[%d]"), deviceNo);
+		snprintf(buff, 20, "Latency[%d]", deviceNo);
 		ini.SetLongValue(section, buff, device.Latency);
 
 		for (ChannelToPlayerMap::const_iterator channelItr = device.ChannelMap.begin();
 			channelItr != device.ChannelMap.end();
 			++channelItr)
 		{
-			_sntprintf(buff, 20, _T("Channel%d[%d]"), channelItr->first, deviceNo);
+			snprintf(buff, 20, "Channel%d[%d]", channelItr->first, deviceNo);
 			ini.SetLongValue(section, buff, channelItr->second);
 		}
 	}
@@ -615,52 +615,52 @@ void Ini::SaveInputDeviceConfig()
 void Ini::LoadThemes()
 {
 	if (sThemes.GetThemeCount() == 0)
-		return sLog.Critical(_T("No themes are loaded."));
+		return sLog.Critical("No themes are loaded.");
 
-	static const TCHAR * section = _T("Themes");
+	static const char * section = "Themes";
 
 	// TODO: Clean this up. It would be preferable to only store the theme & skin names here.
-	tstring themeName = ini.GetValue(section, _T("Theme"), DEFAULT_THEME);
+	std::string themeName = ini.GetValue(section, "Theme", DEFAULT_THEME);
 
 	Theme = sThemes.LookupThemeDefault(themeName, DEFAULT_THEME);
 	if (Theme == NULL)
-		return sLog.Critical(_T("Theme not found, and default theme does not exist."));
+		return sLog.Critical("Theme not found, and default theme does not exist.");
 
 	if (Theme->DefaultSkin == NULL)
-		return sLog.Critical(_T("Specified theme doesn't have a default skin."));
+		return sLog.Critical("Specified theme doesn't have a default skin.");
 
-	tstring skinName = ini.GetValue(section, _T("Skin"), Theme->DefaultSkin->Name.c_str());
+	std::string skinName = ini.GetValue(section, "Skin", Theme->DefaultSkin->Name.c_str());
 	Skin = sSkins.LookupSkinForTheme(skinName, Theme->Name);
 	if (Skin == NULL)
 		Skin = Theme->DefaultSkin; // NOTE: Checked earlier
 
-	ThemeColor = LOOKUP_ENUM_VALUE(Color, section, _T("Color"), Skin->DefaultColor);
+	ThemeColor = LOOKUP_ENUM_VALUE(Color, section, "Color", Skin->DefaultColor);
 }
 
 void Ini::SaveThemes()
 {
-	static const TCHAR * section = _T("Themes");
+	static const char * section = "Themes";
 
 	// TODO: Clean this up. It would be preferable to only store the theme & skin names here.
-	ini.SetValue(section, _T("Theme"), Theme->Name.c_str());
-	ini.SetValue(section, _T("Skin"), Theme->DefaultSkin->Name.c_str());
-	SAVE_ENUM_VALUE(section, _T("Color"), Theme->DefaultSkin->DefaultColor);
+	ini.SetValue(section, "Theme", Theme->Name.c_str());
+	ini.SetValue(section, "Skin", Theme->DefaultSkin->Name.c_str());
+	SAVE_ENUM_VALUE(section, "Color", Theme->DefaultSkin->DefaultColor);
 }
 
 void Ini::LoadPaths()
 {
-	const TCHAR * section = _T("Directories");
-	const CSimpleIni::TKeyVal * sectionKeys = ini.GetSection(section);
+	const char * section = "Directories";
+	const CSimpleIniA::TKeyVal * sectionKeys = ini.GetSection(section);
 	if (sectionKeys == NULL)
 		return;
 
-	for (CSimpleIni::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
+	for (CSimpleIniA::TKeyVal::const_iterator itr = sectionKeys->begin(); itr != sectionKeys->end(); ++itr)
 		AddSongPath(path(itr->second));
 }
 
 void Ini::SavePaths()
 {
-	const TCHAR * section = _T("Directories");
+	const char * section = "Directories";
 
 	// Remove entire directories section.
 	// As we still have the config file loaded in memory,
@@ -671,9 +671,9 @@ void Ini::SavePaths()
 	int n = 1;
 	for (PathSet::const_iterator itr = SongPaths.begin(); itr != SongPaths.end(); ++itr)
 	{
-		TCHAR buff[20];
-		_sntprintf(buff, 20, _T("SongDir%d"), n++);
-		ini.SetValue(section, buff, itr->native().c_str());
+		char buff[20];
+		_snprintf(buff, 20, "SongDir%d", n++);
+		ini.SetValue(section, buff, itr->generic_string().c_str());
 	}
 }
 

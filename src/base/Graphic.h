@@ -26,7 +26,7 @@
 
 #include "Texture.h"
 
-void Initialize3D(const TCHAR * windowTitle);
+void Initialize3D(const char * windowTitle);
 void LoadFontTextures();
 void UnloadFontTextures();
 void LoadLoadingScreen();

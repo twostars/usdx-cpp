@@ -24,27 +24,27 @@
 #define _PATHUTILS_H
 #pragma once
 
-#define VISUAL_DIR		_T("visuals")
-#define THEME_DIR		_T("themes")
-#define SOUND_DIR		_T("sounds")
-#define SONG_DIR		_T("songs")
-#define RESOURCE_DIR	_T("resources")
-#define PLUGIN_DIR		_T("plugins")
-#define LANG_DIR		_T("languages")
-#define FONT_DIR		_T("fonts")
-#define COVER_DIR		_T("covers")
-#define PLAYLIST_DIR    _T("playlists")
-#define SCREENSHOT_DIR  _T("screenshots")
-#define LOG_DIR			_T("logs")
-#define ICONS_DIR		_T("icons")
+#define VISUAL_DIR		"visuals"
+#define THEME_DIR		"themes"
+#define SOUND_DIR		"sounds"
+#define SONG_DIR		"songs"
+#define RESOURCE_DIR	"resources"
+#define PLUGIN_DIR		"plugins"
+#define LANG_DIR		"languages"
+#define FONT_DIR		"fonts"
+#define COVER_DIR		"covers"
+#define PLAYLIST_DIR    "playlists"
+#define SCREENSHOT_DIR  "screenshots"
+#define LOG_DIR			"logs"
+#define ICONS_DIR		"icons"
 
-#define CONFIG_FILE		_T("config.ini")
-#define FONTS_FILE		_T("fonts.ini")
+#define CONFIG_FILE		"config.ini"
+#define FONTS_FILE		"fonts.ini"
 
 typedef std::set<path> PathSet;
 
-const TCHAR * GetConfigFile();
-const TCHAR * GetScoreFile();
+std::string GetConfigFile();
+std::string GetScoreFile();
 
 void AddSongPath(path& path);
 void AddCoverPath(path& path);
