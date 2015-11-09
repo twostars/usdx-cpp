@@ -30,23 +30,39 @@ RGB GetSystemColor(eColor color)
 
 	switch (color)
 	{
-#define DECL_COLOR(name, r, g, b) \
-	case Color::name:   \
-		v.Set(r, g, b); \
-		break
+	case Color::Blue:
+		v.Set(71, 175, 247);
+		break;
 
-		DECL_COLOR(Blue,    71, 175, 247);
-		DECL_COLOR(Green,   63, 191,  63);
-		DECL_COLOR(Pink,   255, 175, 247);
-		DECL_COLOR(Red,    247,  71,  71);
-		DECL_COLOR(Violet, 212,  71, 247);
-		DECL_COLOR(Orange, 247, 144,  71);
-		DECL_COLOR(Yellow, 230, 230,  95);
-		DECL_COLOR(Brown,  192, 127,  31);
-		DECL_COLOR(Black,    0,   0,   0);
+	case Color::Green:
+		v.Set(63, 191, 63);
+		break;
 
-#undef DECL_COLOR
+	case Color::Pink:
+		v.Set(255, 175, 247);
+		break;
 
+	case Color::Red:
+		v.Set(247, 71, 71);
+		break;
+
+	case Color::Violet:
+		v.Set(212, 71, 247);
+		break;
+
+	case Color::Orange:
+		v.Set(247, 144, 71);
+		break;
+
+	case Color::Yellow:
+		v.Set(230, 230, 95);
+		break;
+
+	case Color::Brown:
+		v.Set(192, 127, 31);
+		break;
+
+	case Color::Black:
 	default:
 		v.Set(0, 0, 0);
 	}
