@@ -168,7 +168,7 @@ void Themes::LoadList()
 void Themes::LoadHeader(const path& iniFile)
 {
 	CSimpleIniA ini(true);
-	SI_Error result = ini.LoadFile(iniFile.native().c_str());
+	SI_Error result = ini.LoadFile(iniFile.generic_string().c_str());
 	if (result != SI_OK)
 	{
 		return sLog.Warn(

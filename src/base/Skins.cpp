@@ -62,7 +62,7 @@ void Skins::LoadList()
 	catch (filesystem_error)
 	{
 		sLog.Critical("Skins::LoadList", "Could not access themes directory %s.", 
-			ThemePath.native().c_str());
+			ThemePath.generic_string().c_str());
 	}
 }
 
@@ -84,11 +84,11 @@ void Skins::ParseDir(const path& dir)
 void Skins::LoadHeader(const path& iniFile)
 {
 	CSimpleIniA ini(true);
-	SI_Error result = ini.LoadFile(iniFile.native().c_str());
+	SI_Error result = ini.LoadFile(iniFile.generic_string().c_str());
 	if (result != SI_OK)
 	{
 		return sLog.Warn("Skins::LoadHeader", "Failed to load INI (%s).", 
-			iniFile.native().c_str());
+			iniFile.generic_string().c_str());
 	}
 
 	SkinEntry skin;
@@ -120,7 +120,7 @@ void Skins::LoadSkin(SkinEntry * skin, eColor color)
 {
 	CSimpleIniA ini(true);
 
-	SI_Error result = ini.LoadFile(skin->FileName.native().c_str());
+	SI_Error result = ini.LoadFile(skin->FileName.generic_string().c_str());
 	if (result != SI_OK)
 	{
 		return sLog.Warn("Skins::LoadSkin", "Failed to load INI (%s).", 

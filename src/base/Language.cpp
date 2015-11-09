@@ -152,7 +152,7 @@ void Language::ChangeLanguage(const std::string& language)
 	iniPath /= language;
 	iniPath.replace_extension(".ini");
 
-	SI_Error result = ini.LoadFile(iniPath.native().c_str());
+	SI_Error result = ini.LoadFile(iniPath.generic_string().c_str());
 
 	if (result != SI_OK)
 		sLog.Critical("Change language", "Failed to set language to %s.", language.c_str());

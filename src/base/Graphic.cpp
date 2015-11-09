@@ -577,9 +577,9 @@ SDL_Surface * LoadSurfaceFromFile(const path& filename)
 {
 	if (!filename.has_extension()
 		// need at least 2 characters, as we need to skip the . prefix
-		|| filename.extension().native().size() < 2)
+		|| filename.extension().generic_string().size() < 2)
 	{
-		sLog.Error("LoadSurfaceFromFile", "%s has no extension.", filename.native().c_str());
+		sLog.Error("LoadSurfaceFromFile", "%s has no extension.", filename.generic_string().c_str());
 		return NULL;
 	}
 
