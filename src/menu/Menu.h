@@ -181,7 +181,7 @@ public:
 		const std::vector<std::string>& values, int data);
 
 	void FadeTo(Menu* screen);
-	void FadeTo(Menu* screen, /*AudioPlaybackStream*/void * playbackStream); // TODO
+	void FadeTo(Menu* screen, enum SoundType soundType);
 
 	// Popup hack
 	void CheckFadeTo(Menu* screen, const char * message);

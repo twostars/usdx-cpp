@@ -25,6 +25,7 @@
 #include "../base/Language.h"
 #include "../base/Ini.h"
 #include "../base/Themes.h"
+#include "../base/Music.h"
 #include "../menu/Menu.h"
 #include "ScreenOptions.h"
 #include "ScreenOptionsAdvanced.h"
@@ -78,7 +79,7 @@ bool ScreenOptionsAdvanced::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, b
 		case SDLK_ESCAPE:
 		case SDLK_BACKSPACE:
 			sIni.Save();
-			// AudioPlayback.PlaySound(SoundLib.Back); // TODO
+			sSoundLib.PlaySound(SoundBack);
 			FadeTo(UIOptions);
 			break;
 
@@ -86,7 +87,7 @@ bool ScreenOptionsAdvanced::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, b
 			if (SelInteraction == 6)
 			{
 				sIni.Save();
-				// AudioPlayback.PlaySound(SoundLib.Back); // TODO
+				sSoundLib.PlaySound(SoundBack);
 				FadeTo(UIOptions);
 			}
 			break;
@@ -103,7 +104,8 @@ bool ScreenOptionsAdvanced::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, b
 		case SDLK_LEFT:
 			if (SelInteraction >= 0 && SelInteraction <= 5)
 			{
-				// AudioPlayback.PlaySound(SoundLib.Option);
+				sSoundLib.PlaySound(SoundOption);
+
 				if (pressedKey == SDLK_RIGHT)
 					InteractInc();
 				else

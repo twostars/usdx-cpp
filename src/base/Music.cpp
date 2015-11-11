@@ -22,8 +22,62 @@
 
 #include "stdafx.h"
 #include "Music.h"
+#include "PathUtils.h"
+#include "Ini.h"
 
-void InitializeSound()
+initialiseSingleton(SoundLibrary);
+
+SoundLibrary::SoundLibrary()
 {
-	// TODO
+	Load();
+}
+
+void SoundLibrary::Load()
+{
+	#define SOUND_PATH(mp3) \
+		((SoundPath / mp3).generic_string().c_str())
+
+	_sounds[SoundStart] = Mix_LoadWAV(SOUND_PATH("Common start.wav"));
+	_sounds[SoundBack] = Mix_LoadWAV(SOUND_PATH("Common back.wav"));
+	_sounds[SoundSwoosh] = Mix_LoadWAV(SOUND_PATH("menu swoosh.wav"));
+	_sounds[SoundChange] = Mix_LoadWAV(SOUND_PATH("select music change music 50.wav"));
+	_sounds[SoundOption] = Mix_LoadWAV(SOUND_PATH("option change col.wav"));
+	_sounds[SoundClick] = Mix_LoadWAV(SOUND_PATH("rimshot022b.wav"));
+	_sounds[SoundApplause] = Mix_LoadWAV(SOUND_PATH("Applause.wav"));
+	_music = Mix_LoadMUS(SOUND_PATH("background track.mp3"));
+
+	#undef SOUND_PATH
+}
+
+void SoundLibrary::Unload()
+{
+	for (size_t i = 0; i < SoundCount; i++)
+		Mix_FreeChunk(_sounds[i]);
+
+	Mix_FreeMusic(_music);
+}
+
+void SoundLibrary::StartBgMusic()
+{
+	if (sIni.BackgroundMusic == eSwitch::Off)
+		return;
+
+	if (Mix_PlayingMusic() == 0)
+		Mix_PlayMusic(_music, 0);
+}
+
+void SoundLibrary::PauseBgMusic()
+{
+	if (Mix_PlayingMusic() != 0)
+		Mix_PauseMusic();
+}
+
+void SoundLibrary::PlaySound(SoundType soundType)
+{
+	Mix_PlayChannel(-1, _sounds[soundType], 0);
+}
+
+SoundLibrary::~SoundLibrary()
+{
+	Unload();
 }

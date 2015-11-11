@@ -25,6 +25,7 @@
 #include "../base/Language.h"
 #include "../base/Ini.h"
 #include "../base/Themes.h"
+#include "../base/Music.h"
 #include "../menu/Menu.h"
 #include "ScreenOptions.h"
 #include "ScreenOptionsLyrics.h"
@@ -84,7 +85,8 @@ bool ScreenOptionsLyrics::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, boo
 		case SDLK_LEFT:
 			if (SelInteraction >= 0 && SelInteraction <= 3)
 			{
-				// AudioPlayback.PlaySound(SoundLib.Option);
+				sSoundLib.PlaySound(SoundOption);
+
 				if (pressedKey == SDLK_RIGHT)
 					InteractInc();
 				else
@@ -105,7 +107,6 @@ void ScreenOptionsLyrics::OnShow()
 void ScreenOptionsLyrics::SaveAndReturn()
 {
 	sIni.Save();
-
-	// AudioPlayback.PlaySound(SoundLib.Back); // TODO
+	sSoundLib.PlaySound(SoundBack);
 	FadeTo(UIOptions);
 }

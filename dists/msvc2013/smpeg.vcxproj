@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName />
+    <SccLocalPath />
+    <ProjectGuid>{55A56DD5-7041-4E48-9FB0-9A9FD2AA4D57}</ProjectGuid>
+    <ProjectName>smpeg2</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)..\..\game\</OutDir>
+    <IntDir>$(SolutionDir)..\..\game\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)..\..\game\</OutDir>
+    <IntDir>$(SolutionDir)..\..\game\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\..\src\lib\libsdl\include;..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;WIN32;_WINDOWS;NOCONTROLS;THREADED_AUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderOutputFile>.\Debug\smpeg.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\smpeg.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <RedirectOutputAndErrors>NUL</RedirectOutputAndErrors>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\smpeg.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <LinkDLL>true</LinkDLL>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>.\Debug\smpeg.lib</ImportLibrary>
+      <AdditionalDependencies>wsock32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)../../game</AdditionalLibraryDirectories>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>..\..\src\lib\libsdl\include;..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;WIN32;_WINDOWS;NOCONTROLS;THREADED_AUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderOutputFile>.\Release\smpeg.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release\smpeg.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <RedirectOutputAndErrors>NUL</RedirectOutputAndErrors>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\smpeg.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <LinkDLL>true</LinkDLL>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>.\Release\smpeg.lib</ImportLibrary>
+      <AdditionalDependencies>wsock32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)../../game</AdditionalLibraryDirectories>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\audio\bitwindow.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\audio\filter.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\audio\filter_2.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\audio\hufftable.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\audio\MPEGaudio.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\audio\mpeglayer1.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\audio\mpeglayer2.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\audio\mpeglayer3.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\audio\mpegtable.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\audio\mpegtoraw.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEG.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGlist.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGring.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGstream.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGsystem.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\smpeg.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\decoders.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\floatdct.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\gdith.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\jrevdct.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\motionvec.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\MPEGvideo.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\parseblock.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\readfile.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\util.cpp" />
+    <ClCompile Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\video.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEG.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGaction.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGaudio.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGerror.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGlist.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGring.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGstream.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGsystem.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\MPEGvideo.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\smpeg.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\decoders.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\dither.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\proto.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\util.h" />
+    <ClInclude Include="..\..\src\lib\SDL_mixer\external\smpeg2-2.0.0\video\video.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -24,6 +24,7 @@
 #include "../base/Graphic.h"
 #include "../base/Ini.h"
 #include "../base/Language.h"
+#include "../base/Music.h"
 #include "../menu/Menu.h"
 #include "../base/Themes.h"
 #include "ScreenOptions.h"
@@ -94,7 +95,8 @@ bool ScreenOptionsGraphics::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, b
 		case SDLK_LEFT:
 			if (SelInteraction >= 0 && SelInteraction <= 5)
 			{
-				// AudioPlayback.PlaySound(SoundLib.Option);
+				sSoundLib.PlaySound(SoundOption);
+
 				if (pressedKey == SDLK_RIGHT)
 					InteractInc();
 				else
@@ -125,6 +127,6 @@ void ScreenOptionsGraphics::SaveAndReturn()
 		// Currently this will invalidate all textures on Windows/Mac OSX (Linux is fine).
 	}
 
-	// AudioPlayback.PlaySound(SoundLib.Back); // TODO
+	sSoundLib.PlaySound(SoundBack);
 	FadeTo(UIOptions);
 }

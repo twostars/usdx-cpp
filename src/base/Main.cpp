@@ -73,7 +73,12 @@ int usdxMain(int argc, char ** argv)
 
 		// initialize SDL
 		// without SDL_INIT_TIMER SDL_GetTicks() might return strange values
-		SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
+		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1)
+			return 1;
+
+		// initialize SDL_mixer
+		if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096) == -1)
+			return 1;
 
 		SDL_StartTextInput();
 
@@ -139,7 +144,7 @@ int usdxMain(int argc, char ** argv)
 		// Sound
 		sLog.BenchmarkStart(1);
 		sLog.Status("Initialize Sound", "Initialization");
-		InitializeSound(); // TODO
+		new SoundLibrary();
 		sLog.BenchmarkEnd(1);
 		sLog.Benchmark(1, "Initializing Sound");
 
@@ -251,14 +256,14 @@ int usdxMain(int argc, char ** argv)
 		sDisplay.SetCursor();
 
 		// Start background music
-		// SoundLib::StartBgMusic();
+		sSoundLib.StartBgMusic();
 		
 		// Check microphone settings, go to record options if they are incorrect
 		/*
 		int badPlayer = AudioInputProcessor::ValidateSettings();
 		if (badPlayer >= 0)
 		{
-			ScreenPopupError::ShowPopup(__TFormat("ERROR_PLAYER_DEVICE_ASSIGNMENT", BadPlayer + 1);
+			ScreenPopupError::ShowPopup("ERROR_PLAYER_DEVICE_ASSIGNMENT", BadPlayer + 1);
 			sDisplay.CurrentScreen->FadeTo(&ScreenOptionsRecord);
 		}
 		*/
@@ -299,8 +304,10 @@ int usdxMain(int argc, char ** argv)
 	delete TextureMgr::getSingletonPtr();
 	delete Log::getSingletonPtr();
 	delete LuaCore::getSingletonPtr();
+	delete SoundLibrary::getSingletonPtr();
 
 	SDL_StopTextInput();
+	Mix_CloseAudio();
 	SDL_Quit();
 
 	return 0;

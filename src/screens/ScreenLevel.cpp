@@ -24,6 +24,7 @@
 #include "../base/Ini.h"
 #include "../base/Themes.h"
 #include "../base/Graphic.h"
+#include "../base/Music.h"
 #include "../menu/Menu.h"
 #include "ScreenLevel.h"
 #include "ScreenMain.h"
@@ -60,7 +61,7 @@ bool ScreenLevel::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool presse
 	{
 		case SDLK_ESCAPE:
 		case SDLK_BACKSPACE:
-			// AudioPlayback.PlaySound(SoundLib.Back); // TODO
+			sSoundLib.PlaySound(SoundBack);
 			if (sIni.OnSongClick == eSongClickType::SelectPlayers)
 				FadeTo(UIMain);
 			else
@@ -71,7 +72,7 @@ bool ScreenLevel::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool presse
 			sIni.Difficulty = (eDifficultyType) SelInteraction;
 			sIni.SaveGameSettings();
 			sIni.SaveToFile();
-			// AudioPlayback.PlaySound(SoundLib.Start); // TODO
+			sSoundLib.PlaySound(SoundStart);
 
 			// Set standard mode
 			// UISong->Mode = smNormal;

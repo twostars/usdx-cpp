@@ -25,6 +25,7 @@
 #include "../base/Skins.h"
 #include "../base/Graphic.h"
 #include "../base/Log.h"
+#include "../base/Music.h"
 #include "Menu.h"
 #include "MenuBackgroundNone.h"
 #include "MenuBackgroundColor.h"
@@ -844,12 +845,10 @@ void Menu::FadeTo(Menu* screen)
 	sDisplay.NextScreen = screen;
 }
 
-void Menu::FadeTo(Menu* screen, /*AudioPlaybackStream*/void * playbackStream)
+void Menu::FadeTo(Menu* screen, SoundType soundType)
 {
 	FadeTo(screen);
-
-	// TODO
-	// AudioPlayback.PlaySound(playbackStream);
+	sSoundLib.PlaySound(soundType);
 }
 
 void Menu::CheckFadeTo(Menu* screen, const char * message)

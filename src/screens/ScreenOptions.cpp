@@ -24,6 +24,7 @@
 #include "../base/Graphic.h"
 #include "../base/Ini.h"
 #include "../base/Themes.h"
+#include "../base/Music.h"
 #include "../menu/Menu.h"
 #include "ScreenMain.h"
 #include "ScreenOptions.h"
@@ -88,7 +89,7 @@ bool ScreenOptions::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pres
 		case SDLK_ESCAPE:
 		case SDLK_BACKSPACE:
 			sIni.Save();
-			// AudioPlayback.PlaySound(SoundLib.Back); // TODO
+			sSoundLib.PlaySound(SoundBack);
 			FadeTo(UIMain);
 			break;
 
@@ -97,7 +98,7 @@ bool ScreenOptions::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pres
 			if (SelInteraction == 7)
 				return ParseInput(SDLK_ESCAPE, SDLK_ESCAPE, pressedDown);
 
-			// AudioPlayback.PlaySound(SoundLib.Start);
+			sSoundLib.PlaySound(SoundStart);
 
 			switch (SelInteraction)
 			{
@@ -162,7 +163,7 @@ void ScreenOptions::OnShow()
 	Menu::OnShow();
 
 	// continue possibly stopped bg-music (stopped in record options)
-	// SoundLib.StartBgMusic; // TODO
+	sSoundLib.StartBgMusic();
 }
 
 void ScreenOptions::OnInteraction()

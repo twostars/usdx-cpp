@@ -25,6 +25,7 @@
 #include "../base/Graphic.h"
 #include "../base/Themes.h"
 #include "../base/Language.h"
+#include "../base/Music.h"
 #include "../menu/Menu.h"
 #include "../screens/ScreenEdit.h"
 #include "../screens/ScreenPopup.h"
@@ -108,7 +109,7 @@ bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 							else
 							{
 							//	UIName->Goto_SingScreen = false;
-								FadeTo(UIName, /*SoundLib.Start*/ NULL); // TODO
+								FadeTo(UIName, SoundStart); // TODO
 							}
 						// }
 						//	else // show error message
@@ -118,18 +119,18 @@ bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 					// Multi
 					case 1:
 						// if (Songs.SongList.Count >= 1)
-						FadeTo(UIPartyOptions, /*SoundLib.Start*/ NULL); // TODO
+						FadeTo(UIPartyOptions, SoundStart); // TODO
 						break;
 
 					// Stats
 					case 2:
-						FadeTo(UIStatMain, /*SoundLib.Start*/ NULL); // TODO
+						FadeTo(UIStatMain, SoundStart); // TODO
 						break;
 
 					// Editor:
 					case 3:
 		//#if defined(UseMIDIPort)
-						FadeTo(UIEdit, /*SoundLib.Start*/ NULL); // TODO
+						FadeTo(UIEdit, SoundStart); // TODO
 		//#else
 		//				UIPopupError->ShowPopup(__T("ERROR_NO_EDITOR"));
 		//#endif
@@ -137,7 +138,7 @@ bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 
 					// Options
 					case 4:
-						FadeTo(UIOptions, /*SoundLib.Start*/ NULL); // TODO
+						FadeTo(UIOptions, SoundStart); // TODO
 						break;
 
 					// Exit

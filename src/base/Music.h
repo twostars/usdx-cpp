@@ -24,6 +24,34 @@
 #define _MUSIC_H
 #pragma once
 
-void InitializeSound();
+enum SoundType : unsigned int
+{
+	SoundStart = 0,
+	SoundBack,
+	SoundSwoosh,
+	SoundChange,
+	SoundOption,
+	SoundClick,
+	SoundApplause,
+	SoundCount
+};
+
+class SoundLibrary : public Singleton<SoundLibrary>
+{
+public:
+	SoundLibrary();
+	void Load();
+	void Unload();
+	void StartBgMusic();
+	void PauseBgMusic();
+	void PlaySound(SoundType soundType);
+	~SoundLibrary();
+
+private:
+	Mix_Chunk * _sounds[SoundCount];
+	Mix_Music * _music;
+};
+
+#define sSoundLib (SoundLibrary::getSingleton())
 
 #endif

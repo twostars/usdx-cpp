@@ -24,6 +24,7 @@
 #include "../base/Ini.h"
 #include "../base/Themes.h"
 #include "../base/Graphic.h"
+#include "../base/Music.h"
 #include "../menu/Menu.h"
 #include "ScreenLevel.h"
 #include "ScreenMain.h"
@@ -92,8 +93,7 @@ bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 			case SDLK_ESCAPE:
 				sIni.SaveProfileSettings();
 				sIni.SaveToFile();
-
-				// AudioPlayback.PlaySound(SoundLib.Back); // TODO
+				sSoundLib.PlaySound(SoundBack);
 
 				if (GotoSingScreen)
 					FadeTo(UISong);
@@ -107,8 +107,7 @@ bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 
 				sIni.SaveProfileSettings();
 				sIni.SaveToFile();
-
-				// AudioPlayback.PlaySound(SoundLib.Start);
+				sSoundLib.PlaySound(SoundStart);
 
 				if (GotoSingScreen)
 					FadeTo(UISing);
