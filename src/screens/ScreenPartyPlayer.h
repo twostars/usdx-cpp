@@ -26,6 +26,24 @@
 
 class ScreenPartyPlayer : public Menu
 {
+public:
+	ScreenPartyPlayer();
+	virtual void OnShow();
+	virtual bool ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual bool ParseTextInput(SDL_Event * event);
+	void UpdateInterface();
+	void UpdateParty();
+	void IntNext();
+	void IntPrev();
+
+protected:
+	Uint32 _teamCount;
+	Uint32 _playerCount[MAX_TEAMS];
+	int _selectPlayers[MAX_TEAMS];
+	int _selectTeams;
+
+	std::vector<int> _teamNameButtons;
+	std::vector<int> _playerNameButtons;
 };
 
 #endif
