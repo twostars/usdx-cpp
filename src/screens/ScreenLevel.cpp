@@ -61,22 +61,20 @@ bool ScreenLevel::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool presse
 	{
 		case SDLK_ESCAPE:
 		case SDLK_BACKSPACE:
-			sSoundLib.PlaySound(SoundBack);
 			if (sIni.OnSongClick == eSongClickType::SelectPlayers)
-				FadeTo(UIMain);
+				FadeTo(UIMain, SoundBack);
 			else
-				FadeTo(UIName);
+				FadeTo(UIName, SoundBack);
 			break;
 
 		case SDLK_RETURN:
 			sIni.Difficulty = (eDifficultyType) SelInteraction;
 			sIni.SaveGameSettings();
 			sIni.SaveToFile();
-			sSoundLib.PlaySound(SoundStart);
 
 			// Set standard mode
 			// UISong->Mode = smNormal;
-			FadeTo(UISong);
+			FadeTo(UISong, SoundStart);
 			break;
 
 		case SDLK_DOWN:

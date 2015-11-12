@@ -30,7 +30,6 @@ public:
 	ScreenOptionsSound();
 	virtual bool ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	virtual void OnShow();
-	virtual void OnInteraction();
 	void SaveAndReturn();
 };
 

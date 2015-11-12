@@ -105,6 +105,5 @@ void ScreenOptionsLyrics::OnShow()
 void ScreenOptionsLyrics::SaveAndReturn()
 {
 	sIni.Save();
-	sSoundLib.PlaySound(SoundBack);
-	FadeTo(UIOptions);
+	FadeTo(UIOptions, SoundBack);
 }

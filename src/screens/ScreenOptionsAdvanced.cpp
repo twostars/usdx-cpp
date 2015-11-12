@@ -79,16 +79,14 @@ bool ScreenOptionsAdvanced::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, b
 		case SDLK_ESCAPE:
 		case SDLK_BACKSPACE:
 			sIni.Save();
-			sSoundLib.PlaySound(SoundBack);
-			FadeTo(UIOptions);
+			FadeTo(UIOptions, SoundBack);
 			break;
 
 		case SDLK_RETURN:
 			if (SelInteraction == 6)
 			{
 				sIni.Save();
-				sSoundLib.PlaySound(SoundBack);
-				FadeTo(UIOptions);
+				FadeTo(UIOptions, SoundBack);
 			}
 			break;
 

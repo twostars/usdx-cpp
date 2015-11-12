@@ -30,6 +30,8 @@
 #include "ScreenOptions.h"
 #include "ScreenOptionsSound.h"
 
+void OnBackgroundMusicChanged(Uint32 oldValue, Uint32 newValue);
+
 ScreenOptionsSound::ScreenOptionsSound() : Menu()
 {
 	ThemeOptionsSound * theme = sThemes.OptionsSound;
@@ -38,27 +40,28 @@ ScreenOptionsSound::ScreenOptionsSound() : Menu()
 
 	theme->SelectSlideVoicePassthrough.ShowArrows = true;
 	theme->SelectSlideVoicePassthrough.OneItemOnly = true;
-	AddSelectSlide(theme->SelectSlideVoicePassthrough, (Uint32 *)&sIni.VoicePassthrough, IVoicePassthroughTranslated, SDL_arraysize(IVoicePassthroughTranslated));
+	int passthrough = AddSelectSlide(theme->SelectSlideVoicePassthrough, (Uint32 *)&sIni.VoicePassthrough, IVoicePassthroughTranslated, SDL_arraysize(IVoicePassthroughTranslated));
 
 	theme->SelectBackgroundMusic.ShowArrows = true;
 	theme->SelectBackgroundMusic.OneItemOnly = true;
-	AddSelectSlide(theme->SelectBackgroundMusic, (Uint32 *)&sIni.BackgroundMusic, IBackgroundMusicTranslated, SDL_arraysize(IBackgroundMusicTranslated));
+	int bgMusic = AddSelectSlide(theme->SelectBackgroundMusic, (Uint32 *)&sIni.BackgroundMusic, IBackgroundMusicTranslated, SDL_arraysize(IBackgroundMusicTranslated));
+	SelectSlides[bgMusic].OnValueChanged = &OnBackgroundMusicChanged;
 
 	theme->SelectClickAssist.ShowArrows = true;
 	theme->SelectClickAssist.OneItemOnly = true;
-	AddSelectSlide(theme->SelectClickAssist, (Uint32 *)&sIni.ClickAssist, IClickAssistTranslated, SDL_arraysize(IClickAssistTranslated));
+	int clickAssist = AddSelectSlide(theme->SelectClickAssist, (Uint32 *)&sIni.ClickAssist, IClickAssistTranslated, SDL_arraysize(IClickAssistTranslated));
 
 	theme->SelectBeatClick.ShowArrows = true;
 	theme->SelectBeatClick.OneItemOnly = true;
-	AddSelectSlide(theme->SelectBeatClick, (Uint32 *)&sIni.BeatClick, IBeatClickTranslated, SDL_arraysize(IBeatClickTranslated));
+	int beatClick = AddSelectSlide(theme->SelectBeatClick, (Uint32 *)&sIni.BeatClick, IBeatClickTranslated, SDL_arraysize(IBeatClickTranslated));
 
 	theme->SelectSlidePreviewVolume.ShowArrows = true;
 	theme->SelectSlidePreviewVolume.OneItemOnly = true;
-	AddSelectSlide(theme->SelectSlidePreviewVolume, (Uint32 *)&sIni.PreviewVolume, IPreviewVolumeTranslated, SDL_arraysize(IPreviewVolumeTranslated));
+	int previewVolume = AddSelectSlide(theme->SelectSlidePreviewVolume, (Uint32 *)&sIni.PreviewVolume, IPreviewVolumeTranslated, SDL_arraysize(IPreviewVolumeTranslated));
 
 	theme->SelectSlidePreviewFading.ShowArrows = true;
 	theme->SelectSlidePreviewFading.OneItemOnly = true;
-	AddSelectSlide(theme->SelectSlidePreviewFading, (Uint32 *)&sIni.PreviewFading, IPreviewFadingTranslated, SDL_arraysize(IPreviewFadingTranslated));
+	int previewFading = AddSelectSlide(theme->SelectSlidePreviewFading, (Uint32 *)&sIni.PreviewFading, IPreviewFadingTranslated, SDL_arraysize(IPreviewFadingTranslated));
 
 	AddButton(theme->ButtonExit);
 	if (Buttons[0].Texts.empty())
@@ -114,14 +117,17 @@ void ScreenOptionsSound::OnShow()
 	SetInteraction(0);
 }
 
-void ScreenOptionsSound::OnInteraction()
+void OnBackgroundMusicChanged(Uint32 oldValue, Uint32 newValue)
 {
-	// TODO: Turn on/off background music if set.
+	// Turn on/off background music if set.
+	if (sIni.BackgroundMusic == eSwitch::On)
+		sSoundLib.StartBgMusic();
+	else
+		sSoundLib.PauseBgMusic();
 }
 
 void ScreenOptionsSound::SaveAndReturn()
 {
 	sIni.Save();
-	sSoundLib.PlaySound(SoundBack);
-	FadeTo(UIOptions);
+	FadeTo(UIOptions, SoundBack);
 }

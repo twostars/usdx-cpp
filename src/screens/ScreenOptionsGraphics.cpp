@@ -125,6 +125,5 @@ void ScreenOptionsGraphics::SaveAndReturn()
 		// Currently this will invalidate all textures on Windows/Mac OSX (Linux is fine).
 	}
 
-	sSoundLib.PlaySound(SoundBack);
-	FadeTo(UIOptions);
+	FadeTo(UIOptions, SoundBack);
 }

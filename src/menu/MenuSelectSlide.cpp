@@ -29,7 +29,7 @@ static const int ArrowAlphaNoOptionsLeft = 0;
 static const int MinItemSpacing = 5;
 static const int MinSideSpacing = 24;
 
-MenuSelectSlide::MenuSelectSlide() : pData(NULL)
+MenuSelectSlide::MenuSelectSlide() : pData(NULL), OnValueChanged(NULL)
 {
 	Visible = true;
 
@@ -100,6 +100,7 @@ void MenuSelectSlide::SetSelectOpt(Uint32 value)
 		|| TextOptionNames.empty())
 		return;
 
+	Uint32 oldValue = *pData;
 	*pData = value;
 
 	// First option selected
@@ -163,6 +164,9 @@ void MenuSelectSlide::SetSelectOpt(Uint32 value)
 			DoSelection(halfL);
 		}
 	}
+
+	if (OnValueChanged != NULL)
+		(*OnValueChanged)(oldValue, value);
 }
 
 void MenuSelectSlide::DoSelection(size_t sel)

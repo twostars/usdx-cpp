@@ -124,9 +124,8 @@ void ScreenOptionsGame::SaveAndReturn()
 {
 	sIni.Save();
 
-	sSoundLib.PlaySound(SoundBack);
 	RefreshSongs();
-	FadeTo(UIOptions);
+	FadeTo(UIOptions, SoundBack);
 }
 
 void ScreenOptionsGame::RefreshSongs()

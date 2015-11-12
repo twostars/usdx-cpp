@@ -105,11 +105,13 @@ bool ScreenMain::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 						//			PlayersPlay = 6;
 
 							if (sIni.OnSongClick == eSongClickType::SelectPlayers)
+							{
 								FadeTo(UILevel);
+							}
 							else
 							{
-							//	UIName->Goto_SingScreen = false;
-								FadeTo(UIName, SoundStart); // TODO
+								UIName->GotoSingScreen = false;
+								FadeTo(UIName, SoundStart);
 							}
 						// }
 						//	else // show error message
@@ -119,26 +121,26 @@ bool ScreenMain::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 					// Multi
 					case 1:
 						// if (Songs.SongList.Count >= 1)
-						FadeTo(UIPartyOptions, SoundStart); // TODO
+						FadeTo(UIPartyOptions, SoundStart);
 						break;
 
 					// Stats
 					case 2:
-						FadeTo(UIStatMain, SoundStart); // TODO
+						FadeTo(UIStatMain, SoundStart);
 						break;
 
 					// Editor:
 					case 3:
-		//#if defined(UseMIDIPort)
-						FadeTo(UIEdit, SoundStart); // TODO
-		//#else
-		//				UIPopupError->ShowPopup(__T("ERROR_NO_EDITOR"));
-		//#endif
+#if defined(UseMIDIPort)
+						FadeTo(UIEdit, SoundStart);
+#else
+						UIPopupError->ShowPopup(__T("ERROR_NO_EDITOR"));
+#endif
 						break;
 
 					// Options
 					case 4:
-						FadeTo(UIOptions, SoundStart); // TODO
+						FadeTo(UIOptions, SoundStart);
 						break;
 
 					// Exit

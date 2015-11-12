@@ -89,8 +89,7 @@ bool ScreenOptions::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pres
 		case SDLK_ESCAPE:
 		case SDLK_BACKSPACE:
 			sIni.Save();
-			sSoundLib.PlaySound(SoundBack);
-			FadeTo(UIMain);
+			FadeTo(UIMain, SoundBack);
 			break;
 
 		case SDLK_RETURN:

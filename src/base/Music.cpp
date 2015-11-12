@@ -62,14 +62,15 @@ void SoundLibrary::StartBgMusic()
 	if (sIni.BackgroundMusic == eSwitch::Off)
 		return;
 
-	if (Mix_PlayingMusic() == 0)
+	if (Mix_PausedMusic() == 1)
+		Mix_ResumeMusic();
+	else
 		Mix_PlayMusic(_music, 0);
 }
 
 void SoundLibrary::PauseBgMusic()
 {
-	if (Mix_PlayingMusic() != 0)
-		Mix_PauseMusic();
+	Mix_PauseMusic();
 }
 
 void SoundLibrary::PlaySound(SoundType soundType)

@@ -296,7 +296,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;HAVE_LIBC;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;HAVE_LIBC;UseMIDIPort;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/fp:except- %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;..\..\src\lib\SDL_ttf\external\freetype-2.4.12\include;..\..\src\lib\SDL_mixer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -322,7 +322,7 @@
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;HAVE_LIBC;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;HAVE_LIBC;UseMIDIPort;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/fp:except- %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\lib\boost;..\..\src\shared;..\..\src\lib;..\..\src\lib\libsdl\include;..\..\src\lib\SDL_image;..\..\src\lib\SDL_ttf;..\..\src\lib\ImprovedEnum\Include;..\..\src\lib\Lua;..\..\src\lib\Lua\Lua\src;..\..\src\lib\SDL_ttf\external\freetype-2.4.12\include;..\..\src\lib\SDL_mixer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

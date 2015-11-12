@@ -42,7 +42,9 @@ public:
 
 private:
 	void DoSelection(size_t sel);
+
 public:
+	fnMenuValueChanged OnValueChanged;
 	void Draw();
 
 	// Automatically generate lines (texts)

@@ -26,6 +26,8 @@
 
 #include "../base/Texture.h"
 
+typedef void(*fnMenuValueChanged)(Uint32 oldValue, Uint32 newValue);
+
 #include "MenuBackground.h"
 #include "MenuText.h"
 #include "MenuInteract.h"
