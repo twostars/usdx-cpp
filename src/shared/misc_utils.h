@@ -28,6 +28,6 @@ typedef std::vector<std::string> OptionList;
 
 bool IsInStringArray(const char * needle, const char ** haystackArray);
 bool IsInStringArrayI(const char * needle, const char ** haystackArray);
-uint32 GetListIndex(OptionList& list, const std::string & val);
+Uint32 GetListIndex(OptionList& list, const std::string & val);
 
 #endif

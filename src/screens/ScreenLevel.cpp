@@ -52,7 +52,7 @@ void ScreenLevel::OnShow()
 	SetInteraction(sIni.Difficulty);
 }
 
-bool ScreenLevel::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenLevel::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	if (!pressedDown)
 		return true;

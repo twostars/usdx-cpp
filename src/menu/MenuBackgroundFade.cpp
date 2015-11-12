@@ -27,7 +27,7 @@
 #include "../base/Texture.h"
 #include "MenuBackgroundFade.h"
 
-const uint32 FADEINTIME = 1500; // Time the bg fades in
+const Uint32 FADEINTIME = 1500; // Time the bg fades in
 
 MenuBackgroundFade::MenuBackgroundFade(const ThemeBackground * themedSettings)
 	: MenuBackgroundTexture(themedSettings, true)

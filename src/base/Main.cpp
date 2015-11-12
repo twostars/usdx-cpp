@@ -320,8 +320,8 @@ void usdxMainLoop()
 	const float MaxFPS = 100.0f;
 
 	bool done = false;
-	uint32 ticksCurrent, ticksBeforeFrame;
-	int32 delay;
+	Uint32 ticksCurrent, ticksBeforeFrame;
+	Sint32 delay;
 	float mouseX = 0.0f, mouseY = 0.0f;
 
 	// For some reason this seems to be needed with the SDL timer functions.
@@ -344,7 +344,7 @@ void usdxMainLoop()
 		
 		// FPS limiter
 		ticksCurrent = SDL_GetTicks();
-		delay = (int32)(MillisecondsInSecond / MaxFPS) - (ticksCurrent - ticksBeforeFrame);
+		delay = (Sint32)(MillisecondsInSecond / MaxFPS) - (ticksCurrent - ticksBeforeFrame);
 		if (delay > 0)
 			SDL_Delay(delay); // dynamic, maximum is 100 fps
 

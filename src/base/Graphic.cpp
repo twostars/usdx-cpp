@@ -295,7 +295,7 @@ void Initialize3D(const char * windowTitle)
 		Fullscreen = (sIni.FullScreen == Switch::On);
 
 	sLog.Status("Initialize3D", "SDL_CreateWindow (%s)", Fullscreen ? "fullscreen" : "windowed");
-	uint32 flags = SDL_WINDOW_OPENGL;
+	Uint32 flags = SDL_WINDOW_OPENGL;
 	if (Fullscreen)
 		flags |= SDL_WINDOW_FULLSCREEN;
 	else
@@ -410,7 +410,7 @@ void LoadLoadingScreen()
 void LoadTextures()
 {
 	RGB rgb;
-	uint32 Col;
+	Uint32 Col;
 
 	sLog.Status("LoadTextures", "Loading textures");
 	
@@ -418,9 +418,9 @@ void LoadTextures()
 	for (int player = 1; player <= MAX_PLAYERS; player++)
 	{
 		sThemes.LoadColor(rgb, "P%dLight", player);
-		Col = 0x10000 * (uint32) Round(rgb.R * 255)
-			+ 0x100 * (uint32) Round(rgb.G * 255)
-			+ (uint32) Round(rgb.B * 255);
+		Col = 0x10000 * (Uint32) Round(rgb.R * 255)
+			+ 0x100 * (Uint32) Round(rgb.G * 255)
+			+ (Uint32) Round(rgb.B * 255);
 
 		TexNoteLeft[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("GrayLeft"), TextureType::Colorized, Col);
 		TexNoteMid[player]			= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("GrayMid"), TextureType::Colorized, Col);
@@ -443,18 +443,18 @@ void LoadTextures()
 
 		// Note bar score bar
 		sThemes.LoadColor(rgb, "P%dDark", player);
-		Col = 0x10000 * (uint32) Round(rgb.R * 255)
-			+ 0x100 * (uint32) Round(rgb.G * 255)
-			+ (uint32) Round(rgb.B * 255);
+		Col = 0x10000 * (Uint32) Round(rgb.R * 255)
+			+ 0x100 * (Uint32) Round(rgb.G * 255)
+			+ (Uint32) Round(rgb.B * 255);
 
 		TexScoreNoteBarLevelDark[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreLevel_Dark"), TextureType::Colorized, Col);
 		TexScoreNoteBarRoundDark[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreLevel_Dark_Round"), TextureType::Colorized, Col);
 
 		// Golden notes score bar
 		sThemes.LoadColor(rgb, "P%dLightest", player);
-		Col = 0x10000 * (uint32) Round(rgb.R * 255)
-			+ 0x100 * (uint32) Round(rgb.G * 255)
-			+ (uint32) Round(rgb.B * 255);
+		Col = 0x10000 * (Uint32) Round(rgb.R * 255)
+			+ 0x100 * (Uint32) Round(rgb.G * 255)
+			+ (Uint32) Round(rgb.B * 255);
 
 		TexScoreNoteBarLevelLightest[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreLevel_Lightest"), TextureType::Colorized, Col);
 		TexScoreNoteBarRoundLightest[player]	= sTextureMgr.LoadTexture(sSkins.GetTextureFileName("ScoreLevel_Lightest_Round"), TextureType::Colorized, Col);
@@ -515,9 +515,9 @@ void LoadTextures()
 				break;
 		}
 
-		Col = 0x10000 * (uint32) Round(r * 255)
-			+ 0x100 * (uint32) Round(g * 255)
-			+ (uint32) Round(b * 255);
+		Col = 0x10000 * (Uint32) Round(r * 255)
+			+ 0x100 * (Uint32) Round(g * 255)
+			+ (Uint32) Round(b * 255);
 
 		TexSingLineBonusBack[i] = sTextureMgr.LoadTexture(sSkins.GetTextureFileName("LineBonusBack"), TextureType::Colorized, Col);
 	}
@@ -654,7 +654,7 @@ bool PixelFormatEquals(SDL_PixelFormat * fmt1, const SDL_PixelFormat * fmt2)
 			&& fmt1->Bshift == fmt2->Bshift);
 }
 
-void ScaleImage(SDL_Surface * imgSurface, uint32 width, uint32 height)
+void ScaleImage(SDL_Surface * imgSurface, Uint32 width, Uint32 height)
 {
 /*
 	// TODO
@@ -667,7 +667,7 @@ void ScaleImage(SDL_Surface * imgSurface, uint32 width, uint32 height)
 */
 }
 
-void FitImage(SDL_Surface *& imgSurface, uint32 width, uint32 height)
+void FitImage(SDL_Surface *& imgSurface, Uint32 width, Uint32 height)
 {
 	SDL_Surface * tempSurface = imgSurface;
 	SDL_PixelFormat * imgFmt;
@@ -688,9 +688,9 @@ void FitImage(SDL_Surface *& imgSurface, uint32 width, uint32 height)
 }
 
 // returns hue within the range 0.0--6.0 but shl 10,  i.e. times 1024
-uint32 ColorToHue(const uint32 color)
+Uint32 ColorToHue(const Uint32 color)
 {
-	uint8 r, g, b, min, max, delta;
+	Uint8 r, g, b, min, max, delta;
 	double hue;
 
 	// extract the colors
@@ -722,14 +722,14 @@ uint32 ColorToHue(const uint32 color)
 		hue += 6.0;
 
 	// * 1024 is shl 10
-	return (uint32) (hue * 1024);
+	return (Uint32) (hue * 1024);
 }
 
-void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
+void ColorizeImage(SDL_Surface * imgSurface, Uint32 newColor)
 {
-	uint8 * pixels = static_cast<uint8 *>(imgSurface->pixels);
+	Uint8 * pixels = static_cast<Uint8 *>(imgSurface->pixels);
 	size_t pixelCount = imgSurface->w * imgSurface->h;
-	uint8 bpp = imgSurface->format->BytesPerPixel;
+	Uint8 bpp = imgSurface->format->BytesPerPixel;
 
 	// Ensure the size of a pixel is 4 bytes.
 	// It should always be 4...
@@ -738,9 +738,9 @@ void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
 
 	// Check whether the new color is white, grey or black
 	// because a greyscale must be created in a different way.
-	uint32 r = ((newColor & 0x00ff0000) >> 16);
-	uint32 g = ((newColor & 0x0000ff00) >> 8);
-	uint32 b =  (newColor & 0x000000ff);
+	Uint32 r = ((newColor & 0x00ff0000) >> 16);
+	Uint32 g = ((newColor & 0x0000ff00) >> 8);
+	Uint32 b =  (newColor & 0x000000ff);
 
 	// Greyscale image
 	if (r == g && g == b)
@@ -756,7 +756,7 @@ void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
 			float greyReal = 0.299f*pixels[0] + 0.587f*pixels[1] + 0.114f*pixels[2];
 #endif
 
-			uint8 grey = (uint8) Round(greyReal);
+			Uint8 grey = (Uint8) Round(greyReal);
 
 #ifdef BIG_ENDIAN
 			pixels[3] = grey;
@@ -775,9 +775,9 @@ void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
 		return;
 	}
 
-	uint32 hue = ColorToHue(newColor); // hue is shl 10
-	uint32 f = hue & 0x3ff; // f is the decimal part of hue
-	uint32 hueInteger = hue >> 10;
+	Uint32 hue = ColorToHue(newColor); // hue is shl 10
+	Uint32 f = hue & 0x3ff; // f is the decimal part of hue
+	Uint32 hueInteger = hue >> 10;
 
 	for (size_t pixelIndex = 0; pixelIndex < pixelCount; pixelIndex++)
 	{
@@ -785,7 +785,7 @@ void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
 		// shl 10 is used for divisions
 
 		// get color values
-		uint8 r, g, b;
+		Uint8 r, g, b;
 
 #ifdef BIG_ENDIAN
 		r = pixels[3];
@@ -798,7 +798,7 @@ void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
 #endif
 
 		// calculate luminance and saturation from rgb
-		uint32 max = r;
+		Uint32 max = r;
 		if (g > max) max = g;
 		if (b > max) max = b;
 
@@ -814,7 +814,7 @@ void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
 			continue;
 		}
 
-		uint32 min = r;
+		Uint32 min = r;
 		if (g < min) min = g;
 		if (b < min) min = b;
 
@@ -831,11 +831,11 @@ void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
 		}
 
 		// all other colors except black and white
-		uint32 delta = max - min;
-		uint32 sat = (delta << 10) / max;
-		uint32 p = (max * (1024 - sat)) >> 10;
-		uint32 q = (max * (1024 - ((sat *  f) >> 10))) >> 10;
-		uint32 t = (max * (1024 - ((sat * (1024 - f)) >> 10))) >> 10;
+		Uint32 delta = max - min;
+		Uint32 sat = (delta << 10) / max;
+		Uint32 p = (max * (1024 - sat)) >> 10;
+		Uint32 q = (max * (1024 - ((sat *  f) >> 10))) >> 10;
+		Uint32 t = (max * (1024 - ((sat * (1024 - f)) >> 10))) >> 10;
 
 		switch (hueInteger)
 		{
@@ -848,13 +848,13 @@ void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor)
 		}
 
 #ifdef BIG_ENDIAN
-		pixels[3] = (uint8) (r);
-		pixels[2] = (uint8) (g);
-		pixels[1] = (uint8) (b);
+		pixels[3] = (Uint8) (r);
+		pixels[2] = (Uint8) (g);
+		pixels[1] = (Uint8) (b);
 #else
-		pixels[0] = (uint8) (r);
-		pixels[1] = (uint8) (g);
-		pixels[2] = (uint8) (b);
+		pixels[0] = (Uint8) (r);
+		pixels[1] = (Uint8) (g);
+		pixels[2] = (Uint8) (b);
 #endif
 		pixels += bpp;
 	}

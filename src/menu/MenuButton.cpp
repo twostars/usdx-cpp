@@ -183,7 +183,7 @@ void MenuButton::Draw()
 	if (!Visible)
 		return;
 
-	uint32 tick = 0;
+	Uint32 tick = 0;
 	float spacing;
 
 	if (Fade)

@@ -38,34 +38,34 @@ ScreenOptionsGraphics::ScreenOptionsGraphics() : Menu()
 	OptionList& resolutionList = sIni.ResolutionNameList;
 	theme->SelectResolution.ShowArrows = true;
 	theme->SelectResolution.OneItemOnly = true;
-	AddSelectSlide(theme->SelectResolution, (uint32 *)&sIni.SelectedResolution, &resolutionList[0], resolutionList.size());
+	AddSelectSlide(theme->SelectResolution, (Uint32 *)&sIni.SelectedResolution, &resolutionList[0], resolutionList.size());
 
 	theme->SelectFullscreen.ShowArrows = true;
 	theme->SelectFullscreen.OneItemOnly = true;
-	AddSelectSlide(theme->SelectFullscreen, (uint32 *)&sIni.FullScreen, IFullScreenTranslated, SDL_arraysize(IFullScreenTranslated));
+	AddSelectSlide(theme->SelectFullscreen, (Uint32 *)&sIni.FullScreen, IFullScreenTranslated, SDL_arraysize(IFullScreenTranslated));
 
 	theme->SelectDepth.ShowArrows = true;
 	theme->SelectDepth.OneItemOnly = true;
-	AddSelectSlide(theme->SelectDepth, (uint32 *)&sIni.Depth, IDepth, SDL_arraysize(IDepth));
+	AddSelectSlide(theme->SelectDepth, (Uint32 *)&sIni.Depth, IDepth, SDL_arraysize(IDepth));
 
 	theme->SelectVisualizer.ShowArrows = true;
 	theme->SelectVisualizer.OneItemOnly = true;
-	AddSelectSlide(theme->SelectVisualizer, (uint32 *)&sIni.VisualizerOption, IVisualizerTranslated, SDL_arraysize(IVisualizerTranslated));
+	AddSelectSlide(theme->SelectVisualizer, (Uint32 *)&sIni.VisualizerOption, IVisualizerTranslated, SDL_arraysize(IVisualizerTranslated));
 
 	theme->SelectOscilloscope.ShowArrows = true;
 	theme->SelectOscilloscope.OneItemOnly = true;
-	AddSelectSlide(theme->SelectOscilloscope, (uint32 *)&sIni.Oscilloscope, IOscilloscopeTranslated, SDL_arraysize(IOscilloscopeTranslated));
+	AddSelectSlide(theme->SelectOscilloscope, (Uint32 *)&sIni.Oscilloscope, IOscilloscopeTranslated, SDL_arraysize(IOscilloscopeTranslated));
 
 	theme->SelectMovieSize.ShowArrows = true;
 	theme->SelectMovieSize.OneItemOnly = true;
-	AddSelectSlide(theme->SelectMovieSize, (uint32 *)&sIni.MovieSize, IMovieSizeTranslated, SDL_arraysize(IMovieSizeTranslated));
+	AddSelectSlide(theme->SelectMovieSize, (Uint32 *)&sIni.MovieSize, IMovieSizeTranslated, SDL_arraysize(IMovieSizeTranslated));
 
 	AddButton(theme->ButtonExit);
 	if (Buttons[0].Texts.empty())
 		AddButtonText(20.0f, 5.0f, sThemes.Options->Description[7]);
 }
 
-bool ScreenOptionsGraphics::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenOptionsGraphics::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	if (!pressedDown)
 		return true;

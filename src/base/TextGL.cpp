@@ -200,7 +200,7 @@ void SetFontSize(float height)
 }
 
 // Sets active font style (normal, bold, etc)
-void SetFontStyle(uint32 style)
+void SetFontStyle(Uint32 style)
 {
 	if (style >= Fonts.size())
 		return;

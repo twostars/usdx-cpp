@@ -33,9 +33,9 @@ TextureMgr::TextureMgr()
 }
 
 Texture TextureMgr::CreateTexture(
-	const uint8* data, 
+	const Uint8* data, 
 	const path* texturePath,
-	uint16 width, uint16 height)
+	Uint16 width, Uint16 height)
 {
 	Texture tex;
 	GLuint ActTex;
@@ -69,7 +69,7 @@ Texture TextureMgr::CreateTexture(
 
 void TextureMgr::AddTexture(
 	const Texture& tex, eTextureType textureType, 
-	uint32 color /*= 0*/, bool cache /*= false*/)
+	Uint32 color /*= 0*/, bool cache /*= false*/)
 {
 	int textureIndex = FindTexture(tex, textureType, color);
 	if (textureIndex < 0)
@@ -92,7 +92,7 @@ void TextureMgr::AddTexture(
 
 Texture TextureMgr::GetTexture(
 	const path* texturePath, 
-	eTextureType textureType, uint32 color /*= 0*/, 
+	eTextureType textureType, Uint32 color /*= 0*/, 
 	bool fromCache /*= false*/)
 {
 	Texture tex;
@@ -135,7 +135,7 @@ Texture TextureMgr::GetTexture(
 
 Texture TextureMgr::LoadTexture(
 	const path* texturePath, 
-	eTextureType textureType /*= TextureType::Plain*/, uint32 color /*= 0*/)
+	eTextureType textureType /*= TextureType::Plain*/, Uint32 color /*= 0*/)
 {
 	Texture tex;
 	if (texturePath == NULL
@@ -230,7 +230,7 @@ Texture TextureMgr::LoadTexture(
 }
 
 int TextureMgr::FindTexture(
-	const Texture& tex, eTextureType textureType, uint32 color)
+	const Texture& tex, eTextureType textureType, Uint32 color)
 {
 	int index = 0;
 	for (TextureDatabase::iterator itr = Textures.begin(); itr != Textures.end(); ++itr, ++index)
@@ -249,7 +249,7 @@ int TextureMgr::FindTexture(
 
 void TextureMgr::UnloadTexture(
 	const path* texturePath, eTextureType textureType, 
-	uint32 color /*= 0*/, bool fromCache /*= false*/)
+	Uint32 color /*= 0*/, bool fromCache /*= false*/)
 {
 	Texture lookupTex;
 	lookupTex.Name = texturePath->generic_string(); // hack

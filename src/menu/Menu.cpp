@@ -191,14 +191,14 @@ void Menu::PrepareButtonCollections(const AThemeButtonCollection& collections)
 {
 	ButtonCollections.assign(collections.size(), MenuButtonCollection());
 
-	uint8 i = 0;
+	Uint8 i = 0;
 	for (AThemeButtonCollection::const_iterator itr = collections.begin(); itr != collections.end(); ++itr, ++i)
 		AddButtonCollection(*itr, i);
 }
 
-void Menu::AddButtonCollection(const ThemeButtonCollection& collection, uint8 num)
+void Menu::AddButtonCollection(const ThemeButtonCollection& collection, Uint8 num)
 {
-	uint32 TempCol, TempDCol;
+	Uint32 TempCol, TempDCol;
 
 	assert(num >= 0 && num < ButtonCollections.size());
 
@@ -370,14 +370,14 @@ int Menu::AddStatic(const ThemeStatic& themeStatic)
 
 int Menu::AddStatic(float x, float y, float w, float h, 
 					const RGB& colRGB, const path* textureFilename, 
-					eTextureType textureType /*= TextureType::Plain*/, uint32 color /*= 0xFFFFFFFF*/)
+					eTextureType textureType /*= TextureType::Plain*/, Uint32 color /*= 0xFFFFFFFF*/)
 {
 	return AddStatic(x, y, w, h, 0.0f /* z*/, colRGB, textureFilename, textureType, color);
 }
 
 int Menu::AddStatic(float x, float y, float w, float h, float z, 
 					const RGB& colRGB, const path* textureFilename, 
-					eTextureType textureType /*= TextureType::Plain*/, uint32 color /*= 0xFFFFFFFF*/)
+					eTextureType textureType /*= TextureType::Plain*/, Uint32 color /*= 0xFFFFFFFF*/)
 {
 	return AddStatic(x, y, w, h, z, colRGB, 0.0f, 0.0f, 1.0f, 1.0f, textureFilename, textureType, color);
 }
@@ -386,7 +386,7 @@ int Menu::AddStatic(float x, float y, float w, float h, float z,
 					const RGB& colRGB, float texX1, float texY1, float texX2, float texY2,
 					const path* textureFilename, 
 					eTextureType textureType /*= TextureType::Plain*/,
-					uint32 color /*= 0xFFFFFFFF*/,
+					Uint32 color /*= 0xFFFFFFFF*/,
 					bool reflection /*= false*/, float reflectionSpacing /*= 0.0f*/)
 {
 	Texture tex;
@@ -442,13 +442,13 @@ int Menu::AddText(float x, float y, const std::string& text)
 	return Texts.size() - 1;
 }
 
-int Menu::AddText(float x, float y, uint32 style, float size, 
+int Menu::AddText(float x, float y, Uint32 style, float size, 
 					const RGB& colRGB, const std::string& text)
 {
 	return AddText(x, y, 0.0f, style, size, colRGB, 0, text, false, 0.0f, 0.0f);
 }
 
-int Menu::AddText(float x, float y, float w, uint32 style, float size, 
+int Menu::AddText(float x, float y, float w, Uint32 style, float size, 
 					const RGB& colRGB, int align, const std::string& text,
 					bool reflection, float reflectionSpacing, float z)
 {
@@ -659,7 +659,7 @@ void Menu::AddButtonText(MenuButton& button,
 	button.Texts.push_back(text);
 }
 
-int Menu::AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, uint32 * pData,
+int Menu::AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, Uint32 * pData,
 	const std::string* values, size_t valueCount)
 {
 	int result = AddSelectSlide((float) themeSelectSlide.X, (float) themeSelectSlide.Y, 
@@ -714,7 +714,7 @@ int Menu::AddSelectSlide(float x, float y, float w, float h, float skipX, float 
 	eTextureType textureType,
 	const path* sbgTexturePath,
 	eTextureType sbgTextureType,
-	const std::string& caption, uint32 * pData)
+	const std::string& caption, Uint32 * pData)
 {
 	int slideNo = (int) SelectSlides.size();
 
@@ -821,13 +821,13 @@ void Menu::AddSelectSlideOption(const std::string& addText)
 	AddSelectSlideOption(SelectSlides.size() - 1, addText);
 }
 
-void Menu::AddSelectSlideOption(uint32 selectNum, const std::string& addText)
+void Menu::AddSelectSlideOption(Uint32 selectNum, const std::string& addText)
 {
 	assert(selectNum < SelectSlides.size());
 	SelectSlides[selectNum].TextOptionNames.push_back(addText);
 }
 
-void Menu::UpdateSelectSlideOptions(const ThemeSelectSlide& themeSelectSlide, uint32 selectNum, 
+void Menu::UpdateSelectSlideOptions(const ThemeSelectSlide& themeSelectSlide, Uint32 selectNum, 
 									const std::vector<std::string>& values, int data)
 {
 	assert(selectNum < SelectSlides.size());
@@ -908,7 +908,7 @@ void Menu::Draw()
 	DrawFG();
 }
 
-bool Menu::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool Menu::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	/* do nothing */
 	return true;
@@ -1117,7 +1117,7 @@ void Menu::SetAnimationProgress(float progress)
 	/* do nothing */
 }
 
-bool Menu::IsSelectable(uint32 index)
+bool Menu::IsSelectable(Uint32 index)
 {
 	assert(index < Interactions.size());
 	MenuInteract& interact = Interactions[index];
@@ -1240,7 +1240,7 @@ void Menu::InteractInc()
 void Menu::InteractDec()
 {
 	int num, value;
-	uint8 parent;
+	Uint8 parent;
 
 	assert(SelInteraction >= 0 && SelInteraction < (int) Interactions.size());
 	MenuInteract& interact = Interactions[SelInteraction];

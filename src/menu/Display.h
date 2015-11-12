@@ -38,7 +38,7 @@ public:
 	void DrawCursor();
 
 	// calls ParseInput of cur or next Screen if assigned
-	bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	bool ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	bool ParseMouse(int mouseButton, bool btnDown, float x, float y);
 	bool ParseTextInput(SDL_Event * event);
 
@@ -77,11 +77,11 @@ private:
 	time_t	FadeStartTime; // time when fading starts, 0 meansthat the fade texture must be initialized
 	bool	DoneOnShow;    // true if possed onShow after fading
 	GLuint	FadeTex[2];
-	uint32	TexW, TexH;
+	Uint32	TexW, TexH;
 
-	uint32	FPSCounter;
-	uint32	LastFPS;
-	uint32	NextFPSSwap;
+	Uint32	FPSCounter;
+	Uint32	LastFPS;
+	Uint32	NextFPSSwap;
 
 	std::string	OSD_LastError;
 
@@ -93,7 +93,7 @@ private:
 
 	// used for cursor fade out when there is no movement
 	bool	CursorVisible;
-	uint32	CursorLastMove;
+	Uint32	CursorLastMove;
 	bool	CursorFade;
 
 public:

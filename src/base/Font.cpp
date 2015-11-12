@@ -464,7 +464,7 @@ FTScalableFont::FTScalableFont(const path& filename,
 	int size, float outsetAmount /*= 0.0f*/, bool useMipmaps /*= true*/,
 	bool preCache /*= true*/) : ScalableFont(useMipmaps)
 {
-	uint32 loadFlags = FT_LOAD_DEFAULT;
+	Uint32 loadFlags = FT_LOAD_DEFAULT;
 	if (useMipmaps)
 		loadFlags |= FT_LOAD_NO_HINTING;
 
@@ -499,7 +499,7 @@ FontBase * FTScalableFont::CreateMipmap(int level, float scale)
 
 GlyphCacheHashEntry::~GlyphCacheHashEntry()
 {
-	for (std::map<uint8, Glyph *>::iterator itr = Table.begin(); itr != Table.end(); ++itr)
+	for (std::map<Uint8, Glyph *>::iterator itr = Table.begin(); itr != Table.end(); ++itr)
 		delete itr->second;
 
 	Table.clear();
@@ -557,7 +557,7 @@ void FTFontFaceCache::UnloadFace(FTFontFace * face)
 		Faces.erase(itr);
 }
 
-FTGlyph::FTGlyph(FTFont * font, char ch, float outset, uint32 loadFlags)
+FTGlyph::FTGlyph(FTFont * font, char ch, float outset, Uint32 loadFlags)
 	: DisplayList(NULL)
 {
 	Font = font;
@@ -589,7 +589,7 @@ FTGlyph::FTGlyph(FTFont * font, char ch, float outset, uint32 loadFlags)
 	CreateTexture(loadFlags);
 }
 
-void FTGlyph::CreateTexture(uint32 loadFlags)
+void FTGlyph::CreateTexture(Uint32 loadFlags)
 {
 	FT_Glyph glyph;
 	FT_BitmapGlyph BitmapGlyph;
@@ -654,9 +654,9 @@ void FTGlyph::CreateTexture(uint32 loadFlags)
 	TexOffset.Y = (float) BitmapCoords.Height / (float) TexSize.Height;
 
 	// Allocate memory for texture data
-	uint8 * TexBuffer = new uint8[TexSize.Width * TexSize.Height];
+	Uint8 * TexBuffer = new Uint8[TexSize.Width * TexSize.Height];
 	memset(TexBuffer, 0, TexSize.Width * TexSize.Height);
-	uint8 * BitmapBuffer;
+	Uint8 * BitmapBuffer;
 
 	// Freetype stores the bitmap with either upper (pitch is > 0) or lower
 	// (pitch < 0) glyphs line first. Set the buffer to the upper line.
@@ -672,12 +672,12 @@ void FTGlyph::CreateTexture(uint32 loadFlags)
 		// set pointer to first pixel in line that holds bitmap data.
 		// Each line starts with a cTexSmoothBorder pixel and multiple outset pixels
 		// that are added by Extrude() later.
-		uint8 * TexLine = TexBuffer + (y + cTexSmoothBorder + (int) std::ceil(Outset)) 
+		Uint8 * TexLine = TexBuffer + (y + cTexSmoothBorder + (int) std::ceil(Outset)) 
 						* TexSize.Width + cTexSmoothBorder + (int) std::ceil(Outset);
 
 		// get next lower line offset, use pitch instead of width as it tells
 		// us the storage direction of the lines. In addition a line might be padded.
-		uint8 * BitmapLine = &BitmapBuffer[y * Bitmap->pitch];
+		Uint8 * BitmapLine = &BitmapBuffer[y * Bitmap->pitch];
 
 		// check for pixel mode and copy pixels
 		// Should be 8 bit gray, but even with FT_RENDER_MODE_NORMAL, freetype
@@ -999,7 +999,7 @@ void CachedFont::FlushCache(bool keepBaseSet)
 
 bool GlyphCache::AddGlyph(char ch, Glyph * glyph)
 {
-	uint32 baseCode = (ch >> 8);
+	Uint32 baseCode = (ch >> 8);
 	GlyphTable * glyphTable = FindGlyphTable(baseCode);
 	if (glyphTable == NULL)
 	{
@@ -1008,10 +1008,10 @@ bool GlyphCache::AddGlyph(char ch, Glyph * glyph)
 	}
 
 	// Get glyph table offset
-	uint32 glyphCode = (ch & 0xff);
+	Uint32 glyphCode = (ch & 0xff);
 
 	// insert glyph into table if not present
-	std::map<uint8, Glyph *>::iterator itr = glyphTable->find(glyphCode);
+	std::map<Uint8, Glyph *>::iterator itr = glyphTable->find(glyphCode);
 	if (itr == glyphTable->end())
 	{
 		glyphTable->insert(std::make_pair(glyphCode, glyph));
@@ -1023,22 +1023,22 @@ bool GlyphCache::AddGlyph(char ch, Glyph * glyph)
 
 Glyph * GlyphCache::GetGlyph(char ch)
 {
-	uint32 baseCode = (ch >> 8);
+	Uint32 baseCode = (ch >> 8);
 	GlyphTable * glyphTable = FindGlyphTable(baseCode);
 	if (glyphTable == NULL)
 		return NULL;
 
 	// Get glyph table offset
-	uint8 glyphCode = (ch & 0xff);
+	Uint8 glyphCode = (ch & 0xff);
 
 	// Lookup glyph from table
-	std::map<uint8, Glyph *>::iterator itr = glyphTable->find(glyphCode);
+	std::map<Uint8, Glyph *>::iterator itr = glyphTable->find(glyphCode);
 	return (itr == glyphTable->end() ? NULL : itr->second);
 }
 
-GlyphTable * GlyphCache::FindGlyphTable(uint32 baseCode)
+GlyphTable * GlyphCache::FindGlyphTable(Uint32 baseCode)
 {
-	std::map<uint32, GlyphCacheHashEntry>::iterator itr = Hash.find(baseCode);
+	std::map<Uint32, GlyphCacheHashEntry>::iterator itr = Hash.find(baseCode);
 	return (itr == Hash.end() ? NULL : &itr->second.Table);
 }
 
@@ -1052,10 +1052,10 @@ void GlyphCache::FlushCache(bool keepBaseSet)
 		return;
 	}
 
-	for (std::map<uint32, GlyphCacheHashEntry>::iterator itr = Hash.begin();
+	for (std::map<Uint32, GlyphCacheHashEntry>::iterator itr = Hash.begin();
 		itr != Hash.end();)
 	{
-		std::map<uint32, GlyphCacheHashEntry>::iterator curItr = itr;
+		std::map<Uint32, GlyphCacheHashEntry>::iterator curItr = itr;
 		++itr;
 
 		GlyphCacheHashEntry& entry = curItr->second;
@@ -1102,7 +1102,7 @@ FTFontFace::~FTFontFace()
 }
 
 FTOutlineFont::FTOutlineFont(const path& filename, int size, float outset,
-	bool preCache /*= true*/, uint32 loadFlags /*= FT_LOAD_DEFAULT*/)
+	bool preCache /*= true*/, Uint32 loadFlags /*= FT_LOAD_DEFAULT*/)
 	: FontBase(filename), InnerFont(NULL), OutlineFont(NULL)
 {
 	Size = size;
@@ -1243,7 +1243,7 @@ FTScalableOutlineFont::FTScalableOutlineFont(const path& filename, int size,
 	float outsetAmount, bool useMipmaps /*= true*/, bool preCache /*= true*/)
 	: ScalableFont(useMipmaps)
 {
-	uint32 loadFlags = FT_LOAD_DEFAULT;
+	Uint32 loadFlags = FT_LOAD_DEFAULT;
 
 	// Disable hinting and grid-fitting (see ScalableFont::Create)
 	if (useMipmaps)
@@ -1306,7 +1306,7 @@ float FTScalableOutlineFont::GetOutset()
 
 FTFont::FTFont(const path& filename,
 	int size, float outset /*= 0.0f*/, bool preCache /*= true*/,
-	uint32 loadFlags /*= FT_LOAD_DEFAULT*/) : CachedFont(filename)
+	Uint32 loadFlags /*= FT_LOAD_DEFAULT*/) : CachedFont(filename)
 {
 	Size = size;
 	Outset = outset;

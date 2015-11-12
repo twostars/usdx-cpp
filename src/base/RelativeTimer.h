@@ -44,12 +44,17 @@ public:
 	float GetTime();
 	void SetTime(float time);
 
-	INLINE void SetState(RelativeTimerState state) { _state = state; }
-	INLINE RelativeTimerState GetState() { return _state; }
+	INLINE void SetState(RelativeTimerState state) {
+		_state = state;
+	}
+
+	INLINE RelativeTimerState GetState() const {
+		return _state;
+	}
 
 private:
 	RelativeTimerState	_state;
-	int64				_absoluteTime;
+	Sint64				_absoluteTime;
 	float				_relativeTime;
 	bool				_triggerMode;
 };

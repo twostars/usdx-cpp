@@ -38,27 +38,27 @@ ScreenOptionsSound::ScreenOptionsSound() : Menu()
 
 	theme->SelectSlideVoicePassthrough.ShowArrows = true;
 	theme->SelectSlideVoicePassthrough.OneItemOnly = true;
-	AddSelectSlide(theme->SelectSlideVoicePassthrough, (uint32 *)&sIni.VoicePassthrough, IVoicePassthroughTranslated, SDL_arraysize(IVoicePassthroughTranslated));
+	AddSelectSlide(theme->SelectSlideVoicePassthrough, (Uint32 *)&sIni.VoicePassthrough, IVoicePassthroughTranslated, SDL_arraysize(IVoicePassthroughTranslated));
 
 	theme->SelectBackgroundMusic.ShowArrows = true;
 	theme->SelectBackgroundMusic.OneItemOnly = true;
-	AddSelectSlide(theme->SelectBackgroundMusic, (uint32 *)&sIni.BackgroundMusic, IBackgroundMusicTranslated, SDL_arraysize(IBackgroundMusicTranslated));
+	AddSelectSlide(theme->SelectBackgroundMusic, (Uint32 *)&sIni.BackgroundMusic, IBackgroundMusicTranslated, SDL_arraysize(IBackgroundMusicTranslated));
 
 	theme->SelectClickAssist.ShowArrows = true;
 	theme->SelectClickAssist.OneItemOnly = true;
-	AddSelectSlide(theme->SelectClickAssist, (uint32 *)&sIni.ClickAssist, IClickAssistTranslated, SDL_arraysize(IClickAssistTranslated));
+	AddSelectSlide(theme->SelectClickAssist, (Uint32 *)&sIni.ClickAssist, IClickAssistTranslated, SDL_arraysize(IClickAssistTranslated));
 
 	theme->SelectBeatClick.ShowArrows = true;
 	theme->SelectBeatClick.OneItemOnly = true;
-	AddSelectSlide(theme->SelectBeatClick, (uint32 *)&sIni.BeatClick, IBeatClickTranslated, SDL_arraysize(IBeatClickTranslated));
+	AddSelectSlide(theme->SelectBeatClick, (Uint32 *)&sIni.BeatClick, IBeatClickTranslated, SDL_arraysize(IBeatClickTranslated));
 
 	theme->SelectSlidePreviewVolume.ShowArrows = true;
 	theme->SelectSlidePreviewVolume.OneItemOnly = true;
-	AddSelectSlide(theme->SelectSlidePreviewVolume, (uint32 *)&sIni.PreviewVolume, IPreviewVolumeTranslated, SDL_arraysize(IPreviewVolumeTranslated));
+	AddSelectSlide(theme->SelectSlidePreviewVolume, (Uint32 *)&sIni.PreviewVolume, IPreviewVolumeTranslated, SDL_arraysize(IPreviewVolumeTranslated));
 
 	theme->SelectSlidePreviewFading.ShowArrows = true;
 	theme->SelectSlidePreviewFading.OneItemOnly = true;
-	AddSelectSlide(theme->SelectSlidePreviewFading, (uint32 *)&sIni.PreviewFading, IPreviewFadingTranslated, SDL_arraysize(IPreviewFadingTranslated));
+	AddSelectSlide(theme->SelectSlidePreviewFading, (Uint32 *)&sIni.PreviewFading, IPreviewFadingTranslated, SDL_arraysize(IPreviewFadingTranslated));
 
 	AddButton(theme->ButtonExit);
 	if (Buttons[0].Texts.empty())
@@ -67,7 +67,7 @@ ScreenOptionsSound::ScreenOptionsSound() : Menu()
 	SetInteraction(0);
 }
 
-bool ScreenOptionsSound::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenOptionsSound::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	if (!pressedDown)
 		return true;

@@ -30,7 +30,7 @@ struct TextureEntry
 {
 	path	Name;
 	eTextureType			Type;
-	uint32					Color;
+	Uint32					Color;
 	Texture					Tex;		// Full-size texture
 	Texture					TexCache;	// Thumbnail texture
 };
@@ -46,17 +46,17 @@ public:
 
 	TextureMgr();
 
-	Texture CreateTexture(const uint8* data, const path* texturePath,
-		uint16 width, uint16 height);
+	Texture CreateTexture(const Uint8* data, const path* texturePath,
+		Uint16 width, Uint16 height);
 	void AddTexture(const Texture& tex, eTextureType textureType, 
-		uint32 color = 0, bool cache = false);
+		Uint32 color = 0, bool cache = false);
 	Texture GetTexture(const path* texturePath, 
-		eTextureType textureType, uint32 color = 0, bool fromCache = false);
+		eTextureType textureType, Uint32 color = 0, bool fromCache = false);
 	Texture LoadTexture(const path* texturePath, 
-		eTextureType textureType = TextureType::Plain, uint32 color = 0);
-	int FindTexture(const Texture& tex, eTextureType textureType, uint32 color);
+		eTextureType textureType = TextureType::Plain, Uint32 color = 0);
+	int FindTexture(const Texture& tex, eTextureType textureType, Uint32 color);
 	void UnloadTexture(const path* texturePath, eTextureType textureType, 
-		uint32 color = 0, bool fromCache = false);
+		Uint32 color = 0, bool fromCache = false);
 
 	~TextureMgr();
 

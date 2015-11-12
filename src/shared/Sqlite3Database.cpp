@@ -141,12 +141,12 @@ char * Sqlite3Database::ErrMsg()
 	return (_database != nullptr ? sqlite3_errmsg(_database) : "unknown");
 }
 
-int32 Sqlite3Database::GetUserVersion()
+Sint32 Sqlite3Database::GetUserVersion()
 {
-	return GetTableValue<int32>("PRAGMA user_version");
+	return GetTableValue<Sint32>("PRAGMA user_version");
 }
 
-void Sqlite3Database::SetUserVersion(int32 version)
+void Sqlite3Database::SetUserVersion(Sint32 version)
 {
 	FormattedExec("PRAGMA user_version = %d", version);
 }

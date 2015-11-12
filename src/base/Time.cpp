@@ -25,9 +25,9 @@
 #include <SDL.h>
 #include "Time.h"
 
-static uint32	s_timeOld = 0, s_timeNew = 0;
+static Uint32	s_timeOld = 0, s_timeNew = 0;
 static float	s_timeSkip = 0.0f, s_timeMid = 0.0f;
-static int64	s_timeMidTemp = 0;
+static Sint64	s_timeMidTemp = 0;
 
 Time::Time()
 {

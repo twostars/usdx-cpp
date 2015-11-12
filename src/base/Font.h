@@ -123,7 +123,7 @@ public:
 	virtual ~FontBase();
 
 	path Filename;
-	uint8 Style; // FontStyle
+	Uint8 Style; // FontStyle
 	bool UseKerning;
 	float LineSpacing; // must be set by subclass
 	float ReflectionSpacing; // must be set by subclass to -2*Descender
@@ -144,7 +144,7 @@ public:
 	virtual const FontBounds& GetBounds() = 0;
 };
 
-typedef std::map<uint8, Glyph *> GlyphTable;
+typedef std::map<Uint8, Glyph *> GlyphTable;
 
 class GlyphCacheHashEntry
 {
@@ -168,12 +168,12 @@ public:
     * (= upper char-code bytes) in the hash-list and returns the table and
     * its index.
 	*/
-	GlyphTable * FindGlyphTable(uint32 baseCode);
+	GlyphTable * FindGlyphTable(Uint32 baseCode);
 
 	void FlushCache(bool keepBaseSet);
 	~GlyphCache();
 
-	std::map<uint32, GlyphCacheHashEntry> Hash;
+	std::map<Uint32, GlyphCacheHashEntry> Hash;
 };
 
 // FreeType font face class.
@@ -227,7 +227,7 @@ public:
 	* Creates a glyph with char-code ch from font Font.
 	* @param loadFlags flags passed to FT_Load_Glyph()
 	*/
-	FTGlyph(FTFont * font, char ch, float outset, uint32 loadFlags);
+	FTGlyph(FTFont * font, char ch, float outset, Uint32 loadFlags);
 
 	/**
 	* Creates an OpenGL texture (and display list) for the glyph.
@@ -235,7 +235,7 @@ public:
 	* @param  LoadFlags  flags passed to FT_Load_Glyph()
 	* @raises FontException  if the glyph could not be initialized
 	*/
-	void CreateTexture(uint32 loadFlags);
+	void CreateTexture(Uint32 loadFlags);
 
 	/**
 	* Extrudes the outline of a glyph's bitmap stored in TexBuffer with size
@@ -358,7 +358,7 @@ public:
 	*/
 	FTFont(const path& filename,
 		int size, float outset = 0.0f, bool precache = true,
-		uint32 loadFlags = 0);
+		Uint32 loadFlags = 0);
 
 	static FTFontFaceCache& GetFaceCache() { return s_fontFaceCache; }
 
@@ -382,7 +382,7 @@ public:
 	int Size;						//**< Font base size (in pixels)
 	float Outset;					//**< size of outset extrusion (in pixels)
 	bool PreCache;					//**< pre-load base glyphs
-	uint32 LoadFlags;				//**< FT glpyh load-flags
+	Uint32 LoadFlags;				//**< FT glpyh load-flags
 	bool UseDisplayLists;			//**< true: use display-lists, false: direct drawing
 	FontPart Part;						//**< indicates the part of an outline font
 	FTFontFaceArray FallbackFaces;	//**< available fallback faces, ordered by priority
@@ -431,7 +431,7 @@ class FTOutlineFont : public FontBase
 {
 public:
 	FTOutlineFont(const path& filename, int size, float outset,
-		bool preCache = true, uint32 loadFlags = FT_LOAD_DEFAULT);
+		bool preCache = true, Uint32 loadFlags = FT_LOAD_DEFAULT);
 
 	virtual void Init() {}
 	void ResetIntern();

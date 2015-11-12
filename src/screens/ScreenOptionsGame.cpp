@@ -39,28 +39,28 @@ ScreenOptionsGame::ScreenOptionsGame() : Menu()
 
 	theme->SelectPlayers.ShowArrows = true;
 	theme->SelectPlayers.OneItemOnly = true;
-	AddSelectSlide(theme->SelectPlayers, (uint32 *)&sIni.Players, IPlayers, SDL_arraysize(IPlayers));
+	AddSelectSlide(theme->SelectPlayers, (Uint32 *)&sIni.Players, IPlayers, SDL_arraysize(IPlayers));
 
 	theme->SelectDifficulty.ShowArrows = true;
 	theme->SelectDifficulty.OneItemOnly = true;
-	AddSelectSlide(theme->SelectDifficulty, (uint32 *)&sIni.Difficulty, IDifficultyTranslated, SDL_arraysize(IDifficultyTranslated));
+	AddSelectSlide(theme->SelectDifficulty, (Uint32 *)&sIni.Difficulty, IDifficultyTranslated, SDL_arraysize(IDifficultyTranslated));
 
 	OptionList& langSet = sLanguage.GetLanguageSet();
 	theme->SelectLanguage.ShowArrows = true;
 	theme->SelectLanguage.OneItemOnly = true;
-	AddSelectSlide(theme->SelectLanguage, (uint32 *)&sIni.Language, &langSet[0], langSet.size());
+	AddSelectSlide(theme->SelectLanguage, (Uint32 *)&sIni.Language, &langSet[0], langSet.size());
 
 	theme->SelectTabs.ShowArrows = true;
 	theme->SelectTabs.OneItemOnly = true;
-	AddSelectSlide(theme->SelectTabs, (uint32 *)&sIni.Tabs, ITabsTranslated, SDL_arraysize(ITabsTranslated));
+	AddSelectSlide(theme->SelectTabs, (Uint32 *)&sIni.Tabs, ITabsTranslated, SDL_arraysize(ITabsTranslated));
 
 	theme->SelectSorting.ShowArrows = true;
 	theme->SelectSorting.OneItemOnly = true;
-	AddSelectSlide(theme->SelectSorting, (uint32 *)&sIni.Sorting, ISortingTranslated, SDL_arraysize(ISortingTranslated));
+	AddSelectSlide(theme->SelectSorting, (Uint32 *)&sIni.Sorting, ISortingTranslated, SDL_arraysize(ISortingTranslated));
 
 	theme->SelectDebug.ShowArrows = true;
 	theme->SelectDebug.OneItemOnly = true;
-	AddSelectSlide(theme->SelectDebug, (uint32 *)&sIni.Debug, IDebugTranslated, SDL_arraysize(IDebugTranslated));
+	AddSelectSlide(theme->SelectDebug, (Uint32 *)&sIni.Debug, IDebugTranslated, SDL_arraysize(IDebugTranslated));
 
 	AddButton(theme->ButtonExit);
 	if (Buttons[0].Texts.empty())
@@ -69,7 +69,7 @@ ScreenOptionsGame::ScreenOptionsGame() : Menu()
 	SetInteraction(0);
 }
 
-bool ScreenOptionsGame::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenOptionsGame::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	if (!pressedDown)
 		return true;

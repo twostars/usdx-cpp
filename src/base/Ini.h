@@ -90,7 +90,7 @@ public:
 	void LoadPaths();
 	void SavePaths();
 
-	uint32 GetResolutionID(const std::string& resName) { return GetListIndex(ResolutionNameList, resName); }
+	Uint32 GetResolutionID(const std::string& resName) { return GetListIndex(ResolutionNameList, resName); }
 
 private:
 	void AddResolution(int width, int height);
@@ -105,7 +105,7 @@ public:
 	// Game
 	int Players;
 	eDifficultyType Difficulty;
-	uint32 Language;
+	Uint32 Language;
 	std::string LanguageName;
 	eSwitch Tabs;
 	eSwitch TabsAtStartup;
@@ -115,7 +115,7 @@ public:
 	// Graphics
 	int Screens;
 	ResolutionWH Resolution;
-	uint32 SelectedResolution;
+	Uint32 SelectedResolution;
 	int Depth;
 	eVisualizerOption VisualizerOption;
 	eSwitch FullScreen;

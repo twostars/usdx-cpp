@@ -79,7 +79,7 @@ ScreenOptions::ScreenOptions() : Menu()
 	SetInteraction(0);
 }
 
-bool ScreenOptions::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenOptions::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	if (!pressedDown)
 		return true;

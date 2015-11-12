@@ -110,14 +110,14 @@ struct ThemeButton
 	int FadeTexPos;
 
 	// Button collection
-	uint8 Parent; // Number (ID) of the button collection this button is assigned to. 0 for no assignment.
+	Uint8 Parent; // Number (ID) of the button collection this button is assigned to. 0 for no assignment.
 };
 
 struct ThemeButtonCollection
 {
 	ThemeButton Style;
-	uint8 ChildCount; // number of assigned children
-	uint8 FirstChild; // number of child whose interaction position the button should be
+	Uint8 ChildCount; // number of assigned children
+	Uint8 FirstChild; // number of child whose interaction position the button should be
 };
 
 typedef std::vector<ThemeButtonCollection> AThemeButtonCollection;

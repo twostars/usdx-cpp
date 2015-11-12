@@ -86,7 +86,7 @@ public:
 
 	// Button collections
 	void PrepareButtonCollections(const AThemeButtonCollection& collections);
-	void AddButtonCollection(const ThemeButtonCollection& collection, uint8 num);
+	void AddButtonCollection(const ThemeButtonCollection& collection, Uint8 num);
 
 	// Background
 	void AddBackground(const ThemeBackground& themedSettings);
@@ -113,23 +113,23 @@ public:
 	int AddStatic(const ThemeStatic& themeStatic);
 	int AddStatic(float x, float y, float w, float h, 
 		const RGB& colRGB, const path* textureFilename, 
-		eTextureType textureType = TextureType::Plain, uint32 color = 0xFFFFFFFF);
+		eTextureType textureType = TextureType::Plain, Uint32 color = 0xFFFFFFFF);
 	int AddStatic(float x, float y, float w, float h, float z, 
 		const RGB& colRGB, const path* textureFilename, 
-		eTextureType textureType = TextureType::Plain, uint32 color = 0xFFFFFFFF);
+		eTextureType textureType = TextureType::Plain, Uint32 color = 0xFFFFFFFF);
 	int AddStatic(float x, float y, float w, float h, float z, 
 		const RGB& colRGB, float texX1, float texY1, float texX2, float texY2,
 		const path* textureFilename, 
 		eTextureType textureType = TextureType::Plain,
-		uint32 color = 0xFFFFFFFF,
+		Uint32 color = 0xFFFFFFFF,
 		bool reflection = false, float reflectionSpacing = 0.0f);
 
 	// Text
 	int AddText(const ThemeText& themeText);
 	int AddText(float x, float y, const std::string& text);
-	int AddText(float x, float y, uint32 style, float size, 
+	int AddText(float x, float y, Uint32 style, float size, 
 		const RGB& colRGB, const std::string& text);
-	int AddText(float x, float y, float w, uint32 style, float size, 
+	int AddText(float x, float y, float w, Uint32 style, float size, 
 		const RGB& colRGB, int align, const std::string& text,
 		bool reflection, float reflectionSpacing, float z);
 
@@ -159,7 +159,7 @@ public:
 		int font, int size, int align, const std::string& addText);
 
 	// Select slide
-	int AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, uint32 * pData, 
+	int AddSelectSlide(const ThemeSelectSlide& themeSelectSlide, Uint32 * pData, 
 		const std::string* values, size_t valueCount);
 	int AddSelectSlide(float x, float y, float w, float h, float skipX, float sbgw,
 		const RGB& colRGB,     float intensity,
@@ -174,10 +174,10 @@ public:
 		eTextureType textureType,
 		const path* sbgFilename,
 		eTextureType sbgTextureType,
-		const std::string& caption, uint32 * pData);
+		const std::string& caption, Uint32 * pData);
 	void AddSelectSlideOption(const std::string& addText);
-	void AddSelectSlideOption(uint32 selectNum, const std::string& addText);
-	void UpdateSelectSlideOptions(const ThemeSelectSlide& themeSelectSlide, uint32 selectNo, 
+	void AddSelectSlideOption(Uint32 selectNum, const std::string& addText);
+	void UpdateSelectSlideOptions(const ThemeSelectSlide& themeSelectSlide, Uint32 selectNo, 
 		const std::vector<std::string>& values, int data);
 
 	void FadeTo(Menu* screen);
@@ -190,7 +190,7 @@ public:
 	virtual void DrawBG();
 	virtual void DrawFG();
 	virtual void Draw();
-	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual bool ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	virtual bool ParseTextInput(SDL_Event * event);
 	virtual bool ParseMouse(int mouseButton, bool btnDown, float x, float y);
 	bool InRegion(float x, float y, const MouseOverRect& rect);
@@ -202,7 +202,7 @@ public:
 	virtual void OnHide();
 
 	virtual void SetAnimationProgress(float progress);
-	bool IsSelectable(uint32 index);
+	bool IsSelectable(Uint32 index);
 
 	virtual void InteractNext();
 	virtual void InteractCustom(int customSwitch);

@@ -56,7 +56,7 @@ public:
 	Texture DeselectTexture;
 
 	Texture FadeTex;
-	uint8 FadeTexPos;
+	Uint8 FadeTexPos;
 
 	int DeselectType; // not used yet
 	bool Visible;
@@ -70,7 +70,7 @@ public:
 	
 	bool Selectable;
 
-	uint8 Parent;
+	Uint8 Parent;
 
 	RGB SelectColRGB;
 	float SelectInt;
@@ -88,7 +88,7 @@ protected:
 
 public:
 	float FadeProgress;
-	uint32 FadeLastTick;
+	Uint32 FadeLastTick;
 
 	float DeselectW, DeselectH;
 	float PosX, PosY;

@@ -33,7 +33,7 @@ void UsdxDatabase::Initialize()
 	// convert data from 1.01 to 1.1
 	// part #1 - prearrangement
 	bool finalizeConversion = false;
-	int32 version = GetUserVersion();
+	Sint32 version = GetUserVersion();
 	if (version == 0 && TableExists(cUS_Scores))
 	{
 		// rename old tables - to be able to insert new table structures

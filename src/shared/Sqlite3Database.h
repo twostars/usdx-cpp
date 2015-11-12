@@ -37,8 +37,8 @@ public:
 	int Exec(const char * sql);
 	int FormattedExec(const char * sql, ...);
 	char * ErrMsg();
-	int32 GetUserVersion();
-	void SetUserVersion(int32 version);
+	Sint32 GetUserVersion();
+	void SetUserVersion(Sint32 version);
 	bool TableExists(const char * table);
 	bool ColumnExists(const char * table, const char * column);
 

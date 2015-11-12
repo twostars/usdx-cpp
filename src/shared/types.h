@@ -32,15 +32,6 @@
 #	define INLINE inline
 #endif
 
-typedef int64_t int64;
-typedef int32_t int32;
-typedef int16_t int16;
-typedef int8_t int8;
-typedef uint64_t uint64;
-typedef uint32_t uint32;
-typedef uint16_t uint16;
-typedef uint8_t uint8;
-
 #if defined(RGB)
 #	undef RGB
 #endif
@@ -52,10 +43,10 @@ struct RGB
 	void Load(const char * source);
 	void Sqrt(const RGB& rhs);
 
-	void Set(uint8 r, uint8 g, uint8 b);
-	static float Transform(uint8 val);
+	void Set(Uint8 r, Uint8 g, Uint8 b);
+	static float Transform(Uint8 val);
 
-	uint32 ToUInt32() const;
+	Uint32 ToUInt32() const;
 };
 
 struct RGBA

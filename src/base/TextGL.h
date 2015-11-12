@@ -43,7 +43,7 @@ void ResetFont();
 void SetFontPos(float X, float Y);
 void SetFontZ(float Z);
 void SetFontSize(float height);
-void SetFontStyle(uint32 style);
+void SetFontStyle(Uint32 style);
 void SetFontItalic(bool enable);
 void SetFontReflection(bool enable, float spacing);
 

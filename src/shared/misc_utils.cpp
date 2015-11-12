@@ -28,7 +28,7 @@ bool IsInStringArray(const char * needle, const char ** haystackArray)
 		|| haystackArray == NULL || *haystackArray == 0)
 		return false;
 
-	uint32 i = 0;
+	Uint32 i = 0;
 	while (haystackArray[i] != NULL)
 	{
 		if (strcmp(haystackArray[i], needle) == 0)
@@ -46,7 +46,7 @@ bool IsInStringArrayI(const char * needle, const char ** haystackArray)
 		|| haystackArray == NULL || *haystackArray == 0)
 		return false;
 
-	uint32 i = 0;
+	Uint32 i = 0;
 	while (haystackArray[i] != NULL)
 	{
 		if (STRCASECMP(haystackArray[i], needle) == 0)
@@ -58,13 +58,13 @@ bool IsInStringArrayI(const char * needle, const char ** haystackArray)
 	return false;
 }
 
-uint32 GetListIndex(OptionList& list, const std::string & val)
+Uint32 GetListIndex(OptionList& list, const std::string & val)
 {
 	// TODO: This is not especially efficient, this needs to be reworked.
 	for (size_t i = 0; i < list.size(); i++)
 	{
 		if (val == list[i])
-			return (uint32) i;
+			return (Uint32) i;
 	}
 
 	return 0;

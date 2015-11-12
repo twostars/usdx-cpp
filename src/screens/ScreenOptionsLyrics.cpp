@@ -38,15 +38,15 @@ ScreenOptionsLyrics::ScreenOptionsLyrics() : Menu()
 
 	theme->SelectLyricsFont.ShowArrows = true;
 	theme->SelectLyricsFont.OneItemOnly = true;
-	AddSelectSlide(theme->SelectLyricsFont, (uint32 *)&sIni.LyricsFont, ILyricsFontTranslated, SDL_arraysize(ILyricsFontTranslated));
+	AddSelectSlide(theme->SelectLyricsFont, (Uint32 *)&sIni.LyricsFont, ILyricsFontTranslated, SDL_arraysize(ILyricsFontTranslated));
 
 	theme->SelectLyricsEffect.ShowArrows = true;
 	theme->SelectLyricsEffect.OneItemOnly = true;
-	AddSelectSlide(theme->SelectLyricsEffect, (uint32 *)&sIni.LyricsEffect, ILyricsEffectTranslated, SDL_arraysize(ILyricsEffectTranslated));
+	AddSelectSlide(theme->SelectLyricsEffect, (Uint32 *)&sIni.LyricsEffect, ILyricsEffectTranslated, SDL_arraysize(ILyricsEffectTranslated));
 
 	theme->SelectNoteLines.ShowArrows = true;
 	theme->SelectNoteLines.OneItemOnly = true;
-	AddSelectSlide(theme->SelectNoteLines, (uint32 *)&sIni.NoteLines, INoteLinesTranslated, SDL_arraysize(INoteLinesTranslated));
+	AddSelectSlide(theme->SelectNoteLines, (Uint32 *)&sIni.NoteLines, INoteLinesTranslated, SDL_arraysize(INoteLinesTranslated));
 
 	AddButton(theme->ButtonExit);
 	if (Buttons[0].Texts.empty())
@@ -55,7 +55,7 @@ ScreenOptionsLyrics::ScreenOptionsLyrics() : Menu()
 	SetInteraction(0);
 }
 
-bool ScreenOptionsLyrics::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenOptionsLyrics::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	if (!pressedDown)
 		return true;

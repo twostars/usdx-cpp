@@ -29,7 +29,7 @@ class ScreenMain : public Menu
 public:
 	ScreenMain();
 
-	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual bool ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	virtual void OnInteraction();
 	virtual void SetAnimationProgress(float progress);
 
@@ -39,7 +39,7 @@ public:
 private:
 	// ticks when the user interacted, used to start credits
 	// after a period of time without user interaction
-	uint32 _userInteractionTicks;
+	Uint32 _userInteractionTicks;
 };
 
 #endif

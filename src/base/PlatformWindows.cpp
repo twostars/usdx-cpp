@@ -80,7 +80,7 @@ bool Platform::TerminateIfAlreadyRunning(const char * windowTitle)
 
 void Platform::ShowMessage(const char * message, MessageType messageType)
 {
-	uint32 flags = 0;
+	Uint32 flags = 0;
 	switch (messageType)
 	{
 	case mtInfo:

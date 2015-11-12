@@ -42,7 +42,7 @@ MenuText::MenuText(float x, float y, const std::string& text)
 	Create(x, y, 0, ftNormal, sizeDefault, rgbDefault, 0, text, false, 0.0f, 0.0f);
 }
 
-MenuText::MenuText(float x, float y, float w, uint32 style, 
+MenuText::MenuText(float x, float y, float w, Uint32 style, 
 				   float size, const RGB& rgb, int align, const std::string& text, 
 				   bool reflection, float reflectionSpacing, 
 				   float z)
@@ -50,7 +50,7 @@ MenuText::MenuText(float x, float y, float w, uint32 style,
 	Create(x, y, w, style, size, rgb, align, text, reflection, reflectionSpacing, z);
 }
 
-void MenuText::Create(float x, float y, float w, uint32 style,
+void MenuText::Create(float x, float y, float w, Uint32 style,
 					  float size, const RGB& rgb, int align, const std::string& text,
 					  bool reflection, float reflectionSpacing,
 					  float z)
@@ -76,7 +76,7 @@ void MenuText::EnableBlinkingCursor()
 {
 	// set cursor visible
 	SelectBlink = true;
-	STicks = (uint32)((float) SDL_GetTicks() / 550.0f);
+	STicks = (Uint32)((float) SDL_GetTicks() / 550.0f);
 }
 
 void MenuText::SetSelected(bool value)
@@ -240,7 +240,7 @@ void MenuText::Draw()
 	// If selected, blink...
 	if (IsSelected())
 	{
-		uint32 ticks = (uint32)((float) SDL_GetTicks() / 550.0f);
+		Uint32 ticks = (Uint32)((float) SDL_GetTicks() / 550.0f);
 		if (ticks != STicks)
 		{
 			STicks = ticks;

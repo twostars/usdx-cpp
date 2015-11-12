@@ -29,7 +29,7 @@ class ScreenLevel : public Menu
 public:
 	ScreenLevel();
 	virtual void OnShow();
-	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual bool ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	void SetAnimationProgress(float progress);
 };
 

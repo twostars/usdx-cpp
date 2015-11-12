@@ -30,7 +30,7 @@ public:
 	ScreenName();
 
 	virtual void OnShow();
-	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual bool ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	virtual bool ParseTextInput(SDL_Event * event);
 	void SetAnimationProgress(float progress);
 

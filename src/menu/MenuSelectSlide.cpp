@@ -94,7 +94,7 @@ void MenuSelectSlide::SetSelected(bool value)
 	}
 }
 
-void MenuSelectSlide::SetSelectOpt(uint32 value)
+void MenuSelectSlide::SetSelectOpt(Uint32 value)
 {
 	if (TextOptions.empty()
 		|| TextOptionNames.empty())
@@ -132,8 +132,8 @@ void MenuSelectSlide::SetSelectOpt(uint32 value)
 		Tex_SelectS_ArrowL.Alpha = ArrowAlphaOptionsLeft;
 		Tex_SelectS_ArrowR.Alpha = ArrowAlphaOptionsLeft;
 
-		uint32 halfL = (uint32) std::ceil((Lines - 1) / 2.0f);
-		uint32 halfR = Lines - 1 - halfL;
+		Uint32 halfL = (Uint32) std::ceil((Lines - 1) / 2.0f);
+		Uint32 halfR = Lines - 1 - halfL;
 
 		// Select option is near to the left side
 		if (value <= halfL)
@@ -245,9 +245,9 @@ void MenuSelectSlide::GenerateLines()
 	// Show all items
 	else
 	{
-		Lines = (uint8) std::floor((TexSBG.W - MinSideSpacing * 2) / (maxLen + MinItemSpacing));
+		Lines = (Uint8) std::floor((TexSBG.W - MinSideSpacing * 2) / (maxLen + MinItemSpacing));
 		if (Lines > TextOptionNames.size())
-			Lines = (uint8) TextOptionNames.size();
+			Lines = (Uint8) TextOptionNames.size();
 
 		if (Lines <= 0)
 			Lines = 1;
@@ -256,7 +256,7 @@ void MenuSelectSlide::GenerateLines()
 	// Free old space used by texts
 	TextOptions.clear();
 
-	for (uint8 i = 0; i < Lines; i++)
+	for (Uint8 i = 0; i < Lines; i++)
 	{
 		MenuText text;
 

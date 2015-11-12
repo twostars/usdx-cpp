@@ -35,8 +35,8 @@ public:
 	void SetSelected(bool value);
 	void Draw();
 
-	uint8 FirstChild;
-	uint8 ChildCount;
+	Uint8 FirstChild;
+	Uint8 ChildCount;
 
 	std::vector<MenuButton> * ScreenButton;
 };

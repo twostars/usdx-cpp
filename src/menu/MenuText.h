@@ -40,12 +40,12 @@ private:
 public:
 	MenuText();
 	MenuText(float x, float y, const std::string& text);
-	MenuText(float x, float y, float w, uint32 style, 
+	MenuText(float x, float y, float w, Uint32 style, 
 		float size, const RGB& rgb, int align, const std::string& text, 
 		bool reflection, float reflectionSpacing, 
 		float z);
 
-	void Create(float x, float y, float w, uint32 style,
+	void Create(float x, float y, float w, Uint32 style,
 				float size, const RGB& rgb, int align, const std::string& text,
 				bool reflection, float reflectionSpacing,
 				float z);
@@ -74,7 +74,7 @@ public:
 	RGB ColRGB;
 	float Alpha;
 	float Int;
-	uint32 Style;
+	Uint32 Style;
 	bool Visible;
 	// TODO: Use an enum.
 	int Align;	// 0 = left, 1 = center, 2 = right
@@ -88,7 +88,7 @@ protected:
 public:
 	std::vector<std::string> TextTiles;
 
-	uint32 STicks;
+	Uint32 STicks;
 	bool SelectBlink;
 };
 

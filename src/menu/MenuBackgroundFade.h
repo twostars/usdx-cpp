@@ -36,7 +36,7 @@ public:
 protected:
 	float Alpha;
 	bool UseTexture;
-	uint32 FadeTime;
+	Uint32 FadeTime;
 };
 
 #endif

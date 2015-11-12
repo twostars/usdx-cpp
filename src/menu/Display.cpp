@@ -45,9 +45,9 @@ static const float FADE_DURATION = 400.0f;
 
 // constants for software cursor effects
 // time in milliseconds
-static const uint32 CURSOR_FADE_IN_TIME = 500;      // seconds the fade in effect lasts
-static const uint32 CURSOR_FADE_OUT_TIME = 2000;    // seconds the fade out effect lasts
-static const uint32 CURSOR_AUTOHIDE_TIME = 5000;   // seconds until auto fade out starts if there is no mouse movement
+static const Uint32 CURSOR_FADE_IN_TIME = 500;      // seconds the fade in effect lasts
+static const Uint32 CURSOR_FADE_OUT_TIME = 2000;    // seconds the fade out effect lasts
+static const Uint32 CURSOR_AUTOHIDE_TIME = 5000;   // seconds until auto fade out starts if there is no mouse movement
 
 Display::Display()
 // create events for plugins
@@ -87,8 +87,8 @@ Display::Display()
 
 void Display::InitFadeTextures()
 {
-	TexW = (uint32) Round(std::pow(2.0, std::ceil(Log2(ScreenW / Screens))));
-	TexH = (uint32) Round(std::pow(2.0, std::ceil(Log2(ScreenH))));
+	TexW = (Uint32) Round(std::pow(2.0, std::ceil(Log2(ScreenW / Screens))));
+	TexH = (Uint32) Round(std::pow(2.0, std::ceil(Log2(ScreenH))));
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -168,7 +168,7 @@ bool Display::Draw()
 					// due to some older errors in previous OpenGL calls
 					glGetError();
 
-					uint32 fadeCopyW = ScreenW / Screens,
+					Uint32 fadeCopyW = ScreenW / Screens,
 						fadeCopyH = ScreenH;
 
 					// It is possible that our fade textures are too small after
@@ -295,13 +295,13 @@ bool Display::Draw()
 // called by MoveCursor and OnMouseButton to update last move and start fade in
 void Display::UpdateCursorFade()
 {
-	uint32 ticks = SDL_GetTicks();
+	Uint32 ticks = SDL_GetTicks();
 
 	// fade in on movement (or button press) if not first movement
 	if (!CursorVisible && CursorLastMove != 0)
 	{
 		if (CursorFade)
-			CursorLastMove -= (uint32_t) Round(1.0 * (CURSOR_FADE_IN_TIME * (1 - (ticks - CursorLastMove)) / CURSOR_FADE_OUT_TIME));
+			CursorLastMove -= (Uint32) Round(1.0 * (CURSOR_FADE_IN_TIME * (1 - (ticks - CursorLastMove)) / CURSOR_FADE_OUT_TIME));
 		else
 			CursorLastMove = ticks;
 
@@ -338,7 +338,7 @@ void Display::OnMouseButton(bool pressed)
 void Display::DrawCursor()
 {
 	float Alpha;
-	uint32 Ticks;
+	Uint32 Ticks;
 	float DrawX;
 
 	// draw software cursor
@@ -439,7 +439,7 @@ void Display::DrawDebugInformation()
 	glColor4f(0, 0, 0, 1);
 
 	// calculate fps
-	uint32 Ticks = SDL_GetTicks();
+	Uint32 Ticks = SDL_GetTicks();
 	if (Ticks >= NextFPSSwap)
 	{
 		LastFPS = FPSCounter * 4;
@@ -457,7 +457,7 @@ void Display::DrawDebugInformation()
 
 	// rspeed
 	SetFontPos(695, 13);
-	glPrint("RSpeed: %d", (uint32) ceil(1000 * GetTimeMid()));
+	glPrint("RSpeed: %d", (Uint32) ceil(1000 * GetTimeMid()));
 
 	// lasterror
 	SetFontPos(695, 26);
@@ -467,7 +467,7 @@ void Display::DrawDebugInformation()
 	glColor4f(1, 1, 1, 1);
 }
 
-bool Display::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool Display::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	if (NextScreen != NULL)
 		return NextScreen->ParseInput(pressedKey, keyCode, pressedDown);

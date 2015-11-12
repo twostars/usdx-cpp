@@ -74,19 +74,19 @@ RGB GetSystemColor(eColor color)
 // e.g. 255 255 255
 void RGB::Load(const char * source)
 {
-	uint32 r, g, b;
+	Uint32 r, g, b;
 	sscanf(source, "%u %u %u", &r, &g, &b);
-	Set((uint8) r, (uint8) g, (uint8) b);
+	Set((Uint8) r, (Uint8) g, (Uint8) b);
 }
 
-void RGB::Set(uint8 r, uint8 g, uint8 b)
+void RGB::Set(Uint8 r, Uint8 g, Uint8 b)
 {
 	R = Transform(r);
 	G = Transform(g);
 	B = Transform(b);
 }
 
-float RGB::Transform(uint8 val)
+float RGB::Transform(Uint8 val)
 {
 	return (float) val / 255.0f;
 }
@@ -98,13 +98,13 @@ void RGB::Sqrt(const RGB& rhs)
 	B = sqrt(rhs.B);
 }
 
-uint32 RGB::ToUInt32() const
+Uint32 RGB::ToUInt32() const
 {
-	uint32 r = (uint8)(255 * R),
-		   g = (uint8)(255 * G),
-		   b = (uint8)(255 * B);
+	Uint32 r = (Uint8)(255 * R),
+		   g = (Uint8)(255 * G),
+		   b = (Uint8)(255 * B);
 
-	return (uint32)(r << 16) | (uint32)(g << 8) | (uint32)(b);
+	return (Uint32)(r << 16) | (Uint32)(g << 8) | (Uint32)(b);
 }
 
 #endif

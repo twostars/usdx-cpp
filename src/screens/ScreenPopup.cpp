@@ -31,7 +31,7 @@ ScreenPopup::ScreenPopup()
 {
 }
 
-bool ScreenPopup::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenPopup::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	bool result = true;
 
@@ -93,7 +93,7 @@ ScreenPopupCheck::ScreenPopupCheck()
 	SetInteraction(0);
 }
 
-bool ScreenPopupCheck::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenPopupCheck::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	bool result = true, value = false;
 

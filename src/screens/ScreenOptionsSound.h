@@ -28,7 +28,7 @@ class ScreenOptionsSound : public Menu
 {
 public:
 	ScreenOptionsSound();
-	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	virtual bool ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	virtual void OnShow();
 	virtual void OnInteraction();
 	void SaveAndReturn();

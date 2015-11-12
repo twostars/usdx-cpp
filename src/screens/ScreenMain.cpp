@@ -59,7 +59,7 @@ ScreenMain::ScreenMain() : Menu(), _userInteractionTicks(0)
 	SetInteraction(0);
 }
 
-bool ScreenMain::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenMain::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	_userInteractionTicks = SDL_GetTicks();
 

@@ -40,27 +40,27 @@ ScreenOptionsAdvanced::ScreenOptionsAdvanced() : Menu()
 
 	theme->SelectScreenFade.ShowArrows = true;
 	theme->SelectScreenFade.OneItemOnly = true;
-	AddSelectSlide(theme->SelectScreenFade, (uint32 *)&sIni.ScreenFade, IScreenFadeTranslated, SDL_arraysize(IScreenFadeTranslated));
+	AddSelectSlide(theme->SelectScreenFade, (Uint32 *)&sIni.ScreenFade, IScreenFadeTranslated, SDL_arraysize(IScreenFadeTranslated));
 
 	theme->SelectEffectSing.ShowArrows = true;
 	theme->SelectEffectSing.OneItemOnly = true;
-	AddSelectSlide(theme->SelectEffectSing, (uint32 *)&sIni.EffectSing, IEffectSingTranslated, SDL_arraysize(IEffectSingTranslated));
+	AddSelectSlide(theme->SelectEffectSing, (Uint32 *)&sIni.EffectSing, IEffectSingTranslated, SDL_arraysize(IEffectSingTranslated));
 
 	theme->SelectLineBonus.ShowArrows = true;
 	theme->SelectLineBonus.OneItemOnly = true;
-	AddSelectSlide(theme->SelectLineBonus, (uint32 *)&sIni.LineBonus, ILineBonusTranslated, SDL_arraysize(ILineBonusTranslated));
+	AddSelectSlide(theme->SelectLineBonus, (Uint32 *)&sIni.LineBonus, ILineBonusTranslated, SDL_arraysize(ILineBonusTranslated));
 
 	theme->SelectOnSongClick.ShowArrows = true;
 	theme->SelectOnSongClick.OneItemOnly = true;
-	AddSelectSlide(theme->SelectOnSongClick, (uint32 *)&sIni.OnSongClick, IOnSongClickTranslated, SDL_arraysize(IOnSongClickTranslated));
+	AddSelectSlide(theme->SelectOnSongClick, (Uint32 *)&sIni.OnSongClick, IOnSongClickTranslated, SDL_arraysize(IOnSongClickTranslated));
 
 	theme->SelectAskBeforeDel.ShowArrows = true;
 	theme->SelectAskBeforeDel.OneItemOnly = true;
-	AddSelectSlide(theme->SelectAskBeforeDel, (uint32 *)&sIni.AskBeforeDel, IAskBeforeDelTranslated, SDL_arraysize(IAskBeforeDelTranslated));
+	AddSelectSlide(theme->SelectAskBeforeDel, (Uint32 *)&sIni.AskBeforeDel, IAskBeforeDelTranslated, SDL_arraysize(IAskBeforeDelTranslated));
 
 	theme->SelectPartyPopup.ShowArrows = true;
 	theme->SelectPartyPopup.OneItemOnly = true;
-	AddSelectSlide(theme->SelectPartyPopup, (uint32 *)&sIni.PartyPopup, IPartyPopupTranslated, SDL_arraysize(IPartyPopupTranslated));
+	AddSelectSlide(theme->SelectPartyPopup, (Uint32 *)&sIni.PartyPopup, IPartyPopupTranslated, SDL_arraysize(IPartyPopupTranslated));
 
 	AddButton(theme->ButtonExit);
 	if (Buttons[0].Texts.empty())
@@ -69,7 +69,7 @@ ScreenOptionsAdvanced::ScreenOptionsAdvanced() : Menu()
 	SetInteraction(0);
 }
 
-bool ScreenOptionsAdvanced::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenOptionsAdvanced::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	if (!pressedDown)
 		return true;

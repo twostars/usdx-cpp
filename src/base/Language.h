@@ -35,8 +35,8 @@ public:
 	void LoadList();
 	OptionList& GetLanguageSet() { return _langSet; }
 	void ChangeLanguage(const std::string& language);
-	uint32 GetLanguageID(const std::string& language) { return GetListIndex(_langSet, language); }
-	const std::string& GetLanguageByID(uint32 id) { return _langSet[id]; }
+	Uint32 GetLanguageID(const std::string& language) { return GetListIndex(_langSet, language); }
+	const std::string& GetLanguageByID(Uint32 id) { return _langSet[id]; }
 	void AddConst(const std::string& id, const std::string& text);
 	const std::string Translate(const std::string& id);
 	const std::string Translate(const char* id);

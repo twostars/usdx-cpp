@@ -64,12 +64,12 @@ void ScreenName::OnShow()
 	}
 }
 
-bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
+bool ScreenName::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 {
 	if (!pressedDown)
 		return true;
 
-	uint16 modState = SDL_GetModState()
+	Uint16 modState = SDL_GetModState()
 		& (KMOD_SHIFT | KMOD_CTRL | KMOD_ALT);
 
 	MenuButton& selectedButton = Buttons[SelInteraction];

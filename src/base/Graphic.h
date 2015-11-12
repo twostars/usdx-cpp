@@ -39,9 +39,9 @@ void UnloadSurface(SDL_Surface * texSurface);
 
 void AdjustPixelFormat(SDL_Surface *& texSurface, eTextureType textureType);
 bool PixelFormatEquals(SDL_PixelFormat * fmt1, const SDL_PixelFormat * fmt2);
-void ScaleImage(SDL_Surface * imgSurface, uint32 width, uint32 height);
-void FitImage(SDL_Surface *& imgSurface, uint32 width, uint32 height);
-void ColorizeImage(SDL_Surface * imgSurface, uint32 newColor);
+void ScaleImage(SDL_Surface * imgSurface, Uint32 width, Uint32 height);
+void FitImage(SDL_Surface *& imgSurface, Uint32 width, Uint32 height);
+void ColorizeImage(SDL_Surface * imgSurface, Uint32 newColor);
 
 void glColorRGB(const RGB& color);
 void glColorRGB(const RGB& color, float alpha);

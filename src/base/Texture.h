@@ -27,7 +27,7 @@
 class Texture
 {
 public:
-	uint32 TexNum;
+	Uint32 TexNum;
 	float  X, Y, Z;
 	float  W, H;
 	float  ScaleW; // for dynamic scaling while leaving width constant

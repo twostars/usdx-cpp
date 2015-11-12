@@ -31,8 +31,8 @@ public:
 	MenuSelectSlide();
 
 	void SetSelected(bool value);
-	void SetSelectOpt(uint32 value);
-	INLINE uint32 GetSelectOpt() 
+	void SetSelectOpt(Uint32 value);
+	INLINE Uint32 GetSelectOpt() 
 	{
 		if (pData == NULL)
 			return 0;
@@ -73,10 +73,10 @@ public:
 	Texture Tex_SelectS_ArrowL;
 	Texture Tex_SelectS_ArrowR;
 
-	uint32 * pData;
+	Uint32 * pData;
 
 	// For automatically setting line count
-	uint8 Lines;
+	Uint8 Lines;
 
 	// Arrows on/off
 	bool ShowArrows; // default is false
