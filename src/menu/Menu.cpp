@@ -1149,7 +1149,7 @@ bool Menu::IsSelectable(Uint32 index)
 	return true; // should this default to false? officially it defaults to true.
 }
 
-void Menu::InteractNext()
+bool Menu::InteractNext()
 {
 	int selInt = SelInteraction;
 
@@ -1165,6 +1165,7 @@ void Menu::InteractNext()
 	} while (!IsSelectable(selInt));
 
 	SetInteraction(selInt);
+	return true; // ?
 }
 
 void Menu::InteractCustom(int customSwitch)
@@ -1172,7 +1173,7 @@ void Menu::InteractCustom(int customSwitch)
 	// FIXME: Original doesn't work with button collections, so it (the original) was commented out.
 }
 
-void Menu::InteractPrev()
+bool Menu::InteractPrev()
 {
 	int selInt = SelInteraction;
 
@@ -1189,10 +1190,12 @@ void Menu::InteractPrev()
 	} while (!IsSelectable(selInt));
 
 	SetInteraction(selInt);
+	return true; // ?
 }
 
-void Menu::InteractInc()
+bool Menu::InteractInc()
 {
+	bool interaction = false;
 	int num, value;
 
 	assert(SelInteraction >= 0 && SelInteraction < (int) Interactions.size());
@@ -1205,7 +1208,10 @@ void Menu::InteractInc()
 		assert(num >= 0 && num < (int) SelectSlides.size());
 		value = SelectSlides[num].GetSelectOpt() + 1;
 		if (value < (int) SelectSlides[num].TextOptionNames.size())
+		{
 			SelectSlides[num].SetSelectOpt(value);
+			interaction = true;
+		}
 		break;
 
 	case InteractionType::itBCollectionChild:
@@ -1218,13 +1224,14 @@ void Menu::InteractInc()
 
 			if (value == 0)
 			{
-				InteractNext();
+				interaction = InteractNext();
 				break;
 			}
 
 			if (Buttons[value].Parent == Buttons[SelInteraction].Parent)
 			{
 				SetInteraction(value);
+				interaction = true;
 				break;
 			}
 		}
@@ -1232,13 +1239,16 @@ void Menu::InteractInc()
 
 	default:
 		// Interact next if there is nothing to change
-		InteractNext();
+		interaction = InteractNext();
 		break;
 	}
+
+	return interaction;
 }
 
-void Menu::InteractDec()
+bool Menu::InteractDec()
 {
+	bool interaction = false;
 	int num, value;
 	Uint8 parent;
 
@@ -1252,7 +1262,10 @@ void Menu::InteractDec()
 		assert(num >= 0 && num < (int) SelectSlides.size());
 		value = SelectSlides[num].GetSelectOpt() - 1;
 		if (value >= 0)
+		{
 			SelectSlides[num].SetSelectOpt(value);
+			interaction = true;
+		}
 		break;
 
 	case InteractionType::itBCollectionChild:
@@ -1265,13 +1278,14 @@ void Menu::InteractDec()
 
 			if (value == (Buttons.size() - 1))
 			{
-				InteractPrev();
+				interaction = InteractPrev();
 				break;
 			}
 
 			if (Buttons[value].Parent == Buttons[SelInteraction].Parent)
 			{
 				SetInteraction(value);
+				interaction = true;
 				break;
 			}
 		}
@@ -1279,7 +1293,7 @@ void Menu::InteractDec()
 
 	default:
 		// Interact prev if there is nothing to change
-		InteractPrev();
+		interaction = InteractPrev();
 
 		// If the button collection has more than one entry than select the last entry
 		assert(SelInteraction >= 0 && SelInteraction < (int) Interactions.size());
@@ -1301,6 +1315,7 @@ void Menu::InteractDec()
 					if (Buttons[value].Parent == Buttons[SelInteraction].Parent)
 					{
 						SetInteraction(value);
+						interaction = true;
 						break;
 					}
 				}
@@ -1308,27 +1323,39 @@ void Menu::InteractDec()
 		}
 		break;
 	}
+
+	return interaction;
 }
 
-void Menu::InteractNextRow()
+bool Menu::InteractNextRow()
 {
 	int selInt = SelInteraction + (int) std::ceil(Interactions.size() * 0.50f);
 
 	// set interaction
 	if (selInt >= 0 && selInt < (int) Interactions.size())
+	{
 		SetInteraction(selInt);
+		return true;
+	}
+
+	return false;
 }
 
 // implemented for the sake of usablility
 // [cursor down] picks the button left to the actual atm
 // this behaviour doesn't make sense for two rows of buttons
-void Menu::InteractPrevRow()
+bool Menu::InteractPrevRow()
 {
 	int selInt = SelInteraction - (int) std::ceil(Interactions.size() * 0.50f);
 
 	// set interaction
 	if (selInt >= 0 && selInt < (int) Interactions.size())
+	{
 		SetInteraction(selInt);
+		return true;
+	}
+
+	return false;
 }
 
 void Menu::AddBox(float x, float y, float w, float h)

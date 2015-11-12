@@ -93,12 +93,11 @@ bool ScreenName::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 			case SDLK_ESCAPE:
 				sIni.SaveProfileSettings();
 				sIni.SaveToFile();
-				sSoundLib.PlaySound(SoundBack);
 
 				if (GotoSingScreen)
-					FadeTo(UISong);
+					FadeTo(UISong, SoundBack);
 				else
-					FadeTo(UIMain);
+					FadeTo(UIMain, SoundBack);
 				break;
 
 			case SDLK_RETURN:
@@ -107,12 +106,11 @@ bool ScreenName::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 
 				sIni.SaveProfileSettings();
 				sIni.SaveToFile();
-				sSoundLib.PlaySound(SoundStart);
 
 				if (GotoSingScreen)
-					FadeTo(UISing);
+					FadeTo(UISing, SoundStart);
 				else
-					FadeTo(UILevel);
+					FadeTo(UILevel, SoundStart);
 
 				GotoSingScreen = false;
 				break;

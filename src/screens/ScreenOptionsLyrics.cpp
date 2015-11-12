@@ -85,12 +85,10 @@ bool ScreenOptionsLyrics::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, boo
 		case SDLK_LEFT:
 			if (SelInteraction >= 0 && SelInteraction <= 3)
 			{
-				sSoundLib.PlaySound(SoundOption);
-
-				if (pressedKey == SDLK_RIGHT)
-					InteractInc();
-				else
-					InteractDec();
+				if (pressedKey == SDLK_RIGHT
+					? InteractInc()
+					: InteractDec())
+					sSoundLib.PlaySound(SoundOption);
 			}
 			break;
 	}

@@ -95,12 +95,10 @@ bool ScreenOptionsGraphics::ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, b
 		case SDLK_LEFT:
 			if (SelInteraction >= 0 && SelInteraction <= 5)
 			{
+				if (pressedKey == SDLK_RIGHT
+					? InteractInc()
+					: InteractDec())
 				sSoundLib.PlaySound(SoundOption);
-
-				if (pressedKey == SDLK_RIGHT)
-					InteractInc();
-				else
-					InteractDec();
 			}
 			break;
 	}

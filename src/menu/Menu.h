@@ -204,13 +204,13 @@ public:
 	virtual void SetAnimationProgress(float progress);
 	bool IsSelectable(Uint32 index);
 
-	virtual void InteractNext();
+	virtual bool InteractNext();
 	virtual void InteractCustom(int customSwitch);
-	virtual void InteractPrev();
-	virtual void InteractInc();
-	virtual void InteractDec();
-	virtual void InteractNextRow(); // this is for the options screen, so button down makes sense
-	virtual void InteractPrevRow(); // this is for the options screen, so button up makes sense
+	virtual bool InteractPrev();
+	virtual bool InteractInc();
+	virtual bool InteractDec();
+	virtual bool InteractNextRow(); // this is for the options screen, so button down makes sense
+	virtual bool InteractPrevRow(); // this is for the options screen, so button up makes sense
 	void AddBox(float x, float y, float w, float h);
 
 	~Menu();
