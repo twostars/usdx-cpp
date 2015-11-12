@@ -485,10 +485,10 @@ bool Display::ParseMouse(int mouseButton, bool btnDown, float x, float y)
 	return true;
 }
 
-bool Display::ParseTextInput(Uint32 inputType, SDL_Event * event)
+bool Display::ParseTextInput(SDL_Event * event)
 {
 	if (CurrentScreen != NULL)
-		return CurrentScreen->ParseTextInput(inputType, event);
+		return CurrentScreen->ParseTextInput(event);
 
 	return true;
 }

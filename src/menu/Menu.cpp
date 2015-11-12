@@ -914,7 +914,7 @@ bool Menu::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown)
 	return true;
 }
 
-bool Menu::ParseTextInput(Uint32 inputType, SDL_Event * event)
+bool Menu::ParseTextInput(SDL_Event * event)
 {
 	/* do nothing */
 	return true;

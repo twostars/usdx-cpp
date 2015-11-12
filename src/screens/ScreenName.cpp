@@ -132,7 +132,7 @@ bool ScreenName::ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressed
 	return true;
 }
 
-bool ScreenName::ParseTextInput(Uint32 inputType, SDL_Event * event)
+bool ScreenName::ParseTextInput(SDL_Event * event)
 {
 	// TODO: Append name text to the selected button
 	// This needs to be handled differently because of SDL2
@@ -142,7 +142,7 @@ bool ScreenName::ParseTextInput(Uint32 inputType, SDL_Event * event)
 	//	return true;
 	// }
 
-	if (inputType == SDL_TEXTINPUT)
+	if (event->type == SDL_TEXTINPUT)
 	{
 		auto& menuText = Buttons[SelInteraction].Texts[0];
 		menuText.SetText(menuText.GetText() + event->text.text);

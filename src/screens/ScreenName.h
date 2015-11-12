@@ -31,7 +31,7 @@ public:
 
 	virtual void OnShow();
 	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
-	virtual bool ParseTextInput(Uint32 inputType, SDL_Event * event);
+	virtual bool ParseTextInput(SDL_Event * event);
 	void SetAnimationProgress(float progress);
 
 	// If true then next screen in sing screen

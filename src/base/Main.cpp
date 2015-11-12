@@ -47,7 +47,7 @@
 void CheckEvents(float & mouseX, float & mouseY);
 void OnKeyDownEvent(SDL_Keycode keyCode);
 void OnMouseEvent(int mouseBtn, bool mouseDown, float mouseX, float mouseY);
-void OnTextInputEvent(Uint32 inputType, SDL_Event * event);
+void OnTextInputEvent(SDL_Event * event);
 void DoQuit();
 
 /* globals */
@@ -436,7 +436,7 @@ void CheckEvents(float & mouseX, float & mouseY)
 
 		case SDL_TEXTINPUT:
 		case SDL_TEXTEDITING:
-			sDisplay.ParseTextInput(event.type, &event);
+			OnTextInputEvent(&event);
 			break;
 
 		case MAINTHREAD_EXEC_EVENT:
@@ -491,18 +491,18 @@ void OnMouseEvent(int mouseBtn, bool mouseDown, float mouseX, float mouseY)
 		DoQuit();
 }
 
-void OnTextInputEvent(Uint32 inputType, SDL_Event * event)
+void OnTextInputEvent(SDL_Event * event)
 {
 	// If there is a visible popup then let it handle input instead of the underlying screen
 	// should be done in a way to be sure the topmost popup has preference (maybe error, then check)
 	if (UIPopupError != NULL && UIPopupError->Visible)
-		UIPopupError->ParseTextInput(inputType, event);
+		UIPopupError->ParseTextInput(event);
 	else if (UIPopupInfo != NULL && UIPopupInfo->Visible)
-		UIPopupInfo->ParseTextInput(inputType, event);
+		UIPopupInfo->ParseTextInput(event);
 	else if (UIPopupCheck != NULL && UIPopupCheck->Visible)
-		UIPopupCheck->ParseTextInput(inputType, event);
+		UIPopupCheck->ParseTextInput(event);
 	// if screen wants to exit
-	else if (!sDisplay.ParseTextInput(inputType, event))
+	else if (!sDisplay.ParseTextInput(event))
 		DoQuit();
 }
 

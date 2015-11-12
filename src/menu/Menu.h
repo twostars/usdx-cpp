@@ -191,7 +191,7 @@ public:
 	virtual void DrawFG();
 	virtual void Draw();
 	virtual bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
-	virtual bool ParseTextInput(Uint32 inputType, SDL_Event * event);
+	virtual bool ParseTextInput(SDL_Event * event);
 	virtual bool ParseMouse(int mouseButton, bool btnDown, float x, float y);
 	bool InRegion(float x, float y, const MouseOverRect& rect);
 	int InteractAt(float x, float y);

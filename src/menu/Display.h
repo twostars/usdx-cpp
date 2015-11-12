@@ -40,7 +40,7 @@ public:
 	// calls ParseInput of cur or next Screen if assigned
 	bool ParseInput(uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	bool ParseMouse(int mouseButton, bool btnDown, float x, float y);
-	bool ParseTextInput(Uint32 inputType, SDL_Event * event);
+	bool ParseTextInput(SDL_Event * event);
 
 	// sets SDL_ShowCursor depending on options set in Ini
 	void SetCursor();
