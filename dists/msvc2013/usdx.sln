@@ -57,7 +57,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mixer deps", "Mixer deps", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "native_midi", "native_midi_VS2013.vcxproj", "{EBDA67CA-4A23-4F22-BFBC-B8DBE0580D4F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "smpeg", "smpeg.vcxproj", "{55A56DD5-7041-4E48-9FB0-9A9FD2AA4D57}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "smpeg2", "smpeg.vcxproj", "{55A56DD5-7041-4E48-9FB0-9A9FD2AA4D57}"
+	ProjectSection(ProjectDependencies) = postProject
+		{81CE8DAF-EBB2-4761-8E45-B71ABCCA8C68} = {81CE8DAF-EBB2-4761-8E45-B71ABCCA8C68}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

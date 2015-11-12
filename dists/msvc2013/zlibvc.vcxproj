@@ -241,6 +241,7 @@
       </DataExecutionPrevention>
       <ImportLibrary>$(OutDir)zlibwapi.lib</ImportLibrary>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <SubSystem>Windows</SubSystem>
     </Link>
     <PreBuildEvent>
       <Command>cd ..\..\src\lib\zlib\contrib\masmx86
@@ -297,6 +298,7 @@ bld_ml32.bat</Command>
       </DataExecutionPrevention>
       <ImportLibrary>$(OutDir)zlibwapi.lib</ImportLibrary>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -349,6 +351,7 @@ bld_ml32.bat</Command>
       </DataExecutionPrevention>
       <ImportLibrary>$(OutDir)zlibwapi.lib</ImportLibrary>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <SubSystem>Windows</SubSystem>
     </Link>
     <PreBuildEvent>
       <Command>cd ..\..\src\lib\zlib\contrib\masmx86
