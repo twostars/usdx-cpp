@@ -157,14 +157,6 @@ void ScreenOptions::SetAnimationProgress(float progress)
 		Buttons[i].Tex.ScaleW = progress;
 }
 
-void ScreenOptions::OnShow()
-{
-	Menu::OnShow();
-
-	// continue possibly stopped bg-music (stopped in record options)
-	sSoundLib.StartBgMusic();
-}
-
 void ScreenOptions::OnInteraction()
 {
 	Texts[TextDescription].SetText(sThemes.Options->Description[SelInteraction]);

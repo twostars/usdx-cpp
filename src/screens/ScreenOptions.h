@@ -31,8 +31,6 @@ public:
 
 	virtual bool ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
 	virtual void SetAnimationProgress(float progress);
-
-	virtual void OnShow();
 	virtual void OnInteraction();
 
 	int TextDescription;
