@@ -26,6 +26,21 @@
 
 class ScreenPartyOptions : public Menu
 {
+public:
+	ScreenPartyOptions();
+	virtual void OnShow();
+	virtual bool ParseInput(Uint32 pressedKey, SDL_Keycode keyCode, bool pressedDown);
+	void SetPlaylist2();
+
+protected:
+	int _selectLevel;
+	int _selectPlaylist;
+	int _selectPlaylist2;
+
+	Uint32 _playlistIndex;
+	Uint32 _playlist2Index;
+
+	std::vector<std::string> _playlist2Values;
 };
 
 #endif

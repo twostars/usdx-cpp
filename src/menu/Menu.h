@@ -179,8 +179,8 @@ public:
 		const std::string& caption, Uint32 * pData);
 	void AddSelectSlideOption(const std::string& addText);
 	void AddSelectSlideOption(Uint32 selectNum, const std::string& addText);
-	void UpdateSelectSlideOptions(const ThemeSelectSlide& themeSelectSlide, Uint32 selectNo, 
-		const std::vector<std::string>& values, int data);
+	void ResetSelectSlideOptions(Uint32 selectNo);
+	void UpdateSelectSlideOptions(Uint32 selectNo, const std::vector<std::string>& values, int data);
 
 	void FadeTo(Menu* screen);
 	void FadeTo(Menu* screen, enum SoundType soundType);

@@ -827,8 +827,17 @@ void Menu::AddSelectSlideOption(Uint32 selectNum, const std::string& addText)
 	SelectSlides[selectNum].TextOptionNames.push_back(addText);
 }
 
-void Menu::UpdateSelectSlideOptions(const ThemeSelectSlide& themeSelectSlide, Uint32 selectNum, 
-									const std::vector<std::string>& values, int data)
+void Menu::ResetSelectSlideOptions(Uint32 selectNum)
+{
+	assert(selectNum < SelectSlides.size());
+
+	MenuSelectSlide& slide = SelectSlides[selectNum];
+	slide.TextOptionNames.clear();
+	slide.GenerateLines();
+	slide.SetSelectOpt(0);
+}
+
+void Menu::UpdateSelectSlideOptions(Uint32 selectNum, const std::vector<std::string>& values, int data)
 {
 	assert(selectNum < SelectSlides.size());
 	MenuSelectSlide& slide = SelectSlides[selectNum];
